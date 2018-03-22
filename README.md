@@ -1,2 +1,25 @@
 # ANNdotNET
-ANNdotNET is windows desktop application written in C# for creating and training ANN models. The application relies on Microsoft Cognitive Toolkit, CNTK.
+![ANNdotNET Logo](ANNdotNET/AnndotNET.Wnd.App/images/annLogo_start2.png)
+
+ANNdotNET is windows desktop application written in C# for creating and training ANN models. The application relies on Microsoft Cognitive Toolkit, CNTK, and it is supposed to be GUI tool for CNTK library with extensions in data preprocessing, model evaluation and exporting capabilities. Currently supported Network Types of:
+- Simple Feed Forward NN
+- Deep Feed Forward NN
+- Recurrent NN with LSTM
+
+The process of creating, training, evaluating and exporting models is provided from the GUI Application and does not require knowledge for supported programming languages. The ANNdotNET is ideal for engineers which are not familiar with programming languages.
+
+# Software Requirements
+ANNdotNET is x64 Windows desktop application which is running on .NET Framework 4.7.1. In order to run the application, the following requirements must be met:
+
+* Windows 7, 8 or 10 with x64 architecture
+* .NET Framework 4.7.1
+
+# How to run application
+In order to run the application there are two possibilities:
+1. Clone the GitHub repository of the application and open it in Visual Studio 2017  
+2. Download released version unzip and run ANNdotNET.exe  
+The following three short videos images quickly show how to create, train and evaluate reression, binary and multiclass classification models.
+
+* !video[ Regression model ](ANNdotNET/Tutorials/anndotnetv1.mp4 )
+* !video[ Binary classification model ](ANNdotNET/Tutorials/anndotnetv1.mp4 )
+* !video[ Multiclass classification model ](ANNdotNET/Tutorials/anndotnetv1.mp4 )
