@@ -1,6 +1,7 @@
 # ANNdotNET 
 
 Copyright (c) 2018 Bahrudin Hrnjica
+
 MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
