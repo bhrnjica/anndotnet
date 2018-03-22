@@ -20,6 +20,6 @@ In order to run the application there are two possibilities:
 2. Download released version unzip and run ANNdotNET.exe  
 The following three short videos images quickly show how to create, train and evaluate reression, binary and multiclass classification models.
 
-* !video[ Regression model ](ANNdotNET/Tutorials/anndotnetv1.mp4 )
-* !video[ Binary classification model ](ANNdotNET/Tutorials/anndotnetv1.mp4 )
-* !video[ Multiclass classification model ](ANNdotNET/Tutorials/anndotnetv1.mp4 )
+* [ Regression model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv1.mp4)
+* [ Binary classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv2.mp4)
+* !video[ Multiclass classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv3.mp4)
