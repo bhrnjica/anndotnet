@@ -1,5 +1,5 @@
 # ANNdotNET
-![ANNdotNET Logo](ANNdotNET/AnndotNET.Wnd.App/images/annLogo_start2.png)
+![ANNdotNET Logo](https://github.com/bhrnjica/anndotnet/blob/master/ANNdotNET/ANNdotNET.Wnd.App/Images/annLogo_start2.png)
 
 ANNdotNET is windows desktop application written in C# for creating and training ANN models. The application relies on Microsoft Cognitive Toolkit, CNTK, and it is supposed to be GUI tool for CNTK library with extensions in data preprocessing, model evaluation and exporting capabilities. Currently supported Network Types of:
 - Simple Feed Forward NN
