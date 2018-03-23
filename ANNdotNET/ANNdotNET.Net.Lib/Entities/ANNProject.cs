@@ -59,13 +59,13 @@ namespace ANNdotNET.Net.Lib.Entities
         }
 
         /// <summary>
-        /// Start training process for the speciefied model
+        /// Start training process for the specified model
         /// </summary>
         /// <param name="model"></param>
         /// <param name="setData"></param>
         /// <param name="report"></param>
         /// <param name="token"></param>
-        public void Run(ANNModel model, ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>)> report, CancellationToken token)
+        public void Run(ANNModel model, ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>, List<List<float>>)> report, CancellationToken token)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace ANNdotNET.Net.Lib.Entities
             }
         }
 
-        //creae new model
+        //create new model
         public void CreateModel(string guid, string nName, string fileName, int inputDim, int outDim, uint trainRowCount, uint testRowCount, List<string> classes, string label, bool randomizeData)
         {
             var m = new ANNModel();

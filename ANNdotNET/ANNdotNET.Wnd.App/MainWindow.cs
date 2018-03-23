@@ -455,8 +455,8 @@ namespace ANNdotNet.Wnd.App
             
         }
 
-        void reportProgres(int i, float loss, float eval, (List<List<float>>, List<List<float>>) trainD, 
-                                                          (List<List<float>>, List<List<float>>) testD)
+        void reportProgres(int i, float loss, float eval, (List<List<float>>, List<List<float>>, List<List<float>>) trainD, 
+                                                          (List<List<float>>, List<List<float>>, List<List<float>>) testD)
         {
             runPanel1.ReportProgress(i, loss, eval, trainD.Item1, trainD.Item2);
             testPanel1.ReportProgress(i, loss, eval, testD.Item1, testD.Item2);
@@ -933,14 +933,13 @@ namespace ANNdotNet.Wnd.App
             try
             {
                 //not implemented
-                return;
                 var model = getActiveModel() as ANNModel;
                 if (model == null)
                     return;
 
                 var filepath = PromptToSaveFile("Microsoft Excel files", " *.xlsx");
                 if (!string.IsNullOrEmpty(filepath))
-                    model.ExportONNX(filepath);
+                    model.ExportToE(filepath);
             }
             catch (Exception ex)
             {
@@ -975,7 +974,6 @@ namespace ANNdotNet.Wnd.App
             try
             {
                 //not implemented
-                return;
                 var model = getActiveModel() as ANNModel;
                 if (model == null)
                     return;

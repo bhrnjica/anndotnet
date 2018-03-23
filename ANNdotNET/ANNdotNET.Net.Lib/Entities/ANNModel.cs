@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ANNdotNET.Net.Lib;
+using ANNdotNET.Export.Lib;
 
 namespace ANNdotNET.Net.Lib.Entities
 {
@@ -53,9 +54,11 @@ namespace ANNdotNET.Net.Lib.Entities
         //Class names in case of categorical model
         public List<string> Classes { get; internal set; }
 
+        public List<List<float>> TrainInput { get; internal set; }
+        public List<List<float>> TestInput { get; internal set; }
         //CNTK model 
-        Function CNTKModel { get; set; }
-        Trainer Trainer { get; set; }
+        public Function CNTKModel { get; set; }
+        public Trainer Trainer { get; set; }
 
         public ANNModel()
         {
@@ -63,10 +66,12 @@ namespace ANNdotNET.Net.Lib.Entities
             ActualT = new List<List<float>>();
             PredictedV = new List<List<float>>();
             PredictedT = new List<List<float>>();
+            TrainInput = new List<List<float>>();
+            TestInput = new List<List<float>>();
             LossData = new List<float>();
             EvalData = new List<float>();
         }
-        internal void Run(ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>)> report, CancellationToken token)
+        internal void Run(ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>, List<List<float>>)> report, CancellationToken token)
         {
             try
             {
@@ -94,11 +99,10 @@ namespace ANNdotNET.Net.Lib.Entities
             
         }
 
+        
         public Dictionary<string, List<object>> EvaluateResults()
         {
-
             var dic = new Dictionary<string, List<object>>();
-
             //
             if (ActualT != null && ActualT.Count > 0)
             {
@@ -185,13 +189,29 @@ namespace ANNdotNET.Net.Lib.Entities
 
         public void ExportCNTK(string filepath)
         {
-            //;
+            try
+            {
+                CNTKModel.Save(filepath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         public void ExportONNX(string filepath)
         {
-            //
-           // CNTKModel.Save(filepath,)
+            try
+            {
+                CNTKModel.Save(filepath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -216,6 +236,68 @@ namespace ANNdotNET.Net.Lib.Entities
 
             Trainer = trainer;
             CNTKModel = model;
+        }
+
+        public void ExportToE(string filepath)
+        {
+            if (TrainInput == null || TrainInput.Count == 0)
+                return;
+            try
+            {
+                var train = transformData(TrainInput, ActualT);
+                var test = transformData(TestInput, ActualV);
+
+                ExportToExcel.Export(train, test, filepath, "ANNdotNETEval({0}:{1})");
+                //save model next to excel file in model folder
+                var str = Path.GetDirectoryName(filepath) + "\\model\\anndotnet-cntk-model.model";
+                ExportCNTK(str);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        float[][] transformData(List<List<float>> input, List<List<float>> label)
+        {
+            if (input != null && input.Count > 0)
+            {
+                //get output for training data set
+                var trData = new List<float[]>();
+
+                //category output
+                for (int i = 0; i < input.Count; i++)
+                {
+                    var row = input[i].ToList();
+                   
+                    //extract label
+                    //category output
+                    if (ActualT[i].Count > 2)
+                    {
+                       var lValue= ActualT[i].IndexOf(ActualT[i].Max());
+                        row.Add(lValue);
+                    }
+                    else if (ActualT[i].Count == 2)
+                    {
+                        var lValue = ActualT[i].IndexOf(ActualT[i].Max());
+                        row.Add(lValue);
+                    }
+                    else
+                    {
+                        var lValue = ActualT[i].First();
+                        row.Add(lValue);
+                    }
+                    //
+                    trData.Add(row.ToArray());
+                }
+
+                //
+                return trData.ToArray();
+
+            }
+            return null;
         }
     }
 }

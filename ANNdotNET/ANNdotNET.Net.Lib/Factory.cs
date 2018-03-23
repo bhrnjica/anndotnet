@@ -13,7 +13,7 @@ namespace ANNdotNET.Net.Lib
     public class Factory
     {
         //iteration, loss, eval, actual data, predicted data
-        public Action<int, float, float, (List<List<float>>, List<List<float>>),(List<List<float>>, List<List<float>>)> report;
+        public Action<int, float, float, (List<List<float>>, List<List<float>>, List<List<float>>),(List<List<float>>, List<List<float>>, List<List<float>>)> report;
         static DeviceDescriptor m_Device;
         string m_FeatureName = "features";
         string m_LabelName = "labels";
@@ -159,7 +159,8 @@ namespace ANNdotNET.Net.Lib
                     {
                         // once the training process is over save the model 
                         var modelName = Function.Combine(new List<Variable>() { trainingLoss, prediction, net }, "ANNDotNETModel");
-                        modelName.Save(m_modelFile);
+                        model.Save(m_modelFile);
+                        Model.CNTKModel = model;
                     });
             }
 
@@ -180,7 +181,7 @@ namespace ANNdotNET.Net.Lib
                 var dataT = evaluateModel(model, m_TrainingPath, Model.TrainCount);
                 var dataV = evaluateModel(model, m_TestPath, Model.TestCount);
 
-                //add loss and evauation values
+                //add loss and evaluation values
                 Model.LossData.Add(loss);
                 Model.EvalData.Add(eval);
                 //add set of data
@@ -188,14 +189,19 @@ namespace ANNdotNET.Net.Lib
                 Model.ActualV.Clear();
                 Model.PredictedT.Clear();
                 Model.PredictedV.Clear();
-                Model.ActualT.AddRange(dataT.Item1);
-                Model.ActualV.AddRange(dataV.Item1);
-                Model.PredictedT.AddRange(dataT.Item2);
-                Model.PredictedV.AddRange(dataV.Item2);
+                Model.TrainInput.Clear();
+                Model.TestInput.Clear();
+                Model.TrainInput.AddRange(dataT.Item1);
+                Model.TestInput.AddRange(dataV.Item1);
+                Model.ActualT.AddRange(dataT.Item2);
+                Model.ActualV.AddRange(dataV.Item2);
+                Model.PredictedT.AddRange(dataT.Item3);
+                Model.PredictedV.AddRange(dataV.Item3);
+               
 
                 //report the progress
                 if (report != null)
-                    report(iteration, loss, eval, dataT, dataV);
+                    report(iteration, loss, eval,  dataT, dataV);
 
             }
             catch
@@ -205,8 +211,9 @@ namespace ANNdotNET.Net.Lib
 
         }
 
-        private (List<List<float>>, List<List<float>>) evaluateModel(Function model, string dataFilePath, uint dataCount)
+        private (List<List<float>>, List<List<float>>, List<List<float>>) evaluateModel(Function model, string dataFilePath, uint dataCount)
         {
+            var input = new List<List<float>>();
             var actual = new List<List<float>>();
             var predicted = new List<List<float>>();
 
@@ -242,11 +249,14 @@ namespace ANNdotNET.Net.Lib
                 //evaluate model
                 model.Evaluate(inDataMap, outDataMap, m_Device);
                 //process results
+                var iData = data[featureStreamInfo].data.GetDenseData<float>(inputVar);
                 var aData = data[labelStreamInfo].data.GetDenseData<float>(outputVar);
                 var pData = outDataMap[outputVar].GetDenseData<float>(model.Output);
                 //
                 for (int i = 0; i < aData.Count; i++)
                 {
+                    var ii =iData[i].ToList();
+                    input.Add(ii);
                     var aa = aData[i].ToList();
                     actual.Add(aa);
                     var bb = pData[i].ToList();
@@ -255,7 +265,7 @@ namespace ANNdotNET.Net.Lib
 
             }
 
-            return (actual, predicted);
+            return (input, actual, predicted);
 
         }
 

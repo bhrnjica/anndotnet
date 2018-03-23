@@ -44,7 +44,7 @@ namespace ANNdotNet.Wnd.Dll.Controllers
 
        
 
-        public void Run(ANNModel model, ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>)> report, CancellationToken token)
+        public void Run(ANNModel model, ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>, List<List<float>>)> report, CancellationToken token)
         {
             try
             {

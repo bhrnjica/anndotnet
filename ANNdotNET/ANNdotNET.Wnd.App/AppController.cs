@@ -139,7 +139,7 @@ namespace ANNdotNet.Wnd.App
             return "";
         }
 
-        internal void Run(ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>)> report, CancellationToken token)
+        internal void Run(ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>, List<List<float>>)> report, CancellationToken token)
         {
             try
             {
