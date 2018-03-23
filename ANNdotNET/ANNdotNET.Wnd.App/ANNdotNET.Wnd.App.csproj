@@ -277,7 +277,6 @@
     <Content Include="Images\32\cntk_logo32.png" />
     <None Include="Images\32\eval32.png" />
     <Content Include="Images\32\onnx32.png" />
-    <Content Include="ToDo.txt" />
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -1,3 +1,0 @@
-﻿new aproach of scaling the variables jut divide or multiple by som number
-
-Age divide by 10  and similar 
