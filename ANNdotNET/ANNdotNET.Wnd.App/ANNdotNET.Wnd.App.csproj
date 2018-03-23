@@ -277,6 +277,9 @@
     <Content Include="Images\32\cntk_logo32.png" />
     <None Include="Images\32\eval32.png" />
     <Content Include="Images\32\onnx32.png" />
+    <Content Include="Images\annLogo_start2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ToDo.txt" />
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -370,9 +373,6 @@
     <EmbeddedResource Include="Images\anndotnet.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Images\gpLogo_start2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Images\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

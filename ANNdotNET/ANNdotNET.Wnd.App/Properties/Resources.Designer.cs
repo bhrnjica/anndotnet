@@ -93,6 +93,16 @@ namespace ANNdotNet.Wnd.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap annLogo_start2 {
+            get {
+                object obj = ResourceManager.GetObject("annLogo_start2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap closegp16 {
             get {
                 object obj = ResourceManager.GetObject("closegp16", resourceCulture);
@@ -226,16 +236,6 @@ namespace ANNdotNet.Wnd.App.Properties {
         internal static System.Drawing.Bitmap experiment {
             get {
                 object obj = ResourceManager.GetObject("experiment", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap gpLogo_start2 {
-            get {
-                object obj = ResourceManager.GetObject("gpLogo_start2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
