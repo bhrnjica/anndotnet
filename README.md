@@ -16,8 +16,8 @@ ANNdotNET is x64 Windows desktop application which is running on .NET Framework 
 
 # How to run application
 In order to run the application there are two possibilities:
-1. Clone the GitHub repository of the application and open it in Visual Studio 2017  
-2. Download released version unzip and run ANNdotNET.exe  
+1. Clone the GitHub repository of the application and open it in Visual Studio 2017. Change build architecture into x64, build and run the application.  
+2. Download released version unzip and run ANNdotNET.exe.
 
 The following three short videos quickly show how to create, train and evaluate reression, binary and multiclass classification models.
 
