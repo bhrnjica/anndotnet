@@ -248,9 +248,11 @@ namespace ANNdotNET.Net.Lib.Entities
                 var test = transformData(TestInput, ActualV);
 
                 ExportToExcel.Export(train, test, filepath, "ANNdotNETEval({0}:{1})");
-                //save model next to excel file in model folder
-                var str = Path.GetDirectoryName(filepath) + "\\model\\anndotnet-cntk-model.model";
-                ExportCNTK(str);
+                
+                //save cntk model in document folder
+                var docFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var strPath = Path.Combine(docFolderPath, "/annmodel/anndotnet-cntk-model.model");
+                ExportCNTK(strPath);
             }
             catch (Exception)
             {

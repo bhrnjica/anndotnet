@@ -23,16 +23,17 @@ namespace ANNdotNET.ExcelAddIn
             {
                 //First convert object in to array
                 object[,] obj = (object[,])arg;
+                
                 //create list to convert values
                 List<float> calculatedOutput = new List<float>();
+                
                 //
                 foreach (var s in obj)
                 {
                     var ss = float.Parse(s.ToString(), CultureInfo.InvariantCulture);
                     calculatedOutput.Add(ss);
                 }
-                //if (calculatedOutput.Count != 24)
-                //    throw new Exception("Incorrect number of input variables. It must be 24!");
+                //
                 return EvaluateModel(calculatedOutput.ToArray());
             }
             catch(Exception ex)
@@ -43,11 +44,13 @@ namespace ANNdotNET.ExcelAddIn
         }
         private static float EvaluateModel(float[] vector)
         {
-            FileInfo fi = new FileInfo(@"model/anndotnet-cntk-model.model");
+            var docFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            FileInfo fi = new FileInfo(docFolderPath + "/annmodel/anndotnet-cntk-model.model");
             if (!fi.Exists)
             {
                 throw new Exception($"The '{fi.FullName}' does not exist. Make sure the model is places at this location.");
             }
+
             //load the model from disk
             var ffnn_model = Function.Load(fi.FullName, DeviceDescriptor.CPUDevice);
 

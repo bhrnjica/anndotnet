@@ -19,6 +19,7 @@ using ANNdotNET.Net.Lib.Controllers;
 using ANNdotNET.Net.Lib;
 using DataProcessing.MLBasicTypes;
 using DataProcessing.MLData;
+using System.IO;
 
 namespace ANNdotNet.Wnd.App
 {
@@ -932,7 +933,7 @@ namespace ANNdotNet.Wnd.App
         {
             try
             {
-                //not implemented
+                // 
                 var model = getActiveModel() as ANNModel;
                 if (model == null)
                     return;
