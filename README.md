@@ -17,7 +17,7 @@ ANNdotNET is x64 Windows desktop application which is running on .NET Framework 
 * .NET Framework 4.7.1
 * CPU/GPU support. 
 
-Note: The application automatically detect GPU capability on your machine and use it in training and evaluation, otherwise it will use CPU.
+Note: The application will automatically detect GPU capability on your machine and use it in training and evaluation, otherwise it will use CPU.
 
 # How to run application
 In order to run the application there are two possibilities:
