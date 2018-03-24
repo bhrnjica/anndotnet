@@ -24,7 +24,7 @@ In order to run the application there are two possibilities:
 1. Clone the GitHub repository of the application and open it in Visual Studio 2017. Change build architecture into x64, build and run the application.  
 2. Download released version unzip and run ANNdotNET.exe.
 
-The following three short videos quickly show how to create, train and evaluate reression, binary and multiclass classification models.
+The following short videos quickly show how to create, train and evaluate reression, binary and multiclass classification models.
 
 * [ Regression model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv1.mp4)
 * [ Binary classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv2.mp4)
