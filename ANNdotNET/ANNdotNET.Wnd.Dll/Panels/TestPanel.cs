@@ -289,7 +289,7 @@ namespace ANNdotNet.Wnd.Dll.Panels
             PrepareGraphs(model);
 
             //update moel
-            updateChartData(model.ActualT, model.PredictedT);
+            updateChartData(model.ActualV, model.PredictedV);
             this.zedModel.RestoreScale(zedModel.GraphPane);
         }
 
