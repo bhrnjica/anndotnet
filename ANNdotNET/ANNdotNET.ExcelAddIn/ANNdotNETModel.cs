@@ -13,11 +13,9 @@ namespace ANNdotNET.ExcelAddIn
 {
     public class ANNdotNETModel
     {
-        //Example of usage in Excel: =ANNdotNETEval({x1,2,x3})
-        //Example of usage in Excel: =ANNdotNETEval(A1:A34)
-        //Example of usage in Excel: =ANNdotNETEval(A1:C1)
+        //Example of usage in Excel: =ANNdotNETEval(A1:A34, modelPath)
         [ExcelFunction(Description = "ANNdotNETEval - ANNdotNET model.")]
-        public static object ANNdotNETEval(object arg)
+        public static object ANNdotNETEval(object arg, string modelPath)
         {
             try
             {
@@ -34,7 +32,7 @@ namespace ANNdotNET.ExcelAddIn
                     calculatedOutput.Add(ss);
                 }
                 //
-                return EvaluateModel(calculatedOutput.ToArray());
+                return EvaluateModel(calculatedOutput.ToArray(), modelPath);
             }
             catch(Exception ex)
             {
@@ -42,10 +40,10 @@ namespace ANNdotNET.ExcelAddIn
             }
 
         }
-        private static float EvaluateModel(float[] vector)
+        private static float EvaluateModel(float[] vector, string modelPath)
         {
-            var docFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            FileInfo fi = new FileInfo(docFolderPath + "/annmodel/anndotnet-cntk-model.model");
+            //
+            FileInfo fi = new FileInfo(modelPath);
             if (!fi.Exists)
             {
                 throw new Exception($"The '{fi.FullName}' does not exist. Make sure the model is places at this location.");

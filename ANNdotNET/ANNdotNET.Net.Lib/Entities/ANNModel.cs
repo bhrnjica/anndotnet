@@ -244,15 +244,17 @@ namespace ANNdotNET.Net.Lib.Entities
                 return;
             try
             {
+                //save cntk model in document folder
+                var modelPath = filepath + ".model";
+                ExportCNTK(modelPath);
+
+                //prepare for excel export
                 var train = transformData(TrainInput, ActualT);
                 var test = transformData(TestInput, ActualV);
 
-                ExportToExcel.Export(train, test, filepath, "ANNdotNETEval({0}:{1})");
+                ExportToExcel.Export(train, test, filepath, "ANNdotNETEval({0}:{1}, \""+ modelPath + "\")");
                 
-                //save cntk model in document folder
-                var docFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var strPath = Path.Combine(docFolderPath, "/annmodel/anndotnet-cntk-model.model");
-                ExportCNTK(strPath);
+                
             }
             catch (Exception)
             {
@@ -276,19 +278,19 @@ namespace ANNdotNET.Net.Lib.Entities
                    
                     //extract label
                     //category output
-                    if (ActualT[i].Count > 2)
+                    if (label[i].Count > 2)
                     {
-                       var lValue= ActualT[i].IndexOf(ActualT[i].Max());
+                       var lValue= label[i].IndexOf(label[i].Max());
                         row.Add(lValue);
                     }
-                    else if (ActualT[i].Count == 2)
+                    else if (label[i].Count == 2)
                     {
-                        var lValue = ActualT[i].IndexOf(ActualT[i].Max());
+                        var lValue = label[i].IndexOf(label[i].Max());
                         row.Add(lValue);
                     }
                     else
                     {
-                        var lValue = ActualT[i].First();
+                        var lValue = label[i].First();
                         row.Add(lValue);
                     }
                     //

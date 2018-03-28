@@ -102,28 +102,28 @@ namespace ANNdotNET.Net.Lib
             ActiveModelData data = new ActiveModelData();
             //
             data.IterType = 0;
-            data.IterValue = 1000;
+            data.IterValue = 3000;
             data.MinibatchSize = 100;
 
             //
             data.LearnerType = 0;
-            data.LearningRate = 0.001f;
+            data.LearningRate = 0.0001f;
             data.Momentum = 5f;
             data.L1Regularizer = 0;
             data.L2Regularizer = 0;
 
             //
             data.NetworkType = (int)networkType;
-            data.Neurons = 25;
-            data.HLayers = 100;
+            data.Neurons = 250;
+            data.HLayers = 10;
             data.Embeding = 100;
-            data.DropRate = 20;
+            data.DropRate = 10;
             data.UseStabilisation = false;
             data.UseDropRate = false;
 
             //
             data.ActivationHidden =  Activation.Softmax;
-            data.ActivationOutput = Activation.Softmax;
+            data.ActivationOutput = Activation.None;
 
             //Los and Evaluation functions
             data.LossFunction = LossFunctions.SquaredError;
