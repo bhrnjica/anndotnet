@@ -1,6 +1,6 @@
 <DnaLibrary Name="ANNdotNET.ExcelAddIn Add-In" RuntimeVersion="v4.0">
   <ExternalLibrary Path="ANNdotNET.ExcelAddIn.dll" ExplicitExports="false" LoadFromBytes="true" Pack="true" />
-  <Reference Path="Cntk.Core.Managed-2.5.dll" Pack="true" />
+  
   <!-- 
        The RuntimeVersion attribute above allows two settings:
        * RuntimeVersion="v2.0" - for .NET 2.0, 3.0 and 3.5

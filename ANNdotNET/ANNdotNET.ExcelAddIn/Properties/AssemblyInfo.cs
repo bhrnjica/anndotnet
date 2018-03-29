@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AnndotNET.ExcelAddIn")]
-[assembly: AssemblyDescription("ANNdotNET v1 extensions Add-In for Microsoft Excel.")]
-[assembly: AssemblyConfiguration(".NET Framework")]
+[assembly: AssemblyTitle("ANNdotNET.ExcelAddIn")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ANNdotNET v1")]
-[assembly: AssemblyCopyright("Copyright © Bahrudin Hrnjica 2006-2018")]
+[assembly: AssemblyProduct("ANNdotNET.ExcelAddIn")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("38293340-0f30-4e03-9da7-8358803e2eb6")]
+[assembly: Guid("dd4be574-5fa0-4f2b-8291-e669640a7869")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.0.0.0")]
-[assembly: AssemblyFileVersion("5.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CNTK;
 using System.IO;
-using System.Windows.Forms;
 
 namespace ANNdotNET.ExcelAddIn
 {
@@ -21,10 +20,10 @@ namespace ANNdotNET.ExcelAddIn
             {
                 //First convert object in to array
                 object[,] obj = (object[,])arg;
-                
+
                 //create list to convert values
                 List<float> calculatedOutput = new List<float>();
-                
+
                 //
                 foreach (var s in obj)
                 {
@@ -34,7 +33,7 @@ namespace ANNdotNET.ExcelAddIn
                 //
                 return EvaluateModel(calculatedOutput.ToArray(), modelPath);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ex.Message;
             }
