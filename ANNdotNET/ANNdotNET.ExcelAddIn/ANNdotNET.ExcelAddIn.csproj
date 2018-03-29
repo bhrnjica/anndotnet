@@ -37,7 +37,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\GPdotNET.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\anndotnet-strongnamekey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -85,13 +85,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\anndotnet-strongnamekey.snk">
+      <Link>anndotnet-strongnamekey.snk</Link>
+    </None>
     <None Include="Properties\ExcelDna.Build.props" />
-    <None Include="ANNdotNET.ExcelAddIn-AddIn.dna" />
+    <None Include="ANNdotNET.ExcelAddIn-AddIn.dna">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ANNdotNET.Export.Lib\ANNdotNET.Export.Lib.csproj">
+      <Project>{bb3921b6-72e7-48e2-88dd-584b0cc8b937}</Project>
+      <Name>ANNdotNET.Export.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ANNdotNET.Net.Lib\ANNdotNET.Net.Lib.csproj">
       <Project>{016dd69a-2f9e-48f9-8017-16f7f43ee8dc}</Project>
       <Name>Vrana.Net.Lib</Name>
@@ -102,11 +111,6 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets" Condition="Exists('..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets')" />
-  <Target Name="EnsureExcelDnaTargetsImported" BeforeTargets="BeforeBuild" Condition="'$(ExcelDnaTargetsImported)' == ''">
-    <Error Condition="!Exists('..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets') And ('$(RunExcelDnaBuild)' != '' And $(RunExcelDnaBuild))" Text="You are trying to build with ExcelDna, but the NuGet targets file that ExcelDna depends on is not available on this computer. This is probably because the ExcelDna package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets') And ('$(RunExcelDnaBuild)' != '' And $(RunExcelDnaBuild))" Text="ExcelDna cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
   <Import Project="..\..\packages\CNTK.Deps.Cuda.2.5.0\build\net45\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\packages\CNTK.Deps.Cuda.2.5.0\build\net45\CNTK.Deps.Cuda.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -122,4 +126,9 @@
   <Import Project="..\..\packages\CNTK.Deps.MKL.2.5.0\build\net45\CNTK.Deps.MKL.targets" Condition="Exists('..\..\packages\CNTK.Deps.MKL.2.5.0\build\net45\CNTK.Deps.MKL.targets')" />
   <Import Project="..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.0\build\net45\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.0\build\net45\CNTK.Deps.OpenCV.Zip.targets')" />
   <Import Project="..\..\packages\CNTK.GPU.2.5.0\build\net45\CNTK.GPU.targets" Condition="Exists('..\..\packages\CNTK.GPU.2.5.0\build\net45\CNTK.GPU.targets')" />
+  <Import Project="..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets" Condition="Exists('..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets')" />
+  <Target Name="EnsureExcelDnaTargetsImported" BeforeTargets="BeforeBuild" Condition="'$(ExcelDnaTargetsImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets') And ('$(RunExcelDnaBuild)' != '' And $(RunExcelDnaBuild))" Text="You are trying to build with ExcelDna, but the NuGet targets file that ExcelDna depends on is not available on this computer. This is probably because the ExcelDna package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets') And ('$(RunExcelDnaBuild)' != '' And $(RunExcelDnaBuild))" Text="ExcelDna cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
 </Project>

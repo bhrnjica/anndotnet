@@ -54,10 +54,10 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\GPdotNET.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\anndotnet-strongnamekey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -265,6 +265,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\anndotnet-strongnamekey.snk">
+      <Link>anndotnet-strongnamekey.snk</Link>
+    </None>
     <None Include="Images\24\loaddata24.png" />
     <None Include="Images\24\newmodel24.png" />
     <None Include="Images\24\loaddatai24.png" />

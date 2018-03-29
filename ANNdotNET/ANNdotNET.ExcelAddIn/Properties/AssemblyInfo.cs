@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GPdotNET.ExcelAddIn")]
-[assembly: AssemblyDescription("GPdotNET v5 extensions Add-In for Microsoft Excel.")]
+[assembly: AssemblyTitle("AnndotNET.ExcelAddIn")]
+[assembly: AssemblyDescription("ANNdotNET v1 extensions Add-In for Microsoft Excel.")]
 [assembly: AssemblyConfiguration(".NET Framework")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GPdotNET v5")]
-[assembly: AssemblyCopyright("Copyright © Bahrudin Hrnjica 2006-2017")]
+[assembly: AssemblyProduct("ANNdotNET v1")]
+[assembly: AssemblyCopyright("Copyright © Bahrudin Hrnjica 2006-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

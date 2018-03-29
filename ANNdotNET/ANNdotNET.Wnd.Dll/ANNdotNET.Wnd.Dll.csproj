@@ -53,6 +53,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\anndotnet-strongnamekey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DataProcessing.Core">
       <HintPath>..\..\Assemblies\DataProcessing.Core.dll</HintPath>
@@ -130,6 +136,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\anndotnet-strongnamekey.snk">
+      <Link>anndotnet-strongnamekey.snk</Link>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

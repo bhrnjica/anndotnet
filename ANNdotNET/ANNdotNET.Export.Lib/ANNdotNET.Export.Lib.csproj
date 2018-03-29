@@ -50,6 +50,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\anndotnet-strongnamekey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.91.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ClosedXML.0.91.0\lib\net452\ClosedXML.dll</HintPath>
@@ -190,6 +196,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\anndotnet-strongnamekey.snk">
+      <Link>anndotnet-strongnamekey.snk</Link>
+    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
