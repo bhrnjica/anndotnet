@@ -1,25 +1,17 @@
-﻿
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ANNdotNet.Wnd.Dll.Panels;
-using MLDataPreparation.Dll;
-using ANNdotNet.Wnd.Dll.Controllers;
 using System.Threading;
-using ANNdotNET.Net.Lib.Entities;
-using ANNdotNET.Net.Lib.Controllers;
+using System.Windows.Forms;
+using ANNdotNet.Wnd.Dll.Controllers;
+using ANNdotNet.Wnd.Dll.Panels;
 using ANNdotNET.Net.Lib;
+using ANNdotNET.Net.Lib.Entities;
 using DataProcessing.MLBasicTypes;
 using DataProcessing.MLData;
-using System.IO;
+using MLDataPreparation.Dll;
 
 namespace ANNdotNet.Wnd.App
 {
@@ -106,6 +98,7 @@ namespace ANNdotNet.Wnd.App
             this.tabPage2.Controls.Add(infoPanel1);
             
             #endregion
+
             treeView1.LabelEdit = true;
             this.Load += MainWindow_Load;
             this.FormClosing += MainWindow_FormClosing;
@@ -260,8 +253,7 @@ namespace ANNdotNet.Wnd.App
             }
 
         }
-
-        
+   
 
         private void SaveView(string guid)
         {
