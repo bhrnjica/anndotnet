@@ -130,5 +130,39 @@ namespace ANNdotNET.Net.Lib
             data.EvaluationFunction = LossFunctions.SquaredError;
             return data;
         }
+
+        public static ActiveModelData GetDefaults2(NetworkTypes networkType = NetworkTypes.LSTMRecurrent)
+        {
+            ActiveModelData data = new ActiveModelData();
+            //
+            data.IterType = 0;
+            data.IterValue = 10000;
+            data.MinibatchSize = 125;
+
+            //
+            data.LearnerType = 0;
+            data.LearningRate = 0.000005f;
+            data.Momentum = 5f;
+            data.L1Regularizer = 0;
+            data.L2Regularizer = 0;
+
+            //
+            data.NetworkType = (int)networkType;
+            data.Neurons = 2500;
+            data.HLayers = 10;
+            data.Embeding = 100;
+            data.DropRate = 10;
+            data.UseStabilisation = false;
+            data.UseDropRate = false;
+
+            //
+            data.ActivationHidden = Activation.Softmax;
+            data.ActivationOutput = Activation.None;
+
+            //Los and Evaluation functions
+            data.LossFunction = LossFunctions.SquaredError;
+            data.EvaluationFunction = LossFunctions.SquaredError;
+            return data;
+        }
     }
 }

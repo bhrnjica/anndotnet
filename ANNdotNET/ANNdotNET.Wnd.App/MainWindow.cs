@@ -222,7 +222,7 @@ namespace ANNdotNet.Wnd.App
                     runPanel1.Reset(pModel);
                     if (pModel.ModelData == null)
                     {
-                        runPanel1.ActivatePanel(ActiveModelData.GetDefaults(), pModel);
+                        runPanel1.ActivatePanel(ActiveModelData.GetDefaults2(), pModel);
                         
                     }
                     else

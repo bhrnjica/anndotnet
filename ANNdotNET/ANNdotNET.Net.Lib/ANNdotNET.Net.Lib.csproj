@@ -68,13 +68,13 @@
       <HintPath>..\..\packages\CNTK.GPU.2.5.0\lib\net45\x64\Cntk.Core.Managed-2.5.dll</HintPath>
     </Reference>
     <Reference Include="DataProcessing.Core">
-      <HintPath>..\..\..\..\..\vs\ANNdotNET\Assembly\DataProcessing.Core.dll</HintPath>
+      <HintPath>..\..\Assemblies\DataProcessing.Core.dll</HintPath>
     </Reference>
     <Reference Include="GPdotNET.MathStuff">
-      <HintPath>..\..\..\..\..\vs\ANNdotNET\Assembly\GPdotNET.MathStuff.dll</HintPath>
+      <HintPath>..\..\Assemblies\GPdotNET.MathStuff.dll</HintPath>
     </Reference>
     <Reference Include="MLDataPreparation.Dll">
-      <HintPath>..\..\..\..\..\vs\ANNdotNET\Assembly\MLDataPreparation.Dll.dll</HintPath>
+      <HintPath>..\..\Assemblies\MLDataPreparation.Dll.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
