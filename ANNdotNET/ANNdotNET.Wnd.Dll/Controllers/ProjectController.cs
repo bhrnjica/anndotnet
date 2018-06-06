@@ -62,5 +62,10 @@ namespace ANNdotNet.Wnd.Dll.Controllers
             Project.CloseModels();
             
         }
+
+        public void PrepareForSave()
+        {
+           // throw new NotImplementedException();
+        }
     }
 }

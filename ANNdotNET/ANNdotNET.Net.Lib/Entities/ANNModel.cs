@@ -187,6 +187,11 @@ namespace ANNdotNET.Net.Lib.Entities
             return null;
         }
 
+        public void PrepareForSave(ActiveModelData modelData)
+        {
+            ModelData = new ActiveModelData(modelData);
+        }
+
         public void ExportCNTK(string filepath)
         {
             try

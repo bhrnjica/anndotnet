@@ -83,6 +83,10 @@
     <Reference Include="ClosedXML, Version=0.91.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ClosedXML.0.91.0\lib\net452\ClosedXML.dll</HintPath>
     </Reference>
+    <Reference Include="Cntk.Core.Managed-2.5, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CNTK.GPU.2.5.0\lib\net45\x64\Cntk.Core.Managed-2.5.dll</HintPath>
+    </Reference>
     <Reference Include="DataProcessing.Core">
       <HintPath>..\..\Assemblies\DataProcessing.Core.dll</HintPath>
     </Reference>
