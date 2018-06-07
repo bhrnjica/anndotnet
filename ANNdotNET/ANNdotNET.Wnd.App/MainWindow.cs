@@ -361,9 +361,9 @@ namespace ANNdotNet.Wnd.App
                 //create tree structure
                 treeView1.BeginUpdate();
                 var n = createTreeNode(p.GetGuid(), p.Project.Name, 1);
-                foreach (var m in p.Models)
+                foreach (var m in p.Project.Models)
                 {
-                    var nn = createTreeNode(m.Model.Guid, m.Model.Name, 2);
+                    var nn = createTreeNode(m.Guid, m.Name, 2);
                     n.Nodes.Add(nn);
                 }
                 treeView1.Nodes.Add(n);

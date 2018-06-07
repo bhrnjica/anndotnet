@@ -100,28 +100,29 @@ namespace ANNdotNet.Wnd.App
         {
             try
             {
-                var guid = Guid.NewGuid().ToString();
-                var pController = new ProjectController(guid);
-                var project = Project.Open(filePath);
-                foreach (var m in project.Models)
-                {
-                    var exp = m.ExpData;
-                    var g = Guid.NewGuid().ToString();
-                    var classes = exp.GetColumnsFromOutput()[0].Statistics.Categories;
-                    var label = exp.GetColumnsFromOutput()[0].Name;
+                //var guid = Guid.NewGuid().ToString();
+                //var pController = new ProjectController(guid);
+                //var project = Project.Open(filePath);
+                //foreach (var m in project.Models)
+                //{
+                //    var exp = m.ExpData;
+                //    var g = Guid.NewGuid().ToString();
+                //    var classes = exp.GetColumnsFromOutput()[0].Statistics.Categories;
+                //    var label = exp.GetColumnsFromOutput()[0].Name;
 
-                    var mm = new ModelController(g, exp.GetOutputColumnType(), classes, label);
-                    mm.Model = m;
-                    mm.SetParent(pController);
-                    mm.InitPersistedModel();
-                    pController.Project.Models.Add(mm.Model);
-                    pController.Models.Add(mm);
-                }
+                //    var mm = new ModelController(g, exp.GetOutputColumnType(), classes, label);
+                //    mm.Model = m;
+                //    mm.SetParent(pController);
+                //    mm.InitPersistedModel();
+                //    pController.Project.Models.Add(mm.Model);
+                //    pController.Models.Add(mm);
+                //}
 
-                //add project to app controller
-                pController.Project = project;
-                Projects.Add(pController);
-                return pController;
+                ////add project to app controller
+                //pController.Project = project;
+                //Projects.Add(pController);
+                //return pController;
+                return null;
             }
             catch (Exception)
             {
