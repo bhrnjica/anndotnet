@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="helper\NumPyExt.cs" />
     <Compile Include="models\CNTK106A-Tutorial.cs" />
+    <Compile Include="models\WordToSequenceExample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -12,7 +12,7 @@ namespace ANNdotNET_clt
         static void Main(string[] args)
         {
 
-            CNTK106A_Tutorial.Train(CNTK.DeviceDescriptor.CPUDevice);
+            CNTK106B_Tutorial.Train(CNTK.DeviceDescriptor.CPUDevice);
 
 
             //

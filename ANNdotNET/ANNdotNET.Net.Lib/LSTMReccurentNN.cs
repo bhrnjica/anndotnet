@@ -18,8 +18,9 @@ namespace ANNdotNET.Net.Lib
             m_lstmDim = lstmDim;
             m_cellDim = cellDim;
         }
-
+        //number of lstm cells
         private int m_lstmDim;
+        //number of cell dimensions
         private int m_cellDim;
         #endregion
 
@@ -41,7 +42,7 @@ namespace ANNdotNET.Net.Lib
         }
 
         /// <summary>
-        /// Create pure LSTM Recurrent network
+        /// Create LSTM Recurrent network with linear output layer
         /// </summary>
         /// <param name="input"></param>
         /// <param name="outDim"></param>
@@ -52,7 +53,10 @@ namespace ANNdotNET.Net.Lib
             //prepare for cell creations
             NDShape hShape = new int[] { m_lstmDim };
             NDShape cShape = new int[] { m_cellDim };
+            
+            //create lstm layer
             var lstmLayer = createComponent<float>(input, hShape, cShape);
+
             //created component
             var prevOut = lstmLayer.Item1;
             var prevCell = lstmLayer.Item2;
@@ -64,12 +68,39 @@ namespace ANNdotNET.Net.Lib
             //
             return outL;
         }
-        #endregion
 
-        #region Private Methods
-        //defines the past value function for the input variable
-        // Func<Variable, Function> pastValueRecurrenceHook = (x) => CNTKLib.PastValue(x);
-        private Function pastValueRecurrence(Variable input)
+        /// <summary>
+        /// Create pure Recurrence LSTM layer. Use this function if you want to create complex network structure combining with drop layer etc.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="outDim"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Function CreateRecurrence(Variable input, int outDim, string name)
+        {
+            //prepare for cell creations
+            NDShape hShape = new int[] { m_lstmDim };
+            NDShape cShape = new int[] { m_cellDim };
+
+            //create lstm layer
+            var lstmLayer = createComponent<float>(input, hShape, cShape);
+
+            //created component
+            var prevOut = lstmLayer.Item1;
+            var prevCell = lstmLayer.Item2;
+            //
+            var seqLayer = CNTKLib.SequenceLast(prevOut);
+
+            return seqLayer;
+        }
+
+
+            #endregion
+
+            #region Private Methods
+            //defines the past value function for the input variable
+            // Func<Variable, Function> pastValueRecurrenceHook = (x) => CNTKLib.PastValue(x);
+            private Function pastValueRecurrence(Variable input)
         {
             return CNTKLib.PastValue(input);
         }
@@ -121,7 +152,7 @@ namespace ANNdotNET.Net.Lib
             //create LSTM cell with previous output and prev cell state
             var LSTMCell = createCell<ElementType>(input, dh, dc);
 
-            //hook the previous output and prevCell state in order to get corect prev values
+            //hook the previous output and prevCell state in order to get correct prev values
             var actualDh = pastValueRecurrence(LSTMCell.Item1);
             var actualDc = pastValueRecurrence(LSTMCell.Item2);
 
@@ -224,7 +255,7 @@ namespace ANNdotNET.Net.Lib
         /// <param name="embeddingDim"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        private Function Embedding(Variable input, int embeddingDim)
+        public  Function Embedding(Variable input, int embeddingDim)
         {
             //checking the dimension of the input variable
             //it has to be always a vector which represents the tensor with rank=1

@@ -217,6 +217,10 @@ namespace ANNdotNET.Net.Lib
             var actual = new List<List<float>>();
             var predicted = new List<List<float>>();
 
+            //check if data test is defined
+            if(!File.Exists(dataFilePath))
+                return (input, actual, predicted);
+
             //stream configuration to distinct features and labels in the file
             var streamConfig = new StreamConfiguration[]
                {
