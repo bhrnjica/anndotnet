@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnndotNET.Net.Lib.Util
+namespace ANNdotNET.Net.Lib.Util
 {
     public static class Extensions
     {
@@ -16,7 +16,7 @@ namespace AnndotNET.Net.Lib.Util
         /// <param name="tryFormat"></param>
         /// <returns></returns>
         public static DateTime ParseDateTime(this string strDateTime, string tryFormat)
-        {
+        {           
             if (DateTime.TryParseExact(strDateTime, tryFormat /*"yyyy-MM-dd HH:mm:ss"*/, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeLocal, out DateTime dateTime))
             {
                 return dateTime;
