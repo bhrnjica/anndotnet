@@ -114,11 +114,11 @@ namespace ANNdotNET.Net.Lib
             ActiveModelData data = new ActiveModelData();
             //
             data.IterType = 0;
-            data.IterValue = 3000;
+            data.IterValue = 50000;
             data.MinibatchSize = 100;
 
             //
-            data.LearnerType = 0;
+            data.LearnerType =  LearnerType.MomentumSGDLearner;
             data.LearningRate = 0.0001f;
             data.Momentum = 5f;
             data.L1Regularizer = 0;
@@ -148,11 +148,11 @@ namespace ANNdotNET.Net.Lib
             ActiveModelData data = new ActiveModelData();
             //
             data.IterType = 0;
-            data.IterValue = 10000;
+            data.IterValue = 50000;
             data.MinibatchSize = 125;
 
             //
-            data.LearnerType = 0;
+            data.LearnerType = LearnerType.MomentumSGDLearner;
             data.LearningRate = 0.000005f;
             data.Momentum = 5f;
             data.L1Regularizer = 0;
