@@ -1,4 +1,16 @@
-﻿using DataProcessing.MLBasicTypes;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using DataProcessing.MLBasicTypes;
 using System;
 using System.Collections.Generic;
 using System.Threading;

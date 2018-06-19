@@ -1,16 +1,25 @@
-﻿using ANNdotNet.Wnd.Dialogs;
-using ANNdotNet.Wnd.Dll;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using ANNdotNet.Wnd.Dialogs;
 using ANNdotNet.Wnd.Dll.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using ANNdotNET.Net.Lib;
 using ANNdotNET.Net.Lib.Entities;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace ANNdotNet.Wnd.App
 {
