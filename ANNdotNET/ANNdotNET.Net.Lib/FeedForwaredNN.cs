@@ -48,18 +48,23 @@ namespace ANNdotNET.Net.Lib
                 input = CNTKLib.Reshape(input, new int[] { newDim });
             }
 
+            //
+            if(activation== Activation.None)
+                return FullyConnectedLinearLayer(input, outputDim, outputName);
+
             Function fullyConnected = FullyConnectedLinearLayer(input, outputDim, outputName);
+
             switch (activation)
             {
                 default:
                 case Activation.None:
                     return fullyConnected;
                 case Activation.ReLU:
-                    return CNTKLib.ReLU(fullyConnected);
+                    return CNTKLib.ReLU(fullyConnected, outputName);
                 case Activation.Softmax:
-                    return CNTKLib.Sigmoid(fullyConnected);
+                    return CNTKLib.Sigmoid(fullyConnected, outputName);
                 case Activation.Tanh:
-                    return CNTKLib.Tanh(fullyConnected);
+                    return CNTKLib.Tanh(fullyConnected, outputName);
             }
         }
 
@@ -100,15 +105,16 @@ namespace ANNdotNET.Net.Lib
         public Function CreateNet(Variable input, int outputDim, int numHiddenLayers, int[] hiddenLayerDims, Activation actHidden, Activation actOutput, string outputName="")
         {
             //first input layer creation
-            var h = CreateDenseLayer(input, hiddenLayerDims[0], actHidden, outputName);
+            var h = CreateDenseLayer(input, hiddenLayerDims[0], actHidden);
 
             //hidden layer creation
             int j = 0;
             for (int i = 1; i < numHiddenLayers; i++,j++)
             {
+                //if only one activation is defined all hidden layers' neurons have the same activation function
                 if (i >= hiddenLayerDims.Length)
                     j = 0;
-                h = CreateDenseLayer(h, hiddenLayerDims[j], actHidden, outputName);
+                h = CreateDenseLayer(h, hiddenLayerDims[j], actHidden);
             }
             //creation of the output layer
             var z = CreateDenseLayer(h, outputDim, actOutput, outputName);

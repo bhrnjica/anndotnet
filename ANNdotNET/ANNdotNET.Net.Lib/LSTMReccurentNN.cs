@@ -25,6 +25,10 @@ namespace ANNdotNET.Net.Lib
     public class LSTMReccurentNN  : FeedForwaredNN
     {
         #region Ctor and Private Members
+        public LSTMReccurentNN(DeviceDescriptor device): base(device)
+        {
+
+        }
         public LSTMReccurentNN (int lstmDim, int cellDim, DeviceDescriptor device) : base(device)
         {
             m_lstmDim = lstmDim;
