@@ -38,9 +38,9 @@ namespace ANNdotNET.Net.Lib
 
         public uint Iterations { get; set; }
 
-        string savedModelChechState = "";
-        Trainer m_Trainer;
-        Function m_model;
+        //string savedModelChechState = "";
+        //Trainer m_Trainer;
+        //Function m_model;
 
 
         static Factory()

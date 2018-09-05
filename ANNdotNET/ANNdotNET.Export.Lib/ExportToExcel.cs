@@ -35,9 +35,11 @@ namespace ANNdotNET.Export.Lib
                     ws2.Cell(1, 1).Value = "Testing Data";
 
                 writeDataToExcel(dataTrain,ws1);
-                writeDataToExcel(dataTest, ws2);
 
-                var ind = ace.AlphabetFromIndex(dataTest[0].Length-1)+"3";
+                if (dataTest != null)
+                    writeDataToExcel(dataTest, ws2);
+
+                var ind = ace.AlphabetFromIndex(dataTrain[0].Length-1)+"3";
                 ws1.Cell(3, dataTrain[0].Length + 1).Value = string.Format(excelFormula, "A3", ind);
                 if (dataTest != null)
                     ws2.Cell(3, dataTrain[0].Length + 1).Value = string.Format(excelFormula, "A3", ind);
@@ -62,7 +64,8 @@ namespace ANNdotNET.Export.Lib
             //TITLE
             ws.Range("A1", "D1").Style.Font.Bold = true;
             ws.Range("A1", "D1").Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-
+            if (data == null || data.Length == 0)
+                return;
             //get input parameter column
             var colCount = data[0].Length;
             int cellIndex = 1;//starting with offset of 2 cells  

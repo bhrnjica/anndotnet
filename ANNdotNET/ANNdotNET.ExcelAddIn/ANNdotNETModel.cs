@@ -5,9 +5,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CNTK;
 using System.IO;
-
+using CNTK;
 namespace ANNdotNET.ExcelAddIn
 {
     public class ANNdotNETModel
@@ -18,8 +17,18 @@ namespace ANNdotNET.ExcelAddIn
         {
             try
             {
-                //First convert object in to array
-                object[,] obj = (object[,])arg;
+                object[,] obj=null;
+
+                if (!(arg is object[,]))
+                {
+                    obj = new object[1, 1];
+                    obj[0, 0] = arg;
+                }
+
+                else
+                    //First convert object in to array
+                    obj = (object[,])arg;
+
 
                 //create list to convert values
                 List<float> calculatedOutput = new List<float>();
