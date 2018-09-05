@@ -1,14 +1,14 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////
-// GPdotNET Tree based genetic programming tool                                         //
-// Copyright 2006-2012 Bahrudin Hrnjica                                                 //
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
 //                                                                                      //
-// This code is free software under the GNU Library General Public License (LGPL)       //
-// See licence section of  http://gpdotnet.codeplex.com/license                         //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
 //                                                                                      //
 // Bahrudin Hrnjica                                                                     //
 // bhrnjica@hotmail.com                                                                 //
-// Bihac,Bosnia and Herzegovina                                                         //
-// http://bhrnjica.wordpress.com                                                        //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;

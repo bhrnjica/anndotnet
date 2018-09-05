@@ -1,15 +1,25 @@
-﻿using ANNdotNet.Wnd.Dialogs;
-using ANNdotNet.Wnd.Dll;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using ANNdotNet.Wnd.Dialogs;
 using ANNdotNet.Wnd.Dll.Controllers;
+using ANNdotNET.Net.Lib;
+using ANNdotNET.Net.Lib.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ANNdotNET.Net.Lib;
-using ANNdotNET.Net.Lib.Entities;
 
 namespace ANNdotNet.Wnd.App
 {
@@ -95,11 +105,32 @@ namespace ANNdotNet.Wnd.App
 
         }
 
-        public object OpenProject(string filePath)
+        public ProjectController OpenProject(string filePath)
         {
             try
             {
+                //var guid = Guid.NewGuid().ToString();
+                //var pController = new ProjectController(guid);
+                //var project = Project.Open(filePath);
+                //foreach (var m in project.Models)
+                //{
+                //    var exp = m.ExpData;
+                //    var g = Guid.NewGuid().ToString();
+                //    var classes = exp.GetColumnsFromOutput()[0].Statistics.Categories;
+                //    var label = exp.GetColumnsFromOutput()[0].Name;
 
+                //    var mm = new ModelController(g, exp.GetOutputColumnType(), classes, label);
+                //    mm.Model = m;
+                //    mm.SetParent(pController);
+                //    mm.InitPersistedModel();
+                //    pController.Project.Models.Add(mm.Model);
+                //    pController.Models.Add(mm);
+                //}
+
+                ////add project to app controller
+                //pController.Project = project;
+                //Projects.Add(pController);
+                //return pController;
                 return null;
             }
             catch (Exception)
@@ -110,11 +141,69 @@ namespace ANNdotNet.Wnd.App
 
         }
 
-        public bool SaveProject(string filePath, object pController)
+        public bool SaveProject(string filePath, ProjectController pController, string currentModelGuid="")
         {
             try
             {
-                
+                ////save the trained model
+                //if (m_Trainer != null)
+                //{
+                //    SaveFileDialog dlg = new SaveFileDialog();
+                //    dlg.Filter = "CNTK Model File | *.model | All files(*.*) | *.* ";
+                //    if (dlg.ShowDialog() == DialogResult.OK)
+                //    {
+                //        string inputDim = textBox6.Text;
+                //        string outputDim = textBox5.Text;
+                //        string embedDim = textBox7.Text;
+                //        string hidDim = textBox8.Text;
+                //        string cellDim = textBox9.Text;
+
+
+                //        m_Trainer.SaveCheckpoint(dlg.FileName);
+                //        File.WriteAllLines(dlg.FileName + ".dnn", new string[] { inputDim, outputDim, embedDim, hidDim, cellDim });
+                //        var lns = File.ReadAllLines(dlg.FileName + ".dnn");
+                //    }
+                //}
+
+                // return true;
+
+                pController.PrepareForSave();
+                //
+                ANNProject project = pController.Project;
+                JsonSerializerSettings sett = new JsonSerializerSettings
+                { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
+                sett.NullValueHandling = NullValueHandling.Ignore;
+
+                //set experiment filename
+                project.FilePath = filePath;
+
+                //only for active project panel update data from GUI
+                if (ActiveView is ProjectController)
+                {
+                    var p = ((ProjectController)ActiveView).Project;
+
+                    //update changes from experimental model
+                    //if (project.GetExperimentData != null && p.Guid == project.Guid)
+                    //    project.DataSet = project.GetExperimentData();
+                    //update changes from experimental model
+                    if (project.GetDataSet != null && p.Guid == project.Guid)
+                        project.DataSet = project.GetDataSet();
+                }
+
+                var currentProject = pController.Project;
+                //
+                for (int i = 0; i < project.Models.Count; i++)
+                {
+                    
+                    var m = project.Models[i];
+                    //update current active model only
+                    if(currentModelGuid==m.Guid)
+                        m.PrepareForSave(project.ActiveModelData);
+                }
+                //
+                var str = JsonConvert.SerializeObject(project, sett);
+                System.IO.File.WriteAllText(filePath, str);
+                project.IsDirty = false;
                 return true;
             }
             catch (Exception)
@@ -138,6 +227,28 @@ namespace ANNdotNet.Wnd.App
             
             return "";
         }
+
+        //public bool IsModified(ProjectController exp, FunctionPanel funPanel1, ParametersPanel parPanel1, RunPanel runPanel1, ResultPanel resPanel1, TestPanel testPanel1)
+        //{
+        //    var models = exp.Models;
+        //    if (exp.Project.IsDirty)
+        //        return true;
+        //    //
+        //    foreach (var m in models)
+        //    {
+        //        //active model can contains unsaved data
+        //        if (ActiveView is ModelController)
+        //        {
+        //            var mm = (ModelController)ActiveView;
+        //            if (mm.Model.Guid == m.Model.Guid)
+        //                m.getCurrentValues(funPanel1, parPanel1, runPanel1, resPanel1, testPanel1);
+        //        }
+        //        //check for modification
+        //        if (m.IsModified())
+        //            return true;
+        //    }
+        //    return false;
+        //}
 
         internal void Run(ActiveModelData setData, Action<int, float, float, (List<List<float>>, List<List<float>>, List<List<float>>), (List<List<float>>, List<List<float>>, List<List<float>>)> report, CancellationToken token)
         {

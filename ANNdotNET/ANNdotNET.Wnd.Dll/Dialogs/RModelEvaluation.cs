@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -55,29 +67,29 @@ namespace ANNdotNet.Wnd.Dialogs
 
             //Square residual
             p1.Add("Square Error", y1.SE(ytr));
-            p2.Add("Square Error", yts != null ? y2.SE(yts) : 0);
+            p2.Add("Square Error", (yts != null && yts.Count()>0) ? y2.SE(yts) : 0);
 
             //RMSE 
             p1.Add("Root Mean Square Error", y1.RMSE(ytr));
-            p2.Add("Root Mean Square Error", yts != null ? y2.RMSE(yts) : 0);
+            p2.Add("Root Mean Square Error", (yts != null && yts.Count() > 0) ? y2.RMSE(yts) : 0);
 
 
             //Nash-Sutcliffe efficiency 
             p1.Add("Nash-Sutcliffe Efficiency", y1.NSE(ytr));
-            p2.Add("Nash-Sutcliffe Efficiency", yts != null ? y2.NSE(yts) : 0);
+            p2.Add("Nash-Sutcliffe Efficiency", (yts != null && yts.Count() > 0) ? y2.NSE(yts) : 0);
 
             //Percent bias (PBIAS)
             p1.Add("Percent bias", y1.PBIAS(ytr));
-            p2.Add("Percent bias", yts != null ? y2.PBIAS(yts) : 0);
+            p2.Add("Percent bias", (yts != null && yts.Count() > 0) ? y2.PBIAS(yts) : 0);
 
 
             //correlation coefficient
             p1.Add("Correlation coeff.", y1.R(ytr));
-            p2.Add("Correlation coeff.", yts != null ? y2.R(yts) : 0);
+            p2.Add("Correlation coeff.", (yts != null && yts.Count() > 0) ? y2.R(yts) : 0);
 
             //determination coefficient
             p1.Add("Determination coeff.", y1.R2(ytr));
-            p2.Add("Determination coeff.", yts != null ? y2.R2(yts) : 0);
+            p2.Add("Determination coeff.", (yts != null && yts.Count() > 0) ? y2.R2(yts) : 0);
 
             //
             dic.Add(key1, p1);

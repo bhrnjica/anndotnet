@@ -1,4 +1,16 @@
-﻿using CNTK;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using CNTK;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,9 +38,9 @@ namespace ANNdotNET.Net.Lib
 
         public uint Iterations { get; set; }
 
-        string savedModelChechState = "";
-        Trainer m_Trainer;
-        Function m_model;
+        //string savedModelChechState = "";
+        //Trainer m_Trainer;
+        //Function m_model;
 
 
         static Factory()
@@ -216,6 +228,10 @@ namespace ANNdotNET.Net.Lib
             var input = new List<List<float>>();
             var actual = new List<List<float>>();
             var predicted = new List<List<float>>();
+
+            //check if data test is defined
+            if(!File.Exists(dataFilePath))
+                return (input, actual, predicted);
 
             //stream configuration to distinct features and labels in the file
             var streamConfig = new StreamConfiguration[]

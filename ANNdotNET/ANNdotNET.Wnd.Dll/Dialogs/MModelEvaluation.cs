@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -67,11 +79,15 @@ namespace ANNdotNet.Wnd.Dialogs
             var o = convertToIntAray(y);
             var p = convertToIntAray(yp);
 
-
+            //in case of empty values return cleaned table
+            resetValues();
+            listView1.Clear();
+            if (o.Length == 0 || p.Length == 0)
+                return;
 
             var cm = new ConfusionMatrix(o, p, m_Classes.Length);
 
-            listView1.Clear();
+            
             var colHeader = new ColumnHeader();
             colHeader.Text = "  ";
             colHeader.Width = 250;
@@ -182,6 +198,23 @@ namespace ANNdotNet.Wnd.Dialogs
             txHSS.Text = ConfusionMatrix.HSS(cm.Matrix, rowCount).ToString("F3");
             txPSS.Text = ConfusionMatrix.PSS(cm.Matrix, rowCount).ToString("F3");
 
+        }
+
+        void resetValues()
+        {
+            ////confusion matrix for MCC
+            txOAccuracy.Text = "";
+            txAAccuracy.Text = "";
+
+            txMiPrecision.Text = "";
+            txMaPrecision.Text = "";
+
+
+            txMiRecall.Text = "";
+            txMaRecall.Text = "";
+
+            txHSS.Text = "";
+            txPSS.Text = "";
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)

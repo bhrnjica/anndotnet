@@ -1,25 +1,29 @@
-﻿
-using Newtonsoft.Json;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ANNdotNet.Wnd.Dll.Panels;
-using MLDataPreparation.Dll;
-using ANNdotNet.Wnd.Dll.Controllers;
 using System.Threading;
-using ANNdotNET.Net.Lib.Entities;
-using ANNdotNET.Net.Lib.Controllers;
+using System.Windows.Forms;
+using ANNdotNet.Wnd.Dll.Controllers;
+using ANNdotNet.Wnd.Dll.Panels;
 using ANNdotNET.Net.Lib;
+using ANNdotNET.Net.Lib.Entities;
 using DataProcessing.MLBasicTypes;
 using DataProcessing.MLData;
-using System.IO;
+using MLDataPreparation.Dll;
 
 namespace ANNdotNet.Wnd.App
 {
@@ -106,6 +110,7 @@ namespace ANNdotNet.Wnd.App
             this.tabPage2.Controls.Add(infoPanel1);
             
             #endregion
+
             treeView1.LabelEdit = true;
             this.Load += MainWindow_Load;
             this.FormClosing += MainWindow_FormClosing;
@@ -260,13 +265,13 @@ namespace ANNdotNet.Wnd.App
             }
 
         }
-
-        
+   
 
         private void SaveView(string guid)
         {
             try
             {
+               
                 var p = Controller.GetView(guid);
 
                 if (p == null)
@@ -284,6 +289,10 @@ namespace ANNdotNet.Wnd.App
                         pController.Project.DataSet= expPanel1.GetDataSet();
 
                     expPanel1.ResetExperimentalPanel();
+
+                    
+                    //set windows title
+                    this.Text = pController.Project.FilePath;
 
                 }
                 else if (p is ANNModel)
@@ -340,10 +349,48 @@ namespace ANNdotNet.Wnd.App
                 //    //textBox9.Text = str[4];
                 //    //m_model = Function.Load(dlg.FileName, DeviceDescriptor.CPUDevice);
                 //}
+
+                //this is coming from start panel
+                if (string.IsNullOrEmpty(filePath))
+                    filePath = PromptToOpenFile();
+
+                if (string.IsNullOrEmpty(filePath))
+                    return;
+                var prj = Controller.IsOpen(filePath);
+                if (prj != "")
+                {
+                    var node = getTreeItem(prj);
+                    if (node != null)
+                    {
+                        treeView1.SelectedNode = node;
+                        return;
+                    }
+
+                }
+                //create project in backed
+                var p = Controller.OpenProject(filePath);
+
+                //create tree structure
+                treeView1.BeginUpdate();
+                var n = createTreeNode(p.GetGuid(), p.Project.Name, 1);
+                foreach (var m in p.Project.Models)
+                {
+                    var nn = createTreeNode(m.Guid, m.Name, 2);
+                    n.Nodes.Add(nn);
+                }
+                treeView1.Nodes.Add(n);
+                n.ExpandAll();
+                treeView1.SelectedNode = n;
+                //
+                return;
             }
             catch (Exception ex)
             {
                 ReportException(ex);
+            }
+            finally
+            {
+                treeView1.EndUpdate();
             }
         }
         public void New()
@@ -364,29 +411,38 @@ namespace ANNdotNet.Wnd.App
             treeView1.SelectedNode = tn;
         }
 
-        private void Save(object exp, string filePath)
+        private void Save(ProjectController exp, string filePath)
         {
             try
             {
-                ////save the trained model
-                //if (m_Trainer != null)
-                //{
-                //    SaveFileDialog dlg = new SaveFileDialog();
-                //    dlg.Filter = "CNTK Model File | *.model | All files(*.*) | *.* ";
-                //    if (dlg.ShowDialog() == DialogResult.OK)
-                //    {
-                //        string inputDim = textBox6.Text;
-                //        string outputDim = textBox5.Text;
-                //        string embedDim = textBox7.Text;
-                //        string hidDim = textBox8.Text;
-                //        string cellDim = textBox9.Text;
+                try
+                {
+                    //current model guid if available
+                    string currentModelGuid = "";
+                    //save experiment
+                    if (Controller.ActiveView is ProjectController)
+                    {
+                        exp.Project.DataSet = expPanel1.GetDataSet();
+                        exp.Project.ProjectInfo = infoPanel1.InfoText;
 
+                    }
+                    else if (Controller.ActiveView is ANNModel)
+                    {
+                        var model = Controller.ActiveView as ANNModel;
+                        currentModelGuid = model.Guid;
+                        exp.Project.ActiveModelData = runPanel1.GetParameters();
+                    }
 
-                //        m_Trainer.SaveCheckpoint(dlg.FileName);
-                //        File.WriteAllLines(dlg.FileName + ".dnn", new string[] { inputDim, outputDim, embedDim, hidDim, cellDim });
-                //        var lns = File.ReadAllLines(dlg.FileName + ".dnn");
-                //    }
-                //}
+                    Controller.SaveProject(filePath, exp, currentModelGuid);
+
+                    //windows time should be changed when the path is changed
+                    this.Text = exp.Project.FilePath;
+                }
+                catch (Exception ex)
+                {
+                    ReportException(ex);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -878,22 +934,33 @@ namespace ANNdotNet.Wnd.App
 
         private void Save_Click(object sender, EventArgs e)
         {
-            //var exp = getActiveProject();
-            //if (exp == null)
-            //    return;
+            var exp = getActiveProject();
+            if (exp == null)
+                return;
 
-            //string filePath = null;
-            //if (string.IsNullOrEmpty(exp.Project.FilePath) || exp.Project.FilePath == "[New GP Project]")
-            //    filePath = PromptToSaveFile();
-            //else
-            //    filePath = exp.Project.FilePath;
+            string filePath = null;
+            if (string.IsNullOrEmpty(exp.Project.FilePath) || exp.Project.FilePath == "[New ANN Project]")
+                filePath = PromptToSaveFile();
+            else
+                filePath = exp.Project.FilePath;
 
-            //if (string.IsNullOrEmpty(filePath))
-            //    return;
+            if (string.IsNullOrEmpty(filePath))
+                return;
 
-            //Save(exp, filePath);
+            Save(exp, filePath);
         }
+        private void ribbonButton19_Click(object sender, EventArgs e)
+        {
+            var exp = getActiveProject();
+            if (exp == null)
+                return;
 
+            string filePath = PromptToSaveFile();
+            if (string.IsNullOrEmpty(filePath))
+                return;
+
+            Save(exp, filePath);
+        }
         private void SaveAs_Click(object sender, EventArgs e)
         {
             var exp = getActiveProject();
@@ -1042,8 +1109,7 @@ namespace ANNdotNet.Wnd.App
 
 
 
-        #endregion
 
-        
+        #endregion      
     }
 }

@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool                                                  //
+// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                       //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -102,11 +114,11 @@ namespace ANNdotNET.Net.Lib
             ActiveModelData data = new ActiveModelData();
             //
             data.IterType = 0;
-            data.IterValue = 3000;
+            data.IterValue = 50000;
             data.MinibatchSize = 100;
 
             //
-            data.LearnerType = 0;
+            data.LearnerType =  LearnerType.MomentumSGDLearner;
             data.LearningRate = 0.0001f;
             data.Momentum = 5f;
             data.L1Regularizer = 0;
@@ -136,11 +148,11 @@ namespace ANNdotNET.Net.Lib
             ActiveModelData data = new ActiveModelData();
             //
             data.IterType = 0;
-            data.IterValue = 10000;
+            data.IterValue = 50000;
             data.MinibatchSize = 125;
 
             //
-            data.LearnerType = 0;
+            data.LearnerType = LearnerType.MomentumSGDLearner;
             data.LearningRate = 0.000005f;
             data.Momentum = 5f;
             data.L1Regularizer = 0;
