@@ -47,10 +47,10 @@ namespace anndotnet.capp
            // annProject.CreateModel("BHModel01");
 
             //open model within project 
-            annProject.OpenModel("MLModel2");
+           // annProject.OpenModel("MLModel2");
 
             //save model within the project
-            annProject.SaveCurrentModel("MLModel2");
+            //annProject.SaveCurrentModel("MLModel2");
 
             //run model
             

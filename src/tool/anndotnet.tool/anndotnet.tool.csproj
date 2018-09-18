@@ -38,25 +38,16 @@
     <Content Include="model_mlconfigs\BCML\data\BCMLData_valid.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="model_mlconfigs\BCML_mlconfig">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="model_mlconfigs\daily_sales\data\daily_sales_train_cntk.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="model_mlconfigs\daily_sales\data\daily_sales_valid_cntk.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="model_mlconfigs\daily_sales_mlconfig">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="model_mlconfigs\iris\data\mldataset_train">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="model_mlconfigs\iris\data\mldataset_valid">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\iris_mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="model_mlconfigs\multipleOutput\mo_training.txt">
