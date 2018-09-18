@@ -1,1 +1,0 @@
-ANNdotNET deep learning tool.
