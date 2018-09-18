@@ -11,10 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7622CA23-6
 	ProjectSection(SolutionItems) = preProject
 		docs\ANNdotNETv1.0- Developer.docx = docs\ANNdotNETv1.0- Developer.docx
 		docs\ANNdotNETv1.0-rev.docx = docs\ANNdotNETv1.0-rev.docx
+		docs\annproject_file.md = docs\annproject_file.md
 		docs\file_structure.md = docs\file_structure.md
 		docs\Introduction.md = docs\Introduction.md
 		docs\mlconfig_file.md = docs\mlconfig_file.md
-		docs\annproject_file.md = docs\annproject_file.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{BBB32D58-CEEB-4E79-8ADF-62C4A06816FA}"
@@ -72,6 +72,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{F99951
 		docs\images\fac7a4a653e1b72dd963eb087e03f5e3.png = docs\images\fac7a4a653e1b72dd963eb087e03f5e3.png
 		docs\images\fe49bb139724fa9a78f59e55db89b557.png = docs\images\fe49bb139724fa9a78f59e55db89b557.png
 		docs\images\projectsfile_structure.png = docs\images\projectsfile_structure.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F70399BE-8B27-435C-846B-76FFE41C04BF}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

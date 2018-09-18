@@ -21,11 +21,11 @@ In pre-calculated projects the user can find how to use various neural network c
  deep neural network, LSTM recurrent nets, embedding and drop out layers. Also, each project can be modified
  in terms of change its network configuration, learning and training parameters, as well as create new ml configurations.
 
-![ANNdotNET Logo](./docs/Images/anndotnet_startwnd.jpg)
+![ANNdotNET Logo](./docs/images/anndotnet_startwnd.jpg)
 
 In order to change ml configuration, ANNdotNET implements **neural network designer** (NNDesigner) capable of creating neural network of any
  configurations, and any combination of layers. The NNDesigner is based on layer concept which the user can add, delete or modify simply as list view items.
-![ANNetwork Designer](./docs/Images/annetwork_designer.jpg)     
+![ANNetwork Designer](./docs/images/annetwork_designer.jpg)     
 
 
 # Software Requirements
