@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="GPdotNET.MathStuff">
+      <HintPath>..\..\..\assemblies\GPdotNET.MathStuff.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

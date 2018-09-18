@@ -1,0 +1,30 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="About" UriSource="Images\about48.png" />
+    <BitmapImage x:Key="Close" UriSource="Images\closegp48.png" />
+    <BitmapImage x:Key="Exit" UriSource="Images\exit48.png" />
+    <BitmapImage x:Key="Newproject" UriSource="Images\newgp48.png" />
+    <BitmapImage x:Key="Open" UriSource="Images\opengp48.png" />
+    <BitmapImage x:Key="Save" UriSource="Images\savegp48.png" />
+
+    <BitmapImage x:Key="LoadData" UriSource="Images\loaddata32.png" />
+    <BitmapImage x:Key="LoadImage" UriSource="Images\loaddatai32.png" />
+    <BitmapImage x:Key="NewModel" UriSource="Images\newmodel.png" />
+
+    <BitmapImage x:Key="Excel" UriSource="Images\excel16.png" />
+    <BitmapImage x:Key="CSV" UriSource="Images\csv.png" />
+    <BitmapImage x:Key="ONNX" UriSource="Images\onnx32.png" />
+    <BitmapImage x:Key="CNTK" UriSource="Images\cntk_logo32.png" />
+    <BitmapImage x:Key="Refresh" UriSource="Images\refresdata.png" />
+
+    <BitmapImage x:Key="Run" UriSource="Images\runmodel16.png" />
+    <BitmapImage x:Key="Stop" UriSource="Images\stopmodel16.png" />
+
+    <BitmapImage x:Key="StartIcon" UriSource="Images\start.png" />
+    <BitmapImage x:Key="ExpIcon" UriSource="Images\experiment.png" />
+    <BitmapImage x:Key="ModelIcon" UriSource="Images\model.png" />
+    <BitmapImage x:Key="RunningModelIcon" UriSource="Images\runningmodel.png" />
+ 
+
+</ResourceDictionary>

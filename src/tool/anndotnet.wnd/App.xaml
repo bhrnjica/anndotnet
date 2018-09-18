@@ -1,0 +1,32 @@
+﻿<Application x:Class="anndotnet.wnd.App"
+            
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:anndotnet.wnd"
+             xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+        <!-- Attach default Theme -->
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Styles.xaml"/>
+            <ResourceDictionary Source="Images.xaml"/>
+            <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--Main Application ViewModel-->
+            <local:AppController x:Key="mainViewModel"/>
+
+            
+
+            <!--Set of predefined treView colors-->
+            <Color x:Key="ANNdotNET.HighlightColor">Blue</Color>
+            <Color x:Key="ANNdotNET.ActiveForeground">White</Color>
+            <Color x:Key="ANNdotNET.InactiveForeground">Blue</Color>
+            <Color x:Key="ANNdotNET.InactiveHighlightColor">LightSteelBlue</Color>
+            <SolidColorBrush x:Key="ANNdotNET.CustomColorBrush" Color="{StaticResource ANNdotNET.InactiveHighlightColor}"/>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

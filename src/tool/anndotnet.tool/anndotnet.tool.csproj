@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="data\**" />
+    <Compile Remove="mlconfigs\**" />
+    <EmbeddedResource Remove="data\**" />
+    <EmbeddedResource Remove="mlconfigs\**" />
+    <None Remove="data\**" />
+    <None Remove="mlconfigs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="model_mlconfigs\BCML\data\BCMLData.txt" />
+    <None Remove="model_mlconfigs\BCML\data\BCMLData_train.txt" />
+    <None Remove="model_mlconfigs\BCML\data\BCMLData_valid.txt" />
+    <None Remove="model_mlconfigs\BCML_mlconfig" />
+    <None Remove="model_mlconfigs\daily_sales\data\daily_sales_train_cntk.txt" />
+    <None Remove="model_mlconfigs\daily_sales\data\daily_sales_valid_cntk.txt" />
+    <None Remove="model_mlconfigs\daily_sales_mlconfig" />
+    <None Remove="model_mlconfigs\iris\data\mldataset_train" />
+    <None Remove="model_mlconfigs\iris\data\mldataset_valid" />
+    <None Remove="model_mlconfigs\iris_mlconfig" />
+    <None Remove="model_mlconfigs\multipleOutput\mo_training.txt" />
+    <None Remove="model_mlconfigs\multipleOutput\mo_validation.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="model_mlconfigs\BCML\data\BCMLData.txt" />
+    <Content Include="model_mlconfigs\BCML\data\BCMLData_train.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\BCML\data\BCMLData_valid.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\BCML_mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\daily_sales\data\daily_sales_train_cntk.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\daily_sales\data\daily_sales_valid_cntk.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\daily_sales_mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\iris\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\iris\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\iris_mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\multipleOutput\mo_training.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="model_mlconfigs\multipleOutput\mo_validation.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CNTK.GPU" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
+    <ProjectReference Include="..\..\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
+    <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
+  </ItemGroup>
+
+</Project>

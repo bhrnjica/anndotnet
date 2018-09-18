@@ -1,0 +1,78 @@
+!you can make a comment into file by starting '!' character
+
+!****Features and Lebels*****
+!features labels define features of training data set
+!Example of defining features and labels
+!features:|[featurename1] [dimension] [hasdynamicaxes] [isSparsedata]	|[featurename2] [dimension] [hasdynamicaxes] [isSparsedata] ...
+!labels:|[labename1] [dimension] [hasdynamicaxes] [isSparsedata]	|[labename2] [dimension] [hasdynamicaxes] [isSparsedata] ...
+
+features:|features 1 0
+labels:|labels 1 0
+
+!*********Network Model******
+!set of separated Names:values for nn creation
+! all keys are mandatory
+! Type - type of the nn nework can be one of (FeedForward, DeepFF, LSTMRecurrent, EmbeddedLSTM)
+! HLayers  - number of hidden layers in Deep network
+! HDimensions - number of neurons in each hidden layer,  (Example: |HDimensions:10 45 20; |HDimensions:5)
+! HActivation: - activation function of hidden layers (tanh, sigmoid, relu, ...)
+! OActivation: - activation function for output dense layer (tanh, sigmoid, relu, ...)
+! HLSTM - number of layers in LSTM RNN
+! LSTMCell - number of LSTM cells in each hlayer
+! EmbeddingDim - output dimension for embedded layer.
+! DropRate  - droprate for the DropOut layer (0,1)
+
+network:|Type: EmbeddedLSTM |HLayers:3 |HDimensions:1000 500 125 |HActivation: tanh |OActivation:sigmoid |HLSTM:14 |LSTMCell: 3 |EmbeddingDim: 14 |DropRate:0.2 
+
+
+!******Learning Parameters********
+!define loss and evaluation function
+!loss or evaluation function can be one of defined functions:
+! - SquaredError -for regressions
+! - ClassificationError - for classification problems
+! - BinaryCrossEntropy - Computes the binary cross entropy (aka logistic loss) between the output and target.
+! - CrossEntropyWithSoftmax - computes the cross entropy between the target_vector and the softmax of the output_vector
+!or one of custom function
+! - RMSError - root mean square error
+! - MSError - mean squared error
+
+!training parameters
+
+! supported trainers: 
+! - MomentumSGDLearner 
+! - FSAdaGradLearner
+! - AdaGradLearner
+! - AdamLearner
+
+!training rates
+! - lrate:0.05
+! - momentum:0.9
+
+
+learning:|Type:MomentumSGDLearner |LRate:0.005 |Momentum: 0.9 |Loss: SquaredError |Eval: RMSError  
+
+
+!******* Training Parameters***********
+!training process and minibatch
+!minibatch:custom
+!epoch:10
+!batchSize:100
+!randomizeBatch:true
+!progressFreq:5
+!supported 
+! - custom  - reader with variable sequence length
+! - default - default text format reader minibatch
+
+training: |Type: custom |BatchSize: 120 |Epochs:10 |Normalization:0 |SaveWhileTraining: 0 |RandomizeBatch: 0 |ProgressFrequency: 1000
+
+!******* Trainign validation and testing files
+!evaluation process
+trainingPath:C:/sc/vs/SolarPowerForcastingPrediction/SolarPowerForecastingTest/data/solar_cntk_train.ctf
+validationPath:C:/sc/vs/SolarPowerForcastingPrediction/SolarPowerForecastingTest/data/solar_cntk_val.ctf
+testPath:../../../Data/solar_cntk_test.cft
+
+!post evaluation process
+modelTempFile:../../../Data/solar_cntk_model
+modelFinalFile:../../../Data/solar_cntk_model.cntk 
+!File path for storing model evaluation result of Actual and Predicted values of specified test dataset
+modelEvalResult:../../../modelsFinal/sales_model_result.csv 

@@ -1,0 +1,2 @@
+this file is huge and cannot be uploaded on GitHUb.
+it can be downloaded from: https://github.com/Microsoft/CNTK/tree/987b22a8350211cb4c44278951857af1289c3666/Examples/Image/DataSets/MNIST

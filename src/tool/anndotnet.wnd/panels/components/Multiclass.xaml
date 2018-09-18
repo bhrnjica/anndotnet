@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="anndotnet.wnd.panels.Multiclass"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:anndotnet.wnd.panels"
+             mc:Ignorable="d"  
+             d:DesignHeight="250" d:DesignWidth="400">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="4"  Text="Overall Accuracy: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="4"  Text="Average Accuracy: "  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="7" Grid.Row="1" Grid.ColumnSpan="3" Text="Heidke Skill Score: "  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="7" Grid.Row="3" Grid.ColumnSpan="3" Text="Peirce Skill Score: "  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="5" Text="Macro-Precision: " Grid.ColumnSpan="4"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="7" Text="Micro-Precision: " Grid.ColumnSpan="4"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Row="5" Text="Macro-Recall: " Grid.ColumnSpan="3" Grid.Column="7"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="7" Text="Micro-Recall: " Grid.ColumnSpan="3" Grid.Column="7"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+        <!--Bindings-->
+        <TextBlock Grid.Column="5" Grid.Row="1" Text="{Binding OAcc}" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Column="5" Grid.Row="3" Text="{Binding AAcc}"  HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Column="11" Grid.Row="1" Text="{Binding HSS}"  HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Column="11" Grid.Row="3" Text="{Binding PSS}"  HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold"/>
+
+        <TextBlock Grid.Column="5" Grid.Row="5" Text="{Binding MacPrec}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Column="11" Grid.Row="5" Text="{Binding MacRcall}"  HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Column="5" Grid.Row="7" Text="{Binding MicPrec}"  HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
+        <TextBlock Grid.Column="11" Grid.Row="7" Text="{Binding MicRcall}"  HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
+
+        <Button Content="Confusion Matrix" Style="{StaticResource Windows10Button}"  Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="7" Grid.RowSpan="2" Click="CMatric_Click"/>
+
+
+    </Grid>
+</UserControl>

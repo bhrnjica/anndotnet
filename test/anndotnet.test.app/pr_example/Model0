@@ -1,0 +1,11 @@
+features:|NumFeatures  4 0 0	
+labels:|Column_5 3 0 0
+!Layer1:Type HDim CDim Rate Act Self Peep 	
+network:|Layer: Dense 1 1 1 None 1 1 |Layer: Embedding 2 0 0 None 0 0 |Layer: Drop 0 0 3 None 0 0 |Layer: LSTM 4 5 0 Sigmoid 1 1 |Layer: Dense 6 0 0 Sigmoid 0 0 
+learning:|Type:MomentumSGDLearner |LRate:0.01 |Momentum:0.01 |Loss:CrossEntropyWithSoftmax|Eval:BinaryCrossEntropy
+training:|Type: default |BatchSize:50 |Epochs:100 |Normalization:0 |RandomizeBatch:False |SaveWhileTraining:False |ProgressFrequency:1 
+trainingPath:C:\sc\vs\ANNdotNETCore\src\tool\anndotnet.tool\pr_example\Model0_mldataset_train
+validationPath:C:\sc\vs\ANNdotNETCore\src\tool\anndotnet.tool\pr_example\Model0_mldataset_valid
+testPath:C:\sc\vs\ANNdotNETCore\src\tool\anndotnet.tool\pr_example\Model0_mldataset_valid
+modelTempFile:/modelsTemp/Iris_temp
+modelFinalFile:/modelsFinal/Iris_final

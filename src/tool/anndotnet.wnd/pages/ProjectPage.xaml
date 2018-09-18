@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="anndotnet.wnd.Pages.ProjectPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:forms="clr-namespace:MLDataPreparation.Dll;assembly=dataprocessing.wnd"
+      xmlns:cnv="clr-namespace:anndotnet.wnd.converters"
+      mc:Ignorable="d" d:DesignWidth="494" d:DesignHeight="227" Background="{DynamicResource ANNdotNET.CustomColorBrush}"
+	>
+    <UserControl.Resources>
+       
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}">
+            <TabItem Header="Raw Data">
+                <Grid>
+                    <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
+                    <WindowsFormsHost  x:Name="hostWF" >
+                        <forms:DataPanel AutoScaleMode="Dpi"  x:Name="project"  />
+                    </WindowsFormsHost>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Project Info" >
+                <!--<WindowsFormsHost  x:Name="hostWF2"   >
+                    <forms:ProjectInfoPanel AutoScaleMode="Dpi" x:Name="projectInfo"   />
+                </WindowsFormsHost>-->
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

@@ -1,0 +1,3 @@
+project:|Name:BreastCancerProject  |ValidationSetCount:20 |PrecentigeSplit:1 |MLConfigs:FeedForward mlconfig;CategoryEmbedding mlconfig |Info:
+data:|RawData:BreastCancerProject_rawdata.txt |Column01:Column1;None;None;Ignore; |Column02:Column2;Category;Feature;Mode; |Column03:Column3;Category;Feature;Mode; |Column04:Column4;Category;Feature;Mode; |Column05:Column5;Category;Feature;Mode; |Column06:Column6;Category;Feature;Mode; |Column07:Column7;Category;Feature;Mode; |Column08:Column8;Category;Feature;Mode; |Column09:Column9;Category;Feature;Mode; |Column10:Column10;Category;Feature;Mode; |Column11:Column11;Category;Label;Mode; 
+parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0

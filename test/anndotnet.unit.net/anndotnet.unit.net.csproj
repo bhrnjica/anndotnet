@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\xunit.runner.visualstudio.2.4.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\packages\xunit.runner.visualstudio.2.4.0\build\net20\xunit.runner.visualstudio.props')" />
+  <Import Project="..\..\packages\xunit.runner.console.2.4.0\build\xunit.runner.console.props" Condition="Exists('..\..\packages\xunit.runner.console.2.4.0\build\xunit.runner.console.props')" />
+  <Import Project="..\..\packages\xunit.core.2.4.0\build\xunit.core.props" Condition="Exists('..\..\packages\xunit.core.2.4.0\build\xunit.core.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{026FD702-D8D4-4A6B-9FB7-8B122897CC9D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>anndotnet.unit.net</RootNamespace>
+    <AssemblyName>anndotnet.unit.net</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Cntk.Core.Managed-2.5.1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\CNTK.GPU.2.5.1\lib\net45\x64\Cntk.Core.Managed-2.5.1.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.2\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.4.0.4049, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.assert.2.4.0\lib\netstandard2.0\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.4.0.4049, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.4.0\lib\net452\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.4.0.4049, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.execution.2.4.0\lib\net452\xunit.execution.desktop.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\anndotnet.unit\tests\BaseClass.cs">
+      <Link>tests\BaseClass.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\DataNormalizationTests.cs">
+      <Link>tests\DataNormalizationTests.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\InputOutputDefinitionTests.cs">
+      <Link>tests\InputOutputDefinitionTests.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\LinearRegressionTest.cs">
+      <Link>tests\LinearRegressionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\LoadMLConfigurationFileTests.cs">
+      <Link>tests\LoadMLConfigurationFileTests.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\LSTMUnitTests.cs">
+      <Link>tests\LSTMUnitTests.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\ModelEvaluation_Tests.cs">
+      <Link>tests\ModelEvaluation_Tests.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\NetworkConfiguration_Tests.cs">
+      <Link>tests\NetworkConfiguration_Tests.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\ProjectParserTest.cs">
+      <Link>tests\ProjectParserTest.cs</Link>
+    </Compile>
+    <Compile Include="..\anndotnet.unit\tests\StreamConfigurationTests.cs">
+      <Link>tests\StreamConfigurationTests.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\anndotnet.unit\data\iris_normalization_calculation.xlsx">
+      <Link>data\iris_normalization_calculation.xlsx</Link>
+    </None>
+    <None Include="..\anndotnet.unit\data\linear_regression_test.xlsx">
+      <Link>data\linear_regression_test.xlsx</Link>
+    </None>
+    <None Include="..\anndotnet.unit\data\Normalization_Specific_Feature_Group_testData.xlsx">
+      <Link>data\Normalization_Specific_Feature_Group_testData.xlsx</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\anndotnet.unit\data\cntk_dataset_for_normalization_test.txt">
+      <Link>data\cntk_dataset_for_normalization_test.txt</Link>
+    </Content>
+    <Content Include="..\anndotnet.unit\data\cntk_dataset_for_normalization_test_result.txt">
+      <Link>data\cntk_dataset_for_normalization_test_result.txt</Link>
+    </Content>
+    <Content Include="..\anndotnet.unit\data\iris_train_normalized.txt">
+      <Link>data\iris_train_normalized.txt</Link>
+    </Content>
+    <Content Include="..\anndotnet.unit\data\iris_valid_normalized.txt">
+      <Link>data\iris_valid_normalized.txt</Link>
+    </Content>
+    <Content Include="..\anndotnet.unit\data\iris_with_hot_vector.txt">
+      <Link>data\iris_with_hot_vector.txt</Link>
+    </Content>
+    <Content Include="..\anndotnet.unit\data\iris_with_hot_vector_test.txt">
+      <Link>data\iris_with_hot_vector_test.txt</Link>
+    </Content>
+    <Content Include="..\anndotnet.unit\data\ml_config_file_test.txt">
+      <Link>data\ml_config_file_test.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\core\dataprocessing.core\dataprocessing.core.csproj">
+      <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>
+      <Name>dataprocessing.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\core\nnetwork.core.net\nnetwork.core.net.csproj">
+      <Project>{3c000d09-ff02-4f12-a74d-deb41998bc23}</Project>
+      <Name>nnetwork.core.net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ext\anndotnet.lib.ext.net\anndotnet.lib.ext.net.csproj">
+      <Project>{54e952a7-df26-46c4-b4d8-ff5fee1fa6a0}</Project>
+      <Name>anndotnet.lib.ext.net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ml\anndotnet.core.net\anndotnet.core.net.csproj">
+      <Project>{32d1a1cc-f57d-4efc-9fbb-c4414bc7a2cc}</Project>
+      <Name>anndotnet.core.net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ml\anndotnet.lib.net\anndotnet.lib.net.csproj">
+      <Project>{75389c15-7c64-48fe-af29-99959d6f62a6}</Project>
+      <Name>anndotnet.lib.net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\tool\anndotnet.exceladdIn\anndotnet.exceladdIn.csproj">
+      <Project>{f1ee07a0-be4e-4de1-b2bd-f1a658d1fd82}</Project>
+      <Name>anndotnet.exceladdIn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\tool\anndotnet.wnd\anndotnet.wnd.csproj">
+      <Project>{e5e0822a-df60-4e1b-b744-344f9675fafa}</Project>
+      <Name>anndotnet.wnd</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\tool\mldatapreparation.wnd\dataprocessing.wnd.csproj">
+      <Project>{392b33d2-3b1c-4a37-935b-a38431dd4596}</Project>
+      <Name>dataprocessing.wnd</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.4.0\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.4.0\build\xunit.core.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.4.0\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.4.0\build\xunit.core.targets'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.console.2.4.0\build\xunit.runner.console.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.console.2.4.0\build\xunit.runner.console.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.4.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.4.0\build\net20\xunit.runner.visualstudio.props'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\xunit.core.2.4.0\build\xunit.core.targets" Condition="Exists('..\..\packages\xunit.core.2.4.0\build\xunit.core.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets" Condition="Exists('..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets" Condition="Exists('..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets')" />
+  <Import Project="..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets" Condition="Exists('..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets')" />
+</Project>

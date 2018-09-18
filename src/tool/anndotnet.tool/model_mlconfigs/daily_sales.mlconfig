@@ -1,0 +1,28 @@
+!ML Configuration file for Predict Future Daily Sales for 10 Items
+! This examples is modified version of Example Predict Future Sales
+! Data set is extracted only 10 items and create training and test data sets
+
+!features represent itemID encoded as one-hot-vector (first 10 values) and then 30 days of sales in past
+!In total features consist of 40 predictors (10 + 30) 
+features:|Item 10 0 |Sale 30 0
+
+!daily product sales contains only daily sales for the specified item
+!labels is defined with dynamic axes since the model is created with LSTM which uses dynamic axes for recurrence
+labels:|item_cnt 1 0
+
+! network
+network:|Layer:Embedding 20 0 0 None 0 0 |Layer:LSTM 60 60 0 TanH 1 1 |Layer:Drop 0 0 20 None 0 0 |Layer:Dense 150 0 0 TanH 0 0 |Layer:Dense 1 0 0 None 0 0 
+
+
+!learning params 
+! - MomentumSGDLearner
+! - lrate: 
+! - momentum: 
+
+learning:|Type:MomentumSGDLearner |LRate:0.0003 |Momentum: 0.5 |Loss:SquaredError |Eval:RMSError  
+
+!training process is defined with 200 iteration, but it can be more. ALso the normalization is enabled as separate network layer, since during data transformation no normalization has been performed.
+training: |Type: default |BatchSize: 480 |Normalization:Sale |Epochs:200 |SaveWhileTraining: 1 |RandomizeBatch: 1 |ProgressFrequency: 1 |FullTrainingSetEval:1
+
+!various paths needed in order to train, evaluate, export model
+paths:|Training:data\daily_sales_train_cntk.txt |Validation:data\daily_sales_valid_cntk.txt |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 

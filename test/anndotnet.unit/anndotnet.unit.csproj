@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CNTK.GPU" Version="2.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\core\dataprocessing.core\dataprocessing.core.csproj" />
+    <ProjectReference Include="..\..\src\core\nnetwork.core\nnetwork.core.csproj" />
+    <ProjectReference Include="..\..\src\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
+    <ProjectReference Include="..\..\src\ml\anndotnet.core\anndotnet.core.csproj" />
+    <ProjectReference Include="..\..\src\ml\anndotnet.lib\anndotnet.lib.csproj" />
+  </ItemGroup>
+
+</Project>

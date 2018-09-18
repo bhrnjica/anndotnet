@@ -1,0 +1,349 @@
+﻿<Fluent:RibbonWindow x:Class="anndotnet.wnd.MainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:Fluent="urn:fluent-ribbon"
+                     xmlns:models="clr-namespace:anndotnet.wnd.Models"
+                     xmlns:views="clr-namespace:anndotnet.wnd.Pages"
+                     xmlns:cmd="clr-namespace:anndotnet.wnd.commands"            
+                    xmlns:cmdBeh="clr-namespace:anndotnet.wnd.Behaviours"
+                    xmlns:cnv="clr-namespace:anndotnet.wnd.converters"
+                    
+                    WindowStartupLocation="CenterScreen"
+                    ResizeMode="CanResizeWithGrip" Focusable="True" Width="990" Height="614" 
+                   MinWidth="1100" MinHeight="700" FontFamily="Segoe UI" FontSize="12" AllowDrop="True"
+                    DataContext="{StaticResource mainViewModel}"  
+                     Icon="Images/anndotnet.ico" Title="{Binding ActiveViewModel.TitleWindow}"
+                     Background="{DynamicResource ANNdotNET.CustomColorBrush}">
+    <Fluent:RibbonWindow.Resources>
+        <cnv:IsEditTreeItemConverter x:Key="IsEditTreeItemConverter" />
+        <cnv:BoolToOpositeValueConverter x:Key="BoolToOpositeValueConverter"/>
+    </Fluent:RibbonWindow.Resources>
+    <Grid x:Name="grid"  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--<MainView x:Name="MainView"/>-->
+        <Fluent:Ribbon ShowQuickAccessToolBarAboveRibbon="False" 
+                       IsQuickAccessToolBarMenuDropDownVisible="False" 
+                       CanCustomizeQuickAccessToolBar="False" 
+                       CanCustomizeQuickAccessToolBarItems="False" 
+                       CanQuickAccessLocationChanging="False" 
+                       CanMinimize="False" Background="{DynamicResource ANNdotNET.CustomColorBrush}" >
+            <!--Tabs-->
+            <Fluent:RibbonTabItem Header="{Binding AppModel.AppName}" Foreground="BlueViolet" FontWeight="Bold" FontSize="14" >
+
+                <Fluent:RibbonGroupBox Name="Standard" Header="Project" FontWeight="Normal" FontSize="12">
+                    <Fluent:Button Header="New" Width="50" SizeDefinition="Large"
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="N"
+                        LargeIcon="{StaticResource Newproject}" Command="cmd:AppCommands.NewCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="New ANNdotNET project (Alt+N)" Width ="250"
+                            Image="{StaticResource Newproject}" 
+                            Text="Use this command to create new ANNdotNET project and start building deep learning  models."/>
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Open"  Width="50"  SizeDefinition="Large"  
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="O"
+                        LargeIcon="{StaticResource Open}" Command="cmd:AppCommands.OpenCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Open existing ANNdotNET project (Alt+O)" Width ="270"
+                            Image="{StaticResource Open}" 
+                            Text="Use this command to open already saved ANN project."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Save"  Width="50"  SizeDefinition="Large"  
+                            Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="S"
+                            LargeIcon="{StaticResource Save}" Command="cmd:AppCommands.SaveCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Save current changes for selected ANNdotNET project (+S)" Width ="250"
+                                Image="{StaticResource Save}" 
+                                Text="In case of new project, file save dialog will appear."
+                                />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <!--<Fluent:DropDownButton Header="Save"  Width="50"  SizeDefinition="Large"  
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="S"
+                                           LargeIcon="{StaticResource Save}">
+                        <Fluent:DropDownButton.ToolTip>
+                            <Fluent:ScreenTip Title="Save current changes for selected ANNdotNET project, and all models (Alt +S)" Width ="250"
+                                Image="{StaticResource Save}" 
+                                Text="In case of new project, file save dialog will appear."
+                                />
+                        </Fluent:DropDownButton.ToolTip>
+
+                        <Fluent:Button Header="Save As"  Width="50"  SizeDefinition="Large"  
+                                       Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="A"
+                                       LargeIcon="{StaticResource Save}" Command="cmd:AppCommands.SaveAsCommand">
+                            <Fluent:Button.ToolTip>
+                                <Fluent:ScreenTip Title="Save selected ANNdotNET proejct to new file on disk (+A)" Width ="250"
+                                Image="{StaticResource Save}" 
+                                Text="Use this command for saving current project in to different file."
+                                />
+                            </Fluent:Button.ToolTip>
+                        </Fluent:Button>
+                    </Fluent:DropDownButton>-->
+
+                    <Fluent:Button Header="Close" Width="50" SizeDefinition="Large"  
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="C"
+                                   LargeIcon="{StaticResource Close}" Command="cmd:AppCommands.CloseCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Close currently selected ANNdotNET project (Alt+C)" Width ="250"
+                            Image="{StaticResource Close}" 
+                            Text="Use this command to close selected project."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Name="modelpreparation" Header="Model Preparation"  FontWeight="Normal" FontSize="12">
+                    <Fluent:Button Header="Data" Width="50" SizeDefinition="Large"
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="N"
+                        LargeIcon="{StaticResource LoadData}" Command="cmd:AppCommands.LoadDataCommand" CommandParameter="{Binding ElementName=content}" >
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Load raw data to the project (Alt+D)" Width ="250"
+                            Image="{StaticResource LoadData}" 
+                            Text="Use this command to define raw data to the project, which is starting point in building deep learning model."
+                            />
+                        </Fluent:Button.ToolTip>
+
+                    </Fluent:Button>
+
+                    <Fluent:Button Header="Images" Visibility="Collapsed"  Width="50"  SizeDefinition="Large"  
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="O"
+                        LargeIcon="{StaticResource LoadImage}" Command="cmd:AppCommands.LoadDataCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Load list of images (Alt+I)" Width ="270"
+                            Image="{StaticResource LoadImage}" 
+                            Text="Use this command to define data of images and start building deep learning models."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+
+                    <Fluent:Button Header="New MLConfig" Width="100" SizeDefinition="Large"  
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="C"
+                                   LargeIcon="{StaticResource NewModel}" Command="cmd:AppCommands.CreateModelCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Create new mlconfig within the annproject. (Alt+M)" Width ="250"
+                            Image="{StaticResource NewModel}" 
+                            Text="Use this command to create a new mlcofig within the current annproject."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Name="training" Header="Training"  FontWeight="Normal" FontSize="12">
+                    <Fluent:ToggleButton  x:Name="runBtn"   Header="Run"  Width="50" SizeDefinition="Large, Large, Large" 
+                                            Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="P"
+                                            LargeIcon="{StaticResource Run}" Icon="{StaticResource Run}" Command="cmd:AppCommands.RunCommand" >
+                        <Fluent:ToggleButton.ToolTip>
+                            <Fluent:ScreenTip Title="Start process of training for currently selected model (Alt+P)" Width ="250"
+                            Image="{StaticResource Run}" 
+                            Text="After all ANN parameters has been set, use this command to start training process. In running mode, press this button one more time in order to stop training process"
+                            />
+                        </Fluent:ToggleButton.ToolTip>
+                    </Fluent:ToggleButton>
+                    <Fluent:Button Header="Stop" x:Name="stopBtn" Width="50" SizeDefinition="Large, Large, Small" 
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="T" 
+                                   LargeIcon="{StaticResource Stop}" Icon="{StaticResource Stop}" Command="cmd:AppCommands.StopCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Stops the training process (Alt +T)" Width ="250"
+                            Image="{StaticResource Stop}" 
+                            Text="Use this command to stop training process."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+                <Fluent:RibbonGroupBox Header="Export"  FontWeight="Normal" FontSize="12">
+                    <Fluent:Button Header="Excel"  Width="50" Icon="{StaticResource Excel}" 
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="E"
+                                   LargeIcon="{StaticResource Excel}" Command="cmd:AppCommands.ExportCommand" CommandParameter="Excel">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Export training and validation datasets with model to Excel (Alt+E)" Width ="250"
+                            Image="{StaticResource Excel}" 
+                            Text="Use this command to export datasets and selected model to Excel for further analysis. In order to use this export, ANNdotNET Excel AddIn must be installed."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Header="CSV"  Width="50" Icon="{StaticResource CSV}" 
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="C"
+                                   LargeIcon="{StaticResource CSV}" Command="cmd:AppCommands.ExportCommand" CommandParameter="CSV">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Export result of current model to CSV file (Alt+C)" Width ="250"
+                            Image="{StaticResource CSV}" 
+                            Text="Use this command to export model result of validation dataset to CSV file format."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Header="CNTK"  Width="50" Icon="{StaticResource CNTK}" 
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="W"
+                                   LargeIcon="{StaticResource CNTK}" Command="cmd:AppCommands.ExportCommand"  CommandParameter="CNTK">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Export selected model in CNTK format (Alt+W)" Width ="250"
+                            Image="{StaticResource CNTK}" 
+                            Text="Use this command to export selected model to CNTK file format."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Header="ONNX" Width="50" Icon="{StaticResource ONNX}" Visibility="Collapsed"
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="R"
+                                   LargeIcon="{StaticResource ONNX}" Command="cmd:AppCommands.ExportCommand"  CommandParameter="ONNX" >
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Export selected model into ONNX fomat (Alt+R)" Width ="250"
+                            Image="{StaticResource ONNX}" 
+                            Text="Use this command to export selected model in ONNX file format."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+
+                <Fluent:RibbonGroupBox Name="Help" Header="Help"  FontWeight="Normal" FontSize="12">
+                    <Fluent:Button Header="About" Width="50" SizeDefinition="Large, Large, Large" 
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="A"
+                                   LargeIcon="{StaticResource About}" Command="cmd:AppCommands.AboutCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="About ANNdotNET (Alt+A)" Width ="250"
+                            Image="{StaticResource About}" 
+                            Text="Use this command to see ANNdotNET owner and license details."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Exit"  Width="50" SizeDefinition="Large, Large, Small" 
+                                   Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                            Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="X"
+                                   LargeIcon="{StaticResource Exit}" Command="cmd:AppCommands.ExitCommand">
+                        <Fluent:Button.ToolTip>
+                            <Fluent:ScreenTip Title="Exit ANNdotNET (Alt+X)" Width ="250"
+                            Image="{StaticResource Exit}" 
+                            Text="While GP process is running, it is not recommended to exit the application."
+                            />
+                        </Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <ContentControl  x:Name="mainCnt" Panel.ZIndex="1" Grid.Row="1"  >
+            <Grid Background="LightSteelBlue">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="22"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <TreeView  Foreground="White" Grid.Column="1" Grid.Row="1" x:Name="treeCtrl" KeyDown="treeCtrl_KeyDown" 
+                           LostFocus="treeCtrl_LostFocus" ItemsSource="{Binding AppModel.Project}" Margin="0,0,0,2" >
+                    <TreeView.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{DynamicResource ANNdotNET.HighlightColor}"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="{DynamicResource ANNdotNET.ActiveForeground}"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{DynamicResource ANNdotNET.InactiveHighlightColor}"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="{DynamicResource ANNdotNET.InactiveForeground}"/>
+
+
+                        <DataTemplate x:Key="NormalTemplate">
+                            <StackPanel Margin="-1,0,0,0" Orientation="Horizontal" Background="Transparent"  HorizontalAlignment="Center">
+                                <Image  Source="{Binding IconUri, Mode=OneWay}" Width="20" Height="20" SnapsToDevicePixels="True"/>
+                                <TextBlock Text="{Binding Path = Name}" Margin="5,0" Background="Transparent" />
+                            </StackPanel>
+                        </DataTemplate>
+                        <DataTemplate x:Key="EditTemplate">
+                            <StackPanel Margin="-1,0,0,0"  Orientation="Horizontal" Background="Transparent" HorizontalAlignment="Center" >
+                                <Image Source="{Binding IconUri, Mode=OneWay}" Width="20" Height="20" SnapsToDevicePixels="True"/>
+                                <TextBox Text="{Binding Path = Name, Mode=TwoWay}" Background="White" Foreground="Black" 
+                                         LostFocus="editableTextBoxHeader_LostFocus" 
+                                         IsVisibleChanged="editableTextBoxHeader_IsVisibleChanged" KeyDown="editableTextBoxHeader_KeyDown" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeView.Resources>
+                    <!-- 
+                This Style binds a TreeViewItem to a Project. 
+                -->
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="BorderThickness" Value="1" />
+                            <!--<Setter Property="cmdBeh:TreeItemMouseLeftButtonDblClick.Command" Value="cmd:AppCommands.TreeItemClickCommand"/>-->
+                            <Setter Property="cmdBeh:TreeItemMouseLeftButtonDblClick.CommandParameter" Value="{Binding}"/>
+                            <Setter Property="cmdBeh:IsEditingBehaviour.IsEditing" Value="{Binding IsEditing, Mode=TwoWay}" />
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="FontWeight" Value="Normal" />
+
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontWeight" Value="Normal" />
+                                    <!--<Setter Property="Foreground" Value="{DynamicResource ANNdotNET.InactiveForeground}" />-->
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type models:BaseModel}" ItemsSource="{Binding Models}">
+                            <ContentPresenter Content="{Binding}">
+                                <ContentPresenter.Style>
+                                    <Style TargetType="{x:Type ContentPresenter}">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource NormalTemplate}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=(cmdBeh:IsEditingBehaviour.IsEditing),RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TreeViewItem}}}" Value="True">
+                                                <Setter Property="ContentTemplate" Value="{StaticResource EditTemplate}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentPresenter.Style>
+                            </ContentPresenter>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <GridSplitter Grid.Row="1" Background="LightSteelBlue" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="5" />
+                <ContentControl x:Name="content"   Grid.Column="3" Grid.Row="1" Content="{Binding ActiveViewModel, Mode=TwoWay}" >
+                    <ContentControl.Resources>
+                        <DataTemplate DataType="{x:Type models:ANNProjectController}" >
+                            <views:ProjectPage x:Name="experimentCtrl" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type  models:MLConfigController}">
+                            <views:TrainingPage />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type  models:StartModel}">
+                            <views:StartPage x:Name="startPage" />
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+                <Fluent:StatusBar Grid.Row="4" Grid.ColumnSpan="5" Background="{DynamicResource RibbonThemeColorBrush}" >
+
+                    <Fluent:StatusBarItem Value="{Binding AppStatus}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                    <Separator HorizontalAlignment="Left" />
+                    <Fluent:StatusBarItem x:Name="statusMessage" HorizontalAlignment="Right"  Margin="0,0,10,0" Value="{Binding StatusMessage}" />
+
+                </Fluent:StatusBar>
+            </Grid>
+        </ContentControl>
+    </Grid>
+</Fluent:RibbonWindow>

@@ -1,0 +1,3 @@
+project:|Name:Iris  |ValidationSetCount:10 |PrecentigeSplit:False |RandomizeData:False |Models: |Info:
+data:|RawData:Iris_rawData.txt |Column1:petal_length;Numeric;Input;Ignore; |Column2:petal_width;Numeric;Input;Ignore; |Column3:sepal_length;Numeric;Input;Ignore; |Column4:sepal_width;String;Input;Ignore; |Column5:species;Category;Output;Ignore; 
+parser:| RowSeparator:rn | ColumnSeparator: ; | Header:0 | SkipLines:0

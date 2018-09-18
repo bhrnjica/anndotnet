@@ -1,0 +1,25 @@
+!ML Configuration file for Multiple output data set
+!this is typical multi output regression problem
+
+features:|predictors 3 0 0
+labels:|output1 1 0 0 |output2 1 0 0
+
+! network
+network:|Type:FeedForward |HLayers:1 |HDimensions:20 |HActivation:tanh |OActivation:none |HLSTM:0 |LSTMCell:0 |EmbeddingDim:0 |DropRate:0  
+
+learning:|Type:AdamLearner |LRate:0.001 |Momentum:1 |Loss:SquaredError |Eval:RMSError  
+
+!training process and minibatch
+
+training: |Type: default |BatchSize:125 |Epochs:100 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |ProgressFrequency:1
+
+!evaluation process
+trainingPath:../../../../data/multipleOutput/mo_training.txt
+validationPath:../../../../data/multipleOutput/mo_validation.txt
+testPath:../../../../data/multipleOutput/mo_validation.txt
+
+!post evaluation process
+modelTempFile:../../../../modelsTemp/mul_out_model_temp
+modelFinalFile:../../../../modelsFinal/mul_out_model 
+!File path for storing model evaluation result of Actual and Predicted values of specified test dataset
+modelEvalResult:../../../../modelsFinal/mul_out_model_result.csv 

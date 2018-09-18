@@ -1,0 +1,3 @@
+project:|Name:GlassIdentificationProject  |ValidationSetCount:20 |PrecentigeSplit:1 |MLConfigs:FeedForwardWithRandomDSGeneraton |Info:
+data:|RawData:GlassIdentificationProject_rawdata.txt |Column01:Column1;Numeric;Feature;Ignore; |Column02:Column2;Numeric;Feature;Ignore; |Column03:Column3;Numeric;Feature;Ignore; |Column04:Column4;Numeric;Feature;Ignore; |Column05:Column5;Numeric;Feature;Ignore; |Column06:Column6;Numeric;Feature;Ignore; |Column07:Column7;Numeric;Feature;Ignore; |Column08:Column8;Numeric;Feature;Ignore; |Column09:Column9;Numeric;Feature;Ignore; |Column10:Column10;Numeric;Feature;Ignore; |Column11:Column11;Category;Label;Ignore; 
+parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0

@@ -1,0 +1,8 @@
+configid:33fe0968-d640-4b53-97dc-982dcf2b1cad
+metadata:|Column01:sepal_length;Numeric;Feature;Ignore; |Column02:sepal_width;Numeric;Feature;Ignore; |Column03:petal_length;Numeric;Feature;Ignore; |Column04:petal_width;Numeric;Feature;Ignore; |Column05:species;Category;Label;Ignore;setosa;versicolor;virginica 
+features:|NumFeatures  4 0	
+labels:|species 3 0
+network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 5 0 0 ReLU 0 0 |Layer:Dense 3 0 0 Softmax 0 0 
+learning:|Type:SGDLearner |LRate:0.01 |Momentum:1 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
+training:|Type:Default |BatchSize:100 |Epochs:1000 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:50 |ContinueTraining:0 |TrainedModel:models\model_at_983of1000_epochs_TimeSpan_636729018198856673 
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FFModel_result.csv_result.csv_result.csv_result.csv |Logs:log 

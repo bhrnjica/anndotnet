@@ -1,0 +1,13 @@
+features:|NumFeatures  1 0 0	|x2 3 0 0	|x3 2 0 0	
+labels:|y 1 0 0	
+!comment
+network:|Type:FeedForward |HLayers:1 |HDimensions:5 |HActivation:relu |OActivation:none |HLSTM:0 |LSTMCell:0 |EmbeddingDim:0 |DropRate:0  
+learning:|Type:SGDLearner |LRate:0.01 |Momentum: 1 |Loss: SquaredError |Eval: MSError  
+training: |Type: default |BatchSize:130 |Epochs:500 |Normalization:1 |RandomizeBatch:0 |SaveWhileTraining: 1 |ProgressFrequency:50
+!comment 
+!"comment"
+trainingPath:C:\sc\vs\ANNdotNETCore\test\anndotnet.capp\pr_example\BHModel01_mldataset_train
+validationPath:C:\sc\vs\ANNdotNETCore\test\anndotnet.capp\pr_example\BHModel01_mldataset_valid
+testPath:C:\sc\vs\ANNdotNETCore\test\anndotnet.capp\pr_example\BHModel01_mldataset_valid
+modelTempFile:C:\sc\vs\ANNdotNETCore\test\anndotnet.capp\pr_example\modelsTemp\model02_temp
+modelFinalFile:C:\sc\vs\ANNdotNETCore\test\anndotnet.capp\pr_example\modelsFinal\model02_final

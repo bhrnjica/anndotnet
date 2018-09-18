@@ -1,0 +1,8 @@
+configid:4c2300e5-914e-49dd-a553-390701a6070e
+metadata:|Column01:Cement;Numeric;Feature;Average; |Column02:Slag;Numeric;Feature;Average; |Column03:Fly_ash;Numeric;Feature;Average; |Column04:Water;Numeric;Feature;Average; |Column05:SP;Numeric;Feature;Average; |Column06:Coarse_Aggr_;Numeric;Feature;Average; |Column07:Fine_Aggr_;Numeric;Feature;Average; |Column08:SLUMP_cm_;Numeric;Label;Average; 
+features:|NumFeatures  7 0	
+labels:|SLUMP_cm_ 1 0
+network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Embedding 5 0 0 None 0 0 |Layer:Dense 4 0 0 TanH 0 0 |Layer:Dense 1 0 0 None 0 0 
+learning:|Type:FSAdaGradLearner |LRate:0.08 |Momentum:0.9 |Loss:SquaredError|Eval:MSError|L1:0.001|L2:0.0001
+training:|Type:Default |BatchSize:70 |Epochs:3000 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:25 |ContinueTraining:0 |TrainedModel:models\model_at_983of3000_epochs_TimeSpan_636729017358428823 
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FFNModel_result.csv_result.csv_result.csv_result.csv |Logs:log 

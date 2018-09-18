@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+    <RootNamespace>ANNdotNET.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CNTK.GPU" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GPdotNET.MathStuff">
+      <HintPath>..\..\..\assemblies\GPdotNET.MathStuff.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
