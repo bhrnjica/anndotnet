@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:zed="clr-namespace:ZedGraph;assembly=ZedGraph"
              xmlns:local="clr-namespace:anndotnet.wnd.panels"
              mc:Ignorable="d" 
@@ -61,26 +60,6 @@
 
         <!--Loss and Evaluation-->
         <Grid Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" >
-            <Grid.Resources>
-                <Style x:Key="liveChart" TargetType="lvc:CartesianChart">
-                    <Setter Property="DisableAnimations" Value="True"></Setter>
-                    <Setter Property="DataTooltip" Value="{x:Null}"></Setter>
-                    <Setter Property="Zoom" Value="Xy"></Setter>
-                    <Setter Property="BorderBrush" Value="Black"></Setter>
-                    <Setter Property="BorderThickness" Value="1"></Setter>
-                </Style>
-
-                <Style TargetType="lvc:LineSeries">
-                    <Setter Property="Stroke" Value="Black"></Setter>
-                    <Setter Property="StrokeThickness" Value=".8"></Setter>
-                    <Setter Property="PointGeometry" Value=""></Setter>
-                    <Setter Property="Fill" Value="Transparent"></Setter>
-                </Style>
-
-                <Style x:Key="CleanSeparator" TargetType="lvc:Separator">
-                    <Setter Property="IsEnabled" Value="False"></Setter>
-                </Style>
-            </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="*"/>

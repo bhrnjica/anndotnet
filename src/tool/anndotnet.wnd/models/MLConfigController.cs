@@ -13,7 +13,6 @@
 
 using ANNdotNET.Lib;
 using GPdotNet.MathStuff;
-using LiveCharts.Defaults;
 using NNetwork.Core.Common;
 using System;
 using System.Collections.Generic;

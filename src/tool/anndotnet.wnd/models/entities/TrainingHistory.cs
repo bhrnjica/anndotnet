@@ -11,8 +11,6 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Mvvm;
-using LiveCharts;
-using LiveCharts.Defaults;
 
 namespace anndotnet.wnd.Models
 {
