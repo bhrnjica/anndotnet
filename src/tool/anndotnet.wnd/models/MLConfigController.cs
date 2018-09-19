@@ -249,7 +249,9 @@ namespace anndotnet.wnd.Models
 
                 };
                 var mpt = new ModelPerformance();
+                mpt.DatSetName = "Training set";
                 var mpv = new ModelPerformance();
+                mpv.DatSetName = "Validation set";
 
 
                 //check if the trained model exists

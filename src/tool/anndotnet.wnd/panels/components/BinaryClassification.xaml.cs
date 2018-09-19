@@ -67,7 +67,7 @@ namespace anndotnet.wnd.panels
             var ret = ((Models.ModelPerformance)this.DataContext).PerformanceData;
 
             BModelEvaluation dlg = new BModelEvaluation();
-            dlg.Text = "Model performance for selected data set";
+            dlg.Text = $"Model performance for {modelPerf.DatSetName}.";
             var cl = ret["Classes"].Select(x => x.ToString()).ToArray();
             dlg.loadClasses(cl);
             dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray(),null,null);
@@ -84,7 +84,7 @@ namespace anndotnet.wnd.panels
             var ret = ((Models.ModelPerformance)this.DataContext).PerformanceData;
 
             MModelEvaluation dlg = new MModelEvaluation();
-            dlg.Text = "Confusion matrix for training data set";
+            dlg.Text = $"Confusion matrix for {modelPerf.DatSetName}";
             var cl = ret["Classes"].Select(x => x.ToString()).ToArray();
             dlg.loadClasses(cl);
             dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray(),

@@ -55,9 +55,6 @@ namespace anndotnet.wnd.Panels
             this.trainingGraph.RestoreScale(trainingGraph.GraphPane);
             this.validationGraph.RestoreScale(validationGraph.GraphPane);
 
-            //content controle set to null
-           // trainingContent.Content = emptyContent("");
-            //validationContent.Content = emptyContent("");
 
             //hide items
             var itm = trainingItems.Items[0] as Regression;

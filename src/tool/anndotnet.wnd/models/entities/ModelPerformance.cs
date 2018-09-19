@@ -18,6 +18,7 @@ namespace anndotnet.wnd.Models
 
     public class ModelPerformance : ObservableObject
     {
+        public string DatSetName { get; set; }
         public Dictionary<string, List<object>> PerformanceData { get; internal set; }
 
         //regression
