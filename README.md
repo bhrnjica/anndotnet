@@ -67,6 +67,29 @@ GUI Tool
 
 ![](./docs/images/58dff84cb0ae27a3172d28ec7d695e68.jpg)
 
+## How to install ANNdotNET Excel AddIn 
+
+In order to use ANNdotNET Export to Excel feature, AddIn must be installed. In order to install Excel AddIn the folowing action must be performed:
+- Install Microsoft Excel 64 bit version. **TheANNdotNET Excel AddIn is not compatible with Microsoft Excel 32bit version**.
+- Open Excel and select: File -> Options
+
+![](./docs/images/anndotnet-exceladdin-img01.png)
+
+
+- From the Option Dialog select: Add-ins->ExcelAdd-ins -> press Go Button,
+
+![](./docs/images/anndotnet-exceladdin-img02.png)
+
+- From file open dialog, select: anndotnet.exceladdIn-AddIn64.xll, from the ANNdotNET binaries folder. 
+
+![](./docs/images/anndotnet-exceladdin-img03.png)
+
+- Add path to "ANNdotNET binaries folder" in system environment path, in order to register AddIn.
+
+![](./docs/images/anndotnet-exceladdin-img04.png)
+
+In case the PATH is not added the Excel addin must be installed every time you open Excel and use the Addin.
+
 # Tutorial and Webcast
 The following short videos quickly show how to create, train and evaluate regression, binary and multi class classification models.
 
