@@ -107,6 +107,8 @@ requirements must be met:
 
 -   Git source control tool.
 
+More information about VC++ redistributable components can be found [here](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads).
+
 How to start with ANNdotNET CMD Tool
 ------------------------------------
 
