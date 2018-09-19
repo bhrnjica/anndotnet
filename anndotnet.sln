@@ -9,12 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{721F6DD8-03B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7622CA23-6F93-4322-9A8F-046E9723E803}"
 	ProjectSection(SolutionItems) = preProject
+		docs\anndotnet-first-release.MD = docs\anndotnet-first-release.MD
 		docs\ANNdotNETv1.0- Developer.docx = docs\ANNdotNETv1.0- Developer.docx
 		docs\ANNdotNETv1.0-rev.docx = docs\ANNdotNETv1.0-rev.docx
 		docs\annproject_file.md = docs\annproject_file.md
 		docs\file_structure.md = docs\file_structure.md
-		docs\Introduction.md = docs\Introduction.md
 		docs\mlconfig_file.md = docs\mlconfig_file.md
+		docs\README.MD = docs\README.MD
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{BBB32D58-CEEB-4E79-8ADF-62C4A06816FA}"
@@ -74,7 +75,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{F99951
 		docs\images\projectsfile_structure.png = docs\images\projectsfile_structure.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F70399BE-8B27-435C-846B-76FFE41C04BF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution itmes", "solution itmes", "{F70399BE-8B27-435C-846B-76FFE41C04BF}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.md = LICENSE.md
 		README.md = README.md

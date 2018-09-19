@@ -44,9 +44,30 @@ Note: The application will automatically detect GPU capability on your machine a
 
 # How to run application
 In order to run the application there are two possibilities:
-1. Clone the GitHub repository of the application and open it in Visual Studio 2017. Change build architecture into x64, build and run the application.  
-2. Download released version unzip it and run ANNdotNET.exe.
 
+## Run ANNdotNET from source code
+1. Clone the GitHub repository http://github.com/bhrnjica/anndotnet 
+2. Open anndotnet.sln in Visual Studio 2017,
+3. Change build architecture of the solution into x64,
+4. Right click on solution item and restore Nuget Packages, 
+4. Press F5 for build and run the application.  
+
+![](./docs/images/14684be79e3fc6460a7908db00e0b616.jpg)
+
+
+## Run ANNdotNET from release section
+1. Got to http://github.com/bhrnjica/anndotnet/releases and find the ANNdotNET latest release,
+2. Download the zip installer, and extract the content on  your disk,
+3. Open extracted folder, select anndotnet.wnd.exe and run the application.
+4. Once the application is run, select one of many pre-calculated projects
+    placed on Start Page.
+
+The following image shows Iris Flower Identification project opened in ANNdotNET
+GUI Tool
+
+![](./docs/images/58dff84cb0ae27a3172d28ec7d695e68.jpg)
+
+# Tutorial and Webcast
 The following short videos quickly show how to create, train and evaluate regression, binary and multi class classification models.
 
 * [ Regression model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv1.mp4)
