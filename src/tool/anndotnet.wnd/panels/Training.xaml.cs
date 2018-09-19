@@ -72,6 +72,7 @@ namespace anndotnet.wnd.Panels
 
             ///chart for training/predicted data
             zedGraph.GraphPane.Title.Text = "Datasets Evaluation";
+             
             zedGraph.GraphPane.XAxis.Title.Text = "iterations";
 
             
@@ -80,7 +81,7 @@ namespace anndotnet.wnd.Panels
             zedGraph.GraphPane.Y2Axis.Title.Text = " ";
             zedGraph.GraphPane.Y2Axis.Color = System.Drawing.Color.Red;
             zedGraph.GraphPane.Legend.IsVisible = false;
-            zedGraph.GraphPane.Title.IsVisible = true;
+            zedGraph.GraphPane.Title.IsVisible = false;
 
         }
 
