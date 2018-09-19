@@ -69,7 +69,7 @@ GUI Tool
 
 ## How to install ANNdotNET Excel AddIn 
 
-In order to use ANNdotNET Export to Excel feature, AddIn must be installed. In order to install Excel AddIn the folowing action must be performed:
+In order to use ANNdotNET Export to Excel feature, the ANNdotNET.Excel.AddIn must be installed. In order to install Excel AddIn the following action must be performed:
 - Install Microsoft Excel 64 bit version. **TheANNdotNET Excel AddIn is not compatible with Microsoft Excel 32bit version**.
 - Open Excel and select: File -> Options
 
