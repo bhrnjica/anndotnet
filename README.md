@@ -1,7 +1,7 @@
 # ANNdotNET
 ![ANNdotNET Logo](./src/tool/anndotnet.wnd/Images/annLogo_start2.png)
 
-ANNdotNET –  is an open source project for deep learning written in C# and .NET platform. The main purpose of the project is 
+ANNdotNET â€“  is an open source project for deep learning written in C# and .NET platform. The main purpose of the project is 
 creating and training deep learning models. The application relies on Microsoft Cognitive Toolkit, CNTK, and it is 
 supposed to be GUI tool for CNTK library with extensions in data preprocessing, model evaluation,
  exporting and deploying. The project is hosted at http://github.com/bhrnjica/anndotnet.   
@@ -52,5 +52,6 @@ The following short videos quickly show how to create, train and evaluate regres
 * [ Regression model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv1.mp4)
 * [ Binary classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv2.mp4)
 * [ Multiclass classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv3.mp4)
+
 
 More info at https://bhrnjica.net/anndotnet/
