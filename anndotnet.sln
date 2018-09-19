@@ -14,8 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7622CA23-6
 		docs\ANNdotNETv1.0-rev.docx = docs\ANNdotNETv1.0-rev.docx
 		docs\annproject_file.md = docs\annproject_file.md
 		docs\file_structure.md = docs\file_structure.md
+		docs\Introduction.MD = docs\Introduction.MD
 		docs\mlconfig_file.md = docs\mlconfig_file.md
-		docs\README.MD = docs\README.MD
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{BBB32D58-CEEB-4E79-8ADF-62C4A06816FA}"

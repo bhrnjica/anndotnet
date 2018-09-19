@@ -33,14 +33,14 @@ In order to handle with machine learning configuration file (*mlconfig*), ANNdot
 
 
 # Software Requirements
-ANNdotNET is x64 Windows desktop application which is running on .NET Framework 4.7.2. and .NET Core 2.0. In order to run the application, the following requirements must be met:
+ANNdotNET is x64 Windows desktop application running on .NET Framework 4.7.2. and .NET Core 2.0. In order to run the application, the following software components need to be installed:
 
-* Windows 7, 8 or 10 with x64 architecture
+* Windows 10 with x64 architecture
 * .NET Framework 4.7.2 +
-* .NET Core 2.0 +
-* CPU/GPU support. 
+* [Visual C++ 2017 version 15.4 v14.11 toolset](https://aka.ms/vs/15/release/vc_redist.x64.exe)
+* [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) 
 
-Note: The application will automatically detect GPU capability on your machine and use it in training and evaluation, otherwise it will use CPU.
+Note: The application is tested on clean *Windows Pro 10 1709 build*. Probably the application will run on Windows 8 and Windows 7 as well, but those systems are not tested.
 
 # How to run application
 In order to run the application there are two possibilities:
@@ -70,7 +70,7 @@ GUI Tool
 ## How to install ANNdotNET Excel AddIn 
 
 In order to use ANNdotNET Export to Excel feature, the ANNdotNET.Excel.AddIn must be installed. In order to install Excel AddIn the following action must be performed:
-- Install Microsoft Excel 64 bit version. **TheANNdotNET Excel AddIn is not compatible with Microsoft Excel 32bit version**.
+- Install Microsoft Excel 64 bit version. **The ANNdotNET Excel AddIn is not compatible with Microsoft Excel 32bit version**.
 - Open Excel and select: File -> Options
 
 ![](./docs/images/anndotnet-exceladdin-img01.png)

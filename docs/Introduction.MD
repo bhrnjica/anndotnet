@@ -15,13 +15,11 @@ Cognitive Toolkit, CNTK, and it is supposed to be GUI tool for CNTK library with
 extensions in data preprocessing, model evaluation, exporting and deploying deep
 learning models. It is hosted at <http://github.com/bhrnjica/anndotnet>.
 
-The project is based on Microsoft CNTK (CogNitive ToolKit) Microsoft open source
-library for deep learning. It is supposed to be higher API for deep learning in
-.NET, but also provides, data preparation and transformation from rawDataSet in
-to mlreadyDataset, monitoring the training process with additional evaluation
+Beside the fact it can be higher API for deep learning in
+.NET, but also provides, data preparation and transformation from rawDataSet into mlreadyDataset, 
+monitoring the training process with additional evaluation
 functions, capability of early stopping during training, model evaluation and
 validation, exporting and deployment options.
-
 The process of creating, training, evaluating and exporting models is provided
 from the GUI Application and does not require knowledge for supported
 programming languages. The ANNdotNET is ideal for engineers which are not
@@ -35,17 +33,16 @@ In pre-calculated projects the user can find how to use various neural network
 configurations e.g. feed forward, deep neural network, LSTM recurrent nets,
 embedding and drop out layers. Also, each project can be modified in terms of
 change its network configuration, learning and training parameters, as well as
-create new ml configuration.
+create new ml configurations.
 
-In order to change ml configuration, ANNdotNET implement*s network designer*
-capable of creating neural network of any configuration, and any combination of
-layers. The network designer is based on layer concept which the user can add,
-delete or modify simply as list view items.
+In order to handle with machine learning configuration file (*mlconfig*), ANNdotNET provides **neural network designer** (NNDesigner) capable of creating neural networks of any
+ configurations and any combination of layers. The NNDesigner is based on layer concept, where user can easily add, delete or modify nn layers as simply as manipulating with the list view items.
+
 
 ![](images/anndotnet_startwnd.jpg)
 
 Note: The application automatically detects GPU capability on your machine and
-use it in training and evaluation, otherwise it will use CPU.
+use it in training and evaluation, otherwise it will use CPU. The installation process is easy, and doesn't require additional software installations.
 
 Structure of the project 
 -------------------------
@@ -120,18 +117,18 @@ performed:
 
 4.  Change system architecture of the solution from Any CPU to x64
 
-![](Images/738b4a2a7d3baf83d3870ac10d2b77fb.jpg)
+![](images/738b4a2a7d3baf83d3870ac10d2b77fb.jpg)
 
 1.  Once the previous actions are performed the Solution window looks like:
 
-![](Images/43b67c5b4ce4c94f5c474f94f98cc262.png)
+![](images/43b67c5b4ce4c94f5c474f94f98cc262.png)
 
 1.  From the Program.cs file select one of several implemented solutions
     uncomment the code and run the solution.
 
 2.  Once the project is executed the following output is present:
 
-![](Images/8a2d83c23a750272fd0bcdc4ff927f53.jpg)
+![](images/8a2d83c23a750272fd0bcdc4ff927f53.jpg)
 
 The output Window start by problem title ( in this case “Iris Flower
 Identification”), then depending on training parameters the training progress is
@@ -165,7 +162,7 @@ performed:
 The following image shows Iris Flower Identification project opened in ANNdotNET
 GUI Tool
 
-![](Images/58dff84cb0ae27a3172d28ec7d695e68.jpg)
+![](images/58dff84cb0ae27a3172d28ec7d695e68.jpg)
 
 ### How to run ANNdotNET GUI Tool from source code
 
@@ -173,10 +170,34 @@ The second option is similar as in case of ANNdotNET CMD Tool. Only difference
 is the startup project which in this case should be \`anndotnet.wnd\`, and it is
 shown on the image below.
 
-![](Images/14684be79e3fc6460a7908db00e0b616.jpg)
+![](images/14684be79e3fc6460a7908db00e0b616.jpg)
 
 To recap the section, once the user download the source code and open it by
 using Visual Studio, the **anndotnet.wnd** should be selected as startup
 project. Beside startup project, user also should change the system architecture
 to x64, and press F5. Once the Visual Studio compiles and builds the solution,
 the ANNdotNET windows desktop application is shown on the user’s machine.
+
+## How to install ANNdotNET Excel AddIn 
+
+In order to use ANNdotNET Export to Excel feature, the ANNdotNET.Excel.AddIn must be installed. In order to install Excel AddIn the following action must be performed:
+- Install Microsoft Excel 64 bit version. **The ANNdotNET Excel AddIn is not compatible with Microsoft Excel 32bit version**.
+- Open Excel and select: File -> Options
+
+![](images/anndotnet-exceladdin-img01.png)
+
+
+- From the Option Dialog select: Add-ins->ExcelAdd-ins -> press Go Button,
+
+![](images/anndotnet-exceladdin-img02.png)
+
+- From file open dialog, select: anndotnet.exceladdIn-AddIn64.xll, from the ANNdotNET binaries folder. 
+
+![](images/anndotnet-exceladdin-img03.png)
+
+- Add path to "ANNdotNET binaries folder" in system environment path, in order to register AddIn.
+
+![](images/anndotnet-exceladdin-img04.png)
+
+In case the PATH is not added the Excel addin must be installed every time you open Excel and use the Addin.
+
