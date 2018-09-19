@@ -101,6 +101,10 @@ requirements must be met:
 
 -   .NET Core 2.0 and newer
 
+- [Visual C++ 2017 version 15.4 v14.11 toolset](https://aka.ms/vs/15/release/vc_redist.x64.exe)
+
+- [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
+
 -   Git source control tool.
 
 How to start with ANNdotNET CMD Tool
