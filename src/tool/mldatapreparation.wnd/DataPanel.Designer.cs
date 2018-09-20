@@ -40,6 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numCtrlNumForTest = new System.Windows.Forms.NumericUpDown();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlNumForTest)).BeginInit();
@@ -63,6 +64,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.checkBox1);
             this.groupBox5.Controls.Add(this.randomoizeDataSet);
             this.groupBox5.Controls.Add(this.numberRadio);
             this.groupBox5.Controls.Add(this.presentigeRadio);
@@ -73,7 +75,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox5.Size = new System.Drawing.Size(758, 123);
+            this.groupBox5.Size = new System.Drawing.Size(1103, 123);
             this.groupBox5.TabIndex = 26;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Testing data set";
@@ -81,12 +83,12 @@
             // randomoizeDataSet
             // 
             this.randomoizeDataSet.AutoSize = true;
-            this.randomoizeDataSet.Location = new System.Drawing.Point(79, 85);
+            this.randomoizeDataSet.Location = new System.Drawing.Point(674, 40);
             this.randomoizeDataSet.Margin = new System.Windows.Forms.Padding(6);
             this.randomoizeDataSet.Name = "randomoizeDataSet";
-            this.randomoizeDataSet.Size = new System.Drawing.Size(235, 29);
+            this.randomoizeDataSet.Size = new System.Drawing.Size(328, 29);
             this.randomoizeDataSet.TabIndex = 18;
-            this.randomoizeDataSet.Text = "Randomize data set";
+            this.randomoizeDataSet.Text = "Randomize data set then split";
             this.randomoizeDataSet.UseVisualStyleBackColor = true;
             // 
             // numberRadio
@@ -150,6 +152,18 @@
             this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             this.listView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDown);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(674, 82);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(6);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(323, 29);
+            this.checkBox1.TabIndex = 19;
+            this.checkBox1.Text = "Split data set then randomize";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
+            // 
             // DataPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -177,5 +191,6 @@
         public System.Windows.Forms.NumericUpDown numCtrlNumForTest;
         public System.Windows.Forms.CheckBox randomoizeDataSet;
         public System.Windows.Forms.RadioButton presentigeRadio;
+        public System.Windows.Forms.CheckBox checkBox1;
     }
 }

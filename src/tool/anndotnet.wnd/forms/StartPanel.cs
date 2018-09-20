@@ -111,29 +111,6 @@ namespace anndotnet.wnd.Panels
             appCOnt.OpenProject(strPath);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void REG_WaterParameters(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            string strPath = Application.StartupPath + "\\Resources\\water_quality.gpa";
-
-            Open(strPath);
-
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void REG_surface_roughness(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            string strPath = Application.StartupPath + "\\Resources\\surface_roughness.gpa";
-
-            Open(strPath);
-        }
 
         #endregion
 
@@ -145,12 +122,10 @@ namespace anndotnet.wnd.Panels
         /// <param name="e"></param>
         private void TSMSFT_Forcasting(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            string strPath = Application.StartupPath + "\\Resources_Files\\montly_msft_2003_2012.gpa";
+            string strPath = Application.StartupPath + "\\Resources\\AirQ\\AirQuality.ann";
 
-            //Open(strPath);
-            //var fName = Path.GetFileName(_filePath);
-            //this.Text = string.Format("{0} - {1}", _appName, fName);
-            //txtStatusMessage.Text = "Ready!";
+            AppController appCOnt = App.Current.MainWindow.DataContext as AppController;
+            appCOnt.OpenProject(strPath);
         }
         #endregion
 
