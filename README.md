@@ -13,7 +13,7 @@ The process of creating, training, evaluating and exporting models is provided f
 - less time spending on debugging source code, more focusing on different configuration and parameter variants,
 - ideal for engineers/users which are not familiar with programming languages, 
 - in case the problem requires coding custom models, or training process, ANNdotNET CMD provides high level of API for such implementation,
-- all ml configurations developed with GUI tool,can be handling with CMD tool and vice versa.  
+- all ml configurations developed with GUI tool,can be handled with CMD tool and vice versa.  
 
 There are dozens of pre-calculated projects included in the installer which can be opened from the Start page as well as from CMD tool. The annprojects are
  based on famous datasets from several categories: regression, binary and multi class classification problems, image classifications, times series, etc.
