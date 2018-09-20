@@ -284,8 +284,35 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Resources\AirQ\AirQuality.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_20833fde-23e8-46a1-9044-1e48a227528f.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\models\model_at_52of1000_epochs_TimeSpan_636730776915636980">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_20833fde-23e8-46a1-9044-1e48a227528f.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_20833fde-23e8-46a1-9044-1e48a227528f.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="anndotnet.ico" />
     <Content Include="Images\refresdata.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\airquality_rawdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Bike\BikeSharingProject\BikeSharingProject_rawdata.txt">
@@ -612,7 +639,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\AirQ\" />
     <Folder Include="Resources\MNIST\" />
   </ItemGroup>
   <ItemGroup>
