@@ -15,6 +15,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace anndotnet.wnd
 {
@@ -33,7 +34,7 @@ namespace anndotnet.wnd
                 var dc = DataContext as AppController;
 
                 if (dc != null)
-                {
+                { 
                     dc.SetRunnigColor(false);
                     dc.ReportException = ReportException;
                 }
@@ -91,7 +92,11 @@ namespace anndotnet.wnd
         /// <param name="ex"></param>
         void ReportException(Exception ex)
         {
-            MessageBox.Show(ex.Message, "ANNdotNET v1.0");
+            Application.Current.Dispatcher.BeginInvoke(
+                   DispatcherPriority.Background,
+               new Action(
+           ()=>MessageBox.Show(ex.Message, "ANNdotNET v1.0")
+            ));
 
         }
 

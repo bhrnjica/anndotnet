@@ -44,8 +44,8 @@ namespace NNetwork.Core.Common
         //LSTM Cell dimension 
         public int CDimension { get; set; }
 
-        //Drop rate  only layer in %
-        public int Rate { get; set; }
+        //Parameter used in DropLayer (as dropRate)
+        public int Value { get; set; }
 
         //Activation function (in case of LSTM this is TanH activation)
         public Activation Activation { get; set; }
@@ -58,6 +58,5 @@ namespace NNetwork.Core.Common
 
         //is activation function may be used in the layer
         public bool UseActivation { get; set; }
-
     }
 }

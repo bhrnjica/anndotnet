@@ -83,7 +83,7 @@ namespace ANNdotNET.Lib.Ext
             var emb = CNTKLib.Splice(new VariableVector() { yearEmb, monthEmb, varshopEmb, itemEmb2, cnt3Var }, new Axis(0));
 
             //create recurrence for time series on top of joined layer
-            var lstmLayer = RNN.RecurrenceLSTM(emb,H_DIMS, CELL_DIMS,DataType.Float,device,Activation.TanH, true, true);
+            var lstmLayer = RNN.RecurrenceLSTM(emb,H_DIMS, CELL_DIMS,DataType.Float,device, false, Activation.TanH, true, true);
 
             //create dense on top of LSTM recurrence layers
             var denseLayer = ffNet.Dense(lstmLayer, 33, Activation.TanH);

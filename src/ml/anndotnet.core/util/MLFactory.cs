@@ -500,7 +500,7 @@ namespace ANNdotNET.Core
                     l.Name = $"{values[0]} Layer";
                     l.HDimension = int.Parse(values[1].Trim(' '));
                     l.CDimension = int.Parse(values[2].Trim(' '));
-                    l.Rate = int.Parse(values[3].Trim(' '));
+                    l.Value = int.Parse(values[3].Trim(' '));
                     l.Activation = (Activation)Enum.Parse(typeof(Activation), values[4], true);
                     l.SelfStabilization = values[5] == "1" ? true : false;
                     l.Peephole = values[6] == "1" ? true : false;
@@ -548,6 +548,10 @@ namespace ANNdotNET.Core
 
             //set last layer name to label name
             layers.Last().Name = outpuVar.Name;
+
+            //get last LSTM layer
+            var lastLSTM = layers.Where(x => x.Type == LayerType.LSTM).LastOrDefault();
+            
             //
             foreach (var layer in layers)
             {
@@ -557,7 +561,7 @@ namespace ANNdotNET.Core
                 }
                 else if (layer.Type == LayerType.Drop)
                 {
-                    net = CNTKLib.Dropout(net, layer.Rate/100.0f);
+                    net = CNTKLib.Dropout(net, layer.Value/100.0f);
                 }
                 else if (layer.Type == LayerType.Embedding)
                 {
@@ -565,8 +569,10 @@ namespace ANNdotNET.Core
                 }
                 else if (layer.Type == LayerType.LSTM)
                 {
-   
-                    net = RNN.RecurrenceLSTM(net, layer.HDimension, layer.CDimension, type, device, layer.Activation, 
+                    var returnSequence = true;
+                    if (layers.IndexOf(lastLSTM) == layers.IndexOf(layer))
+                        returnSequence = false;
+                    net = RNN.RecurrenceLSTM(net, layer.HDimension, layer.CDimension, type, device, returnSequence, layer.Activation,
                         layer.Peephole, layer.SelfStabilization, 1);
                 }
             }

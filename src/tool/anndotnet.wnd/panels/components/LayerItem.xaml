@@ -35,7 +35,7 @@
 
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label Content="Drop rate :" Width="120" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Rate}" Width="50" Margin="7" VerticalAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" />
+            <TextBox Text="{Binding Value}" Width="50" Margin="7" VerticalAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" />
             <Label Content="%"  VerticalAlignment="Center"/>
         </StackPanel >
 

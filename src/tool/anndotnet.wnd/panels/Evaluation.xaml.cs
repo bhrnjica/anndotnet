@@ -48,29 +48,40 @@ namespace anndotnet.wnd.Panels
         }
         private void Evaluation_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //clear prev. state
-            trainingGraph.GraphPane.CurveList.Clear();
-            validationGraph.GraphPane.CurveList.Clear();
-            //force to update the control
-            this.trainingGraph.RestoreScale(trainingGraph.GraphPane);
-            this.validationGraph.RestoreScale(validationGraph.GraphPane);
+            try
+            {
+                //clear prev. state
+                trainingGraph.GraphPane.CurveList.Clear();
+                validationGraph.GraphPane.CurveList.Clear();
+                //force to update the control
+                this.trainingGraph.RestoreScale(trainingGraph.GraphPane);
+                this.validationGraph.RestoreScale(validationGraph.GraphPane);
 
 
-            //hide items
-            var itm = trainingItems.Items[0] as Regression;
-            itm.Visibility = Visibility.Collapsed;
-            var itm2 = trainingItems.Items[1] as BinaryClassification;
-            itm2.Visibility = Visibility.Collapsed;
-            var itm3 = trainingItems.Items[2] as Multiclass;
-            itm3.Visibility = Visibility.Collapsed;
+                //hide items
+                var itm = trainingItems.Items[0] as Regression;
+                itm.Visibility = Visibility.Collapsed;
+                var itm2 = trainingItems.Items[1] as BinaryClassification;
+                itm2.Visibility = Visibility.Collapsed;
+                var itm3 = trainingItems.Items[2] as Multiclass;
+                itm3.Visibility = Visibility.Collapsed;
 
-            //hide items
-            var itm11 = validatingItems.Items[0] as Regression;
-            itm11.Visibility = Visibility.Collapsed;
-            var itm21 = validatingItems.Items[1] as BinaryClassification;
-            itm21.Visibility = Visibility.Collapsed;
-            var itm31 = validatingItems.Items[2] as Multiclass;
-            itm31.Visibility = Visibility.Collapsed;
+                //hide items
+                var itm11 = validatingItems.Items[0] as Regression;
+                itm11.Visibility = Visibility.Collapsed;
+                var itm21 = validatingItems.Items[1] as BinaryClassification;
+                itm21.Visibility = Visibility.Collapsed;
+                var itm31 = validatingItems.Items[2] as Multiclass;
+                itm31.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+
+                var ac = App.Current.MainWindow.DataContext as AppController;
+                if (ac != null)
+                    ac.ReportException(ex);
+            }
+            
 
         }
 

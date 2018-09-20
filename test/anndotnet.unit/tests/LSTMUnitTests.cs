@@ -40,7 +40,7 @@ namespace anndotnet.unit
             var xValues = Value.CreateBatchOfSequences<float>(new int[] { 4 }, mData, device);
 
             //
-            var lstm00 = RNN.RecurrenceLSTM(x, 3, 3, DataType.Float, device, Activation.TanH, true, true, 1);
+            var lstm00 = RNN.RecurrenceLSTM(x, 3, 3, DataType.Float, device,false, Activation.TanH, true, true, 1);
 
             //           
             LSTMReccurentNN lstmNN = new LSTMReccurentNN(1, 1, device);
@@ -135,7 +135,7 @@ namespace anndotnet.unit
             Variable y = Variable.InputVariable(new int[] { 3 }, DataType.Float, "output");
 
             //Number of LSTM parameters
-            var lstm1 = RNN.RecurrenceLSTM(x, 3, 3, DataType.Float, device, Activation.TanH, false, false, 1);
+            var lstm1 = RNN.RecurrenceLSTM(x, 3, 3, DataType.Float, device, false, Activation.TanH, false, false, 1);
 
             var ft = lstm1.Inputs.Where(l => l.Uid.StartsWith("Parameter")).ToList();
             var consts = lstm1.Inputs.Where(l => l.Uid.StartsWith("Constant")).ToList();
@@ -207,7 +207,7 @@ namespace anndotnet.unit
             #endregion
             
             //Number of LSTM parameters
-            var lstm1 = RNN.RecurrenceLSTM(x,3,3, DataType.Float,device, Activation.TanH,true,true,1);
+            var lstm1 = RNN.RecurrenceLSTM(x,3,3, DataType.Float,device, false, Activation.TanH,true,true,1);
 
             var ft = lstm1.Inputs.Where(l=>l.Uid.StartsWith("Parameter")).ToList();
             var consts = lstm1.Inputs.Where(l => l.Uid.StartsWith("Constant")).ToList();

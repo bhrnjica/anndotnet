@@ -31,15 +31,16 @@ namespace NNetwork.Core.Network
         /// <param name="cellDim">Dimension of the LSTM cell.</param>
         /// <param name="dataType">Type of data.</param>
         /// <param name="device">Device where computing will happen.</param>
+        /// <param name="returnSequence">Determines if the return value full sequence or the last element of sequence</param>
         /// <param name="actFun">Type of activation function for update cell state.</param>
         /// <param name="usePeephole">Include peephole connection in the gate.</param>
         /// <param name="useStabilizer">Use self stabilization for output.</param>
         /// <param name="seed">Random seed.</param>
         /// <returns></returns>
-        public static Function RecurrenceLSTM(Variable input, int outputDim, int cellDim, DataType dataType, DeviceDescriptor device,
+        public static Function RecurrenceLSTM(Variable input, int outputDim, int cellDim, DataType dataType, DeviceDescriptor device, bool returnSequence=false,
             Activation actFun = Activation.TanH, bool usePeephole = true, bool useStabilizer = true, uint seed = 1)
         {
-            if (outputDim < 0 || cellDim < 0)
+            if (outputDim <= 0 || cellDim <= 0)
                 throw new Exception("Dimension of LSTM cell cannot be zero.");
             //prepare output and cell dimensions 
             NDShape hShape = new int[] { outputDim };
@@ -60,10 +61,14 @@ namespace NNetwork.Core.Network
             // Form the recurrence loop by replacing the dh and dc placeholders with the actualDh and actualDc
             lstmCell.H.ReplacePlaceholders(new Dictionary<Variable, Variable> { { dh, actualDh }, { dc, actualDc } });
 
-            //initialize properties
-            var recurrence = CNTKLib.SequenceLast(lstmCell.H);
-            //
-            return recurrence;
+            //return value depending of type of LSTM layer
+            //For Stacked LSTM (with more than one LSTM layer in the network), the last LSTM must return last Sequence element,
+            // otherwise full sequence is returned
+            if (returnSequence)
+                return lstmCell.H;
+            else
+                return CNTKLib.SequenceLast(lstmCell.H); 
+
         }
 
         /// <summary>

@@ -572,7 +572,7 @@ namespace anndotnet.wnd.Models
             {
                 var stab = l.SelfStabilization == true ? 1 : 0;
                 var peep = l.Peephole == true ? 1 : 0;
-                strValue += $"|Layer:{l.Type} {l.HDimension} {l.CDimension} {l.Rate} {l.Activation} {stab} {peep} ";
+                strValue += $"|Layer:{l.Type} {l.HDimension} {l.CDimension} {l.Value} {l.Activation} {stab} {peep} ";
             }
 
             return strValue;

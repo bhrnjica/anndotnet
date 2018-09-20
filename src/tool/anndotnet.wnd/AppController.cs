@@ -524,19 +524,17 @@ namespace anndotnet.wnd
                     itm.Activation = Activation.TanH;
                     itm.Type = LayerType.LSTM;
                 }
-
                 else if (layer == "Embedding Layer")
                 {
                     itm.Type = LayerType.Embedding;
                     itm.UseActivation = false;
                 }
-
                 else if (layer == "Drop Layer")
                     itm.Type = LayerType.Drop;
                 else
                     throw new Exception("Unsupported Layer!");
                 itm.Name = layer;
-                //normalization layer must be on first position
+                //normalization layer must be on the first position
                 if (itm.Type == LayerType.Normalization)
                 {
                     if(model.Network.Where(x=>x.Type== LayerType.Normalization).Count() == 0)
@@ -545,6 +543,12 @@ namespace anndotnet.wnd
                     {
                         MessageBox.Show("Only one normalization layer is allowed.");
                     }
+                }
+                else if (itm.Type == LayerType.LSTM && model.Network.Where(x=>x.Type == LayerType.LSTM).Count() > 0)
+                {
+                    var lastLSTM = model.Network.Where(x => x.Type == LayerType.LSTM).Last();
+                    var index = model.Network.IndexOf(lastLSTM);
+                    model.Network.Insert(index+1,itm);
                 }
                 else
                     model.Network.Add(itm);

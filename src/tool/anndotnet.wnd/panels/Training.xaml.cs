@@ -87,43 +87,54 @@ namespace anndotnet.wnd.Panels
 
         private void Training_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //clear prev. state
-            trainingMinibatchGraph.GraphPane.CurveList.Clear();
-            trainingDatasetsGraph.GraphPane.CurveList.Clear();
-
-            //force to update the control
-            this.trainingMinibatchGraph.RestoreScale(trainingMinibatchGraph.GraphPane);
-            this.trainingDatasetsGraph.RestoreScale(trainingDatasetsGraph.GraphPane);
-
-            if (this.DataContext == null || !(this.DataContext is MLConfigController))
-                return;
-            var mlConfig = this.DataContext as MLConfigController;
-
-            //
-            mlConfig.UpdateTrainingtGraphs = UpdateGraphs;
-
-            //prepage graph
-            prepareGraphPanel1();
-            prepareGraphPanel2();
-            //
-            preparesSeriesGraph1();
-            preparesSeriesGraph2();
-
-            //
-            for (int i = 0; i < mlConfig.TrainingProgress.MBLossValue.Count; i++)
+            try
             {
-                lossMinibatchSerie.AddPoint(mlConfig.TrainingProgress.MBLossValue[i]);
-                evalMinibatchSerie.AddPoint(mlConfig.TrainingProgress.MBEvaluationValue[i]);
-            }
-            for (int i = 0; i < mlConfig.TrainingProgress.TrainEvalValue.Count; i++)
-            {
-                evalTrainingSerie.AddPoint(mlConfig.TrainingProgress.TrainEvalValue[i]);
-                evalValidationSerie.AddPoint(mlConfig.TrainingProgress.ValidationEvalValue[i]);
-            }
+                //clear prev. state
+                trainingMinibatchGraph.GraphPane.CurveList.Clear();
+                trainingDatasetsGraph.GraphPane.CurveList.Clear();
 
-            //Refresh the charts
-            trainingMinibatchGraph.RestoreScale(trainingMinibatchGraph.GraphPane);
-            trainingDatasetsGraph.RestoreScale(trainingDatasetsGraph.GraphPane);
+                //force to update the control
+                this.trainingMinibatchGraph.RestoreScale(trainingMinibatchGraph.GraphPane);
+                this.trainingDatasetsGraph.RestoreScale(trainingDatasetsGraph.GraphPane);
+
+                if (this.DataContext == null || !(this.DataContext is MLConfigController))
+                    return;
+                var mlConfig = this.DataContext as MLConfigController;
+
+                //
+                mlConfig.UpdateTrainingtGraphs = UpdateGraphs;
+
+                //prepage graph
+                prepareGraphPanel1();
+                prepareGraphPanel2();
+                //
+                preparesSeriesGraph1();
+                preparesSeriesGraph2();
+
+                //
+                for (int i = 0; i < mlConfig.TrainingProgress.MBLossValue.Count; i++)
+                {
+                    lossMinibatchSerie.AddPoint(mlConfig.TrainingProgress.MBLossValue[i]);
+                    evalMinibatchSerie.AddPoint(mlConfig.TrainingProgress.MBEvaluationValue[i]);
+                }
+                for (int i = 0; i < mlConfig.TrainingProgress.TrainEvalValue.Count; i++)
+                {
+                    evalTrainingSerie.AddPoint(mlConfig.TrainingProgress.TrainEvalValue[i]);
+                    evalValidationSerie.AddPoint(mlConfig.TrainingProgress.ValidationEvalValue[i]);
+                }
+
+                //Refresh the charts
+                trainingMinibatchGraph.RestoreScale(trainingMinibatchGraph.GraphPane);
+                trainingDatasetsGraph.RestoreScale(trainingDatasetsGraph.GraphPane);
+            }
+            catch (Exception ex)
+            {
+
+                var ac = App.Current.MainWindow.DataContext as AppController;
+                if (ac != null)
+                    ac.ReportException(ex);
+            }
+            
 
         }
         public void UpdateGraphs(int it, double lossMB, double evaMB, double evalTrain, double evalValid)
@@ -137,6 +148,13 @@ namespace anndotnet.wnd.Panels
                 //
                 preparesSeriesGraph1();
                 preparesSeriesGraph2();
+            }
+            if(it==0)
+            {
+                var configCont = this.DataContext as MLConfigController;
+                var loss = configCont.LearningParameters.LossFunction.ToString();
+                var eval = configCont.LearningParameters.EvaluationFunction.ToString();
+                trainingDatasetsGraph.GraphPane.YAxis.Title.Text = eval;
             }
             lossMinibatchSerie.AddPoint(new PointPair(it, lossMB));
             evalMinibatchSerie.AddPoint(new PointPair(it, evaMB));
