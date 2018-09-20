@@ -32,7 +32,7 @@ namespace ANNdotNET.Core
         public static char[] m_cntkSpearator = new char[] { '|' };
         public static char[] m_cntkSpearator2 = new char[] { ' ', '\t' };
         public static char[] m_ParameterNameSeparator = new char[] { ':' };
-        public static char[] m_ValueSpearator = new char[] { ';'};
+        public static char[] m_ValueSpearator = new char[] { ';' };
         public static readonly string m_NumFeaturesGroupName = "NumFeatures";
         public static readonly string m_MLDataFolder = "data";
         public static readonly string m_MLModelFolder = "models";
@@ -63,6 +63,35 @@ namespace ANNdotNET.Core
                 m_StreamConfig = value;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="trData"></param>
+        /// <param name="bestModelFile"></param>
+        /// <returns></returns>
+        public static string ReplaceBestModel(TrainingParameters trData, string mlconfigPath, string bestModelFile)
+        {
+            try
+            {
+                var mlconfigFolder = MLFactory.GetMLConfigFolder(mlconfigPath);
+                var oldPath = Path.Combine(mlconfigFolder,trData.LastBestModel);
+                //delete history 
+                if (File.Exists(oldPath))
+                    File.Delete(oldPath);
+
+                //set new value after delete old model
+                trData.LastBestModel = bestModelFile;
+                return bestModelFile;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
         /// <summary>
         /// List of input variables for NN model. The variable can hold one or more features.
         /// Having more input variables is handy in situation when some features need performing action.
@@ -153,7 +182,7 @@ namespace ANNdotNET.Core
 
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -181,7 +210,7 @@ namespace ANNdotNET.Core
 
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -198,7 +227,7 @@ namespace ANNdotNET.Core
         {
             Function nnModel = null;
             //for custom implementation should use this string format
-            if (strNetwork.StartsWith("|Custom")|| strNetwork.StartsWith("|Layer:Custom"))
+            if (strNetwork.StartsWith("|Custom") || strNetwork.StartsWith("|Layer:Custom"))
             {
                 //Todo: Implementation of reflection needs to be implemented.
                 //Two ways of calling customModels
@@ -290,7 +319,7 @@ namespace ANNdotNET.Core
                 //parse feature variables
                 var strParameters = strTrainingData.Split(m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
 
-                
+
                 //training type
                 var type = strParameters.Where(x => x.StartsWith("Type:")).Select(x => x.Substring("Type:".Length)).FirstOrDefault();
                 //in case the parameter is not provided throw exception
@@ -299,7 +328,7 @@ namespace ANNdotNET.Core
                 //convert to enum
                 trParam.Type = (MinibatchType)Enum.Parse(typeof(MinibatchType), type, true);
 
-                
+
                 //mbs
                 var mbs = strParameters.Where(x => x.StartsWith("BatchSize:")).Select(x => x.Substring("BatchSize:".Length)).FirstOrDefault();
                 if (string.IsNullOrEmpty(mbs))
@@ -327,7 +356,7 @@ namespace ANNdotNET.Core
                     throw new Exception("Unsupported RandomizeBatch!");
 
                 //convert to float
-                trParam.RandomizeBatch = randomizeBatch.Trim(' ') == "1"?true:false;
+                trParam.RandomizeBatch = randomizeBatch.Trim(' ') == "1" ? true : false;
 
                 //normalization data
                 var normalization = strParameters.Where(x => x.StartsWith("Normalization:")).Select(x => x.Substring("Normalization:".Length)).FirstOrDefault();
@@ -337,9 +366,9 @@ namespace ANNdotNET.Core
                     trParam.Normalization = new string[] { "1" };
                 else
                 {
-                    trParam.Normalization = normalization.Split(new char[] { ' ' },StringSplitOptions.RemoveEmptyEntries);
+                    trParam.Normalization = normalization.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 }
-                
+
                 //save while training
                 var saveWhileTraining = strParameters.Where(x => x.StartsWith("SaveWhileTraining:")).Select(x => x.Substring("SaveWhileTraining:".Length)).FirstOrDefault();
                 if (string.IsNullOrEmpty(saveWhileTraining))
@@ -359,7 +388,7 @@ namespace ANNdotNET.Core
                 var continueTraining = strParameters.Where(x => x.StartsWith("ContinueTraining:")).Select(x => x.Substring("ContinueTraining:".Length)).FirstOrDefault();
                 if (string.IsNullOrEmpty(continueTraining))
                     trParam.ContinueTraining = false;
-                else 
+                else
                     trParam.ContinueTraining = continueTraining.Trim(' ') == "1" ? true : false;
 
                 //best found model
@@ -441,11 +470,11 @@ namespace ANNdotNET.Core
                 trParam.Momentum = double.Parse(momentum, CultureInfo.InvariantCulture);
 
                 // L1 
-                 var l1 = strParameters.Where(x => x.StartsWith("L1:")).Select(x => x.Substring("L1:".Length)).FirstOrDefault();
+                var l1 = strParameters.Where(x => x.StartsWith("L1:")).Select(x => x.Substring("L1:".Length)).FirstOrDefault();
                 if (string.IsNullOrEmpty(l1))
                     trParam.L1Regularizer = 0;
                 else //convert to float
-                trParam.L1Regularizer = double.Parse(l1, CultureInfo.InvariantCulture);
+                    trParam.L1Regularizer = double.Parse(l1, CultureInfo.InvariantCulture);
 
                 // L2 
                 var l2 = strParameters.Where(x => x.StartsWith("L2:")).Select(x => x.Substring("L2:".Length)).FirstOrDefault();
@@ -479,19 +508,19 @@ namespace ANNdotNET.Core
                 var strParameters = strNetwork.Split(m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
 
                 //in case of custom network model
-                if(strParameters.Length==1 && (strParameters[0].Contains("Custom") || strParameters[0].Contains("custom")))
+                if (strParameters.Length == 1 && (strParameters[0].Contains("Custom") || strParameters[0].Contains("custom")))
                 {
                     var l = new NNLayer() { Id = 1, Name = "Custom Implemented Network", };
                     layers.Add(l);
                     return layers;
                 }
 
-                for(int i=0; i < strParameters.Length; i++)
+                for (int i = 0; i < strParameters.Length; i++)
                 {
                     //
                     var strLayerValues = strParameters[i];
                     var ind = strLayerValues.IndexOf(":");
-                    var layer = strLayerValues.Substring(ind+1);
+                    var layer = strLayerValues.Substring(ind + 1);
                     var values = layer.Split(m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries);
 
                     //create layer
@@ -551,21 +580,21 @@ namespace ANNdotNET.Core
 
             //get last LSTM layer
             var lastLSTM = layers.Where(x => x.Type == LayerType.LSTM).LastOrDefault();
-            
+
             //
             foreach (var layer in layers)
             {
-                if(layer.Type == LayerType.Dense)
+                if (layer.Type == LayerType.Dense)
                 {
-                    net = ff.Dense(net, layer.HDimension, layer.Activation, layer.Name); 
+                    net = ff.Dense(net, layer.HDimension, layer.Activation, layer.Name);
                 }
                 else if (layer.Type == LayerType.Drop)
                 {
-                    net = CNTKLib.Dropout(net, layer.Value/100.0f);
+                    net = CNTKLib.Dropout(net, layer.Value / 100.0f);
                 }
                 else if (layer.Type == LayerType.Embedding)
                 {
-                    net = Embedding.Create(net,layer.HDimension, type, device, 1, layer.Name);
+                    net = Embedding.Create(net, layer.HDimension, type, device, 1, layer.Name);
                 }
                 else if (layer.Type == LayerType.LSTM)
                 {
@@ -583,7 +612,7 @@ namespace ANNdotNET.Core
 
             return net;
         }
-        
+
 
         /// <summary>
         /// Creates variables for features and labels based on variable definition from the config file.
@@ -610,7 +639,7 @@ namespace ANNdotNET.Core
 
                 throw;
             }
-            
+
         }
 
         #endregion
@@ -634,7 +663,7 @@ namespace ANNdotNET.Core
 
                 var axis = labelWithDynamicAxes ? new List<Axis>() { Axis.DefaultBatchAxis() } : null;
                 var shape = new int[] { int.Parse(fVar[1]) };
-                var v = Variable.InputVariable(shape, type, fVar[0], axis, fVar[2] == "1",false);
+                var v = Variable.InputVariable(shape, type, fVar[0], axis, fVar[2] == "1", false);
                 lst.Add(v);
             }
 
@@ -743,17 +772,17 @@ namespace ANNdotNET.Core
             }
 
         }
-        
+
         /// <summary>
         /// Returns CheckPoint of the model.
         /// </summary>
-        /// <param name="modelPath"></param>
+        /// <param name="mlconfigPath"></param>
         /// <param name="configid"></param>
         /// <returns></returns>
-        public static string GetModelCheckPointPath(string modelPath, string configid)
+        public static string GetModelCheckPointPath(string mlconfigPath, string configid)
         {
-            var modelFolder = MLFactory.GetMLConfigFolder(modelPath);
-            var name = MLFactory.GetMLConfigFolderName(modelPath);
+            var modelFolder = MLFactory.GetMLConfigFolder(mlconfigPath);
+            var name = MLFactory.GetMLConfigFolderName(mlconfigPath);
             return $"{modelFolder}\\model_{configid}.checkpoint";
         }
 
@@ -843,7 +872,7 @@ namespace ANNdotNET.Core
         public static string GetMLConfigFolder(string mlconfigFullPath)
         {
             //remove last suffix from the path
-            var folder = mlconfigFullPath.Substring(0, mlconfigFullPath.Length /*-MLFactory.m_MLConfigSufix.Length*/-MLFactory.m_MLConfigFileExt.Length);
+            var folder = mlconfigFullPath.Substring(0, mlconfigFullPath.Length /*-MLFactory.m_MLConfigSufix.Length*/- MLFactory.m_MLConfigFileExt.Length);
             return folder;
         }
 

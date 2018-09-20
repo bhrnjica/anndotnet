@@ -421,6 +421,19 @@ namespace ANNdotNET.Lib
 
         }
 
+        public static string ReplaceBestModel(TrainingParameters trainingParameters, string mlconfigPath, string bestModelFile)
+        {
+            try
+            {
+                return MLFactory.ReplaceBestModel(trainingParameters,mlconfigPath, bestModelFile);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         /// <summary>
         /// Creates a new ANNdotNET Model configuration file.
         /// </summary>
@@ -609,6 +622,33 @@ namespace ANNdotNET.Lib
             var path = Path.GetDirectoryName(projectPath) + $"\\{Path.GetFileNameWithoutExtension(projectName)}";
             System.IO.Directory.CreateDirectory(path);
             return true;
+        }
+
+        /// <summary>
+        /// return formated string from the network layer list
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static string NetworkParametersToString(List<NNLayer> network)
+        {
+            try
+            {
+                var strValue = "";
+                foreach (var l in network)
+                {
+                    var stab = l.SelfStabilization == true ? 1 : 0;
+                    var peep = l.Peephole == true ? 1 : 0;
+                    strValue += $"|Layer:{l.Type} {l.HDimension} {l.CDimension} {l.Value} {l.Activation} {stab} {peep} ";
+                }
+
+                return strValue;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         /// <summary>

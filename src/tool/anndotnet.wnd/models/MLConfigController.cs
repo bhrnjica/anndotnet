@@ -190,7 +190,7 @@ namespace anndotnet.wnd.Models
 
         }
 
-        internal void SaveModel()
+        internal void Save()
         {
             //configuration is empty 
             if (TrainingParameters == null)
@@ -214,7 +214,7 @@ namespace anndotnet.wnd.Models
             Project.SaveConfigFile(filePath, mlCOnfig);
         }
 
-        internal void DeleteModel()
+        internal void Delete()
         {
             try
             {
@@ -261,7 +261,7 @@ namespace anndotnet.wnd.Models
                 }
                 
                 //save model before evaluation since there is a data must be stored into model file.
-                SaveModel();
+                Save();
 
                 //get model full path
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
@@ -357,7 +357,7 @@ namespace anndotnet.wnd.Models
                 isModelParametersValid();
 
                 //first save model
-                SaveModel();
+                Save();
 
                 //raise event since some controls depend on this property
                 //change icon of treeView item to indicate this model is running
@@ -384,12 +384,12 @@ namespace anndotnet.wnd.Models
                 if (TrainingProgress.MBLossValue.Count==0 || TrainingParameters.Epochs > TrainingProgress.MBLossValue.Last().X)
                 {
                     //LOad ML configuration file
-                    var modelPath = Project.GetMLConfigPath(Settings, Name);
+                    var mlconfigPath = Project.GetMLConfigPath(Settings, Name);
                     //
-                    var res = await Task.Run<TrainResult>(() => Project.TrainModel(modelPath, token, trainingProgress, m_device));
+                    var res = await Task.Run<TrainResult>(() => Project.TrainModel(mlconfigPath, token, trainingProgress, m_device));
 
                     //save best trained model
-                    TrainingParameters.LastBestModel = res.BestModelFile;
+                    TrainingParameters.LastBestModel = Project.ReplaceBestModel(TrainingParameters, mlconfigPath, res.BestModelFile);
                     //once the training process completes inform the GUI about it
                     var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
                     //send note to GUI the training process is completed 
@@ -567,6 +567,7 @@ namespace anndotnet.wnd.Models
 
         private string saveNetworkParameters(ObservableCollection<NNLayer> network)
         {
+            return Project.NetworkParametersToString(network.ToList());
             var strValue = "";
             foreach(var l in network)
             {
@@ -580,6 +581,7 @@ namespace anndotnet.wnd.Models
 
         private string saveLearningParameters(LearningParameters lp)
         {
+            return lp.ToString();
             var strValue = $"|Type:{lp.LearnerType} |LRate:{lp.LearningRate.ToString(CultureInfo.InvariantCulture)} " +
                 $"|Momentum:{lp.Momentum.ToString(CultureInfo.InvariantCulture)} |Loss:{lp.LossFunction}" +
                 $"|Eval:{lp.EvaluationFunction}" + $"|L1:{lp.L1Regularizer}" + $"|L2:{lp.L2Regularizer}";
@@ -589,6 +591,8 @@ namespace anndotnet.wnd.Models
 
         private string saveTrainingParameters(TrainingParameters tp)
         {
+            return tp.ToString();
+         
             var norm = tp.Normalization;
             if (tp.Normalization == null)
                 norm = new string[] { "0" };

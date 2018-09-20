@@ -44,7 +44,7 @@ namespace anndotnet.wnd.Pages
                 {
                     MLConfigController model = e.OldValue as MLConfigController;
                     if (model != null && !model.Deleted)
-                        model.SaveModel();
+                        model.Save();
                 
                 }
                 //for new model we should show previously stored state

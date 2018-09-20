@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using CNTK;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace NNetwork.Core.Common
 {
@@ -95,6 +96,15 @@ namespace NNetwork.Core.Common
         public double Momentum { get; set; }
         public double L1Regularizer { get; set; }
         public double L2Regularizer { get; set; }
+
+        public override string ToString()
+        {
+            var strValue = $"|Type:{LearnerType} |LRate:{LearningRate.ToString(CultureInfo.InvariantCulture)} " +
+                $"|Momentum:{Momentum.ToString(CultureInfo.InvariantCulture)} |Loss:{LossFunction}" +
+                $"|Eval:{EvaluationFunction}" + $"|L1:{L1Regularizer}" + $"|L2:{L2Regularizer}";
+
+            return strValue;
+        }
     }
 
     public class TrainingParameters
@@ -118,5 +128,24 @@ namespace NNetwork.Core.Common
         //this is root path
         public string ModelFolderPath { get; set; }
         public string LastBestModel { get; set; }
+
+        public override string ToString()
+        {
+            //return base.ToString();
+            var norm = Normalization;
+            if (Normalization == null)
+                norm = new string[] { "0" };
+            //
+            var ct = ContinueTraining ? 1 : 0;
+            var smwt = SaveModelWhileTraining ? 1 : 0;
+            var rb = RandomizeBatch ? 1 : 0;
+            var ftse = FullTrainingSetEval ? 1 : 0;
+            var strValue = $"|Type:{Type} |BatchSize:{BatchSize} |Epochs:{Epochs} " +
+                $"|Normalization:{string.Join(";", norm)} |RandomizeBatch:{rb}" +
+                $" |SaveWhileTraining:{smwt} |FullTrainingSetEval:{ftse} |ProgressFrequency:{ProgressFrequency}" +
+                $" |ContinueTraining:{ct} |TrainedModel:{LastBestModel} ";
+
+            return strValue;
+        }
     }
 }

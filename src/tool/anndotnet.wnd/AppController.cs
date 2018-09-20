@@ -272,13 +272,13 @@ namespace anndotnet.wnd
 
         }
 
-        internal void DeleteModel(MLConfigController model)
+        internal void DeleteModel(MLConfigController mlconfigController)
         {
             try
             {
                var prj = AppModel.Project[1] as ANNProjectController;
-                prj.Models.Remove(model);
-                model.DeleteModel();
+                prj.Models.Remove(mlconfigController);
+                mlconfigController.Delete();
 
             }
             catch (Exception ex)
@@ -654,8 +654,8 @@ namespace anndotnet.wnd
                 }
                 else if (ActiveViewModel is MLConfigController)
                 {
-                    var model = ActiveViewModel as MLConfigController;
-                    model.SaveModel();
+                    var mlConfigC = ActiveViewModel as MLConfigController;
+                    mlConfigC.Save();
                 }
 
 
@@ -757,35 +757,35 @@ namespace anndotnet.wnd
             {
                 
                 // 
-                var model = ActiveViewModel as MLConfigController;
-                if (model == null)
+                var mlConfigC = ActiveViewModel as MLConfigController;
+                if (mlConfigC == null)
                     return;
                 //save
-                model.SaveModel();
+                mlConfigC.Save();
 
                 if (e.Parameter.ToString() == "Excel")
                 {
                     var filepath = promptToSaveFile("Microsoft Excel files", " *.xlsx");
                     if (!string.IsNullOrEmpty(filepath))
-                        model.ExportToExcel(filepath);
+                        mlConfigC.ExportToExcel(filepath);
                 }
                 if (e.Parameter.ToString() == "CSV")
                 {
                     var filepath = promptToSaveFile("comma separated values files", " *.csv");
                     if (!string.IsNullOrEmpty(filepath))
-                        model.ExportToCSV(filepath);
+                        mlConfigC.ExportToCSV(filepath);
                 }
                 else if (e.Parameter.ToString() == "CNTK")
                 {
                     var filepath = promptToSaveFile("Microsoft CNTK files", " *.cntk");
                     if (!string.IsNullOrEmpty(filepath))
-                        model.ExportToCNTK(filepath);
+                        mlConfigC.ExportToCNTK(filepath);
                 }
                 else if (e.Parameter.ToString() == "ONNX")
                 {
                     var filepath = promptToSaveFile("ONNX files", " *.onnx");
                     if (!string.IsNullOrEmpty(filepath))
-                        model.ExportToONNX(filepath);
+                        mlConfigC.ExportToONNX(filepath);
                 }
             }
             catch (Exception ex)
@@ -846,7 +846,7 @@ namespace anndotnet.wnd
                 else if (ActiveViewModel is MLConfigController)
                 {
                     var m = ActiveViewModel as MLConfigController;
-                    m.SaveModel();
+                    m.Save();
                 }
 
             }

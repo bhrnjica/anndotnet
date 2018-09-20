@@ -32,13 +32,13 @@ namespace anndotnet.core.app
         /// <param name="token">Cancellation token for interrupting training process on user request.</param>
         /// <param name="trainingProgress">training progress object</param>
         /// <param name="customModel">custom neural network model if available</param>
-        public static TrainResult Run(string modelPath, DeviceDescriptor device, CancellationToken token, TrainingProgress trainingProgress, CreateCustomModel customModel = null)
+        public static TrainResult Run(string mlconfigPath, DeviceDescriptor device, CancellationToken token, TrainingProgress trainingProgress, CreateCustomModel customModel = null)
         {
 
             //LOad ML configuration file
-            var dicMParameters = MLFactory.LoadMLConfiguration(modelPath);
+            var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
 
-            var fi = new FileInfo(modelPath);
+            var fi = new FileInfo(mlconfigPath);
             var folderPath = MLFactory.GetMLConfigFolder(fi.FullName);
             //add path of model folder
             dicMParameters.Add("root", folderPath);
@@ -52,7 +52,7 @@ namespace anndotnet.core.app
             string modelCheckPoint = null;
             if (dicMParameters.ContainsKey("configid"))
             {
-                modelCheckPoint = MLFactory.GetModelCheckPointPath(modelPath, dicMParameters["configid"].Trim(' '));
+                modelCheckPoint = MLFactory.GetModelCheckPointPath(mlconfigPath, dicMParameters["configid"].Trim(' '));
             }
             //setup history of training path
             //TODO
@@ -62,6 +62,15 @@ namespace anndotnet.core.app
             //perform training
             var result = tr.Train(trainer, retVal.nnModel, retVal.trData, retVal.mbs, device, token, trainingProgress, modelCheckPoint, null);
 
+            //delete previous best model before change variable values
+            retVal.trData.LastBestModel =  MLFactory.ReplaceBestModel(retVal.trData, mlconfigPath, result.BestModelFile);
+
+            //save best model to mlconifg file
+            var trStrData = retVal.trData.ToString();
+            var d = new Dictionary<string, string>();
+            d.Add( "training", trStrData );
+            //save to file
+            MLFactory.SaveMLConfiguration(mlconfigPath, d);
             return result;
         }
 

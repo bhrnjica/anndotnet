@@ -93,8 +93,11 @@ namespace ANNdotNET.Core
                 else//delete checkpoint if exist in case no retraining is required, 
                     //so the next checkpoint saving is free of previous checkpoints
                 {
+                    //delete heckpoint
                     if (File.Exists(modelCheckPoint))
                         File.Delete(modelCheckPoint);
+                    
+                    //delete history 
                     if (File.Exists(historyPath))
                         File.Delete(historyPath);
                 }
