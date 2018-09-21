@@ -288,7 +288,9 @@ namespace anndotnet.wnd.Models
 
         internal void CreateMLConfig(MLConfigController model)
         {
-            
+            //save project with new created mlconfig
+            Save();
+
             //create model name 
             string modelName = $"Model{Models.Count}";
 

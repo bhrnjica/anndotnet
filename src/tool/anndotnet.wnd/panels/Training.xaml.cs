@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Models;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -109,7 +110,7 @@ namespace anndotnet.wnd.Panels
                 prepareGraphPanel2();
                 //
                 preparesSeriesGraph1();
-                preparesSeriesGraph2(mlConfig.Settings.ValidationSetCount==0);
+                preparesSeriesGraph2(mlConfig.TrainingProgress.ValidationEvalValue.Sum(x=>x.Y) > 0);
 
                 //
                 for (int i = 0; i < mlConfig.TrainingProgress.MBLossValue.Count; i++)
@@ -148,7 +149,7 @@ namespace anndotnet.wnd.Panels
                 //
                 preparesSeriesGraph1();
                 var mlConfig = this.DataContext as MLConfigController;
-                preparesSeriesGraph2(mlConfig.Settings.ValidationSetCount > 0);
+                preparesSeriesGraph2(mlConfig.TrainingProgress.ValidationEvalValue.Sum(x => x.Y) > 0);
             }
             if(it==1)
             {
