@@ -34,13 +34,13 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.splitCheckBoxThenRandomize = new System.Windows.Forms.CheckBox();
             this.randomoizeDataSet = new System.Windows.Forms.CheckBox();
             this.numberRadio = new System.Windows.Forms.RadioButton();
             this.presentigeRadio = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.numCtrlNumForTest = new System.Windows.Forms.NumericUpDown();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.splitCheckBoxThenRandomize = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlNumForTest)).BeginInit();
@@ -78,7 +78,19 @@
             this.groupBox5.Size = new System.Drawing.Size(1103, 123);
             this.groupBox5.TabIndex = 26;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Testing data set";
+            this.groupBox5.Text = "Validation data set";
+            // 
+            // splitCheckBoxThenRandomize
+            // 
+            this.splitCheckBoxThenRandomize.AutoSize = true;
+            this.splitCheckBoxThenRandomize.Location = new System.Drawing.Point(674, 82);
+            this.splitCheckBoxThenRandomize.Margin = new System.Windows.Forms.Padding(6);
+            this.splitCheckBoxThenRandomize.Name = "splitCheckBoxThenRandomize";
+            this.splitCheckBoxThenRandomize.Size = new System.Drawing.Size(323, 29);
+            this.splitCheckBoxThenRandomize.TabIndex = 19;
+            this.splitCheckBoxThenRandomize.Text = "Split data set then randomize";
+            this.splitCheckBoxThenRandomize.UseVisualStyleBackColor = true;
+            this.splitCheckBoxThenRandomize.Visible = false;
             // 
             // randomoizeDataSet
             // 
@@ -98,10 +110,10 @@
             this.numberRadio.Location = new System.Drawing.Point(361, 33);
             this.numberRadio.Margin = new System.Windows.Forms.Padding(4);
             this.numberRadio.Name = "numberRadio";
-            this.numberRadio.Size = new System.Drawing.Size(282, 29);
+            this.numberRadio.Size = new System.Drawing.Size(310, 29);
             this.numberRadio.TabIndex = 17;
             this.numberRadio.TabStop = true;
-            this.numberRadio.Text = "# for testing. (0-n/2 rows)";
+            this.numberRadio.Text = "# for validation. (0-n/2 rows)";
             this.numberRadio.UseVisualStyleBackColor = true;
             // 
             // presentigeRadio
@@ -110,9 +122,9 @@
             this.presentigeRadio.Location = new System.Drawing.Point(361, 73);
             this.presentigeRadio.Margin = new System.Windows.Forms.Padding(4);
             this.presentigeRadio.Name = "presentigeRadio";
-            this.presentigeRadio.Size = new System.Drawing.Size(251, 29);
+            this.presentigeRadio.Size = new System.Drawing.Size(279, 29);
             this.presentigeRadio.TabIndex = 16;
-            this.presentigeRadio.Text = "% for testing. (0-50%)";
+            this.presentigeRadio.Text = "% for validation. (0-50%)";
             this.presentigeRadio.UseVisualStyleBackColor = true;
             // 
             // label2
@@ -151,18 +163,6 @@
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             this.listView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDown);
-            // 
-            // splitCheckBoxThenRandomize
-            // 
-            this.splitCheckBoxThenRandomize.AutoSize = true;
-            this.splitCheckBoxThenRandomize.Location = new System.Drawing.Point(674, 82);
-            this.splitCheckBoxThenRandomize.Margin = new System.Windows.Forms.Padding(6);
-            this.splitCheckBoxThenRandomize.Name = "splitCheckBoxThenRandomize";
-            this.splitCheckBoxThenRandomize.Size = new System.Drawing.Size(323, 29);
-            this.splitCheckBoxThenRandomize.TabIndex = 19;
-            this.splitCheckBoxThenRandomize.Text = "Split data set then randomize";
-            this.splitCheckBoxThenRandomize.UseVisualStyleBackColor = true;
-            this.splitCheckBoxThenRandomize.Visible = false;
             // 
             // DataPanel
             // 

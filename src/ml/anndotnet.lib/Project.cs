@@ -328,6 +328,12 @@ namespace ANNdotNET.Lib
                 var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
                 var trainedModelRelativePath = Project.GetParameterValue(dicMParameters["training"], "TrainedModel");
 
+                //check if validation files is defined
+                if (isTrain == false && (string.IsNullOrEmpty(dicPath["Validation"]) || dicPath["Validation"] == " "))
+                {
+                    return (null, null, null, null);
+                }
+
                 //Minibatch type
                 var mbTypestr = Project.GetParameterValue(dicMParameters["training"], "Type");
                 MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
@@ -561,9 +567,11 @@ namespace ANNdotNET.Lib
             try
             {
                 Dictionary<string, string> strMlCOnfig = new Dictionary<string, string>();
+
+                var validPath = settings.ValidationSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath(false) : "";
                 //
                 var strPaths = $"|Training:{MLFactory.GetDefaultMLConfigDatSetPath(true)} " +
-                               $"|Validation:{MLFactory.GetDefaultMLConfigDatSetPath(false)} " +
+                               $"|Validation:{validPath} " +
                                $"|Test:{MLFactory.GetDefaultMLConfigDatSetPath(false)} " +
                                $"|TempModels:{MLFactory.m_MLTempModelFolder} |Models:{MLFactory.m_MLModelFolder} " +
                                $"|Result:{mlconfigName}_result.csv |Logs:{MLFactory.m_MLLogFolder} ";

@@ -288,8 +288,7 @@ namespace anndotnet.wnd.Models
 
         internal void CreateMLConfig(MLConfigController model)
         {
-            //first save data
-            Save();
+            
             //create model name 
             string modelName = $"Model{Models.Count}";
 
@@ -361,7 +360,10 @@ namespace anndotnet.wnd.Models
             model.InitModel();
 
             //add newly created model in to Model collection of the project
-            Models.Add(model);          
+            Models.Add(model);
+
+            //save project with new created mlconfig
+            Save();
         }
     }
 }

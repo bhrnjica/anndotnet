@@ -109,7 +109,7 @@ namespace anndotnet.wnd.Panels
                 prepareGraphPanel2();
                 //
                 preparesSeriesGraph1();
-                preparesSeriesGraph2();
+                preparesSeriesGraph2(mlConfig.Settings.ValidationSetCount==0);
 
                 //
                 for (int i = 0; i < mlConfig.TrainingProgress.MBLossValue.Count; i++)
@@ -147,9 +147,10 @@ namespace anndotnet.wnd.Panels
                 trainingDatasetsGraph.GraphPane.CurveList.Clear();
                 //
                 preparesSeriesGraph1();
-                preparesSeriesGraph2();
+                var mlConfig = this.DataContext as MLConfigController;
+                preparesSeriesGraph2(mlConfig.Settings.ValidationSetCount > 0);
             }
-            if(it==0)
+            if(it==1)
             {
                 var configCont = this.DataContext as MLConfigController;
                 var loss = configCont.LearningParameters.LossFunction.ToString();
@@ -223,12 +224,12 @@ namespace anndotnet.wnd.Panels
 
         }
 
-        void preparesSeriesGraph2()
+        void preparesSeriesGraph2(bool isValidationSetDefined)
         {
 
             var zedGraph = this.trainingDatasetsGraph;
 
-            evalTrainingSerie = new LineItem("Loss function", null, null, System.Drawing.Color.Blue, ZedGraph.SymbolType.None, 1);
+            evalTrainingSerie = new LineItem("eval training datatset", null, null, System.Drawing.Color.Blue, ZedGraph.SymbolType.None, 1);
             evalTrainingSerie.Symbol.Fill = new Fill(System.Drawing.Color.Blue);
             evalTrainingSerie.Symbol.Size = 1;
             // Make it a smooth line
@@ -236,7 +237,7 @@ namespace anndotnet.wnd.Panels
             evalTrainingSerie.Line.SmoothTension = 0.9F;
             evalTrainingSerie.Line.Width = 1.8f;
             //
-            evalValidationSerie = new LineItem("Evaluation function", null, null, System.Drawing.Color.Orange, ZedGraph.SymbolType.None, 1);
+            evalValidationSerie = new LineItem("eval validation datatset", null, null, System.Drawing.Color.Orange, ZedGraph.SymbolType.None, 1);
             evalValidationSerie.Symbol.Fill = new Fill(System.Drawing.Color.Orange);
             evalValidationSerie.Symbol.Size = 1;
             // Make it a smooth line
@@ -258,7 +259,9 @@ namespace anndotnet.wnd.Panels
 
             //add series after initialization
             zedGraph.GraphPane.CurveList.Add(evalTrainingSerie);
-            zedGraph.GraphPane.CurveList.Add(evalValidationSerie);
+            //add series in case Validation dataset is not defined
+            if(isValidationSetDefined)
+                zedGraph.GraphPane.CurveList.Add(evalValidationSerie);
 
         }
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

@@ -58,20 +58,38 @@ namespace anndotnet.wnd.panels
 
         private void CMatric_Click(object sender, RoutedEventArgs e)
         {
-            if (!(this.DataContext is Models.ModelPerformance))
-                return;
+            try
+            {
+                if (!(this.DataContext is Models.ModelPerformance))
+                    return;
 
-            var modelPerf = (Models.ModelPerformance)this.DataContext;
-            var ret = ((Models.ModelPerformance)this.DataContext).PerformanceData;
+                var modelPerf = (Models.ModelPerformance)this.DataContext;
+                var ret = ((Models.ModelPerformance)this.DataContext).PerformanceData;
 
-            MModelEvaluation dlg = new MModelEvaluation();
-            dlg.Text = $"Confusion matrix for {modelPerf.DatSetName}.";
-            var cl = ret["Classes"].Select(x => x.ToString()).ToArray();
-            dlg.loadClasses(cl);
-            dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray(),
-                  null,null);
+                //no validation or 
+                if (ret == null)
+                {
+                    throw new Exception("The dataset is empty!");
+                }
 
-            dlg.ShowDialog();
+                MModelEvaluation dlg = new MModelEvaluation();
+                dlg.Text = $"Confusion matrix for {modelPerf.DatSetName}.";
+                var cl = ret["Classes"].Select(x => x.ToString()).ToArray();
+                dlg.loadClasses(cl);
+                dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray(),
+                      null, null);
+
+                dlg.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+
+
+                var ac = App.Current.MainWindow.DataContext as AppController;
+                if (ac != null)
+                    ac.ReportException(ex);
+            }
+            
         }
     }
 }

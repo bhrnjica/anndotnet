@@ -105,9 +105,9 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock HorizontalAlignment="Center" Text="Evaluation of " VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center"  Foreground="Orange"  Text="Training" VerticalAlignment="Center"  FontWeight="Bold"/>
+                        <TextBlock HorizontalAlignment="Center"  Foreground="Blue"  Text="Training" VerticalAlignment="Center"  FontWeight="Bold"/>
                         <TextBlock HorizontalAlignment="Center" Text=" and " VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center" Foreground="Blue" Text="Validation" VerticalAlignment="Center"  FontWeight="Bold"/>
+                        <TextBlock HorizontalAlignment="Center" Foreground="Orange" Text="Validation" VerticalAlignment="Center"  FontWeight="Bold"/>
                         <TextBlock HorizontalAlignment="Center" Text=" data" VerticalAlignment="Center"/>
                     </StackPanel>
                     <WindowsFormsHost Grid.Row="1" Grid.Column="1" FontSize="14">

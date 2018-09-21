@@ -9,7 +9,7 @@ supposed to be GUI tool for CNTK library with extensions in data preprocessing, 
 The process of creating, training, evaluating and exporting models is provided from the GUI Application
  and does not require knowledge for supported programming languages. The ANNdotNET is ideal in several scenarios:
 
-- more focus on network development and training process using on classic desktop approach, instead of focusing on coding, 
+- more focus on network development and training process using classic desktop approach, instead of focusing on coding, 
 - less time spending on debugging source code, more focusing on different configuration and parameter variants,
 - ideal for engineers/users which are not familiar with programming languages, 
 - in case the problem requires coding custom models, or training process, ANNdotNET CMD provides high level of API for such implementation,

@@ -281,17 +281,21 @@ namespace anndotnet.wnd.Models
                 for (int i = 0; i < predicT.Count(); i++)
                     mEval.ModelValueTraining.Add(new PointPair(i + 1, predicT.ElementAt(i)));
 
+                //no validation set defined
+                if(resultValidation.actualDict!=null)
+                {
+                    var actualV = resultValidation.actualDict.ElementAt(0).Value.Select(x => x.First());
+                    for (int i = 0; i < actualV.Count(); i++)
+                        mEval.ValidationValue.Add(new PointPair(i + 1, actualV.ElementAt(i)));
 
-                var actualV = resultValidation.actualDict.ElementAt(0).Value.Select(x => x.First());
-                for (int i = 0; i < actualV.Count(); i++)
-                    mEval.ValidationValue.Add(new PointPair(i + 1, actualV.ElementAt(i)));
-
-                var predicV = resultValidation.predictedDict.ElementAt(0).Value.Select(x => x.First());
-                for (int i = 0; i < predicV.Count(); i++)
-                    mEval.ModelValueValidation.Add(new PointPair(i + 1, predicV.ElementAt(i)));
+                    var predicV = resultValidation.predictedDict.ElementAt(0).Value.Select(x => x.First());
+                    for (int i = 0; i < predicV.Count(); i++)
+                        mEval.ModelValueValidation.Add(new PointPair(i + 1, predicV.ElementAt(i)));
+                }
+                
 
                 //
-                mEval.Classes = resultValidation.outputClasses;
+                mEval.Classes = resultTrain.outputClasses;
                 mEval.ModelOutputDim = resultTrain.outputClasses == null ? 1 : resultTrain.outputClasses.Count;
 
                 if(mEval.ModelOutputDim==1)
@@ -322,15 +326,19 @@ namespace anndotnet.wnd.Models
                 {
                     var actualT1 = resultTrain.actualDict.ElementAt(1).Value;
                     var predictedT1 = resultTrain.predictedDict.ElementAt(1).Value;
-                    var actualV1 = resultValidation.actualDict.ElementAt(1).Value;
-                    var predictedV1 = resultValidation.predictedDict.ElementAt(1).Value;
                     var retVal = EvaluateResults(actualT1, predictedT1, null, null);
-                    var retValV = EvaluateResults(actualV1, predictedV1, null, null);
                     retVal.Add("Classes", mEval.Classes.ToList<object>());
-                    retValV.Add("Classes", mEval.Classes.ToList<object>());
-                    
                     mpt.PerformanceData = retVal;
-                    mpv.PerformanceData = retValV;
+
+                    //in case validation set is defined
+                    if (resultValidation.actualDict!=null)
+                    {
+                        var actualV1 = resultValidation.actualDict.ElementAt(1).Value;
+                        var predictedV1 = resultValidation.predictedDict.ElementAt(1).Value;
+                        var retValV = EvaluateResults(actualV1, predictedV1, null, null);
+                        retValV.Add("Classes", mEval.Classes.ToList<object>());
+                        mpv.PerformanceData = retValV;
+                    }         
                 }
                 mEval.TrainPerformance = mpt;
                 if(mEval.Classes!=null)
@@ -709,7 +717,7 @@ namespace anndotnet.wnd.Models
                 var resultValidation = Project.EvaluateModel(modelMLPath,true, false, false, false, ProcessDevice.Default);
                 //transform data
                 var trainData = TransformData(resultTrain, false);
-                var validData = TransformData(resultTrain, false);
+                var validData = resultValidation.actualDict!=null? TransformData(resultTrain, false): null;
                 
                 ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false);
 
@@ -735,6 +743,9 @@ namespace anndotnet.wnd.Models
                 var modelPath = Project.GetMLConfigPath(Settings, Name);
                 //
                 var result = Project.EvaluateModel(modelPath, true, true, false, false, ProcessDevice.Default);
+
+                if (result.actualDict == null)
+                    throw new Exception("Validation datatset is empty");
                 var strLines = TransformData(result, true);
 
                 //store content to file

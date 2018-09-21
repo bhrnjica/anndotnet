@@ -158,7 +158,9 @@ namespace ANNdotNET.Core
                 trData.ModelTempLocation = $"{dicMParameters["root"]}\\{dicPath["TempModels"]}";
                 trData.ModelFinalLocation = $"{dicMParameters["root"]}\\{dicPath["Models"]}";
                 var strTrainPath = $"{dicMParameters["root"]}\\{dicPath["Training"]}";
-                var strValidPath = $"{dicMParameters["root"]}\\{dicPath["Validation"]}";
+
+                var strValidPath = (string.IsNullOrEmpty(dicPath["Validation"]) || dicPath["Validation"]==" ") ? "":
+                                                            $"{dicMParameters["root"]}\\{dicPath["Validation"]}";
 
                 //data normalization in case the option is enabled
                 //check if network contains Normalization layer and assign value to normalization parameter 
@@ -817,8 +819,9 @@ namespace ANNdotNET.Core
             dicValues.Add("Training", val);
             val = MLFactory.GetParameterValue(pathsValues, "Validation");
             if (string.IsNullOrEmpty(val))
-                throw new Exception("One of model paths (Validation) is not defined!");
-            dicValues.Add("Validation", val);
+                dicValues.Add("Validation", " ");
+            else
+                dicValues.Add("Validation", val);
             val = MLFactory.GetParameterValue(pathsValues, "Test");
             if (string.IsNullOrEmpty(val))
                 throw new Exception("One of model paths (Test) is not defined!");
