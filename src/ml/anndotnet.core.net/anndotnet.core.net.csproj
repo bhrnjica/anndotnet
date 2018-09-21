@@ -69,25 +69,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\anndotnet.core\minibatchsource\MinibatchSourceEx.cs">
-      <Link>MinibatchSourceEx.cs</Link>
+      <Link>minibatch\MinibatchSourceEx.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.core\trainer\MLTrainer.cs">
-      <Link>MLTrainer.cs</Link>
+      <Link>trainer\MLTrainer.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.core\trainer\MLTrainerBase.cs">
-      <Link>MLTrainerBase.cs</Link>
+      <Link>trainer\MLTrainerBase.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.core\trainer\MLTrainerEx.cs">
-      <Link>MLTrainerEx.cs</Link>
+      <Link>trainer\MLTrainerEx.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.core\util\MLEvaluator.cs">
-      <Link>MLEvaluator.cs</Link>
+      <Link>evaluation\MLEvaluator.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.core\util\MLFactory.cs">
       <Link>MLFactory.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.core\util\MLValue.cs">
-      <Link>MLValue.cs</Link>
+      <Link>evaluation\MLValue.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

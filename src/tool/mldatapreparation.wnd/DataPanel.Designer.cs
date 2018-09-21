@@ -34,7 +34,6 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.splitCheckBoxThenRandomize = new System.Windows.Forms.CheckBox();
             this.randomoizeDataSet = new System.Windows.Forms.CheckBox();
             this.numberRadio = new System.Windows.Forms.RadioButton();
             this.presentigeRadio = new System.Windows.Forms.RadioButton();
@@ -64,7 +63,6 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.splitCheckBoxThenRandomize);
             this.groupBox5.Controls.Add(this.randomoizeDataSet);
             this.groupBox5.Controls.Add(this.numberRadio);
             this.groupBox5.Controls.Add(this.presentigeRadio);
@@ -75,27 +73,15 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox5.Size = new System.Drawing.Size(1103, 123);
+            this.groupBox5.Size = new System.Drawing.Size(1183, 123);
             this.groupBox5.TabIndex = 26;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Validation data set";
             // 
-            // splitCheckBoxThenRandomize
-            // 
-            this.splitCheckBoxThenRandomize.AutoSize = true;
-            this.splitCheckBoxThenRandomize.Location = new System.Drawing.Point(674, 82);
-            this.splitCheckBoxThenRandomize.Margin = new System.Windows.Forms.Padding(6);
-            this.splitCheckBoxThenRandomize.Name = "splitCheckBoxThenRandomize";
-            this.splitCheckBoxThenRandomize.Size = new System.Drawing.Size(323, 29);
-            this.splitCheckBoxThenRandomize.TabIndex = 19;
-            this.splitCheckBoxThenRandomize.Text = "Split data set then randomize";
-            this.splitCheckBoxThenRandomize.UseVisualStyleBackColor = true;
-            this.splitCheckBoxThenRandomize.Visible = false;
-            // 
             // randomoizeDataSet
             // 
             this.randomoizeDataSet.AutoSize = true;
-            this.randomoizeDataSet.Location = new System.Drawing.Point(674, 40);
+            this.randomoizeDataSet.Location = new System.Drawing.Point(814, 40);
             this.randomoizeDataSet.Margin = new System.Windows.Forms.Padding(6);
             this.randomoizeDataSet.Name = "randomoizeDataSet";
             this.randomoizeDataSet.Size = new System.Drawing.Size(328, 29);
@@ -191,6 +177,5 @@
         public System.Windows.Forms.NumericUpDown numCtrlNumForTest;
         public System.Windows.Forms.CheckBox randomoizeDataSet;
         public System.Windows.Forms.RadioButton presentigeRadio;
-        public System.Windows.Forms.CheckBox splitCheckBoxThenRandomize;
     }
 }

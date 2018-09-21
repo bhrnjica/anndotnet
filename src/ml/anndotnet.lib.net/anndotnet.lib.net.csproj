@@ -209,25 +209,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\anndotnet.lib\DataDescriptor.cs">
-      <Link>DataDescriptor.cs</Link>
+      <Link>metadata\DataDescriptor.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.lib\DataParser.cs">
-      <Link>DataParser.cs</Link>
+      <Link>metadata\DataParser.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.lib\export\ExcelHelper.cs">
-      <Link>ExcelHelper.cs</Link>
+      <Link>Export\ExcelHelper.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.lib\export\ExportToExcel.cs">
-      <Link>ExportToExcel.cs</Link>
+      <Link>Export\ExportToExcel.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.lib\Project.cs">
-      <Link>Project.cs</Link>
+      <Link>Project\Project.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.lib\ProjectSettings.cs">
-      <Link>ProjectSettings.cs</Link>
+      <Link>Project\ProjectSettings.cs</Link>
     </Compile>
     <Compile Include="..\anndotnet.lib\VariableDescriptor.cs">
-      <Link>VariableDescriptor.cs</Link>
+      <Link>metadata\VariableDescriptor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

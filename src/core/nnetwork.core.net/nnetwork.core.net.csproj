@@ -66,40 +66,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\nnetwork.core\common\NNLayer.cs">
-      <Link>NNLayer.cs</Link>
+      <Link>common\NNLayer.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\common\NNParameters.cs">
-      <Link>NNParameters.cs</Link>
+      <Link>common\NNParameters.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\common\ProgressData.cs">
-      <Link>ProgressData.cs</Link>
+      <Link>common\ProgressData.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\metrics\StatMetrics.cs">
-      <Link>StatMetrics.cs</Link>
+      <Link>metrics\StatMetrics.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\modules\Embedding.cs">
-      <Link>Embedding.cs</Link>
+      <Link>modules\Embedding.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\modules\LSTM.cs">
-      <Link>LSTM.cs</Link>
+      <Link>modules\LSTM.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\modules\NALU.cs">
-      <Link>NALU.cs</Link>
+      <Link>modules\NALU.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\network\FeedForwardNN.cs">
-      <Link>FeedForwardNN.cs</Link>
+      <Link>network\FeedForwardNN.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\network\NetworkFoundation.cs">
-      <Link>NetworkFoundation.cs</Link>
+      <Link>network\NetworkFoundation.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\network\Recurrence.cs">
-      <Link>Recurrence.cs</Link>
+      <Link>network\Recurrence.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\oldimplementation\LSTMClassifier.cs">
-      <Link>LSTMClassifier.cs</Link>
+      <Link>oldimplementation\LSTMClassifier.cs</Link>
     </Compile>
     <Compile Include="..\nnetwork.core\oldimplementation\LSTMRecurrentNN.cs">
-      <Link>LSTMRecurrentNN.cs</Link>
+      <Link>oldimplementation\LSTMRecurrentNN.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
