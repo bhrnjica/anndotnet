@@ -308,6 +308,24 @@
     <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_20833fde-23e8-46a1-9044-1e48a227528f.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\MNIST\MNIST-Project.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\log\model_mnist-ml-configuration.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\model_mnist-ml-configuration.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\model_mnist-ml-configuration.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\models\model_at_0of250_epochs_TimeSpan_636732107409817493">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="anndotnet.ico" />
     <Content Include="Images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -328,6 +346,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Iris\IrisProject\IrisProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\data\MNIST-train-reduced.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\data\MNIST-validation.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Mushroom\MushroomProject\MushroomProject_rawdata.txt">
@@ -638,9 +662,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\MNIST\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\core\dataprocessing.core\dataprocessing.core.csproj">
       <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>

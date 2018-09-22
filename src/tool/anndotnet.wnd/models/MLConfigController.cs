@@ -189,6 +189,18 @@ namespace anndotnet.wnd.Models
             
 
         }
+        /// <summary>
+        /// Check if Validation dataset defined. Loads the mlconifg file and search for validation path
+        /// </summary>
+        /// <returns></returns>
+        internal bool IsValidationSetDefined()
+        {
+            var filePath = Project.GetMLConfigPath(Settings, Name);
+            var pp = Project.GetDefaultMLDatasetPath(Settings, filePath, false);
+            if (string.IsNullOrEmpty(pp) || pp == " ")
+                return false;
+            return true;
+        }
 
         internal void Save()
         {

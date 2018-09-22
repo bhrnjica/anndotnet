@@ -1,0 +1,27 @@
+!ML Configuration file for MNIST Image classification 
+
+!config id
+configid:mnist-ml-configuration
+
+!metadata information
+metadata:|Column01:ImagePath;Category;Feature;Ignore; |Column02:Label;Category;Label;0;1;2;3;4;5;6;7;8;9 
+
+!features represent 28x28=784 pixels 
+features:|features 784 0
+
+!label is one-hot vector of 10 dimension
+labels:|labels 10 0
+
+! network
+network:|Layer:Dense 200 0 0 Softmax 0 0 |Layer:Dense 10 0 0 Softmax 0 0 
+
+
+!Learning parameters
+learning:|Type:AdamLearner |LRate:0.01 |Momentum:0.9 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
+
+!training process and minibatch
+training:|Type:Default |BatchSize:750 |Epochs:250 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:0 |FullTrainingSetEval:1 |ProgressFrequency:10 |ContinueTraining:0 |TrainedModel:models\model_at_0of250_epochs_TimeSpan_636732107409817493 
+
+!******* Training validation and testing files
+!various paths needed in order to train, evaluate, export model
+paths:|Training:data\MNIST-train-reduced.txt |Validation:data\MNIST-validation.txt |Test:data\MNIST-validation.txt |TempModels:temp_models |Models:models |Result:FFModel_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv |Logs:log 
