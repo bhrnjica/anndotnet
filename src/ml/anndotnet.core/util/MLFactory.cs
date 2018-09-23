@@ -569,7 +569,7 @@ namespace ANNdotNET.Core
                 foreach (var v in inputVars)
                 {
                     //check if variable is stores as Sparse then we should create one embedding layer before slice
-                    //since mixing sparse and dense data is not suported
+                    //since mixing sparse and dense data is not supported
                     if (v.IsSparse)
                     {
                         var v1 = Embedding.Create(v, v.Shape.Dimensions.Last(), type, device, 1, v.Name+"_sp_emb");
