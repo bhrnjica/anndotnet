@@ -141,12 +141,12 @@
     <Compile Include="AppController.cs" />
     <Compile Include="commons\TreeeViewAttachedProperties.cs" />
     <Compile Include="commons\TreeViewHelper.cs" />
-    <Compile Include="Converters\LPToRegularizersToVisibility.cs" />
-    <Compile Include="Converters\LearnerParametersToVisibility.cs" />
-    <Compile Include="Converters\BoolToOpositeValueConverter.cs" />
-    <Compile Include="Converters\BoolToGridRowHeightConverter.cs" />
-    <Compile Include="Converters\IMultiConverter.cs" />
-    <Compile Include="Converters\IsEditingConverter.cs" />
+    <Compile Include="converters\LPToRegularizersToVisibility.cs" />
+    <Compile Include="converters\LearnerParametersToVisibility.cs" />
+    <Compile Include="converters\BoolToOpositeValueConverter.cs" />
+    <Compile Include="converters\BoolToGridRowHeightConverter.cs" />
+    <Compile Include="converters\IMultiConverter.cs" />
+    <Compile Include="converters\IsEditingConverter.cs" />
     <Compile Include="forms\BModelEvaluation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -339,7 +339,7 @@
     </Content>
     <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880" />
     <Resource Include="anndotnet.ico" />
-    <Content Include="Images\refresdata.png">
+    <Content Include="images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\AirQ\AirQuality\airquality_rawdata.txt">
@@ -387,6 +387,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="..\..\..\README.md">
       <Link>README.md</Link>
@@ -572,87 +573,87 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\annabout.png" />
-    <Content Include="Images\ANNLogo_350x134pix.png">
+    <None Include="images\annabout.png" />
+    <Content Include="images\ANNLogo_350x134pix.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\cntk_logo32.png">
+    <Content Include="images\cntk_logo32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\csv.png">
+    <Content Include="images\csv.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\eval32.png">
+    <Content Include="images\eval32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\excel16.png">
+    <Content Include="images\excel16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\hyperlink_32.png" />
-    <Content Include="Images\loaddata32.png">
+    <Resource Include="images\hyperlink_32.png" />
+    <Content Include="images\loaddata32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\loaddatai32.png">
+    <Content Include="images\loaddatai32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\newmodel.png">
+    <Content Include="images\newmodel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\onnx32.png">
+    <Content Include="images\onnx32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\runmodel16.png">
+    <Content Include="images\runmodel16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\stopmodel16.png">
+    <Content Include="images\stopmodel16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\about48.png">
+    <Content Include="images\about48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\anndotnet.ico">
+    <Content Include="images\anndotnet.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\annLogo_start2.png">
+    <Content Include="images\annLogo_start2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\closegp48.png">
+    <Content Include="images\closegp48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\exit48.png">
+    <Content Include="images\exit48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\experiment.png">
+    <Content Include="images\experiment.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\logo.png">
+    <Content Include="images\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\mathematica48.png">
+    <Content Include="images\mathematica48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\model.png">
+    <Content Include="images\model.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\newgp48.png">
+    <Content Include="images\newgp48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\opengp48.png">
+    <Content Include="images\opengp48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\runmodel48.png">
+    <Content Include="images\runmodel48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\runningmodel.png">
+    <Content Include="images\runningmodel.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\savegp48.png">
+    <Content Include="images\savegp48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\start.png">
+    <Content Include="images\start.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\stopmodel48.png">
+    <Content Include="images\stopmodel48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

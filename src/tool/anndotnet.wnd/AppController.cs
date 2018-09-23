@@ -429,6 +429,13 @@ namespace anndotnet.wnd
 
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
 
+            var mainWnd = App.Current.MainWindow as MainWindow;
+            binding = new CommandBinding(AppCommands.RenameConfigCommand, mainWnd.onRenameTreeItem, null);
+            CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
+            binding = new CommandBinding(AppCommands.DuplicateConfigCommand, mainWnd.onDuplicateTreeItem, null);
+            CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
+            binding = new CommandBinding(AppCommands.DeleteConfigCommand, mainWnd.onDeleteTreeItem, null);
+            CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
 
             //tree item click
             binding = new CommandBinding(AppCommands.TreeItemClickCommand, onTreeItemClicked, onCanTreeItemClicked);

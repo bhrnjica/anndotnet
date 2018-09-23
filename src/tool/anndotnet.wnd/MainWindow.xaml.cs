@@ -10,10 +10,12 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using anndotnet.wnd.Models;
 using Fluent;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -24,6 +26,8 @@ namespace anndotnet.wnd
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
+        System.Windows.Controls.ContextMenu m_CMenu = new System.Windows.Controls.ContextMenu();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -38,8 +42,32 @@ namespace anndotnet.wnd
                     dc.SetRunnigColor(false);
                     dc.ReportException = ReportException;
                 }
+                var mi = new System.Windows.Controls.MenuItem();
+
+                m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header="Rename", Command= commands.AppCommands.RenameConfigCommand  });
+                m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Duplicate", Command = commands.AppCommands.DuplicateConfigCommand });
+                m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Delete", Command = commands.AppCommands.DeleteConfigCommand });
+
             }
         }
+
+        public void onRenameTreeItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            var appCont = this.DataContext as AppController;
+            renameModel(appCont.ActiveViewModel as MLConfigController);
+        }
+
+        public void onDuplicateTreeItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            
+        }
+
+        public void onDeleteTreeItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            var appCont = this.DataContext as AppController;
+            deleteModel(appCont.ActiveViewModel as MLConfigController);
+        }
+
 
         public void StopButtonClick()
         {
@@ -117,6 +145,20 @@ namespace anndotnet.wnd
         }
 
         #region TreeView Editable Helper
+        private void ContentPresenter_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var cnt = sender as System.Windows.Controls.ContentPresenter;
+            if (cnt != null && cnt.Content is MLConfigController)
+            {
+                var mlconfig = cnt.Content as MLConfigController;
+                if (mlconfig.IsSelected)
+                {
+                    var tx = e.Source as TextBlock;
+                    tx.ContextMenu = m_CMenu;
+                    tx.ContextMenu.IsOpen = true;
+                }
+            }
+        }
         private void editableTextBoxHeader_LostFocus(object sender, RoutedEventArgs e)
         {
             var tb = sender as System.Windows.Controls.TextBox;
@@ -171,7 +213,7 @@ namespace anndotnet.wnd
             var tb = sender as System.Windows.Controls.TreeView;
             var dx = tb.SelectedValue as Models.BaseModel;
             if (e.Key == Key.F2)
-                dx.IsEditing = true;
+                renameModel(dx as MLConfigController);
             else if (e.Key == Key.Delete)
             {
                 if (tb.SelectedValue is Models.ANNProjectController)
@@ -186,16 +228,30 @@ namespace anndotnet.wnd
                 {
                     var model = (Models.MLConfigController)tb.SelectedValue;
 
-                    if (MessageBox.Show($"Are you sure you want to delete '{model.Name}' model and all related files?", "ANNdotNET", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                    {
-                        var cont = DataContext as AppController;
-                        if (cont == null)
-                            return;
-                        cont.DeleteModel(model);
-                    }
-                        
+                    deleteModel(model);
+
                 }
             }
+        }
+
+        private void deleteModel(MLConfigController model)
+        {
+            if (MessageBox.Show($"Are you sure you want to delete '{model.Name}' model and all related files?", "ANNdotNET", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                var cont = DataContext as AppController;
+                if (cont == null)
+                    return;
+                cont.DeleteModel(model);
+            }
+        }
+
+        private void renameModel(MLConfigController model)
+        {
+            model.IsEditing = true;
+        }
+        private void duplicateModel(MLConfigController model)
+        {
+            
         }
 
         private void treeCtrl_LostFocus(object sender, RoutedEventArgs e)
@@ -206,5 +262,6 @@ namespace anndotnet.wnd
             //e.Handled = true;
         }
         #endregion
+
     }
 }

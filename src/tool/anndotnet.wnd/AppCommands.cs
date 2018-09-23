@@ -180,5 +180,38 @@ namespace anndotnet.wnd.commands
                 return m_RemoveLayerCommand;
             }
         }
+
+        private static readonly RoutedUICommand m_RenameConfigCommand =
+           new RoutedUICommand("Rename MLConfig item.", "RenameConfigCommand", typeof(AppCommands));
+        public static RoutedCommand RenameConfigCommand
+        {
+            get
+            {
+                return m_RenameConfigCommand;
+            }
+        }
+
+        private static readonly RoutedUICommand m_DeleteConfigCommand =
+            new RoutedUICommand("Delete MLConfig item.", "DeleteConfigCommand", typeof(AppCommands));
+
+        public static RoutedCommand DeleteConfigCommand
+        {
+            get
+            {
+                return m_DeleteConfigCommand;
+            }
+        }
+
+        private static readonly RoutedUICommand m_DuplicateConfigCommand =
+            new RoutedUICommand("Duplicate MLConfig item.", "DuplicateConfigCommand", typeof(AppCommands));
+        public static RoutedCommand DuplicateConfigCommand
+        {
+            get
+            {
+                return m_DuplicateConfigCommand;
+            }
+        }
+
+
     }
 }

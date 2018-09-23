@@ -307,7 +307,7 @@
 
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type models:BaseModel}" ItemsSource="{Binding Models}">
-                            <ContentPresenter Content="{Binding}">
+                            <ContentPresenter Content="{Binding}" PreviewMouseRightButtonDown="ContentPresenter_PreviewMouseRightButtonDown">
                                 <ContentPresenter.Style>
                                     <Style TargetType="{x:Type ContentPresenter}">
                                         <Setter Property="ContentTemplate" Value="{StaticResource NormalTemplate}"/>

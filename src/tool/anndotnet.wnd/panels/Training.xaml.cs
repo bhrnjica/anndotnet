@@ -243,7 +243,7 @@ namespace anndotnet.wnd.Panels
 
             var zedGraph = this.trainingDatasetsGraph;
 
-            evalTrainingSerie = new LineItem("Ttraining datat set", null, null, System.Drawing.Color.Blue, ZedGraph.SymbolType.None, 1);
+            evalTrainingSerie = new LineItem("Training data set", null, null, System.Drawing.Color.Blue, ZedGraph.SymbolType.None, 1);
             evalTrainingSerie.Symbol.Fill = new Fill(System.Drawing.Color.Blue);
             evalTrainingSerie.Symbol.Size = 1;
             // Make it a smooth line
@@ -251,7 +251,7 @@ namespace anndotnet.wnd.Panels
             evalTrainingSerie.Line.SmoothTension = 0.9F;
             evalTrainingSerie.Line.Width = 1.8f;
             //
-            evalValidationSerie = new LineItem("Validation datat set", null, null, System.Drawing.Color.Orange, ZedGraph.SymbolType.None, 1);
+            evalValidationSerie = new LineItem("Validation data set", null, null, System.Drawing.Color.Orange, ZedGraph.SymbolType.None, 1);
             evalValidationSerie.Symbol.Fill = new Fill(System.Drawing.Color.Orange);
             evalValidationSerie.Symbol.Size = 1;
             evalValidationSerie.YAxisIndex = 0;
