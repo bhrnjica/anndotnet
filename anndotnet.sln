@@ -75,6 +75,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{F99951
 		docs\images\projectsfile_structure.png = docs\images\projectsfile_structure.png
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gpdotnet.math", "src\core\gpdotnet.math\gpdotnet.math.csproj", "{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,14 @@ Global
 		{026FD702-D8D4-4A6B-9FB7-8B122897CC9D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{026FD702-D8D4-4A6B-9FB7-8B122897CC9D}.Release|x64.ActiveCfg = Release|Any CPU
 		{026FD702-D8D4-4A6B-9FB7-8B122897CC9D}.Release|x64.Build.0 = Release|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Debug|x64.Build.0 = Debug|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Release|x64.ActiveCfg = Release|Any CPU
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +202,7 @@ Global
 		{8C78BD27-1B58-4769-BB67-9B236E0772C7} = {879EF08D-0BC8-4558-B48E-839CFD9FA8B5}
 		{026FD702-D8D4-4A6B-9FB7-8B122897CC9D} = {88972845-2076-4EC4-9175-49E27255511E}
 		{F9995131-A744-401A-B662-BA1EDB5E3D06} = {7622CA23-6F93-4322-9A8F-046E9723E803}
+		{8343DA4B-F96D-47A2-9AB2-AF6F0735509A} = {BBB32D58-CEEB-4E79-8ADF-62C4A06816FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB1329E7-A57C-4356-AA89-7EA38292DAB3}

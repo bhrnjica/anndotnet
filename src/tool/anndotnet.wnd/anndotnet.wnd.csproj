@@ -81,10 +81,6 @@
     <Reference Include="Fluent, Version=6.1.0.326, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Fluent.Ribbon.6.1.0.326\lib\net462\Fluent.dll</HintPath>
     </Reference>
-    <Reference Include="GPdotNET.MathStuff, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6d39bb3776ffb0e4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\assemblies\GPdotNET.MathStuff.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -665,6 +661,10 @@
     <ProjectReference Include="..\..\core\dataprocessing.core\dataprocessing.core.csproj">
       <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>
       <Name>dataprocessing.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj">
+      <Project>{8343da4b-f96d-47a2-9ab2-af6f0735509a}</Project>
+      <Name>gpdotnet.math</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\core\nnetwork.core.net\nnetwork.core.net.csproj">
       <Project>{3c000d09-ff02-4f12-a74d-deb41998bc23}</Project>

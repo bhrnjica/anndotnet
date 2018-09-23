@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\core\dataprocessing.core\dataprocessing.core.csproj" />
+    <ProjectReference Include="..\..\src\core\gpdotnet.math\gpdotnet.math.csproj" />
     <ProjectReference Include="..\..\src\core\nnetwork.core\nnetwork.core.csproj" />
     <ProjectReference Include="..\..\src\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
     <ProjectReference Include="..\..\src\ml\anndotnet.core\anndotnet.core.csproj" />

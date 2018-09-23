@@ -55,9 +55,6 @@
     <Reference Include="Cntk.Core.Managed-2.5.1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
       <HintPath>..\..\..\packages\CNTK.GPU.2.5.1\lib\net45\x64\Cntk.Core.Managed-2.5.1.dll</HintPath>
     </Reference>
-    <Reference Include="GPdotNET.MathStuff">
-      <HintPath>..\..\..\assemblies\GPdotNET.MathStuff.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -92,6 +89,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj">
+      <Project>{8343da4b-f96d-47a2-9ab2-af6f0735509a}</Project>
+      <Name>gpdotnet.math</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\core\nnetwork.core.net\nnetwork.core.net.csproj">
       <Project>{3c000d09-ff02-4f12-a74d-deb41998bc23}</Project>
       <Name>nnetwork.core.net</Name>

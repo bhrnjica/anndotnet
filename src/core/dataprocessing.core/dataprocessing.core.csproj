@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="GPdotNET.MathStuff">
-      <HintPath>..\..\..\assemblies\GPdotNET.MathStuff.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\gpdotnet.math\gpdotnet.math.csproj" />
   </ItemGroup>
 
 </Project>
