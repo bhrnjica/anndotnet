@@ -313,7 +313,7 @@ namespace ANNdotNET.Lib
         public static (Dictionary<string, List<List<float>>> featuresDict,
                     Dictionary<string, List<List<float>>> actualDict,
                     Dictionary<string, List<List<float>>> predictedDict, List<string> outputClasses)
-        EvaluateModel(string mlconfigPath, bool includeFeatures, bool includePrediction, bool isTrain, bool includeHotVector, ProcessDevice pdevice)
+        EvaluateModel(string mlconfigPath, bool includeFeatures, bool includePrediction, bool isTrain, ProcessDevice pdevice)
         {
             try
             {
@@ -353,7 +353,7 @@ namespace ANNdotNET.Lib
                 var dataPath = isTrain ? strTrainPath : strValidPath;
 
                 //perform evaluation
-                var result = MLEvaluator.EvaluateModel(f, mbType, dataPath, strModelToEvaluatePath, includeFeatures, includePrediction,includeHotVector, device);
+                var result = MLEvaluator.EvaluateModel(f, mbType, dataPath, strModelToEvaluatePath, includeFeatures, includePrediction, device);
 
                 //get output classes in case the ml problem is classification
                 var strCls = dicMParameters.ContainsKey("metadata")?dicMParameters["metadata"]:"";

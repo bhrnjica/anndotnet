@@ -14,6 +14,7 @@ using anndotnet.wnd.Models;
 using anndotnet.wnd.panels;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -202,13 +203,18 @@ namespace anndotnet.wnd.Panels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 MLConfigController pCont = this.DataContext as MLConfigController;
+                var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
+                appCnt.ModelEvaluationAction(false);
 
-                var modeEval = pCont.EvaluateModel();
+                //send model evaluation in the background
+                var modeEval = await Task<ModelEvaluation>.Run(()=> pCont.EvaluateModel());
+
+                appCnt.ModelEvaluationAction(true);
 
                 PrepareGraphs(modeEval);
 

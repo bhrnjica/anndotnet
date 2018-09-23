@@ -36,7 +36,7 @@ namespace ANNdotNET.Core
         /// <param name="resultExportPath"> result file in which the result will be exported</param>
         /// <param name="device"> device for computation</param>
         public static (Dictionary<string, List<List<float>>> featuresDict, Dictionary<string, List<List<float>>> actualDict, Dictionary<string, List<List<float>>> predictedDict)
-            EvaluateModel(MLFactory mlF, MinibatchType type, string strDataSetPath, string modelPath, bool includeFeatures, bool includePrediction, bool includeHotVector, DeviceDescriptor device)
+            EvaluateModel(MLFactory mlF, MinibatchType type, string strDataSetPath, string modelPath, bool includeFeatures, bool includePrediction, DeviceDescriptor device)
         {
             try
             {
@@ -68,21 +68,6 @@ namespace ANNdotNET.Core
 
                 }
 
-                //predicted  map 
-                var predictedDataMap = new Dictionary<Variable, Value>();
-
-                //when exporting data to excel we not need prediction since the model is exported directly 
-                // and excel will call evaluation as regular excel formula
-                if (includePrediction)
-                {
-                    foreach (var outp in model.Outputs)
-                    {
-                        predictedDataMap.Add(outp, null);
-                    }
-                    //model evaluation
-                    model.Evaluate(inputMap, predictedDataMap, device);
-                }
-
                 //features collection
                 var featDic = new Dictionary<string, List<List<float>>>();
 
@@ -90,7 +75,7 @@ namespace ANNdotNET.Core
                 var actualDic = new Dictionary<string, List<List<float>>>();
                 var predictDic = new Dictionary<string, List<List<float>>>();
 
-                //extract features
+                //*******extract features******
                 //features are extracted as they go in CNTK minibatch trainer
                 //binary and categorical variables are presented as One-Hot Vectors
                 if (includeFeatures)
@@ -107,7 +92,7 @@ namespace ANNdotNET.Core
                     }
                 }
 
-                //extract output values
+                //*****extract actual output values*****
                 //Categorical and binary variables are encoded to its numerical representation of classes
                 // so in case BInary one hot (0.23,0,77) =1, (0,77,0.23) =0,
                 //categorical (0.1,0.3,0.6)=2
@@ -115,42 +100,60 @@ namespace ANNdotNET.Core
                 {
                     var actual = new List<List<float>>();
                     var actual_hotvector = new List<List<float>>();
-                    //predicted values
-                    var aec = actualMap[output].GetDenseData<float>(output);
-                    foreach (var row in aec)
-                    {
-                        actual.Add(new List<float>() { MLValue.GetResult(row) });
 
-                    }
-                    actualDic.Add($"{output.Name}_actual", actual);
-                    //adda actual output as hot vector
-                    //label stream
+                    //
                     var featureStream = minibatchData.Keys.Where(x => x.m_name == output.Name).First();
-                    if (featureStream != null && includeHotVector)
+                    if (featureStream != null)
                     {
                         var av = MLValue.GetValues(output, minibatchData[featureStream].data);
-                        actualDic.Add($"{output.Name}_actual_hotvector", av);
-                    }
+                        
 
-                    var predicted = new List<List<float>>();
-                    if (includePrediction)
-                    {
-                        //predicted values
-                        var vec = predictedDataMap[output].GetDenseData<float>(output);
-                        foreach (var row in vec)
+                        //extract final result from hot-vector
+                        foreach (var row in av)
                         {
-                            predicted.Add(new List<float>() { MLValue.GetResult(row) });
+                            actual.Add(new List<float>() { MLValue.GetResult(row) });
+
                         }
-                        predictDic.Add($"{output.Name}_predicted", predicted);
-                        //
-                        if (featureStream != null && includeHotVector)
-                        {
-                            var fv = MLValue.GetValues(output, predictedDataMap[output]);
-                            predictDic.Add($"{output.Name}_predicted_hotvector", fv);
-                        }
+                        //order of adding items MUST NOT BE CHANGED
+                        actualDic.Add($"{output.Name}", actual);
+                        actualDic.Add($"{output.Name}_hotvector", av);
                     }
 
                 }
+
+                //predicted  map 
+                var predictedDataMap = new Dictionary<Variable, Value>();
+
+                //when exporting data to excel we not need prediction since the model is exported directly 
+                // and excel will call evaluation as regular excel formula
+                if (includePrediction)
+                {
+                    foreach (var outp in model.Outputs)
+                    {
+                        predictedDataMap.Add(outp, null);
+                    }
+                    //model evaluation
+                    model.Evaluate(inputMap, predictedDataMap, device);
+                }
+
+                //*****extract predicted values*****
+                foreach (var output in model.Outputs)
+                {
+                    var predicted = new List<List<float>>();
+                    if (includePrediction)
+                    {
+                        var fv = MLValue.GetValues(output, predictedDataMap[output]);
+                        foreach (var row in fv)
+                        {
+                            predicted.Add(new List<float>() { MLValue.GetResult(row) });
+                        }
+                        //order of adding items MUST NOT BE CHANGED
+                        predictDic.Add($"{output.Name}_predicted", predicted);
+                        predictDic.Add($"{output.Name}_predicted_hotvector", fv);
+                        
+                    }
+                }
+                
 
                 return (featDic, actualDic, predictDic);
             }

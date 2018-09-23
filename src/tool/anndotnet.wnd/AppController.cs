@@ -327,6 +327,45 @@ namespace anndotnet.wnd
                     ReportException(ex);
             }
         }
+        public void ModelEvaluationAction(bool isCompleted)
+        {
+            try
+            {
+                if (!(ActiveViewModel is MLConfigController))
+                    return;
+
+
+                Application.Current.Dispatcher.BeginInvoke(
+                    DispatcherPriority.Background,
+                new Action(
+
+                    () =>
+                    {
+                        if(isCompleted)
+                        {
+                            //
+                            SetRunnigColor(false);
+                            StatusMessage = $"Evaluation process completed!";
+                        }
+                        else
+                        {
+                            //
+                            SetRunnigColor(true);
+                            StatusMessage = $"Evaluation process has been started. Please wait....";
+                        }
+                        
+                    }
+
+                ));
+
+
+            }
+            catch (Exception ex)
+            {
+                if (ReportException != null)
+                    ReportException(ex);
+            }
+        }
         #endregion
 
         #region Commands

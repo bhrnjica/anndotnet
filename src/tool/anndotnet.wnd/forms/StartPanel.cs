@@ -159,11 +159,7 @@ namespace anndotnet.wnd.Panels
 
         }
 
-        private void HeartDataSet_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            string strPath = Application.StartupPath + "\\Resources\\hr.gpa";
-            Open(strPath);
-        }
+       
 
         private void mcc_irisflower(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -178,27 +174,17 @@ namespace anndotnet.wnd.Panels
             appCOnt.OpenProject(strPath);
 
         }
-        private void MCC_Sample2(object sender, LinkLabelLinkClickedEventArgs e)
+        private void MCC_MNISTExample(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            string strPath = Application.StartupPath + "\\Resources\\iris.gpa";
-            //Open(strPath);
-
+            string strPath = Application.StartupPath + "\\Resources\\MNIST\\MNIST-Project.ann";
+            AppController appCOnt = App.Current.MainWindow.DataContext as AppController;
+            appCOnt.OpenProject(strPath);
         }
-
-
-        private void ImgSegmentation_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            string strPath = Application.StartupPath + "\\Resources\\segment_model.gpa";
-
-           // Open(strPath);
-        }
-
-
 
         #endregion
 
         #endregion
 
-       
+
     }
 }

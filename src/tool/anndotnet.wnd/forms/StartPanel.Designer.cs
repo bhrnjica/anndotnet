@@ -172,7 +172,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.ForeColor = System.Drawing.Color.DarkViolet;
-            this.label1.Location = new System.Drawing.Point(58, 579);
+            this.label1.Location = new System.Drawing.Point(58, 603);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(174, 40);
@@ -184,7 +184,7 @@
             this.linkLabel11.AutoSize = true;
             this.linkLabel11.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.linkLabel11.LinkColor = System.Drawing.Color.MediumBlue;
-            this.linkLabel11.Location = new System.Drawing.Point(58, 627);
+            this.linkLabel11.Location = new System.Drawing.Point(58, 651);
             this.linkLabel11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.linkLabel11.Name = "linkLabel11";
             this.linkLabel11.Size = new System.Drawing.Size(142, 37);
@@ -302,7 +302,7 @@
             this.linkLabel9.DisabledLinkColor = System.Drawing.Color.CornflowerBlue;
             this.linkLabel9.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.linkLabel9.LinkColor = System.Drawing.Color.MediumBlue;
-            this.linkLabel9.Location = new System.Drawing.Point(818, 537);
+            this.linkLabel9.Location = new System.Drawing.Point(438, 542);
             this.linkLabel9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.linkLabel9.Name = "linkLabel9";
             this.linkLabel9.Size = new System.Drawing.Size(146, 37);
@@ -316,20 +316,21 @@
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.Font = new System.Drawing.Font("Segoe UI", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.linkLabel3.LinkColor = System.Drawing.Color.MediumBlue;
-            this.linkLabel3.Location = new System.Drawing.Point(438, 627);
+            this.linkLabel3.Location = new System.Drawing.Point(438, 651);
             this.linkLabel3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(96, 37);
             this.linkLabel3.TabIndex = 47;
             this.linkLabel3.TabStop = true;
             this.linkLabel3.Text = "MNIST";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.MCC_MNISTExample);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 10.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label8.ForeColor = System.Drawing.Color.DarkViolet;
-            this.label8.Location = new System.Drawing.Point(438, 579);
+            this.label8.Location = new System.Drawing.Point(438, 603);
             this.label8.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(291, 40);

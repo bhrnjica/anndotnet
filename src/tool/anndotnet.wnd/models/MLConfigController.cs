@@ -140,7 +140,7 @@ namespace anndotnet.wnd.Models
                 RaisePropertyChangedEvent("IconUri");
             }
         }
-        public bool IsRunning { get { return "Images/model.png" != IconUri; } }
+        public bool IsRunning { get { return "Images/model.png" != IconUri; } set { RaisePropertyChangedEvent("IsRunning"); } }
 
         //dammy property for treeView templates
         public ObservableCollection<MLConfigController> Models { get; set; }
@@ -190,16 +190,24 @@ namespace anndotnet.wnd.Models
 
         }
         /// <summary>
-        /// Check if Validation dataset defined. Loads the mlconifg file and search for validation path
+        /// Check if Validation dataset defined. Loads the mlconifg file and search for validation path, then check if the file exist 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>tre if the file exists</returns>
         internal bool IsValidationSetDefined()
         {
             var filePath = Project.GetMLConfigPath(Settings, Name);
             var pp = Project.GetDefaultMLDatasetPath(Settings, filePath, false);
             if (string.IsNullOrEmpty(pp) || pp == " ")
                 return false;
-            return true;
+            else
+            {
+                var fi = new FileInfo(pp);
+                if (fi.Exists)
+                    return true;
+                else
+                    return false;
+            }
+            
         }
 
         internal void Save()
@@ -245,10 +253,14 @@ namespace anndotnet.wnd.Models
 
         }
 
-        public ModelEvaluation EvaluateModel()
+        public async Task<ModelEvaluation> EvaluateModel()
         {
             try
             {
+                //change application in run mode
+                IconUri = "Images/runningmodel.png";
+                RaisePropertyChangedEvent("IsRunning");
+
                 //init empty model evaluation
                 var mEval = new ModelEvaluation()
                 {
@@ -279,10 +291,12 @@ namespace anndotnet.wnd.Models
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
 
                 //evaluate model against training data 
-                var resultTrain = Project.EvaluateModel(modelMLPath, false, true, true, true, ProcessDevice.Default);
+                var task1 = await Task.Run(()=> Project.EvaluateModel(modelMLPath, false, true, true, ProcessDevice.Default));
+                var resultTrain = task1;
 
                 //evaluate model against validation data
-                var resultValidation = Project.EvaluateModel(modelMLPath, false, true, false,true, ProcessDevice.Default);
+                var task2 = await Task.Run(() => Project.EvaluateModel(modelMLPath, false, true, false, ProcessDevice.Default));
+                var resultValidation = task2;
 
                 //prepare evaluation result
                 var actualT = resultTrain.actualDict.ElementAt(0).Value.Select(x => x.First());
@@ -294,7 +308,7 @@ namespace anndotnet.wnd.Models
                     mEval.ModelValueTraining.Add(new PointPair(i + 1, predicT.ElementAt(i)));
 
                 //no validation set defined
-                if(resultValidation.actualDict!=null)
+                if(resultValidation.actualDict != null)
                 {
                     var actualV = resultValidation.actualDict.ElementAt(0).Value.Select(x => x.First());
                     for (int i = 0; i < actualV.Count(); i++)
@@ -359,6 +373,7 @@ namespace anndotnet.wnd.Models
                 if (mEval.Classes != null)
                     mEval.ValidationPerformance.Classes = mEval.Classes.ToArray();
                 ModelEvaluation = mEval;
+
                 return mEval;
 
             }
@@ -366,6 +381,12 @@ namespace anndotnet.wnd.Models
             {
 
                 throw;
+            }
+            finally
+            {
+                //change application in normal mode
+                IconUri = "Images/model.png";
+                RaisePropertyChangedEvent("IsRunning");
             }
         }
 
@@ -725,8 +746,8 @@ namespace anndotnet.wnd.Models
                 //Load ML configuration file
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
                 //
-                var resultTrain = Project.EvaluateModel(modelMLPath, true, false, true, false, ProcessDevice.Default);
-                var resultValidation = Project.EvaluateModel(modelMLPath,true, false, false, false, ProcessDevice.Default);
+                var resultTrain = Project.EvaluateModel(modelMLPath, true, false, true, ProcessDevice.Default);
+                var resultValidation = Project.EvaluateModel(modelMLPath,true, false, false, ProcessDevice.Default);
                 //transform data
                 var trainData = TransformData(resultTrain, false);
                 var validData = resultValidation.actualDict!=null? TransformData(resultTrain, false): null;
@@ -754,7 +775,7 @@ namespace anndotnet.wnd.Models
                 //Load ML configuration file
                 var modelPath = Project.GetMLConfigPath(Settings, Name);
                 //
-                var result = Project.EvaluateModel(modelPath, true, true, false, false, ProcessDevice.Default);
+                var result = Project.EvaluateModel(modelPath, true, true, false, ProcessDevice.Default);
 
                 if (result.actualDict == null)
                     throw new Exception("Validation datatset is empty");
