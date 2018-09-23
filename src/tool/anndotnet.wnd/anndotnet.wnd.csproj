@@ -326,6 +326,22 @@
     <Content Include="Resources\MNIST\MNIST-Project\FFnet\models\model_at_0of250_epochs_TimeSpan_636732107409817493">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_989of1000_epochs_TimeSpan_636733004292324173">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636733004652715160">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636733003278423117">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\models\model_at_994of1000_epochs_TimeSpan_636733003052301182">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\models\model_at_100of100_epochs_TimeSpan_636733002876882110">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880" />
     <Resource Include="anndotnet.ico" />
     <Content Include="Images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -522,25 +538,13 @@
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636729016418579882">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_989of1000_epochs_TimeSpan_636729016077471533">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\log\model_4c2300e5-914e-49dd-a553-390701a6070e.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636729017358428823">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\log\model_708651d2-9eb1-466f-8858-d48a42e2b462.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\models\model_at_994of1000_epochs_TimeSpan_636729017896305225">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Iris\IrisProject\FFModel\log\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.history">
@@ -558,9 +562,6 @@
     <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\log\model_069cf557-9a04-4503-b933-cabaad190959.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\models\model_at_100of100_epochs_TimeSpan_636729019194870040">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Titanic\TitanicProject\DNNModel\log\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -568,9 +569,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Titanic\TitanicProject\DNNModel\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.checkpoint.ckp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636729020057723824">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

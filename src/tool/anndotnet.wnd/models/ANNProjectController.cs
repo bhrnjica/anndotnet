@@ -177,6 +177,8 @@ namespace anndotnet.wnd.Models
             //access Data Pane in order to update data
             var cntCtrl = anndotnet.wnd.App.Current.MainWindow;
             var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
+            if (ctrl == null)
+                return;
             var expCtrl = (DataPanel)ctrl.Child;
             if (expCtrl == null)
                 return;
