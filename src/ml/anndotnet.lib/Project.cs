@@ -518,7 +518,7 @@ namespace ANNdotNET.Lib
         }
 
         /// <summary>
-        /// Returns full paths of the mlconfig components specified by its name
+        /// Returns full paths of the mlconfig components specified by its name in string format ready to be store in file
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="mlconfigName"></param>
@@ -555,7 +555,31 @@ namespace ANNdotNET.Lib
                 throw;
             }
         }
-       
+
+        /// <summary>
+        /// Returns full path of specified parameter name
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="mlconfigName"></param>
+        /// <returns></returns>
+        public static string GetMLConfigPath(ProjectSettings settings, string mlconfigName, string pathName)
+        {
+            try
+            {
+                var path = Project.GetMLConfigPath(settings, mlconfigName);
+                var folder = Project.GetMLConfigFolder(path);
+                var dic = MLFactory.LoadMLConfiguration(path);
+                var file = Project.GetParameterValue(dic["paths"], pathName);
+                var strPath = $"{folder}\\{file}";
+                //
+                return strPath;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         /// <summary>
         /// Returns full paths of the model components specified by its name
         /// </summary>

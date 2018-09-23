@@ -53,9 +53,11 @@ namespace anndotnet.wnd.Panels
 
          
             zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.YAxis.Title.Text = "";
-
-            zedGraph.GraphPane.Y2Axis.Title.Text = "";
+            zedGraph.GraphPane.YAxis.Title.Text = loss;
+            zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+            zedGraph.GraphPane.Y2Axis.Title.Text = eval;
+            zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
+            
             zedGraph.GraphPane.Y2Axis.IsVisible = true;
             zedGraph.GraphPane.Legend.IsVisible = true;
             zedGraph.GraphPane.Legend.Border= new ZedGraph.Border(System.Drawing.Color.White, 0);
@@ -72,16 +74,22 @@ namespace anndotnet.wnd.Panels
             var eval = configCont.LearningParameters.EvaluationFunction.ToString();
 
             ///chart for training/predicted data
-            zedGraph.GraphPane.Title.Text = "Datasets Evaluation";
-             
+            zedGraph.GraphPane.Title.Text = "Datasets Evaluation";            
             zedGraph.GraphPane.XAxis.Title.Text = "iterations";
 
-            
+            //left axes
             zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.YAxis.Title.Text = eval;
-            zedGraph.GraphPane.Y2Axis.Title.Text = " ";
-            zedGraph.GraphPane.Y2Axis.Color = System.Drawing.Color.Red;
-            zedGraph.GraphPane.Legend.IsVisible = false;
+            zedGraph.GraphPane.YAxis.Title.Text = $"Training dataset ({eval})";
+            zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+
+            //right axes
+            zedGraph.GraphPane.Y2Axis.Title.Text = $"Validation dataset ({eval})";
+            zedGraph.GraphPane.Y2Axis.IsVisible = true;
+            zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
+
+            //legend
+            zedGraph.GraphPane.Legend.IsVisible = true;
+            zedGraph.GraphPane.Legend.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
             zedGraph.GraphPane.Title.IsVisible = false;
 
         }
@@ -158,7 +166,10 @@ namespace anndotnet.wnd.Panels
                 var configCont = this.DataContext as MLConfigController;
                 var loss = configCont.LearningParameters.LossFunction.ToString();
                 var eval = configCont.LearningParameters.EvaluationFunction.ToString();
-                trainingDatasetsGraph.GraphPane.YAxis.Title.Text = eval;
+
+                //
+                trainingDatasetsGraph.GraphPane.YAxis.Title.Text = $"Training dataset ({eval})";
+                trainingDatasetsGraph.GraphPane.Y2Axis.Title.Text = $"Validation dataset ({eval})";
             }
             lossMinibatchSerie.AddPoint(new PointPair(it, lossMB));
             evalMinibatchSerie.AddPoint(new PointPair(it, evaMB));
@@ -232,7 +243,7 @@ namespace anndotnet.wnd.Panels
 
             var zedGraph = this.trainingDatasetsGraph;
 
-            evalTrainingSerie = new LineItem("eval training datatset", null, null, System.Drawing.Color.Blue, ZedGraph.SymbolType.None, 1);
+            evalTrainingSerie = new LineItem("Ttraining datat set", null, null, System.Drawing.Color.Blue, ZedGraph.SymbolType.None, 1);
             evalTrainingSerie.Symbol.Fill = new Fill(System.Drawing.Color.Blue);
             evalTrainingSerie.Symbol.Size = 1;
             // Make it a smooth line
@@ -240,25 +251,41 @@ namespace anndotnet.wnd.Panels
             evalTrainingSerie.Line.SmoothTension = 0.9F;
             evalTrainingSerie.Line.Width = 1.8f;
             //
-            evalValidationSerie = new LineItem("eval validation datatset", null, null, System.Drawing.Color.Orange, ZedGraph.SymbolType.None, 1);
+            evalValidationSerie = new LineItem("Validation datat set", null, null, System.Drawing.Color.Orange, ZedGraph.SymbolType.None, 1);
             evalValidationSerie.Symbol.Fill = new Fill(System.Drawing.Color.Orange);
             evalValidationSerie.Symbol.Size = 1;
+            evalValidationSerie.YAxisIndex = 0;
+            evalValidationSerie.IsY2Axis = true;
+            
+
             // Make it a smooth line
-            evalValidationSerie.Line.IsSmooth = true;
-            evalValidationSerie.Line.SmoothTension = 0.9F;
-            evalValidationSerie.Line.Width = 1.8f;
+            evalMinibatchSerie.Line.IsSmooth = true;
+            evalMinibatchSerie.Line.SmoothTension = 0.9F;
+            evalMinibatchSerie.Line.Width = 2;
 
             zedGraph.GraphPane.YAxis.Scale.MaxAuto = true;
             zedGraph.GraphPane.YAxis.Scale.MinAuto = true;
 
+            zedGraph.GraphPane.Y2Axis.Scale.MaxAuto = true;
+            zedGraph.GraphPane.Y2Axis.Scale.MinAuto = true;
+
+
             zedGraph.GraphPane.YAxis.MajorGrid.IsVisible = false;
+            zedGraph.GraphPane.Y2Axis.MajorGrid.IsVisible = false;
+            zedGraph.GraphPane.YAxis.MinorTic.IsOpposite = false;
+            zedGraph.GraphPane.Y2Axis.MinorTic.IsOpposite = false;
+
+
+            zedGraph.GraphPane.YAxis.MinorGrid.IsVisible = false;
+            zedGraph.GraphPane.Y2Axis.MinorGrid.IsVisible = false;
+
+
             zedGraph.GraphPane.XAxis.MajorGrid.IsVisible = false;
 
-            zedGraph.GraphPane.YAxis.Scale.MajorStepAuto = true;
-            zedGraph.GraphPane.YAxis.Scale.MinorStepAuto = true;
 
             zedGraph.GraphPane.XAxis.Scale.MajorStep = 1;
             zedGraph.GraphPane.XAxis.Scale.MinorStep = 0;
+
 
             //add series after initialization
             zedGraph.GraphPane.CurveList.Add(evalTrainingSerie);

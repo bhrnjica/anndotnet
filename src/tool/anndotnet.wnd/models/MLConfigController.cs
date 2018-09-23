@@ -195,8 +195,8 @@ namespace anndotnet.wnd.Models
         /// <returns>tre if the file exists</returns>
         internal bool IsValidationSetDefined()
         {
-            var filePath = Project.GetMLConfigPath(Settings, Name);
-            var pp = Project.GetDefaultMLDatasetPath(Settings, filePath, false);
+            
+            var pp = Project.GetMLConfigPath(Settings, Name, "Validation");
             if (string.IsNullOrEmpty(pp) || pp == " ")
                 return false;
             else
@@ -471,7 +471,7 @@ namespace anndotnet.wnd.Models
 
         private void isModelParametersValid()
         {
-            if (Network.Count == 1 && Network[0].Type == LayerType.Custom)
+            if (Network[0].Type == LayerType.Custom)
                 return;
             //the last layer in the network should be output
             if (Network.Last().HDimension != OutLayer.First().Dimension)

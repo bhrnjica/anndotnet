@@ -514,7 +514,7 @@ namespace ANNdotNET.Core
                 //in case of custom network model
                 if (strParameters.Length == 1 && (strParameters[0].Contains("Custom") || strParameters[0].Contains("custom")))
                 {
-                    var l = new NNLayer() { Id = 1, Name = "Custom Implemented Network", };
+                    var l = new NNLayer() { Id = 1, Type= LayerType.Custom, Name = "Custom Implemented Network", };
                     layers.Add(l);
                     return layers;
                 }
