@@ -567,7 +567,19 @@ namespace ANNdotNET.Core
             {
                 var vv = new VariableVector();
                 foreach (var v in inputVars)
-                    vv.Add(v);
+                {
+                    //check if variable is stores as Sparse then we should create one embedding layer before slice
+                    //since mixing sparse and dense data is not suported
+                    if (v.IsSparse)
+                    {
+                        var v1 = Embedding.Create(v, v.Shape.Dimensions.Last(), type, device, 1, v.Name+"_sp_emb");
+                        vv.Add(v1);
+                    }
+                    else
+                       vv.Add(v);
+                }
+                  
+               
                 //
                 inputLayer = (Variable)CNTKLib.Splice(vv, new Axis(0));
             }
