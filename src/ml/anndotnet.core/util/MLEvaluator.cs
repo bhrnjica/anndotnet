@@ -239,7 +239,6 @@ namespace ANNdotNET.Core
 
                 while (true)
                 {
-                    Value actual = null;
                     Value predicted = null;
                     //get one minibatch of data for training
                     var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
@@ -254,32 +253,26 @@ namespace ANNdotNET.Core
                             inMap.Add(d.Key, d.Value);
                     }
 
+                    //actual data if t is available
+                    //var actualStream = mbData.Keys.Where(x => x.m_name.Equals(fun.Output.Name)).FirstOrDefault();
+                    var actualVar = arguments.Keys.Where(x => x.Name.Equals(fun.Output.Name)).FirstOrDefault();
+                    //actual = mbData[actualStream].data.DeepClone(true);
+                    var act = arguments[actualVar].GetDenseData<float>(actualVar).Select(l => MLValue.GetResult(l));
+                    actualLst.AddRange(act);
+                    
+                    //predicted data
                     //map variables and data
                     var predictedDataMap = new Dictionary<Variable, Value>() { { fun, null } };
 
                     //evaluates model
                     fun.Evaluate(inMap, predictedDataMap, device);
-
-                    //actual data if t is available
-                    var actualStream = mbData.Keys.Where(x => x.m_name.Equals(fun.Output.Name)).FirstOrDefault();
-                    var actualVar = arguments.Keys.Where(x => x.Name.Equals(fun.Output.Name)).FirstOrDefault();
-                    if (actualStream != null)
-                    {
-                        actual = mbData[actualStream].data;
-                        var act = actual.GetDenseData<float>(actualVar).Select(l => MLValue.GetResult(l));
-                        actual.Erase();
-                        actual.Dispose();
-                        actualLst.AddRange(act);
-                    }
-
-                    //predicted data
                     predicted = predictedDataMap.Values.First();
                     var pred = predicted.GetDenseData<float>(fun).Select(l => MLValue.GetResult(l));
                     predicted.Erase();
                     predicted.Dispose();
                     predictedLst.AddRange(pred);
 
-                    // check if sweepend reached
+                    // check if sweep end reached
                     if (mbData.Any(x => x.Value.sweepEnd))
                         break;
                 }

@@ -74,12 +74,14 @@ namespace ANNdotNET.Core
         {
             try
             {
-                var mlconfigFolder = MLFactory.GetMLConfigFolder(mlconfigPath);
-                var oldPath = Path.Combine(mlconfigFolder,trData.LastBestModel);
-                //delete history 
-                if (File.Exists(oldPath))
-                    File.Delete(oldPath);
-
+                if(!string.IsNullOrEmpty(trData.LastBestModel) && trData.LastBestModel != " ")
+                {
+                    var mlconfigFolder = MLFactory.GetMLConfigFolder(mlconfigPath);
+                    var oldPath = Path.Combine(mlconfigFolder, trData.LastBestModel);
+                    //delete history 
+                    if (File.Exists(oldPath))
+                        File.Delete(oldPath);
+                }
                 //set new value after delete old model
                 trData.LastBestModel = bestModelFile;
                 return bestModelFile;

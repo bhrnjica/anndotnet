@@ -33,7 +33,7 @@ namespace anndotnet.core.app
                 "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
 
             runExample("Predict Future Sales",
-                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig", ANNdotNET.Lib.Ext.CustomNNModels.CustomModelCallEntryPoint);
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
 
             runExample("Titanic Survival",
                 "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig");
@@ -69,8 +69,8 @@ namespace anndotnet.core.app
         static void trainingProgress(ProgressData progress)
         {
             //
-            Console.WriteLine($"Epoch={progress.EpochCurrent} of {progress.EpochTotal};\t Evaluation of {progress.EvaluationFunName}=" +
-                $"(TrainMB = {progress.MinibatchAverageEval},TrainFull = {progress.TrainEval}, Valid = {progress.ValidationEval})");
+            Console.WriteLine($"Epoch={progress.EpochCurrent} of {progress.EpochTotal};\t {progress.EvaluationFunName} for " +
+                $"(Minibatch Data set = {progress.MinibatchAverageEval},Training Dataset = {progress.TrainEval}, Validation dataset = {progress.ValidationEval}");
         }
 
 

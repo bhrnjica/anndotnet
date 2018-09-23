@@ -101,7 +101,7 @@ namespace ANNdotNET.Core
                 {
                     var k = retVal.ElementAt(i);
                     //this is fix for 2.6 version since the Value  data is not valid, so it must be clone in order to create MiniBatchData
-                    var mbData = new MinibatchData(k.Value.data.DeepClone(), k.Value.numberOfSequences, k.Value.numberOfSamples, k.Value.sweepEnd);
+                   // var mbData = new MinibatchData(k.Value.data.DeepClone(), k.Value.numberOfSequences, k.Value.numberOfSamples, k.Value.sweepEnd);
                    
                     var si = new StreamInformation();
                     si.m_definesMbSize = StreamConfigurations[i].m_definesMbSize;
@@ -109,8 +109,8 @@ namespace ANNdotNET.Core
                     si.m_name = StreamConfigurations[i].m_streamName;
 
                     //
-                    mb.Add(si, mbData);
-                    //mb.Add(si, k.Value);
+                   //mb.Add(si, mbData);
+                   mb.Add(si, k.Value);
                 }
 
                 return mb;
