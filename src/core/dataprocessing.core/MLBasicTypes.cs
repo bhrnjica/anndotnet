@@ -266,7 +266,7 @@ namespace DataProcessing.Core
                     col.Index = counter;
                     col.MissingValue = colValues[3];
                     col.Param = colValues[2];
-                    col.Scale = colValues[4];
+                    //col.Scale = colValues[4];
                     col.Type = colValues[1];
                     col.Encoding = col.Type.Equals("category", StringComparison.OrdinalIgnoreCase) ? CategoryEncoding.OneHot.ToString() : CategoryEncoding.None.ToString();
 

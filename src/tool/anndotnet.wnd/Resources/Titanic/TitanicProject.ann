@@ -1,3 +1,3 @@
-project:|Name:TitanicProject  |ValidationSetCount:20 |PrecentigeSplit:1 |MLConfigs:DNNModel |Info:
+project:|Name:TitanicProject  |ValidationSetCount:20 |PrecentigeSplit:1 |MLConfigs:DNNModel |Info:ProjectInfo.rtf
 data:|RawData:TitanicProject_rawdata.txt |Column01:sex;Category;Feature;Random; |Column02:age;Numeric;Feature;Average; |Column03:sibsp;Numeric;Feature;Average; |Column04:parch;Numeric;Feature;Average; |Column05:pclass;Category;Feature;Random; |Column06:survived;Category;Label;Random; 
 parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0

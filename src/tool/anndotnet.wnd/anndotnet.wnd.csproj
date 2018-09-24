@@ -331,14 +331,74 @@
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636733003278423117">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\models\model_at_994of1000_epochs_TimeSpan_636733003052301182">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\models\model_at_100of100_epochs_TimeSpan_636733002876882110">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880" />
     <Content Include="Resources\Concrete\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\log\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\models\model_at_27of100_epochs_TimeSpan_636734026055657638">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\log\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\models\model_at_956of1000_epochs_TimeSpan_636734041859422597">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="anndotnet.ico" />
@@ -445,9 +505,6 @@
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton.mlconfig">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Titanic\TitanicProject.ann">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -472,34 +529,10 @@
     <Content Include="Resources\Mushroom\MushroomProject.ann">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\data\mldataset_train">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\data\mldataset_valid">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\model_069cf557-9a04-4503-b933-cabaad190959.checkpoint">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\model_069cf557-9a04-4503-b933-cabaad190959.checkpoint.ckp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Iris\IrisProject\FFModel.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Glass\GlassIdentificationProject.ann">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\data\mldataset_train">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\data\mldataset_valid">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\model_708651d2-9eb1-466f-8858-d48a42e2b462.checkpoint">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\model_708651d2-9eb1-466f-8858-d48a42e2b462.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Bike\BikeSharingProject.ann">
@@ -523,9 +556,6 @@
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\model_4c2300e5-914e-49dd-a553-390701a6070e.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers.mlconfig">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Titanic\TitanicProject\DNNModel.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -544,9 +574,6 @@
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\log\model_4c2300e5-914e-49dd-a553-390701a6070e.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Glass\GlassIdentificationProject\FeedForwardWithRandomDSGeneraton\log\model_708651d2-9eb1-466f-8858-d48a42e2b462.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Iris\IrisProject\FFModel\log\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -557,9 +584,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Iris\IrisProject\FFModel\models\model_at_983of1000_epochs_TimeSpan_636729018198856673">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Mushroom\MushroomProject\TwoEmeddedLayers\log\model_069cf557-9a04-4503-b933-cabaad190959.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Titanic\TitanicProject\DNNModel\log\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.history">

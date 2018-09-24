@@ -31,7 +31,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Project Info" >
-                <RichTextBox  x:Name="richText" >
+                <RichTextBox  x:Name="richText" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
                     <RichTextBox.Resources>
                         <Style TargetType="Hyperlink">
                             <Setter Property="Cursor" Value="Hand" />

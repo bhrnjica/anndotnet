@@ -289,7 +289,10 @@ namespace anndotnet.wnd.Models
 
                 //get model full path
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
-
+                //check if file exists
+                var fi = new FileInfo(modelMLPath);
+                if (!fi.Exists)
+                    return mEval;
                 //evaluate model against training data 
                 var task1 = await Task.Run(()=> Project.EvaluateModel(modelMLPath, false, true, true, ProcessDevice.Default));
                 var resultTrain = task1;

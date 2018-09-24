@@ -263,10 +263,13 @@ namespace anndotnet.wnd.Models
             var fi = new FileInfo(fileName);
             if(fi.Exists)
             {
-                FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate);
-                TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
-                if(fileStream.Length > 0)
-                    range.Load(fileStream, DataFormats.Rtf);
+                using (FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
+                {
+                    TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
+                    if (fileStream.Length > 0)
+                        range.Load(fileStream, DataFormats.Rtf);
+                }
+                    
             }
             return fileName;
         }
@@ -276,13 +279,18 @@ namespace anndotnet.wnd.Models
         /// </summary>
         /// <param name="richCtrl"></param>
         /// <returns></returns>
-        private string saveRich(RichTextBox richCtrl)
+        protected string saveRich(RichTextBox richCtrl)
         {
             string fileName = ANNdotNET.Lib.Project.GetProjectInfoPath(Settings);
-            FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate);
-            TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
-            range.Save(fileStream, DataFormats.Rtf);
-            return fileName;
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Truncate))
+            {
+                
+                fileStream.Flush();
+                TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
+                range.Save(fileStream, DataFormats.Rtf);
+            }
+                
+            return Path.GetFileName(fileName);
         }
 
         /// <summary>
