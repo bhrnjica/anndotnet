@@ -11,49 +11,64 @@ namespace anndotnet.core.app
     {
         static void Main(string[] args)
         {
-            runAllml_configurations();
+            string strLocation1 = "D:\\repos\\anndotnet\\src\\tool\\";
+
+            for(int i=0; i< 10; i++)
+                runAllml_configurations(strLocation1);
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
             Console.Read();
 
         }
 
-        private static void runAllml_configurations()
+        private static void runAllml_configurations(string root)
         {
             runExample("Iris Flower Identification",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.tool\\model_mlconfigs\\iris.mlconfig");
+                $"{root}anndotnet.tool\\model_mlconfigs\\iris.mlconfig");
 
             runExample("Bezier Curve Machine Learning Demonstration",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.tool\\model_mlconfigs\\BCML.mlconfig");
+                $"{root}anndotnet.tool\\model_mlconfigs\\BCML.mlconfig");
 
             runExample("Predict Daily Sales for 10 items",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.tool\\model_mlconfigs\\daily_sales.mlconfig");
+                $"{root}anndotnet.tool\\model_mlconfigs\\daily_sales.mlconfig");
 
             runExample("Predict Solar Production",
-                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+                "D:\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
 
             runExample("Predict Future Sales",
-                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
+                "D:\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
+
+            runExample("Predict Future Sales",
+                "D:\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig");
 
             runExample("Titanic Survival",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig");
+                $"{root}anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig");
             runExample("Mushroms",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\Mushroom\\MushroomProject\\TwoEmeddedLayers.mlconfig");
+                $"{root}anndotnet.wnd\\Resources\\Mushroom\\MushroomProject\\TwoEmeddedLayers.mlconfig");
 
             runExample("Glass Identification",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\Glass\\GlassIdentificationProject\\FeedForwardWithRandomDSGeneraton.mlconfig");
+                $"{root}anndotnet.wnd\\Resources\\Glass\\GlassIdentificationProject\\FeedForwardWithRandomDSGeneraton.mlconfig");
 
             runExample("Concrete SLump Test",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\Concrete\\ConcreteSlumpProject\\FFNModel.mlconfig");
+                $"{root}anndotnet.wnd\\Resources\\Concrete\\ConcreteSlumpProject\\FFNModel.mlconfig");
+
+            runExample("Bike Sharing",
+                $"{root}anndotnet.wnd\\Resources\\Bike\\BikeSharingProject\\DailySharingLSTM.mlconfig");
+
+            runExample("Air Quality",
+                $"{root}anndotnet.wnd\\Resources\\AirQ\\AirQuality\\Stacked LSTM config.mlconfig");
+
+            runExample("MNIST Handwritting Digitc Recognition",
+                           $"{root}anndotnet.wnd\\Resources\\MNIST\\MNIST-Project\\FFnet.mlconfig");
 
             runExample("Breast Cancer FF config",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\BreastC\\BreastCancerProject\\FeedForward mlconfig.mlconfig");
+                $"{root}anndotnet.wnd\\Resources\\BreastC\\BreastCancerProject\\FeedForward mlconfig.mlconfig");
 
             runExample("Breast Cancer Emb config",
-                "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\BreastC\\BreastCancerProject\\CategoryEmbedding mlconfig.mlconfig");
+                $"{root}anndotnet.wnd\\Resources\\BreastC\\BreastCancerProject\\CategoryEmbedding mlconfig.mlconfig");
 
             Console.WriteLine("Press Any Key To Continue.....");
-            Console.Read();
+            //Console.Read();
         }
 
         private static void runExample(string title, string mlConfigPath, CreateCustomModel model=null)
@@ -76,6 +91,9 @@ namespace anndotnet.core.app
 
         static void RunExamples()
         {
+            for(int i=0; i< 10; i++)
+            {
+
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
@@ -127,6 +145,7 @@ namespace anndotnet.core.app
             var token1 = new CancellationToken();
             MachineLearning.Run(mlConfigFile1, DeviceDescriptor.UseDefaultDevice(), token1, trainingProgress, CustomNNModels.CustomModelCallEntryPoint);
 
+            }
         }
     }
 }
