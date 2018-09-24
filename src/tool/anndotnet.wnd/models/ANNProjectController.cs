@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using ANNdotNET.Lib;
 using DataProcessing.Core;
+using DocumentFormat.OpenXml.Presentation;
 using MLDataPreparation.Dll;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Forms.Integration;
 
 namespace anndotnet.wnd.Models
@@ -97,7 +101,7 @@ namespace anndotnet.wnd.Models
         }
  
         public ANNDataSet DataSet { get; internal set; }
-        public string ProjectInfo { get; internal set; }
+        public string ProjectInfo { get; set; }
         public new string IconUri { get => "Images/experiment.png"; }
 
         //initialize project controllers with project information
@@ -152,17 +156,9 @@ namespace anndotnet.wnd.Models
                     m.Settings = Settings;
                     //
                     m.Name = model;
-                    //if (m.InitModel())// just add model but dont initialize it
-                        Models.Add(m);
-                    //else
-                    //{
-                    //    if (MessageBox.Show($"'{m.Name}' is corrupted and cannot be loaded into the project. " +
-                    //        $"\nDo you still want it on the project list?", "ANNdotNET", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                    //    {
-                    //        MLConfig.Add(m);
-                    //    }
-                    //}
+                    Models.Add(m);
                 }
+
             }
             catch (Exception)
             {
@@ -172,16 +168,20 @@ namespace anndotnet.wnd.Models
             
         }
 
+       
         internal void Save( )
         {
             //access Data Pane in order to update data
-            var cntCtrl = anndotnet.wnd.App.Current.MainWindow;
-            var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
-            if (ctrl == null)
-                return;
-            var expCtrl = (DataPanel)ctrl.Child;
+            DataPanel expCtrl = getDataPanel();
             if (expCtrl == null)
                 return;
+            RichTextBox rtfCtrl = getRichCtrl();
+
+            //get rich text to save content
+            if (rtfCtrl != null)
+                ProjectInfo = saveRich(rtfCtrl);
+
+            //
             DataSet = expCtrl.GetDataSet();
             setCategoryEncoding(DataSet);
             if (Settings == null)
@@ -219,6 +219,70 @@ namespace anndotnet.wnd.Models
             //{
             //    model.SaveModel();
             //}
+        }
+
+        private RichTextBox getRichCtrl()
+        {
+            var cntCtrl = anndotnet.wnd.App.Current.MainWindow as MainWindow;
+            var tab = FindVisualChild<TabControl>(cntCtrl.content);
+            if (tab == null)
+                return null;
+            var tbItm = tab.Items[1] as TabItem;
+            if (tbItm == null)
+                return null;
+
+            var ctrl = tbItm.Content as RichTextBox;
+            return ctrl;
+        }
+
+        private DataPanel getDataPanel()
+        {
+            var cntCtrl = anndotnet.wnd.App.Current.MainWindow as MainWindow;
+            var tab = FindVisualChild<TabControl>(cntCtrl.content);
+            if (tab == null)
+                return null;
+            var tbItm = tab.Items[0] as TabItem;
+            if (tbItm == null)
+                return null;
+
+            var ctrl = FindVisualChild<WindowsFormsHost>(tbItm.Content as Grid);
+
+            var expCtrl = (DataPanel)ctrl.Child;
+            return expCtrl;
+        }
+
+        /// <summary>
+        /// load comtent from info project file and load into rich control
+        /// </summary>
+        /// <param name="richCtrl"></param>
+        /// <returns></returns>
+        public string LoadRichText(RichTextBox richCtrl)
+        {
+            string fileName = Project.GetProjectInfoPath(Settings);
+
+            var fi = new FileInfo(fileName);
+            if(fi.Exists)
+            {
+                FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate);
+                TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
+                if(fileStream.Length > 0)
+                    range.Load(fileStream, DataFormats.Rtf);
+            }
+            return fileName;
+        }
+
+        /// <summary>
+        /// Save rich content from 
+        /// </summary>
+        /// <param name="richCtrl"></param>
+        /// <returns></returns>
+        private string saveRich(RichTextBox richCtrl)
+        {
+            string fileName = ANNdotNET.Lib.Project.GetProjectInfoPath(Settings);
+            FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate);
+            TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
+            range.Save(fileStream, DataFormats.Rtf);
+            return fileName;
         }
 
         /// <summary>

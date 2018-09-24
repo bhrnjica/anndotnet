@@ -287,6 +287,17 @@ namespace ANNdotNET.Lib
         }
 
         /// <summary>
+        /// Returns full path of project info file
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static string GetProjectInfoPath(ProjectSettings settings)
+        {
+            string fileName = Path.Combine(settings.ProjectFolder, "ProjectInfo.rtf");
+            return fileName;
+        }
+
+        /// <summary>
         /// Evaluate mlconfig stored in mlconfigPath for input row stored in vector array
         /// </summary>
         /// <param name="mlconfigPath"></param>

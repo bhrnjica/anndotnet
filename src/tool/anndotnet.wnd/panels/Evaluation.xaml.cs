@@ -109,7 +109,7 @@ namespace anndotnet.wnd.Panels
         {
             ///chart for training/predicted data
             zedGraph.GraphPane.Title.Text = "Training/Predicted evaluation";
-            zedGraph.GraphPane.XAxis.Title.Text = "iterations";
+            zedGraph.GraphPane.XAxis.Title.Text = "samples";
             zedGraph.GraphPane.YAxis.Title.Text =  "label";
             zedGraph.GraphPane.Legend.IsVisible = false;
             zedGraph.GraphPane.Title.IsVisible = false;

@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Models;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -54,9 +55,13 @@ namespace anndotnet.wnd.Panels
          
             zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
             zedGraph.GraphPane.YAxis.Title.Text = loss;
-            zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+            //zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+            setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
+
+
             zedGraph.GraphPane.Y2Axis.Title.Text = eval;
-            zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
+            setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+            //zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
             
             zedGraph.GraphPane.Y2Axis.IsVisible = true;
             zedGraph.GraphPane.Legend.IsVisible = true;
@@ -79,18 +84,33 @@ namespace anndotnet.wnd.Panels
 
             //left axes
             zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.YAxis.Title.Text = $"Training dataset ({eval})";
-            zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+            zedGraph.GraphPane.YAxis.Title.Text = eval;//$"Training dataset ({eval})";
+            setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
+
 
             //right axes
-            zedGraph.GraphPane.Y2Axis.Title.Text = $"Validation dataset ({eval})";
+            //zedGraph.GraphPane.Y2Axis.Title.FontSpec.Size = 16.0f;//4.0f * (zedGraph.Size.Width / 100);
+            zedGraph.GraphPane.Y2Axis.Title.Text = eval;// $"Validation dataset ({eval})";
             zedGraph.GraphPane.Y2Axis.IsVisible = true;
-            zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
+            setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+
 
             //legend
             zedGraph.GraphPane.Legend.IsVisible = true;
             zedGraph.GraphPane.Legend.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
             zedGraph.GraphPane.Title.IsVisible = false;
+
+        }
+
+        private void setAxesColor(Axis axes, Color color)
+        {
+            axes.Color = color;
+            axes.MajorGrid.Color = color;
+            axes.MinorGrid.Color = color;
+            axes.MajorTic.Color = color;
+            axes.MinorTic.Color = color;
+            axes.Scale.FontSpec.FontColor = color;
+            axes.Title.FontSpec.FontColor = color;
 
         }
 
@@ -225,7 +245,7 @@ namespace anndotnet.wnd.Panels
             zedGraph.GraphPane.YAxis.MinorGrid.IsVisible = false;
             zedGraph.GraphPane.Y2Axis.MinorGrid.IsVisible = false;
 
-
+            zedGraph.GraphPane.XAxis.Scale.Min = 1.0;
             zedGraph.GraphPane.XAxis.MajorGrid.IsVisible = false;
 
             
@@ -275,7 +295,7 @@ namespace anndotnet.wnd.Panels
             zedGraph.GraphPane.YAxis.MinorTic.IsOpposite = false;
             zedGraph.GraphPane.Y2Axis.MinorTic.IsOpposite = false;
 
-
+            zedGraph.GraphPane.XAxis.Scale.Min = 1.0;
             zedGraph.GraphPane.YAxis.MinorGrid.IsVisible = false;
             zedGraph.GraphPane.Y2Axis.MinorGrid.IsVisible = false;
 

@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}">
+        <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}" x:Name="projectTab">
             <TabItem Header="Raw Data">
                 <Grid>
                     <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
@@ -31,9 +31,15 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Project Info" >
-                <!--<WindowsFormsHost  x:Name="hostWF2"   >
-                    <forms:ProjectInfoPanel AutoScaleMode="Dpi" x:Name="projectInfo"   />
-                </WindowsFormsHost>-->
+                <RichTextBox  x:Name="richText" >
+                    <RichTextBox.Resources>
+                        <Style TargetType="Hyperlink">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <EventSetter Event="MouseLeftButtonDown" Handler="Hyperlink_MouseLeftButtonDown" />
+                        </Style>
+                    </RichTextBox.Resources>
+
+                </RichTextBox>
             </TabItem>
         </TabControl>
     </Grid>

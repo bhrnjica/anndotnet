@@ -609,45 +609,17 @@ namespace anndotnet.wnd.Models
         private string saveNetworkParameters(ObservableCollection<NNLayer> network)
         {
             return Project.NetworkParametersToString(network.ToList());
-            var strValue = "";
-            foreach(var l in network)
-            {
-                var stab = l.SelfStabilization == true ? 1 : 0;
-                var peep = l.Peephole == true ? 1 : 0;
-                strValue += $"|Layer:{l.Type} {l.HDimension} {l.CDimension} {l.Value} {l.Activation} {stab} {peep} ";
-            }
-
-            return strValue;
         }
 
         private string saveLearningParameters(LearningParameters lp)
         {
             return lp.ToString();
-            var strValue = $"|Type:{lp.LearnerType} |LRate:{lp.LearningRate.ToString(CultureInfo.InvariantCulture)} " +
-                $"|Momentum:{lp.Momentum.ToString(CultureInfo.InvariantCulture)} |Loss:{lp.LossFunction}" +
-                $"|Eval:{lp.EvaluationFunction}" + $"|L1:{lp.L1Regularizer}" + $"|L2:{lp.L2Regularizer}";
-
-            return strValue;
         }
 
         private string saveTrainingParameters(TrainingParameters tp)
         {
             return tp.ToString();
-         
-            var norm = tp.Normalization;
-            if (tp.Normalization == null)
-                norm = new string[] { "0" };
-            //
-            var ct = tp.ContinueTraining ? 1 : 0;
-            var smwt = tp.SaveModelWhileTraining ? 1 : 0;
-            var rb = tp.RandomizeBatch ? 1 : 0;
-            var ftse = tp.FullTrainingSetEval ? 1 : 0;
-            var strValue = $"|Type:{tp.Type} |BatchSize:{tp.BatchSize} |Epochs:{tp.Epochs} " +
-                $"|Normalization:{string.Join(";", norm)} |RandomizeBatch:{rb}" +
-                $" |SaveWhileTraining:{smwt} |FullTrainingSetEval:{ftse} |ProgressFrequency:{tp.ProgressFrequency}" +
-                $" |ContinueTraining:{ct} |TrainedModel:{tp.LastBestModel} ";
-
-            return strValue;
+        
         }
 
         /// <summary>
