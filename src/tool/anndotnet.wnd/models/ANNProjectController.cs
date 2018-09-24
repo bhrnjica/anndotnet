@@ -282,6 +282,12 @@ namespace anndotnet.wnd.Models
         protected string saveRich(RichTextBox richCtrl)
         {
             string fileName = ANNdotNET.Lib.Project.GetProjectInfoPath(Settings);
+            var fi = new FileInfo(fileName);
+            if(!fi.Exists)
+            {
+                using (FileStream fileStream = new FileStream(fileName, FileMode.Create)) ;
+
+            }
             using (FileStream fileStream = new FileStream(fileName, FileMode.Truncate))
             {
                 
