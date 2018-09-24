@@ -15,10 +15,4 @@
     <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="GPdotNET.MathStuff">
-      <HintPath>..\..\..\assemblies\GPdotNET.MathStuff.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

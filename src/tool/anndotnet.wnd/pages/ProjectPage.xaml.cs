@@ -11,7 +11,11 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Models;
+using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Threading;
 
 namespace anndotnet.wnd.Pages
 {
@@ -39,26 +43,48 @@ namespace anndotnet.wnd.Pages
         /// <param name="e"></param>
         private void ExperimentPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //For old experiment page save the state
-            if(e.OldValue!=null)
+            try
             {
-                
-                var model = e.OldValue as ANNProjectController;
-                model.DataSet = project.GetDataSet();
-            }
-            //for project show previously stored state
-            if(e.NewValue !=null)
-            {
-                
-                var prjCont = e.NewValue as ANNProjectController;
-                if(prjCont != null)
+                //For old experiment page save the state
+                if (e.OldValue != null)
                 {
-                    project.ResetExperimentalPanel();
-                    if (prjCont.DataSet != null)
-                        project.SetDataSet(prjCont.DataSet);
+
+                    var model = e.OldValue as ANNProjectController;
+                    model.DataSet = project.GetDataSet();
                 }
-               
-            } 
+                //for project show previously stored state
+                if (e.NewValue != null)
+                {
+
+                    var prjCont = e.NewValue as ANNProjectController;
+                    if (prjCont != null)
+                    {
+                        project.ResetExperimentalPanel();
+                        if (prjCont.DataSet != null)
+                            project.SetDataSet(prjCont.DataSet);
+
+
+                        prjCont.LoadRichText(this.richText);
+                    }
+
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+                Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(
+
+                    () =>
+                    {
+                        var appCnt = App.Current.MainWindow.DataContext as AppController;
+                        appCnt.ReportException(ex);
+                    }
+
+                ));
+            }
+            
         }
 
         private void ExperimentPage_Loaded(object sender, RoutedEventArgs e)
@@ -66,7 +92,15 @@ namespace anndotnet.wnd.Pages
             //experiment.CreateModel = CreateNewModel;
             //experiment.UpdateModel = UpdateModel;
         }
-
-
+        /// <summary>
+        /// Event handler for hyper-link clicked in the rich text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Hyperlink_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var hyperlink = (Hyperlink)sender;
+            Process.Start(hyperlink.NavigateUri.ToString());
+        }
     }
 }

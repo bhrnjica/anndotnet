@@ -250,7 +250,7 @@ namespace anndotnet.wnd.Panels
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (dataGrid.SelectedIndex < 0)
                 {
