@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Models;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -56,7 +57,8 @@ namespace anndotnet.wnd.Pages
                         evaluation.DataContext = model;
                         model.Init();
                         //disable testing in case metadata is not presented
-                        testing.IsEnabled = model.TestData!=null;
+                        if(model.TestData==null || model.TestData.Where(x=>x.Kind== ANNdotNET.Lib.DataKind.Feature).Count() == 0)
+                            testTab.Visibility = Visibility.Collapsed;
                 }
             }
                 catch (System.Exception ex)

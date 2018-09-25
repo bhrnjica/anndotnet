@@ -331,7 +331,9 @@
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636733003278423117">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880" />
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Concrete\ProjectInfo.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

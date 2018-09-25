@@ -4,7 +4,8 @@
 configid:mnist-ml-configuration
 
 !metadata information
-metadata:|Column01:ImagePath;Category;Feature;Ignore; |Column02:labels;Category;Label;Ignore;0;1;2;3;4;5;6;7;8;9 
+!metadata contains only information about label, in order to make evaluation model corectly
+metadata: |Column02:labels;Category;Label;Ignore;0;1;2;3;4;5;6;7;8;9 
 
 !features represent 28x28=784 pixels 
 features:|features 784 0

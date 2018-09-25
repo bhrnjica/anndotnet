@@ -19,7 +19,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}">
+        <TabControl Grid.Row="1" Grid.Column="1" x:Name="trainingTab" SelectedIndex="{Binding SelectedPage}">
             <TabItem Header="Network Settings" >
                 <!--Network Setting-->
                 <ctrl:Network></ctrl:Network>
@@ -32,7 +32,7 @@
                 <!--Training process-->
                 <ctrl:Evaluation x:Name="evaluation"></ctrl:Evaluation>
             </TabItem>
-            <TabItem Header="Test" >
+            <TabItem Header="Test" x:Name="testTab">
                 <!--Training process-->
                 <ctrl:Test x:Name="testing"></ctrl:Test>
             </TabItem>
