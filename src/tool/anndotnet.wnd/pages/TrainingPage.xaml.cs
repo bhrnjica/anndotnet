@@ -43,26 +43,37 @@ namespace anndotnet.wnd.Pages
                 //for the old DataContex we should save the state
                 if (e.OldValue != null)
                 {
+                    //set wait cursor 
+                    MainWindow.SetCursor(true);
+
                     MLConfigController model = e.OldValue as MLConfigController;
                     if (model != null && !model.Deleted)
                         model.Save();
-                
+
+                    //model.Dispose();
+
                 }
                 //for new model we should show previously stored state
                 if (e.NewValue != null)
                 {
 
-                        MLConfigController model = e.NewValue as MLConfigController;
-                        evaluation.DataContext = null;
-                        evaluation.DataContext = model;
-                        model.Init();
-                        //disable testing in case metadata is not presented
-                        if(model.TestData==null || model.TestData.Where(x=>x.Kind== ANNdotNET.Lib.DataKind.Feature).Count() == 0)
-                            testTab.Visibility = Visibility.Collapsed;
+                    MLConfigController model = e.NewValue as MLConfigController;
+                    evaluation.DataContext = null;
+                    evaluation.DataContext = model;
+                    model.Init();
+                    //disable testing in case metadata is not presented
+                    if (model.TestData == null || model.TestData.Where(x => x.Kind == ANNdotNET.Lib.DataKind.Feature).Count() == 0)
+                        testTab.Visibility = Visibility.Collapsed;
+
+                    //restore cursor 
+                    MainWindow.SetCursor(false);
                 }
             }
-                catch (System.Exception ex)
+            catch (System.Exception ex)
             {
+                //restore cursor 
+                MainWindow.SetCursor(false);
+
                 Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(
@@ -75,6 +86,6 @@ namespace anndotnet.wnd.Pages
 
                 ));
             }
-        }      
+        }
     }
 }

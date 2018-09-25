@@ -45,7 +45,7 @@ namespace anndotnet.wnd
                 var mi = new System.Windows.Controls.MenuItem();
 
                 m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header="Rename", Command= commands.AppCommands.RenameConfigCommand  });
-                m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Duplicate", Command = commands.AppCommands.DuplicateConfigCommand });
+              //  m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Duplicate", Command = commands.AppCommands.DuplicateConfigCommand });
                 m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Delete", Command = commands.AppCommands.DeleteConfigCommand });
 
             }
@@ -80,6 +80,35 @@ namespace anndotnet.wnd
         {
             stopBtn.IsEnabled =  true;
             treeCtrl.IsEnabled = false;
+
+        }
+
+        static Cursor MainDefault=null;
+        static Cursor Wait = null;
+        public static void SetCursor(bool isWait)
+        {
+
+            if (isWait)
+            {
+                var prev = App.Current.MainWindow.Cursor;
+                if (prev == null)
+                    prev = System.Windows.Input.Cursors.Arrow;
+                if (Wait == null)
+                    Wait = System.Windows.Input.Cursors.Wait;
+
+                App.Current.MainWindow.Cursor = Wait;
+                MainDefault = prev;
+            }
+            else
+            {
+                var prev = App.Current.MainWindow.Cursor;
+                if (MainDefault == null)
+                    MainDefault = System.Windows.Input.Cursors.Arrow;
+
+
+                App.Current.MainWindow.Cursor = MainDefault;
+                Wait = prev;
+            }
 
         }
         private void MainWindow_Closing(object sender, CancelEventArgs e)

@@ -198,7 +198,11 @@ namespace anndotnet.wnd.Models
 
             //get rich text to save content
             if (rtfCtrl != null)
+            {
                 saveRich(rtfCtrl);
+                
+            }
+               
 
             //
             DataSet = expCtrl.GetDataSet();
@@ -365,6 +369,8 @@ namespace anndotnet.wnd.Models
                     TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
                     if (fileStream.Length > 0)
                         range.Load(fileStream, DataFormats.Rtf);
+
+                    
                 }
                     
             }
@@ -376,24 +382,22 @@ namespace anndotnet.wnd.Models
         /// </summary>
         /// <param name="richCtrl"></param>
         /// <returns></returns>
-        protected string saveRich(RichTextBox richCtrl)
+        protected void saveRich(RichTextBox richCtrl)
         {
             string fileName = ANNdotNET.Lib.Project.GetProjectInfoPath(Settings);
             var fi = new FileInfo(fileName);
             if(!fi.Exists)
             {
-                using (FileStream fileStream = new FileStream(fileName, FileMode.Create)) ;
+                using (FileStream fileStream = new FileStream(fileName, FileMode.Create));
 
             }
             using (FileStream fileStream = new FileStream(fileName, FileMode.Truncate))
             {
-                
-                fileStream.Flush();
                 TextRange range = new TextRange(richCtrl.Document.ContentStart, richCtrl.Document.ContentEnd);
                 range.Save(fileStream, DataFormats.Rtf);
             }
                 
-            return Path.GetFileName(fileName);
+            return;
         }
 
         /// <summary>

@@ -48,9 +48,13 @@ namespace anndotnet.wnd.Pages
                 //For old experiment page save the state
                 if (e.OldValue != null)
                 {
+                    //set wait cursor 
+                    MainWindow.SetCursor(true);
 
                     var model = e.OldValue as ANNProjectController;
                     model.DataSet = project.GetDataSet();
+                    project.Dispose();
+                    richText = null;
                 }
                 //for project show previously stored state
                 if (e.NewValue != null)
@@ -73,10 +77,14 @@ namespace anndotnet.wnd.Pages
                         prjCont.LoadRichText(this.richText);
                     }
 
+                    //restore cursor 
+                    MainWindow.SetCursor(false);
                 }
             }
             catch (System.Exception ex)
             {
+                //restore cursor 
+                MainWindow.SetCursor(false);
 
                 Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,

@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace anndotnet.wnd.Pages
 {
@@ -26,6 +27,46 @@ namespace anndotnet.wnd.Pages
         {
             InitializeComponent();
             this.Loaded += StartPage_Loaded;
+            this.DataContextChanged += StartPage_DataContextChanged;
+        }
+
+        private void StartPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            try
+            {
+                //for the old DataContex we should save the state
+                if (e.OldValue != null)
+                {
+                    //set wait cursor 
+                    MainWindow.SetCursor(true);
+
+                    start.Dispose();
+                }
+                //for new model we should show previously stored state
+                if (e.NewValue != null)
+                {
+
+                    //restore cursor 
+                    MainWindow.SetCursor(false);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                //restore cursor 
+                MainWindow.SetCursor(false);
+
+                Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(
+
+                    () =>
+                    {
+                        var appCnt = App.Current.MainWindow.DataContext as AppController;
+                        appCnt.ReportException(ex);
+                    }
+
+                ));
+            }
         }
 
         private void StartPage_Loaded(object sender, RoutedEventArgs e)
