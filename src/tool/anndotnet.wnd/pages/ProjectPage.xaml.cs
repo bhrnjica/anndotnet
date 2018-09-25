@@ -64,7 +64,10 @@ namespace anndotnet.wnd.Pages
                             project.SetDataSet(prjCont.DataSet);
                         //hide raw dataset when the project is no rawdataste
                         if (prjCont.Type == ProjectType.NoRawData)
-                            rawDataTab.Visibility =  Visibility.Collapsed;
+                        {
+                            rawDataTab.Visibility = Visibility.Collapsed;
+                        }
+                           
 
                         prjCont.LoadRichText(this.richText);
                     }

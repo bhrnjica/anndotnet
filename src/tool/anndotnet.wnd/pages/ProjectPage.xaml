@@ -30,7 +30,7 @@
                     </WindowsFormsHost>
                 </Grid>
             </TabItem>
-            <TabItem Header="Project Info" >
+            <TabItem Header="Project Info" x:Name="prjInfoPage" >
                 <RichTextBox  x:Name="richText" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
                     <RichTextBox.Resources>
                         <Style TargetType="Hyperlink">
