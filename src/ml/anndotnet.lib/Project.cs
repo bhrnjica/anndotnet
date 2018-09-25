@@ -349,7 +349,7 @@ namespace ANNdotNET.Lib
 
             var mf = MLFactory.CreateMLFactory(dicMParameters);
             //perform evaluation
-            var evParams = new EvalParameters()
+            var evParams = new EvaluationParameters()
             {
 
                 MinibatchSize = uint.Parse(mbSizetr),
@@ -361,9 +361,11 @@ namespace ANNdotNET.Lib
             //evaluate model
             if (evType == EvaluationType.FeaturesOnly)
             {
+                if (!dicMParameters.ContainsKey("metadata"))
+                    throw new Exception("The result cannot be exported to Excel, since no metadata is stored in mlconfig file.");
                 var desc = ParseRawDataSet(dicMParameters["metadata"]);
                 er.Header = generateHeader(desc);
-                er.DataSet = FeatureLabels(nnModelPath, dataPath, evParams, device);
+                er.DataSet = FeatureAndLabels(nnModelPath, dataPath, evParams, device);
                 
                 return er;
             }
@@ -383,10 +385,22 @@ namespace ANNdotNET.Lib
                 //define header
                 er.Header.Add(evParams.Ouptut.First().Name + "_actual");
                 er.Header.Add(evParams.Ouptut.First().Name + "_predicted");
+                er.Actual = new List<float>();
+                er.Predicted = new List<float>();
+                er.ActualEx = new List<List<float>>();
+                er.PredictedEx = new List<List<float>>();
+                //
+                var resultEx = EvaluateFunctionEx(nnModelPath, dataPath, evParams, device);
+                for (int i = 0; i < resultEx.actual.Count(); i++)
+                {
+                    var res1 = MLValue.GetResult(resultEx.actual[i]);
+                    er.Actual.Add(res1);
+                    var res2 = MLValue.GetResult(resultEx.predicted[i]);
+                    er.Predicted.Add(res2);
+                }
+                er.ActualEx = resultEx.actual;
+                er.PredictedEx = resultEx.predicted;
 
-                var result = EvaluateFunctionEx(nnModelPath, dataPath, evParams, device);
-                er.ActualEx = result.actual;
-                er.PredictedEx = result.predicted;
                 return er;
             }
             else
@@ -434,87 +448,13 @@ namespace ANNdotNET.Lib
         }
 
 
-
-        /// <summary>
-        /// Evaluates the ANNdotNET mlconfig for training or validation dataset with some column filtering options
-        /// </summary>
-        /// <param name="mlconfigPath"></param>
-        /// <param name="includeFeatures"></param>
-        /// <param name="includePrediction"></param>
-        /// <param name="isTrain"></param>
-        /// <param name="pdevice"></param>
-        /// <returns>Dictionary of different result representation.</returns>
-        public static (Dictionary<string, List<List<float>>> featuresDict,
-                    Dictionary<string, List<List<float>>> actualDict,
-                    Dictionary<string, List<List<float>>> predictedDict, List<string> outputClasses)
-        EvaluateModel(string mlconfigPath, bool includeFeatures, bool includePrediction, bool isTrain, ProcessDevice pdevice)
-        {
-            try
-            {
-                //
-                //device definition
-                DeviceDescriptor device = MLFactory.GetDevice(pdevice);
-
-                //Load ML model configuration file
-                var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
-
-                //get model data paths
-                var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
-                var trainedModelRelativePath = Project.GetParameterValue(dicMParameters["training"], "TrainedModel");
-
-                //check if validation files is defined
-                if (isTrain == false && (string.IsNullOrEmpty(dicPath["Validation"]) || dicPath["Validation"] == " "))
-                {
-                    return (null, null, null, null);
-                }
-
-                //Minibatch type
-                var mbTypestr = Project.GetParameterValue(dicMParameters["training"], "Type");
-                MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
-
-                //add full path of model folder since model file doesn't contains any apsolute path
-                dicMParameters.Add("root", Project.GetMLConfigFolder(mlconfigPath));
-
-                //prepare MLFactory 
-                var f = MLFactory.CreateMLFactory(dicMParameters);
-
-                //prepare data paths for mini-batch source
-                var strTrainPath = $"{dicMParameters["root"]}\\{dicPath["Training"]}";
-                var strValidPath = $"{dicMParameters["root"]}\\{dicPath["Validation"]}";
-                var strModelToEvaluatePath = $"{dicMParameters["root"]}\\{trainedModelRelativePath}";
-
-                //decide what data to evaluate 
-                var dataPath = isTrain ? strTrainPath : strValidPath;
-
-                //perform evaluation
-                var result = MLEvaluator.EvaluateModel(f, mbType, dataPath, strModelToEvaluatePath, includeFeatures, includePrediction, device);
-
-                //get output classes in case the ml problem is classification
-                var strCls = dicMParameters.ContainsKey("metadata")?dicMParameters["metadata"]:"";
-                var outClass = DataDescriptor.GetOutputClasses(strCls);
-
-                //return result
-                return (result.featuresDict, result.actualDict, result.predictedDict, outClass);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-
-
-
-
-
-        public static Dictionary<string, List<List<float>>> FeatureLabels(string nnModel, string dataPath,EvalParameters evParam, DeviceDescriptor device)
+        public static Dictionary<string, List<List<float>>> FeatureAndLabels(string nnModel, string dataPath,EvaluationParameters evParam, DeviceDescriptor device)
         {
             try
             {
                 var fun = Function.Load(nnModel, device);
                 //
-                return MLEvaluator.Features(fun, evParam, device);
+                return MLEvaluator.FeaturesAndLabels(fun, evParam, device);
             }
             catch (Exception)
             {
@@ -524,7 +464,7 @@ namespace ANNdotNET.Lib
 
         }
 
-        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(string nnModel, string dataPath, EvalParameters evParam, DeviceDescriptor device)
+        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(string nnModel, string dataPath, EvaluationParameters evParam, DeviceDescriptor device)
         {
             try
             {
@@ -540,7 +480,7 @@ namespace ANNdotNET.Lib
 
         }
 
-        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(string nnModel, string dataPath, EvalParameters evParam, DeviceDescriptor device)
+        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(string nnModel, string dataPath, EvaluationParameters evParam, DeviceDescriptor device)
         {
             try
             {

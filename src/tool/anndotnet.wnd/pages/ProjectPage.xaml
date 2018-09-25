@@ -22,7 +22,7 @@
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}" x:Name="projectTab">
-            <TabItem Header="Raw Data">
+            <TabItem Header="Raw Data" x:Name="rawDataTab">
                 <Grid>
                     <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
                     <WindowsFormsHost  x:Name="hostWF" >

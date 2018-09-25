@@ -54,7 +54,9 @@ namespace anndotnet.wnd.Pages
                         MLConfigController model = e.NewValue as MLConfigController;
                         evaluation.DataContext = null;
                         evaluation.DataContext = model;
-                        model.InitModel();
+                        model.Init();
+                        //disable testing in case metadata is not presented
+                        testing.IsEnabled = model.TestData!=null;
                 }
             }
                 catch (System.Exception ex)

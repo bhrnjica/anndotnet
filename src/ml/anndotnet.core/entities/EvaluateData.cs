@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNTK;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,8 +17,19 @@ namespace ANNdotNET.Core
 
         public List<float> Actual { get; set; }
         public List<float> Predicted { get; set; }
-        public IList<List<float>> ActualEx { get; set; }
+        public List<List<float>> ActualEx { get; set; }
         public List<List<float>> PredictedEx { get; set; }
+    }
+
+    public class EvaluationParameters
+    {
+        //public string DataFilePath { get; set; }
+        public uint MinibatchSize { get; set; }
+        public MinibatchSourceEx MBSource { get; set; }
+        public List<Variable> Input { get; set; }
+        public List<Variable> Ouptut { get; set; }
+
+        //  public StreamConfiguration[] StrmsConfig { get; set; }
     }
 }
     

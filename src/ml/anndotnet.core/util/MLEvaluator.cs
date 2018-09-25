@@ -26,156 +26,15 @@ namespace ANNdotNET.Core
     public class MLEvaluator
     {
         #region Public Members
-        /// <summary>
-        /// Evaluate the model against dataset sored in the dataset file, and extract the result
-        /// </summary>
-        /// <param name="mlF"> ml factory object contains members needed to evaluation process</param>
-        /// <param name="mbs"> Minibatch source which provides helpers members needed for for evaluation</param>
-        /// <param name="strDataSetPath"> file of dataset</param>
-        /// <param name="modelPath"> models which will be evaluate</param>
-        /// <param name="resultExportPath"> result file in which the result will be exported</param>
-        /// <param name="device"> device for computation</param>
-        public static (Dictionary<string, List<List<float>>> featuresDict, Dictionary<string, List<List<float>>> actualDict, Dictionary<string, List<List<float>>> predictedDict)
-            EvaluateModel(MLFactory mlF, MinibatchType type, string strDataSetPath, string modelPath, bool includeFeatures, bool includePrediction, DeviceDescriptor device)
-        {
-            try
-            {
-                //load model
-                var model = Function.Load(modelPath, device);
-
-                //get data for evaluation by calling GetFullBatch
-                var minibatchData = MinibatchSourceEx.GetFullBatch(type, strDataSetPath, mlF.StreamConfigurations.ToArray(), device);
-
-                //input map creation for model evaluation
-                var inputMap = new Dictionary<Variable, Value>();
-                foreach (var v in minibatchData)
-                {
-                    var vv = model.Arguments.Where(x => x.Name == v.Key.m_name).FirstOrDefault();
-                    var streamInfo = v.Key;
-                    if (vv != null)
-                        inputMap.Add(vv, minibatchData[streamInfo].data);
-
-                }
-                //actual map Creation
-                //input map creation for model evaluation
-                var actualMap = new Dictionary<Variable, Value>();
-                foreach (var v in minibatchData)
-                {
-                    var vv = model.Outputs.Where(x => x.Name == v.Key.m_name).FirstOrDefault();
-                    var streamInfo = v.Key;
-                    if (vv != null)
-                        actualMap.Add(vv, minibatchData[streamInfo].data);
-
-                }
-
-                //features collection
-                var featDic = new Dictionary<string, List<List<float>>>();
-
-                //labels collection
-                var actualDic = new Dictionary<string, List<List<float>>>();
-                var predictDic = new Dictionary<string, List<List<float>>>();
-
-                //*******extract features******
-                //features are extracted as they go in CNTK minibatch trainer
-                //binary and categorical variables are presented as One-Hot Vectors
-                if (includeFeatures)
-                {
-                    foreach (var arg in model.Arguments)
-                    {
-                        var features = new List<List<float>>();
-                        //label stream
-                        var featureStream = minibatchData.Keys.Where(x => x.m_name == arg.Name).First();
-
-                        //features
-                        var fv = MLValue.GetValues(arg, minibatchData[featureStream].data);
-                        featDic.Add(arg.Name, fv);
-                    }
-                }
-
-                //*****extract actual output values*****
-                //Categorical and binary variables are encoded to its numerical representation of classes
-                // so in case BInary one hot (0.23,0,77) =1, (0,77,0.23) =0,
-                //categorical (0.1,0.3,0.6)=2
-                foreach (var output in model.Outputs)
-                {
-                    var actual = new List<List<float>>();
-                    var actual_hotvector = new List<List<float>>();
-
-                    //
-                    var featureStream = minibatchData.Keys.Where(x => x.m_name == output.Name).First();
-                    if (featureStream != null)
-                    {
-                        var av = MLValue.GetValues(output, minibatchData[featureStream].data);
-                        
-
-                        //extract final result from hot-vector
-                        foreach (var row in av)
-                        {
-                            actual.Add(new List<float>() { MLValue.GetResult(row) });
-
-                        }
-                        //order of adding items MUST NOT BE CHANGED
-                        actualDic.Add($"{output.Name}", actual);
-                        actualDic.Add($"{output.Name}_hotvector", av);
-                    }
-
-                }
-
-                //predicted  map 
-                var predictedDataMap = new Dictionary<Variable, Value>();
-
-                //when exporting data to excel we not need prediction since the model is exported directly 
-                // and excel will call evaluation as regular excel formula
-                if (includePrediction)
-                {
-                    foreach (var outp in model.Outputs)
-                    {
-                        predictedDataMap.Add(outp, null);
-                    }
-                    //model evaluation
-                    model.Evaluate(inputMap, predictedDataMap, device);
-                }
-
-                //*****extract predicted values*****
-                foreach (var output in model.Outputs)
-                {
-                    var predicted = new List<List<float>>();
-                    if (includePrediction)
-                    {
-                        var fv = MLValue.GetValues(output, predictedDataMap[output]);
-                        foreach (var row in fv)
-                        {
-                            predicted.Add(new List<float>() { MLValue.GetResult(row) });
-                        }
-                        //order of adding items MUST NOT BE CHANGED
-                        predictDic.Add($"{output.Name}_predicted", predicted);
-                        predictDic.Add($"{output.Name}_predicted_hotvector", fv);
-                        
-                    }
-                }
-                
-
-                return (featDic, actualDic, predictDic);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            //export result
-            // ExportResult(actual, predict, resultExportPath);
-        }
-
 
         /// <summary>
-        /// Returns part of mldataset with features columns only
+        /// Returns part of mldataset with features labels columns this is needed in case Excel export is performed.
         /// </summary>
         /// <param name="fun"></param>
         /// <param name="evParam"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        public static Dictionary<string, List<List<float>>> Features(Function fun, EvalParameters evParam, DeviceDescriptor device)
+        public static Dictionary<string, List<List<float>>> FeaturesAndLabels(Function fun, EvaluationParameters evParam, DeviceDescriptor device)
         {
             try
             {
@@ -229,7 +88,7 @@ namespace ANNdotNET.Core
 
         }
 
-        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(Function fun, EvalParameters evParam, DeviceDescriptor device)
+        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(Function fun, EvaluationParameters evParam, DeviceDescriptor device)
         {
             try
             {
@@ -255,7 +114,7 @@ namespace ANNdotNET.Core
 
         }
 
-        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(Function fun, EvalParameters evParam, DeviceDescriptor device)
+        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(Function fun, EvaluationParameters evParam, DeviceDescriptor device)
         {
             try
             {
@@ -406,16 +265,5 @@ namespace ANNdotNET.Core
         }
        
         #endregion
-    }
-
-    public class EvalParameters
-    {
-        //public string DataFilePath { get; set; }
-        public uint MinibatchSize { get; set; }
-        public MinibatchSourceEx MBSource { get; set; }
-        public List<Variable> Input { get; set; }
-        public List<Variable> Ouptut { get; set; }
-
-      //  public StreamConfiguration[] StrmsConfig { get; set; }
     }
 }

@@ -27,6 +27,12 @@ using System.Windows.Forms.Integration;
 
 namespace anndotnet.wnd.Models
 {
+    public enum ProjectType
+    {
+        Default,
+        ImageClassification,
+        NoRawData,
+    }
 
     public class ANNProjectController : BaseModel
     {
@@ -101,7 +107,8 @@ namespace anndotnet.wnd.Models
         }
  
         public ANNDataSet DataSet { get; internal set; }
-        public string ProjectInfo { get; set; }
+        public ProjectType Type { get; set; }
+
         public new string IconUri { get => "Images/experiment.png"; }
 
         //initialize project controllers with project information
@@ -115,12 +122,23 @@ namespace anndotnet.wnd.Models
                 
                 //load project information from file
                 var dicData = Project.LoadProjectData(projectPath);
+
                 //load project info
                 Settings = Project.CreateProjectSettings(dicData["project"]);
                 Settings.ProjectFolder = fi.Directory.FullName;
                 Settings.ProjectFile = fi.Name;
+
                 //
                 Name = Project.GetParameterValue(dicData["project"],"Name");
+
+                //check which type the project is
+                var strType = Project.GetParameterValue(dicData["project"], "Type");
+                if (string.IsNullOrEmpty(strType))
+                    Type = ProjectType.Default;
+                else
+                {
+                    Type = (ProjectType)Enum.Parse(typeof(ProjectType), strType, true);
+                }
 
                 var prData = dicData["data"].Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 var dataPath = Project.GetParameterValue(prData, "RawData");
@@ -168,7 +186,8 @@ namespace anndotnet.wnd.Models
             
         }
 
-       
+       /// The method only saves the project file, no related mlconfigs are saved.
+       /// </summary>
         internal void Save( )
         {
             //access Data Pane in order to update data
@@ -179,7 +198,7 @@ namespace anndotnet.wnd.Models
 
             //get rich text to save content
             if (rtfCtrl != null)
-                ProjectInfo = saveRich(rtfCtrl);
+                saveRich(rtfCtrl);
 
             //
             DataSet = expCtrl.GetDataSet();
@@ -214,11 +233,89 @@ namespace anndotnet.wnd.Models
             //update project file with information about raw dataset
             generateProjectFile(prjPath1, rawDataName);
 
-            //once the project information is updated, save models
-            //foreach (var model in MLConfig)
-            //{
-            //    model.SaveModel();
-            //}
+            
+        }
+
+        internal void CreateMLConfig(MLConfigController mlconfig)
+        {
+            //save project with new created mlconfig
+            Save();
+
+            //create model name 
+            string modelName = $"MLConfig{Models.Count}";
+
+            //Define ml data file paths
+            var strModelFolder = Project.GetMLConfigFolder(Settings, modelName);
+            var strModelDataFolder = Project.GetMLConfigDataFolder(Settings, modelName);
+            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, true);
+            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, false);
+
+            //check if model folder exists
+            if (!Directory.Exists(strModelFolder))
+                Directory.CreateDirectory(strModelFolder);
+            //check if data folder exists
+            if (!Directory.Exists(strModelDataFolder))
+                Directory.CreateDirectory(strModelDataFolder);
+
+            //get dataset based on options 
+            var ds = DataSet.GetDataSet(DataSet.RandomizeData);
+            //we want whole data set later the data will be split
+            ds.TestRows = 0;
+            //create experiment based created dataset
+            var exp = new Experiment(ds);
+            var data = ExportData.PrepareDataSet(exp);
+
+            //calculate validation and training rows
+            int validCount = DataSet.IsPrecentige ? (int)(DataSet.TestRows * data.Count / 100.0) : DataSet.TestRows;
+            //in case of empty validation data set skip file creation
+            if (validCount == 0)
+                strPathValid = "";
+
+            //create training ml ready dataset file
+            int trainCount = data.Count - validCount;
+            if (trainCount <= 0)
+            {
+                throw new Exception("Train dataset is empty. Split data set on correct parts.");
+            }
+            File.WriteAllLines(strPathTrain, data.Take(trainCount).ToList());
+
+            //in case of empty validation data set skip file creation
+            if (validCount > 0)
+            {
+                var d = data.Skip(trainCount).Take(validCount).ToList();
+                File.WriteAllLines(strPathValid, d);
+            }
+
+            //model name and settings 
+            mlconfig.Name = modelName;
+            mlconfig.Settings = Settings;
+
+            //load project file in order to get settings information and data description needed for data transformation
+            var strPPath = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
+            var proj = new Project();
+            proj.Load(strPPath);
+
+            //enumerate all column and setup column information needed for mlconfig creation
+            foreach (var c in proj.Descriptor.Columns.Where(x => x.Type == DataType.Category && x.Kind != DataKind.None))
+            {
+                var cc = exp.GetColumns().Where(x => x.Name == c.Name && x.ColumnDataType == ColumnType.Category).FirstOrDefault();
+                if (cc == null)
+                    throw new Exception("Column not found!");
+
+                c.Classes = cc.Statistics.Categories.ToArray();
+            }
+
+            //create mlconfig file
+            Project.NewMLConfigFile(proj, modelName);
+
+            //initialize model
+            mlconfig.Init();
+
+            //add newly created model in to Model collection of the project
+            Models.Add(mlconfig);
+
+            //save project with new created mlconfig
+            Save();
         }
 
         private RichTextBox getRichCtrl()
@@ -310,7 +407,7 @@ namespace anndotnet.wnd.Models
             //var rd = Settings.RandomizeData ? 1 : 0;
             var dataStr = $"data:|RawData:{rawDataName} " + toColumnToString(DataSet.MetaData);
             var models = string.Join(";", Models.Select(x => x.Name));
-            var strProject = $"project:|Name:{Name}  |ValidationSetCount:{Settings.ValidationSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:{ProjectInfo}";
+            var strProject = $"project:|Name:{Name} |Type:{Type}  |ValidationSetCount:{Settings.ValidationSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:ProjectInfo.rtf";
             var strParser = "parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0";
             
             //construct diction 
@@ -366,86 +463,6 @@ namespace anndotnet.wnd.Models
             return strColumns;
         }
 
-        internal void CreateMLConfig(MLConfigController model)
-        {
-            //save project with new created mlconfig
-            Save();
-
-            //create model name 
-            string modelName = $"Model{Models.Count}";
-
-            //Define ml data file paths
-            var strModelFolder = Project.GetMLConfigFolder(Settings, modelName);
-            var strModelDataFolder = Project.GetMLConfigDataFolder(Settings, modelName);
-            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, true);
-            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, false);
-
-            //check if model folder exists
-            if (!Directory.Exists(strModelFolder))
-               Directory.CreateDirectory(strModelFolder);
-            //check if data folder exists
-            if (!Directory.Exists(strModelDataFolder))
-                Directory.CreateDirectory(strModelDataFolder);
-
-            //get dataset based on options 
-            var ds = DataSet.GetDataSet(DataSet.RandomizeData);
-            //we want whole data set later the data will be split
-            ds.TestRows = 0;
-            //create experiment based created dataset
-            var exp = new Experiment(ds);
-            var data =  ExportData.PrepareDataSet(exp);
-
-            //calculate validation and training rows
-            int validCount = DataSet.IsPrecentige ? (int)(DataSet.TestRows * data.Count / 100.0) : DataSet.TestRows;
-            //in case of empty validation data set skip file creation
-            if(validCount==0)
-                strPathValid = "";
-
-            //create training ml ready dataset file
-            int trainCount = data.Count - validCount;
-            if(trainCount <= 0)
-            {
-                throw new Exception("Train dataset is empty. Split data set on correct parts.");
-            }
-            File.WriteAllLines(strPathTrain, data.Take(trainCount).ToList());
-
-            //in case of empty validation data set skip file creation
-            if (validCount > 0)
-            {
-                var d = data.Skip(trainCount).Take(validCount).ToList();
-                File.WriteAllLines(strPathValid, d);
-            }
-
-            //model name and settings 
-            model.Name = modelName;
-            model.Settings = Settings;
-
-            //load project file in order to get settings information and data description needed for data transformation
-            var strPPath = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
-            var proj = new Project();
-            proj.Load(strPPath);
-            
-            //enumerate all column and setup column information needed for mlconfig creation
-            foreach(var c in proj.Descriptor.Columns.Where(x=>x.Type== DataType.Category && x.Kind != DataKind.None))
-            {
-                var cc =  exp.GetColumns().Where(x => x.Name == c.Name && x.ColumnDataType == ColumnType.Category).FirstOrDefault();
-                if (cc == null)
-                    throw new Exception("Column not found!");
-
-                c.Classes = cc.Statistics.Categories.ToArray();
-            }
-
-            //create mlconfig file
-            Project.NewMLConfigFile(proj, modelName);
-
-            //initialize model
-            model.InitModel();
-
-            //add newly created model in to Model collection of the project
-            Models.Add(model);
-
-            //save project with new created mlconfig
-            Save();
-        }
+      
     }
 }

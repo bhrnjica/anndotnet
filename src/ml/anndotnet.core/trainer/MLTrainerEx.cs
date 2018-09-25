@@ -63,7 +63,7 @@ namespace ANNdotNET.Core
             // full training dataset could take time, so we can skip it by setting parameter 'FullTrainingSetEval'
             if (trParams.FullTrainingSetEval)
             {
-                var evParams = new EvalParameters()
+                var evParams = new EvaluationParameters()
                 {
 
                     MinibatchSize = trParams.BatchSize,
@@ -83,7 +83,7 @@ namespace ANNdotNET.Core
             //in case validation data set is empty don't perform testminibatch
             if (!string.IsNullOrEmpty(mbs.ValidationDataFile))
             {
-                var evParams = new EvalParameters()
+                var evParams = new EvaluationParameters()
                 {
                     MinibatchSize = trParams.BatchSize,
                     //StrmsConfig = StreamConfigurations.ToArray(),

@@ -100,6 +100,7 @@ namespace anndotnet.wnd.Models
         public ObservableCollection<NNLayer> Network { get; set; }
 
         public List<VariableDescriptor> TestData { get; set; }
+
         public LearningParameters LearningParameters { get; set; }
 
         public TrainingParameters TrainingParameters { get; set; }
@@ -124,7 +125,7 @@ namespace anndotnet.wnd.Models
             }
         }
 
-        //public new string IconUri { get => "Images/model.png"; }
+        public bool IsMetadataPresent { get; private set; }
         /// <summary>
         /// Icon for model representation in TreeVIew control
         /// </summary>
@@ -149,7 +150,8 @@ namespace anndotnet.wnd.Models
         public bool Deleted { get; private set; }
         public Action<int, double, double, double, double> UpdateTrainingtGraphs { get; internal set; }
         #endregion
-        internal bool InitModel()
+
+        internal bool Init()
         {
             try
             {
@@ -295,40 +297,38 @@ namespace anndotnet.wnd.Models
                 if (!fi.Exists)
                     return mEval;
                 //evaluate model against training data 
-                var task1 = await Task.Run(()=> Project.EvaluateModel(modelMLPath, false, true, true, ProcessDevice.Default));
+                var task1 = await Task.Run(()=> Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Training, EvaluationType.ResultyExtended, ProcessDevice.Default));
                 var resultTrain = task1;
 
                 //evaluate model against validation data
-                var task2 = await Task.Run(() => Project.EvaluateModel(modelMLPath, false, true, false, ProcessDevice.Default));
+                var task2 = await Task.Run(() => Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.ResultyExtended, ProcessDevice.Default));
                 var resultValidation = task2;
 
-                //prepare evaluation result
-                var actualT = resultTrain.actualDict.ElementAt(0).Value.Select(x => x.First());
-                for (int i = 0; i < actualT.Count(); i++)
-                    mEval.TrainingValue.Add(new PointPair(i + 1, actualT.ElementAt(i)));
+                ////prepare evaluation result              
+                for (int i = 0; i < resultTrain.Actual.Count(); i++)
+                    mEval.TrainingValue.Add(new PointPair(i + 1, resultTrain.Actual[i]));
 
-                var predicT = resultTrain.predictedDict.ElementAt(0).Value.Select(x => x.First());
-                for (int i = 0; i < predicT.Count(); i++)
-                    mEval.ModelValueTraining.Add(new PointPair(i + 1, predicT.ElementAt(i)));
+                for (int i = 0; i < resultTrain.Predicted.Count(); i++)
+                    mEval.ModelValueTraining.Add(new PointPair(i + 1, resultTrain.Predicted[i]));
 
-                //no validation set defined
-                if(resultValidation.actualDict != null)
+                ////no validation set defined
+                if (resultValidation.Actual != null && resultValidation.Actual.Count >0)
                 {
-                    var actualV = resultValidation.actualDict.ElementAt(0).Value.Select(x => x.First());
-                    for (int i = 0; i < actualV.Count(); i++)
-                        mEval.ValidationValue.Add(new PointPair(i + 1, actualV.ElementAt(i)));
+                    
+                    for (int i = 0; i < resultValidation.Actual.Count(); i++)
+                        mEval.ValidationValue.Add(new PointPair(i + 1, resultValidation.Actual[i]));
 
-                    var predicV = resultValidation.predictedDict.ElementAt(0).Value.Select(x => x.First());
-                    for (int i = 0; i < predicV.Count(); i++)
-                        mEval.ModelValueValidation.Add(new PointPair(i + 1, predicV.ElementAt(i)));
+                    
+                    for (int i = 0; i < resultValidation.Predicted.Count(); i++)
+                        mEval.ModelValueValidation.Add(new PointPair(i + 1, resultValidation.Predicted[i]));
                 }
-                
 
-                //
-                mEval.Classes = resultTrain.outputClasses;
-                mEval.ModelOutputDim = resultTrain.outputClasses == null ? 1 : resultTrain.outputClasses.Count;
 
-                if(mEval.ModelOutputDim==1)
+                ////
+                mEval.Classes = resultTrain.OutputClasses;
+                mEval.ModelOutputDim = resultTrain.OutputClasses == null ? 1 : resultTrain.OutputClasses.Count;
+
+                if (mEval.ModelOutputDim == 1)
                 {
                     //Training data set
                     var actTData = mEval.TrainingValue.Select(x => x.Y).ToArray();
@@ -350,28 +350,24 @@ namespace anndotnet.wnd.Models
                     mpv.CORR = (float)actVData.R(preVData);
                     mpv.DETC = (float)actVData.R2(preVData);
 
-                    
+
                 }
-                else if(mEval.ModelOutputDim > 1)
+                else if (mEval.ModelOutputDim > 1)
                 {
-                    var actualT1 = resultTrain.actualDict.ElementAt(1).Value;
-                    var predictedT1 = resultTrain.predictedDict.ElementAt(1).Value;
-                    var retVal = EvaluateResults(actualT1, predictedT1, null, null);
+                    var retVal = CalculatePerformance(resultTrain.ActualEx, resultTrain.PredictedEx, null, null);
                     retVal.Add("Classes", mEval.Classes.ToList<object>());
                     mpt.PerformanceData = retVal;
 
                     //in case validation set is defined
-                    if (resultValidation.actualDict!=null)
+                    if (resultValidation.Actual != null && resultValidation.Actual.Count > 0)
                     {
-                        var actualV1 = resultValidation.actualDict.ElementAt(1).Value;
-                        var predictedV1 = resultValidation.predictedDict.ElementAt(1).Value;
-                        var retValV = EvaluateResults(actualV1, predictedV1, null, null);
+                        var retValV = CalculatePerformance(resultValidation.ActualEx, resultValidation.PredictedEx, null, null);
                         retValV.Add("Classes", mEval.Classes.ToList<object>());
                         mpv.PerformanceData = retValV;
-                    }         
+                    }
                 }
                 mEval.TrainPerformance = mpt;
-                if(mEval.Classes!=null)
+                if (mEval.Classes != null)
                     mEval.TrainPerformance.Classes = mEval.Classes.ToArray();
                 mEval.ValidationPerformance = mpv;
                 if (mEval.Classes != null)
@@ -712,7 +708,11 @@ namespace anndotnet.wnd.Models
                     MessageBox.Show("No trained model exist. The model cannot be exported.");
                     return;
                 }
-
+                if (TestData==null)
+                {
+                    MessageBox.Show("Export is not possible. No metadata is defined in the mlconfig file.");
+                    return;
+                }
                 //prepare for excel export
                 //save cntk model in document folder
                 var networkPath = filepath + ".model";
@@ -721,9 +721,6 @@ namespace anndotnet.wnd.Models
 
                 //Load ML configuration file
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
-                //
-                //var resultTrain = Project.EvaluateModel(modelMLPath, true, false, true, ProcessDevice.Default);
-                //var resultValidation = Project.EvaluateModel(modelMLPath, true, false, false, ProcessDevice.Default);
 
                 var resultT = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
                 var resultV = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
@@ -733,45 +730,13 @@ namespace anndotnet.wnd.Models
                 List<List<string>> trainData = prepareToPersist(resultT);
                 List<List<string>> validData = prepareToPersist(resultV);
 
-                //transform data
-                //var trainData = TransformData(resultTrain, false);
-                //var validData = resultValidation.actualDict != null ? TransformData(resultTrain, false) : null;
-
                 ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false);
-
-
             }
             catch (Exception)
             {
 
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Prepare evaluation result for persisting into Excel 
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        private static List<List<string>> prepareToPersist(EvaluationResult result)
-        {
-            List<List<string>> strList = new List<List<string>>();
-            //first add header
-            strList.Add(result.Header);
-
-            var cc = result.DataSet.Values.First().Count();
-            for (int i = 0; i < cc; i++)
-            {
-                var strLine = new List<string>();
-                for (int j = 0; j < result.DataSet.Values.Count(); j++)
-                {
-                    var value = result.DataSet.Values.ElementAt(j)[i];
-                    strLine.AddRange(value.Select(x => x.ToString()));
-                }
-                strList.Add(strLine);
-            }
-
-            return strList;
         }
 
         internal void ExportToCSV(string filepath)
@@ -807,7 +772,6 @@ namespace anndotnet.wnd.Models
             }
         }
 
-
         internal void ExportToCNTK(string filepath)
         {
 
@@ -828,6 +792,7 @@ namespace anndotnet.wnd.Models
                 throw;
             }
         }
+
         internal void ExportToONNX(string filepath)
         {
             return;
@@ -841,108 +806,11 @@ namespace anndotnet.wnd.Models
 
             Project.SaveCNTKModel(modelPath, TrainingParameters.LastBestModel);
         }
-        /// <summary>
-        /// Prepares the evaluated data to export into Excel and CSV files
-        /// </summary>
-        /// <param name="result">Evaluation results dictionary sets</param>
-        /// <param name="includePrediction">Excluded or included prediction column in the data</param>
-        /// <returns></returns>
-        private static List<List<string>> TransformData(
-            (Dictionary<string, List<List<float>>> featuresDict, 
-            Dictionary<string, List<List<float>>> actual, 
-            Dictionary<string, List<List<float>>> predicted, List<string> ouptutClasses) 
-            result, bool includePrediction)
-        {
-            var strData = new List<List<string>>();
-            List<string> header = new List<string>();
 
-            //create header
-            foreach (var dic in result.featuresDict)
-            {
-                var fGroup = dic.Value.First();
-                for (int i = 0; i < fGroup.Count; i++)
-                {
-                    header.Add($"{dic.Key}{i + 1}");
-                }
-            }
-            //add actual to header
-            foreach (var dic in result.actual)
-            {
-                var aGroup = dic.Value.First();
-                for (int i = 0; i < aGroup.Count; i++)
-                {
-                    if(aGroup.Count==1)
-                        header.Add($"{dic.Key}");
-                    else
-                        header.Add($"{dic.Key}{i + 1}");
-                }
-            }
-            //add predicted names to header
-            if(includePrediction)
-            {
-                foreach (var dic in result.predicted)
-                {
-                    var pGroup = dic.Value.First();
-                    for (int i = 0; i < pGroup.Count; i++)
-                    {
-                        if (pGroup.Count == 1)
-                            header.Add($"{dic.Key}");
-                        else
-                            header.Add($"{dic.Key}{i + 1}");
-                    }
-                }
-            }
-            
-            //make a header
-            strData.Add(header);
 
-            //add data
-            var rowCount = result.featuresDict.ElementAt(0).Value.Count();
-            for (int i = 0; i < rowCount; i++)
-            {
-                //prepare row
-                var dataRow = new List<string>();
-
-                //get feature row
-                var featureCount = result.featuresDict.Count;
-                for (int j = 0; j < featureCount; j++)
-                {
-                    var v = result.featuresDict.ElementAt(j).Value[i];
-                    dataRow.AddRange(v.Select(x => x.ToString(CultureInfo.InvariantCulture)));
-                }
-                //get actual row
-                var actualCount = result.actual.Count;
-                for (int j = 0; j < actualCount; j++)
-                {
-                    var v = result.actual.ElementAt(j).Value[i];
-                    dataRow.AddRange(v.Select(x => x.ToString(CultureInfo.InvariantCulture)));
-                }
-
-                //get predicted row
-                if(includePrediction)
-                {
-                    var predictedCount = result.predicted.Count;
-                    for (int j = 0; j < predictedCount; j++)
-                    {
-                        var v = result.predicted.ElementAt(j).Value[i];
-                        dataRow.AddRange(v.Select(x => x.ToString(CultureInfo.InvariantCulture)));
-                    }
-                }
-             
-                //add full row to collection
-                strData.Add(dataRow);
-            }
-
-            return strData;
-        }
-
-        public Dictionary<string, List<object>> EvaluateResults(List<List<float>> ActualT, List<List<float>> PredictedT, 
+        public Dictionary<string, List<object>> CalculatePerformance(List<List<float>> ActualT, List<List<float>> PredictedT, 
             List<List<float>> ActualV, List<List<float>> PredictedV)
         {
-            //var ActualT = new List<List<float>>();
-            //var PredictedT = new List<List<float>>();
-            //var ActualV = new List<List<float>>();
-            //var PredictedV = new List<List<float>>();
 
             var dic = new Dictionary<string, List<object>>();
             //get output for training data set
@@ -1036,6 +904,32 @@ namespace anndotnet.wnd.Models
 
                 return dic;
 
+        }
+
+        /// <summary>
+        /// Prepare evaluation result for persisting into Excel 
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private static List<List<string>> prepareToPersist(EvaluationResult result)
+        {
+            List<List<string>> strList = new List<List<string>>();
+            //first add header
+            strList.Add(result.Header);
+
+            var cc = result.DataSet.Values.First().Count();
+            for (int i = 0; i < cc; i++)
+            {
+                var strLine = new List<string>();
+                for (int j = 0; j < result.DataSet.Values.Count(); j++)
+                {
+                    var value = result.DataSet.Values.ElementAt(j)[i];
+                    strLine.AddRange(value.Select(x => x.ToString()));
+                }
+                strList.Add(strLine);
+            }
+
+            return strList;
         }
         #endregion
 
