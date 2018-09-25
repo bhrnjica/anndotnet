@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 
+using ANNdotNET.Core;
 using ANNdotNET.Lib;
 using GPdotNet.MathStuff;
 using NNetwork.Core.Common;
@@ -711,7 +712,7 @@ namespace anndotnet.wnd.Models
                     MessageBox.Show("No trained model exist. The model cannot be exported.");
                     return;
                 }
-                
+
                 //prepare for excel export
                 //save cntk model in document folder
                 var networkPath = filepath + ".model";
@@ -721,12 +722,21 @@ namespace anndotnet.wnd.Models
                 //Load ML configuration file
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
                 //
-                var resultTrain = Project.EvaluateModel(modelMLPath, true, false, true, ProcessDevice.Default);
-                var resultValidation = Project.EvaluateModel(modelMLPath,true, false, false, ProcessDevice.Default);
+                //var resultTrain = Project.EvaluateModel(modelMLPath, true, false, true, ProcessDevice.Default);
+                //var resultValidation = Project.EvaluateModel(modelMLPath, true, false, false, ProcessDevice.Default);
+
+                var resultT = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                var resultV = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                //prepare headers
+                var header = resultT.Header;
+
+                List<List<string>> trainData = prepareToPersist(resultT);
+                List<List<string>> validData = prepareToPersist(resultV);
+
                 //transform data
-                var trainData = TransformData(resultTrain, false);
-                var validData = resultValidation.actualDict!=null? TransformData(resultTrain, false): null;
-                
+                //var trainData = TransformData(resultTrain, false);
+                //var validData = resultValidation.actualDict != null ? TransformData(resultTrain, false) : null;
+
                 ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false);
 
 
@@ -737,6 +747,33 @@ namespace anndotnet.wnd.Models
                 throw;
             }
         }
+
+        /// <summary>
+        /// Prepare evaluation result for persisting into Excel 
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        private static List<List<string>> prepareToPersist(EvaluationResult result)
+        {
+            List<List<string>> strList = new List<List<string>>();
+            //first add header
+            strList.Add(result.Header);
+
+            var cc = result.DataSet.Values.First().Count();
+            for (int i = 0; i < cc; i++)
+            {
+                var strLine = new List<string>();
+                for (int j = 0; j < result.DataSet.Values.Count(); j++)
+                {
+                    var value = result.DataSet.Values.ElementAt(j)[i];
+                    strLine.AddRange(value.Select(x => x.ToString()));
+                }
+                strList.Add(strLine);
+            }
+
+            return strList;
+        }
+
         internal void ExportToCSV(string filepath)
         {
             try
@@ -750,14 +787,18 @@ namespace anndotnet.wnd.Models
                 //Load ML configuration file
                 var modelPath = Project.GetMLConfigPath(Settings, Name);
                 //
-                var result = Project.EvaluateModel(modelPath, true, true, false, ProcessDevice.Default);
+                var result = Project.EvaluateModel(modelPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.Results, ProcessDevice.Default);
 
-                if (result.actualDict == null)
-                    throw new Exception("Validation datatset is empty");
-                var strLines = TransformData(result, true);
+                //
+                List<string> strLine = new List<string>();
+                strLine.Add(string.Join(";",result.Header));
+
+                //prepare for saving
+                for(int i=0; i< result.Actual.Count; i++)
+                    strLine.Add($"{result.Actual[i]};{result.Predicted[i]}");
 
                 //store content to file
-                File.WriteAllLines(filepath, strLines.Select(x=>string.Join(";",x)));
+                File.WriteAllLines(filepath, strLine.ToArray());
             }
             catch (Exception)
             {
@@ -765,6 +806,8 @@ namespace anndotnet.wnd.Models
                 throw;
             }
         }
+
+
         internal void ExportToCNTK(string filepath)
         {
 

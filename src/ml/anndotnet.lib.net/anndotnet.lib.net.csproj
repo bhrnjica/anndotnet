@@ -214,6 +214,9 @@
     <Compile Include="..\anndotnet.lib\DataParser.cs">
       <Link>metadata\DataParser.cs</Link>
     </Compile>
+    <Compile Include="..\anndotnet.lib\EvaluationType.cs">
+      <Link>metadata\EvaluationType.cs</Link>
+    </Compile>
     <Compile Include="..\anndotnet.lib\export\ExcelHelper.cs">
       <Link>Export\ExcelHelper.cs</Link>
     </Compile>
@@ -236,6 +239,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\core\dataprocessing.core\dataprocessing.core.csproj">
+      <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>
+      <Name>dataprocessing.core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\core\nnetwork.core.net\nnetwork.core.net.csproj">
       <Project>{3c000d09-ff02-4f12-a74d-deb41998bc23}</Project>
       <Name>nnetwork.core.net</Name>

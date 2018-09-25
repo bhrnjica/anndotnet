@@ -309,6 +309,15 @@ namespace ANNdotNET.Core
             return networkInput;
         }
 
+        public static bool IsFileExist(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return false;
+
+            var fi = new FileInfo(filePath);
+            return fi.Exists;
+        }
+
         /// <summary>
         /// Creates TrainingParameter object form string
         /// </summary>

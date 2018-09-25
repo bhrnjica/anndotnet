@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\anndotnet.core\entities\EvaluateData.cs">
+      <Link>evaluation\EvaluateData.cs</Link>
+    </Compile>
     <Compile Include="..\anndotnet.core\minibatchsource\MinibatchSourceEx.cs">
       <Link>minibatch\MinibatchSourceEx.cs</Link>
     </Compile>

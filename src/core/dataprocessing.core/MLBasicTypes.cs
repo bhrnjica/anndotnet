@@ -18,6 +18,13 @@ using System.Text.RegularExpressions;
 
 namespace DataProcessing.Core
 {
+    public enum DataSetType
+    {
+        Training,
+        Validation,
+        Testing,
+        Custom,
+    }
     public enum MetaData
     {
         [Description("Name:")]

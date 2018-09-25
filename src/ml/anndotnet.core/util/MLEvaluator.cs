@@ -169,6 +169,159 @@ namespace ANNdotNET.Core
 
 
         /// <summary>
+        /// Returns part of mldataset with features columns only
+        /// </summary>
+        /// <param name="fun"></param>
+        /// <param name="evParam"></param>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public static Dictionary<string, List<List<float>>> Features(Function fun, EvalParameters evParam, DeviceDescriptor device)
+        {
+            try
+            {
+                //declare return vars
+                var featDic = new Dictionary<string, List<List<float>>>();
+
+                while (true)
+                {
+                    //get one minibatch of data for training
+                    var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
+                    var mdDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
+                    var inMap = new Dictionary<Variable, Value>();
+                    //
+                    for (int i = 0; i < mdDataEx.Count; i++)
+                    {
+                        var d = mdDataEx.ElementAt(i);
+
+                        if(!evParam.Ouptut.First().Name.Equals(d.Key.Name))
+                        {
+                            //
+                            var fv = MLValue.GetValues(d.Key, d.Value);
+                            if (featDic.ContainsKey(d.Key.Name))
+                                featDic[d.Key.Name].AddRange(fv);
+                            else
+                                featDic.Add(d.Key.Name, fv);
+                        }
+                        else
+                        {
+                            //
+                            var fv = MLValue.GetValues(d.Key, d.Value);
+                            var value = fv.Select(l=> new List <float>() { l.IndexOf(l.Max()) }).ToList();
+                            if (featDic.ContainsKey(d.Key.Name))
+                                featDic[d.Key.Name].AddRange(value);
+                            else
+                                featDic.Add(d.Key.Name, value);
+                        }
+                    }
+
+                    // check if sweep end reached
+                    if (mbData.Any(x => x.Value.sweepEnd))
+                        break;
+                }
+
+                return featDic;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(Function fun, EvalParameters evParam, DeviceDescriptor device)
+        {
+            try
+            {
+                //declare return vars
+                List<float> actualLst = new List<float>();
+                List<float> predictedLst = new List<float>();
+
+                var result = EvaluateFunctionEx(fun, evParam, device);
+                for (int i = 0; i < result.actual.Count(); i++)
+                {
+                    var res1 = MLValue.GetResult(result.actual[i]);
+                    actualLst.Add(res1);
+                    var res2 = MLValue.GetResult(result.predicted[i]);
+                    predictedLst.Add(res2);
+                }
+                return (actualLst, predictedLst);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(Function fun, EvalParameters evParam, DeviceDescriptor device)
+        {
+            try
+            {
+                //declare return vars
+                List<List<float>> actualLst = new List<List<float>>();
+                List<List<float>> predictedLst = new List<List<float>>();
+
+                while (true)
+                {
+                    Value predicted = null;
+                    //get one minibatch of data for training
+                    var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
+                    var mbDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
+                    var inMap = new Dictionary<Variable, Value>();
+                    //
+                    var vars = fun.Arguments.Union(fun.Outputs);
+                    for (int i = 0; i < vars.Count()/* mbDataEx.Count*/; i++)
+                    {
+                        var d = mbDataEx.ElementAt(i);
+                        var v = vars.Where(x=>x.Name.Equals(d.Key.Name)).First();
+                        //skip output data 
+                        if (!evParam.Ouptut.Any(x => x.Name.Equals(v.Name)))
+                            inMap.Add(v, d.Value);
+                    }
+
+                    //actual data if t is available
+                    var actualVar = mbDataEx.Keys.Where(x => x.Name.Equals(evParam.Ouptut.First().Name)).FirstOrDefault();
+                    var act = mbDataEx[actualVar].GetDenseData<float>(actualVar).Select(l => l.ToList());
+                    actualLst.AddRange(act);
+
+                    //predicted data
+                    //map variables and data
+                    var predictedDataMap = new Dictionary<Variable, Value>() { { fun, null } };
+
+                    //evaluates model
+                    fun.Evaluate(inMap, predictedDataMap, device);
+                    predicted = predictedDataMap.Values.First();
+                    var pred = predicted.GetDenseData<float>(fun).Select(l => l.ToList());
+                    predicted.Erase();
+                    predicted.Dispose();
+                    predictedLst.AddRange(pred);
+
+                    // check if sweep end reached
+                    if (mbData.Any(x => x.Value.sweepEnd))
+                        break;
+                }
+
+                return (actualLst, predictedLst);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public static double CalculateMetrics(string functionName, IEnumerable<float> actual, IEnumerable<float> predicted, DeviceDescriptor device)
+        {
+
+            var fun = createFunction(functionName);
+            var result = fun(actual.Select(x => (double)x).ToArray(), predicted.Select(x => (double)x).ToArray());
+            return result;
+        }
+
+        /// <summary>
         /// Test cntk model stored at 'modelPath' against vector of values
         /// </summary>
         /// <param name="modelPath"></param>
@@ -224,68 +377,9 @@ namespace ANNdotNET.Core
             }
 
         }
-
         #endregion
 
         #region Private Functions
-
-        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(Function fun, EvalParameters evParam, DeviceDescriptor device)
-        {
-            try
-            {
-                //declare return vars
-                List<float> actualLst = new List<float>();
-                List<float> predictedLst = new List<float>();
-
-                while (true)
-                {
-                    Value predicted = null;
-                    //get one minibatch of data for training
-                    var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
-                    var arguments = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
-                    var inMap = new Dictionary<Variable, Value>();
-                    //
-                    for (int i = 0; i < arguments.Count; i++)
-                    {
-                        var d = arguments.ElementAt(i);
-                        //skip output data 
-                        if (!evParam.Ouptut.Any(x => x.Name.Equals(d.Key.Name)))
-                            inMap.Add(d.Key, d.Value);
-                    }
-
-                    //actual data if t is available
-                    //var actualStream = mbData.Keys.Where(x => x.m_name.Equals(fun.Output.Name)).FirstOrDefault();
-                    var actualVar = arguments.Keys.Where(x => x.Name.Equals(fun.Output.Name)).FirstOrDefault();
-                    //actual = mbData[actualStream].data.DeepClone(true);
-                    var act = arguments[actualVar].GetDenseData<float>(actualVar).Select(l => MLValue.GetResult(l));
-                    actualLst.AddRange(act);
-                    
-                    //predicted data
-                    //map variables and data
-                    var predictedDataMap = new Dictionary<Variable, Value>() { { fun, null } };
-
-                    //evaluates model
-                    fun.Evaluate(inMap, predictedDataMap, device);
-                    predicted = predictedDataMap.Values.First();
-                    var pred = predicted.GetDenseData<float>(fun).Select(l => MLValue.GetResult(l));
-                    predicted.Erase();
-                    predicted.Dispose();
-                    predictedLst.AddRange(pred);
-
-                    // check if sweep end reached
-                    if (mbData.Any(x => x.Value.sweepEnd))
-                        break;
-                }
-
-                return (actualLst, predictedLst);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
 
         /// <summary>
         /// Perform descriptive statistic calculation on set of data
@@ -310,37 +404,7 @@ namespace ANNdotNET.Core
                     throw new Exception($"The '{functionName}' function is not supported!");
             }
         }
-        public static double CalculateMetrics(string functionName, IEnumerable<float> actual, IEnumerable<float> predicted, DeviceDescriptor device)
-        {
-
-            var fun = createFunction(functionName);
-            var result = fun(actual.Select(x=>(double)x).ToArray(), predicted.Select(x => (double)x).ToArray());
-            return result;
-            //map variables and data
-            //var actualVar = Variable.InputVariable(actual.Shape, DataType.Float, "actual");
-            //var predictedVar = Variable.InputVariable(predicted.Shape, DataType.Float, "predicted");
-
-            ////map vars and values
-            //var inputDataMap = new Dictionary<Variable, Value>();
-            //inputDataMap.Add(actualVar, actual);
-            //inputDataMap.Add(predictedVar, predicted);
-
-            ////evaluate 
-            //var function = createFunction(fun, actualVar, predictedVar);  //statFun(actualVar, predictedVar);
-
-            ////
-            //var outputDataMap = new Dictionary<Variable, Value>() { { fun, null } };
-            //fun.Evaluate(inputDataMap, outputDataMap, device);
-            //var value = outputDataMap[fun].GetDenseData<float>(fun);
-
-            //for testing the result of the above function . Can be removed once the test is completed
-            //var xVal = actual.GetDenseData<float>(actualVar)[0].Select(x => (double)x).ToArray();
-            //var yVal = predicted.GetDenseData<float>(predictedVar)[0].Select(x => (double)x).ToArray();
-            //var se = AdvancedStatistics.R(xVal, yVal);
-            //Debug.Assert(Math.Round(se, 5)==Math.Round(value[0][0],5));
-            //end of test
-            //return value[0][0];
-        }
+       
         #endregion
     }
 

@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using ANNdotNET.Lib.Ext;
+using DataProcessing.Core;
 
 namespace ANNdotNET.Lib
 {
@@ -312,8 +313,130 @@ namespace ANNdotNET.Lib
             return MLEvaluator.TestModel(mlconfigPath, vector, device);
         }
 
+        public static EvaluationResult EvaluateModel(string mlconfigPath, DataSetType dsType, EvaluationType evType, ProcessDevice pdevice)
+        {
+            var er = new EvaluationResult();
+            er.Header = new List<string>();
+            //device definition
+            DeviceDescriptor device = MLFactory.GetDevice(pdevice);
+            //Load ML model configuration file
+            var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
+            //add full path of model folder since model file doesn't contains any absolute path
+            dicMParameters.Add("root", Project.GetMLConfigFolder(mlconfigPath));
+
+            // get model data paths
+            var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
+            var modelName = Project.GetParameterValue(dicMParameters["training"], "TrainedModel");
+            var nnModelPath = Path.Combine(dicMParameters["root"], modelName);
+            //check if model exists
+            if (!MLFactory.IsFileExist(nnModelPath))
+                return er;
+
+
+            //check if dataset files exist
+            var dataPath = GetDataPath(dicMParameters, dsType);
+            if (!MLFactory.IsFileExist(dataPath))
+                return er;
+
+            //get output classes in case the ml problem is classification
+            var strCls = dicMParameters.ContainsKey("metadata") ? dicMParameters["metadata"] : "";
+            er.OutputClasses = DataDescriptor.GetOutputClasses(strCls);
+
+            //Minibatch type
+            var mbTypestr = Project.GetParameterValue(dicMParameters["training"], "Type");
+            MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
+            var mbSizetr = Project.GetParameterValue(dicMParameters["training"], "BatchSize");
+
+            var mf = MLFactory.CreateMLFactory(dicMParameters);
+            //perform evaluation
+            var evParams = new EvalParameters()
+            {
+
+                MinibatchSize = uint.Parse(mbSizetr),
+                MBSource = new MinibatchSourceEx(mbType, mf.StreamConfigurations.ToArray(), dataPath, null, MinibatchSource.FullDataSweep, false),
+                Input=mf.InputVariables,
+                Ouptut = mf.OutputVariables,
+            };
+            
+            //evaluate model
+            if (evType == EvaluationType.FeaturesOnly)
+            {
+                var desc = ParseRawDataSet(dicMParameters["metadata"]);
+                er.Header = generateHeader(desc);
+                er.DataSet = FeatureLabels(nnModelPath, dataPath, evParams, device);
+                
+                return er;
+            }
+            else if (evType == EvaluationType.Results)
+            {
+                //define header
+                er.Header.Add(evParams.Ouptut.First().Name + "_actual");
+                er.Header.Add(evParams.Ouptut.First().Name + "_predicted");
+
+                var result = EvaluateFunction(nnModelPath, dataPath, evParams, device);
+                er.Actual = result.actual.ToList();
+                er.Predicted = result.predicted.ToList();
+                return er;
+            }
+            else if (evType == EvaluationType.ResultyExtended)
+            {
+                //define header
+                er.Header.Add(evParams.Ouptut.First().Name + "_actual");
+                er.Header.Add(evParams.Ouptut.First().Name + "_predicted");
+
+                var result = EvaluateFunctionEx(nnModelPath, dataPath, evParams, device);
+                er.ActualEx = result.actual;
+                er.PredictedEx = result.predicted;
+                return er;
+            }
+            else
+                throw new Exception("Unknown evaluation type!");
+
+
+        }
+
+        private static List<string> generateHeader(List<VariableDescriptor> cols)
+        {
+            var lst = new List<string>();
+            foreach(var c in cols.Where(x=>x.Kind!= DataKind.Label && x.Kind != DataKind.None))
+            {
+                if (c.Type == DataType.None)
+                    continue;
+                else if(c.Type== DataType.Category)
+                {
+                    for(int i=0; i < c.Classes.Length; i++)
+                    {
+                        var strCol = $"{c.Name}-{c.Classes[i]}";
+                        lst.Add(strCol);
+                    }
+                }
+                else
+                    lst.Add(c.Name);
+            }
+            //the last one is Label
+            foreach (var c in cols.Where(x => x.Kind == DataKind.Label && x.Kind != DataKind.None))
+            {
+                if (c.Type == DataType.None)
+                    continue;
+                //else if (c.Type == DataType.Category)
+                //{
+                //    for (int i = 0; i < c.Classes.Length; i++)
+                //    {
+                //        var strCol = $"{c.Name}-{c.Classes[i]}";
+                //        lst.Add(strCol);
+                //    }
+                //}
+                else
+                    lst.Add(c.Name + "_actual");
+            }
+
+            return lst;
+        }
+
+
+
         /// <summary>
-        /// Evaluates the ANNdotNET mlconfig for training or validation dataset with some column fitering options
+        /// Evaluates the ANNdotNET mlconfig for training or validation dataset with some column filtering options
         /// </summary>
         /// <param name="mlconfigPath"></param>
         /// <param name="includeFeatures"></param>
@@ -335,7 +458,7 @@ namespace ANNdotNET.Lib
                 //Load ML model configuration file
                 var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
 
-                //get model daa paths
+                //get model data paths
                 var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
                 var trainedModelRelativePath = Project.GetParameterValue(dicMParameters["training"], "TrainedModel");
 
@@ -378,6 +501,90 @@ namespace ANNdotNET.Lib
 
                 throw;
             }
+        }
+
+
+
+
+
+
+        public static Dictionary<string, List<List<float>>> FeatureLabels(string nnModel, string dataPath,EvalParameters evParam, DeviceDescriptor device)
+        {
+            try
+            {
+                var fun = Function.Load(nnModel, device);
+                //
+                return MLEvaluator.Features(fun, evParam, device);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(string nnModel, string dataPath, EvalParameters evParam, DeviceDescriptor device)
+        {
+            try
+            {
+                var fun = Function.Load(nnModel, device);
+                //
+                return MLEvaluator.EvaluateFunction(fun, evParam, device);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(string nnModel, string dataPath, EvalParameters evParam, DeviceDescriptor device)
+        {
+            try
+            {
+                var fun = Function.Load(nnModel, device);
+                //
+                return MLEvaluator.EvaluateFunctionEx(fun, evParam, device);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Return path for specified dataset
+        /// </summary>
+        /// <param name="dicPath"></param>
+        /// <param name="dsType"></param>
+        /// <returns></returns>
+        private static string GetDataPath(Dictionary<string, string> dicPath, DataSetType dsType)
+        {
+            var dataPaths = MLFactory.GetMLConfigComponentPaths(dicPath["paths"]);
+            //
+            if (dsType == DataSetType.Training)
+            {
+                //
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Training"]}";
+                return strPath;
+            }
+            else if (dsType == DataSetType.Validation)
+            {
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Validation"]}";
+                return strPath;
+            }
+            else if (dsType == DataSetType.Testing)
+            {
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Testing"]}";
+                return strPath;
+            }
+            else
+                return null;
         }
 
         /// <summary>
@@ -485,10 +692,10 @@ namespace ANNdotNET.Lib
                 }
 
                 //only one Label is supported 
-                var countLable = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type != DataType.None).Count();
-                if (countLable == 0)
+                var countLabel = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type != DataType.None).Count();
+                if (countLabel == 0)
                     throw new Exception("The mlconfig cannot be created, no label is defined!");
-                if (countLable > 1)
+                if (countLabel > 1)
                     throw new Exception("The mlconfig cannot be created, more than one label is defined!");
                 //create rest of the ML config file.
                 //later the user will be able to setup model training and other params
