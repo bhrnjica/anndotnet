@@ -526,7 +526,7 @@ namespace ANNdotNET.Lib
             }
             else if (dsType == DataSetType.Testing)
             {
-                var strPath = $"{dicPath["root"]}\\{dataPaths["Testing"]}";
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Test"]}";
                 return strPath;
             }
             else
