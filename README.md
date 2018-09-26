@@ -11,7 +11,7 @@ The process of creating, training, evaluating and exporting models is provided f
 
 - more focus on network development and training process using on classic desktop approach, instead of focusing on coding, 
 - less time spending on debugging source code, more focusing on different configuration and parameter variants,
-- ideal for engineers/users which are not familiar with programming languages, 
+- ideal for engineers/users who are not familiar with programming languages, 
 - in case the problem requires coding custom models, or training process, ANNdotNET CMD provides high level of API for such implementation,
 - all ml configurations developed with GUI tool,can be handled with CMD tool and vice versa.  
 
