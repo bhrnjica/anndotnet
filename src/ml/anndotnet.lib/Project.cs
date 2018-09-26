@@ -336,7 +336,13 @@ namespace ANNdotNET.Lib
             //check if dataset files exist
             var dataPath = GetDataPath(dicMParameters, dsType);
             if (!MLFactory.IsFileExist(dataPath))
-                return er;
+            {
+                //in case validation dataset is not defiend just export traininign dataset
+                if(dsType== DataSetType.Validation)
+                    dataPath = GetDataPath(dicMParameters, DataSetType.Training);
+                if (!MLFactory.IsFileExist(dataPath))
+                    return er;
+            }
 
             //get output classes in case the ml problem is classification
             var strCls = dicMParameters.ContainsKey("metadata") ? dicMParameters["metadata"] : "";

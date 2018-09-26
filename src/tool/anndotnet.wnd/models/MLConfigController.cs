@@ -753,7 +753,8 @@ namespace anndotnet.wnd.Models
                 var modelPath = Project.GetMLConfigPath(Settings, Name);
                 //
                 var result = Project.EvaluateModel(modelPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.Results, ProcessDevice.Default);
-
+                if (result.Actual == null)
+                    throw new Exception("Export has failed. No training or validation datatset to export.");
                 //
                 List<string> strLine = new List<string>();
                 strLine.Add(string.Join(";",result.Header));
@@ -916,7 +917,8 @@ namespace anndotnet.wnd.Models
             List<List<string>> strList = new List<List<string>>();
             //first add header
             strList.Add(result.Header);
-
+            if (result.DataSet == null)
+                return null;
             var cc = result.DataSet.Values.First().Count();
             for (int i = 0; i < cc; i++)
             {
