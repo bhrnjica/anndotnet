@@ -752,7 +752,7 @@ namespace anndotnet.wnd.Models
                 //Load ML configuration file
                 var modelPath = Project.GetMLConfigPath(Settings, Name);
                 //
-                var result = Project.EvaluateModel(modelPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.Results, ProcessDevice.Default);
+                var result = Project.EvaluateModel(modelPath, DataProcessing.Core.DataSetType.Testing, EvaluationType.Results, ProcessDevice.Default);
                 if (result.Actual == null)
                     throw new Exception("Export has failed. No training or validation datatset to export.");
                 //
