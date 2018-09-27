@@ -1,7 +1,7 @@
 theme: jekyll-theme-slate
 
 # Site settings
-title: ANNdotNET
+title:ANNdotNET
 subtitle: "a deep learning tool on .NET platform"
 url: "https://bhrnjica.github.io/anndotnet" # the base hostname & protocol for your site
 # baseurl: "/the/subpath/of/your/site" # Set this value to "" if you want your site to be root
