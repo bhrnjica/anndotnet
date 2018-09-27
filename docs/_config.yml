@@ -4,7 +4,7 @@ theme: jekyll-theme-slate
 subtitle: "a deep learning tool on .NET platform"
 url: "https://bhrnjica.github.io/anndotnet" # the base hostname & protocol for your site
 # baseurl: "/the/subpath/of/your/site" # Set this value to "" if you want your site to be root
-baseurl: "/anndotnet"
+baseurl: "/docs"
 
 # Of course don't forget to change the username and projectname to YOUR username and project
 
