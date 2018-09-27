@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7622CA23-6
 		docs\ANNdotNETv1.0-rev.docx = docs\ANNdotNETv1.0-rev.docx
 		docs\annproject_file.md = docs\annproject_file.md
 		docs\file_structure.md = docs\file_structure.md
-		docs\index.html = docs\index.html
+		docs\index.md = docs\index.md
 		docs\Introduction.MD = docs\Introduction.MD
 		docs\mlconfig_file.md = docs\mlconfig_file.md
 	EndProjectSection
