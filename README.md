@@ -45,7 +45,8 @@ In order to run the application there are two possibilities:
 
 ## Run ANNdotNET from source code
 1. Clone the GitHub repository http://github.com/bhrnjica/anndotnet 
-2. Open anndotnet.sln in Visual Studio 2017,
+2. Open `anndotnet.gui.net.sln` in Visual Studio 2017,
+3. Setup `anndotnet.wnd` as startup project.
 3. Change build architecture of the solution into x64,
 4. Right click on solution item and restore Nuget Packages, 
 4. Press F5 for build and run the application.  
