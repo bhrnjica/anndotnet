@@ -11,11 +11,20 @@ namespace anndotnet.core.app
     {
         static void Main(string[] args)
         {
-            string strLocation1 = "D:\\repos\\anndotnet\\src\\tool\\";
 
-            runExample("Predict Future Sales",
-                "D:\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
+            //Iris flower recognition
+            //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
+            var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine($"****Iris flower recognition****");
+            Console.WriteLine(Environment.NewLine);
+            var token2 = new CancellationToken();
+            var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
+            //evaluate model and export the result of testing
+            MachineLearning.EvaluateModel(mlConfigFile2, result.BestModelFile, DeviceDescriptor.UseDefaultDevice());
 
+            //******run all configurations in the solution******
+            //string strLocation1 = "D:\\repos\\anndotnet\\src\\tool\\";
             //for(int i=0; i< 10; i++)
             //    runAllml_configurations(strLocation1);
             //*****end of program*****
