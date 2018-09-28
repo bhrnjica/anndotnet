@@ -32,7 +32,7 @@ namespace ANNdotNET.Lib.Ext
             try
             {
                 //Only one custom model is implemented for far
-                return CustomNNModels.PredictFutureSalesModelv2(variables, device);
+                return CustomNNModels.PredictFutureSalesModel(variables, device);
             }
             catch (System.Exception)
             {
