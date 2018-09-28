@@ -707,7 +707,7 @@ namespace ANNdotNET.Lib
                                $"|Validation:{p2} " +
                                $"|Test:{p3} " +
                                $"|TempModels:{p4} |Models:{p5} " +
-                               $"|Result:{p6}_result.csv |Logs:{p7} ";
+                               $"|Result:{p6} |Logs:{p7} ";
 
                 //
                 strMlCOnfig.Add("paths", strPaths);
