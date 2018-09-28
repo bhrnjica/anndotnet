@@ -60,24 +60,32 @@ namespace anndotnet.wnd.Models
                 {
                     try
                     {
-                        if (!string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(m_Name))
+                        //filenames on disk are not case sensitive 
+                        if(!string.IsNullOrEmpty(m_Name) && !m_Name.Equals(value,StringComparison.OrdinalIgnoreCase))
                         {
-                            //change model file
-                            var filePathold = Project.GetMLConfigPath(Settings, m_Name);
-                            var filePathnew = Project.GetMLConfigPath(Settings, value);
-                            System.IO.File.Move(filePathold, filePathnew);
-                            //model folder path
-                            var folderPathold = Project.GetMLConfigFolder(Settings, m_Name);
-                            var folderPathnew = Project.GetMLConfigFolder(Settings, value);
+                            if (!string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(m_Name))
+                            {
+                                //change model file
+                                var filePathold = Project.GetMLConfigPath(Settings, m_Name);
+                                var filePathnew = Project.GetMLConfigPath(Settings, value);
+                                System.IO.File.Move(filePathold, filePathnew);
+                                //model folder path
+                                var folderPathold = Project.GetMLConfigFolder(Settings, m_Name);
+                                var folderPathnew = Project.GetMLConfigFolder(Settings, value);
 
-                            //change model folder
-                            System.IO.Directory.Move(folderPathold, folderPathnew);
+                                //change model folder
+                                System.IO.Directory.Move(folderPathold, folderPathnew);
 
+                            }
                         }
-
                         //change property
+                        var temPane = m_Name;
                         m_Name = value;
                         RaisePropertyChangedEvent("Name");
+
+                        //in case of renaming 
+                        if(!string.IsNullOrEmpty(temPane) && !string.IsNullOrEmpty(value))
+                            updateMLConfigNameInProject(temPane, value);
                     }
                     catch (Exception)
                     {
@@ -88,6 +96,51 @@ namespace anndotnet.wnd.Models
 
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates ann project after the mlconfig name has changed.
+        /// </summary>
+        /// <param name="oldName"></param>
+        /// <param name="newName"></param>
+        private void updateMLConfigNameInProject(string oldName, string newName)
+        {
+            //load project information from file
+            var prjPath1 = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
+            var dicData = Project.LoadProjectData(prjPath1);           
+            var strValue = dicData["project"];
+            var projectName = Project.GetParameterValue(strValue,"Name");
+            
+            var projectType = Project.GetParameterValue(strValue, "Type");
+            if (string.IsNullOrEmpty(projectType))
+                projectType = "Default";
+
+            //
+            var vsc = Project.GetParameterValue(strValue, "ValidationSetCount");
+            var ps = Project.GetParameterValue(strValue, "PrecentigeSplit");
+            //
+            var lstConfigs = Project.GetMLConfigs(strValue);
+            for (int i=0; i< lstConfigs.Count; i++)
+            {
+                if (lstConfigs[i] == oldName)
+                {
+                    lstConfigs[i] = newName;
+                    break;
+                }
+            }
+            //update project
+            var strMlconfigs = string.Join(";",lstConfigs);
+            var strProject = $"|Name:{projectName} |Type:{projectType}  |ValidationSetCount:{vsc} |PrecentigeSplit:{ps} |MLConfigs:{strMlconfigs} |Info:ProjectInfo.rtf";
+            dicData["project"] = strProject;
+            //add keyword to dicvalues
+            for (int i = 0; i < dicData.Count(); i++)
+            {
+                var itm = dicData.ElementAt(i);
+                dicData[itm.Key] = $"{itm.Key}:{itm.Value}";
+            }
+
+            Project.UpdateProject(dicData, prjPath1);
+
         }
 
         public ProjectSettings Settings { get; set; }

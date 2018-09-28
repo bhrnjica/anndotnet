@@ -255,7 +255,7 @@ namespace ANNdotNET.Core
                             }
 
                             //save best or last trained model and send report last time before trainer completes 
-                            var bestModelPath = saveBestModel(trParams, trainer.Model(), isMinimize);
+                            var bestModelPath = saveBestModel(trParams, trainer.Model(), epoch, isMinimize);
                            //
                             if (progress != null)
                                 progress(prData);
@@ -287,7 +287,7 @@ namespace ANNdotNET.Core
                             prData = progressTraining(trParams, trainer, network, miniBatchSource, epoch, progress, device);
 
                         //save best or last trained model and send report last time before trainer terminates   
-                        var bestModelPath = saveBestModel(trParams, trainer.Model(), isMinimize);
+                        var bestModelPath = saveBestModel(trParams, trainer.Model(), epoch, isMinimize);
                         //
                         if (progress != null)
                             progress(prData);
@@ -457,14 +457,15 @@ namespace ANNdotNET.Core
         }
 
         /// <summary>
-        /// After training process completes, the methods try to find best saved model and identify it as best model. 
-        /// In case no models are saved during training process it uses the last trained model as best one.
+        /// After training process completes, the method tries to find best saved model and identify it as the best model. 
+        /// In case no models are saved during training process it uses the last trained model.
         /// </summary>
         /// <param name="trParams"></param>
         /// <param name="lastModel"></param>
+        /// <param name="currentIteration">the last iteration when the traininig process stopped</param>
         /// <param name="isMinimized"></param>
         /// <returns></returns>
-        private string saveBestModel(TrainingParameters trParams, Function lastModel, bool isMinimized)
+        private string saveBestModel(TrainingParameters trParams, Function lastModel,int currentIteration, bool isMinimized)
         {
             //
             var orderredModels = isMinimized ? m_ModelEvaluations.OrderBy(x => x.Item1).ToList() : m_ModelEvaluations.OrderByDescending(x => x.Item1).ToList();
@@ -474,8 +475,8 @@ namespace ANNdotNET.Core
             {
                 if (lastModel != null)
                 {
-                    //save model firs in temp folder
-                    var strFilePath = $"{trParams.ModelTempLocation}\\model_at_{0}of{trParams.Epochs}_epochs_TimeSpan_{DateTime.Now.Ticks}";
+                    //save model in temp folder
+                    var strFilePath = $"{trParams.ModelTempLocation}\\model_at_{currentIteration}of{trParams.Epochs}_epochs_TimeSpan_{DateTime.Now.Ticks}";
                     if (!Directory.Exists(trParams.ModelTempLocation))
                         Directory.CreateDirectory(trParams.ModelTempLocation);
                     //save temp model
@@ -512,7 +513,7 @@ namespace ANNdotNET.Core
         }
 
         /// <summary>
-        /// save specific model into final model location,  delete temporary models and return model filename
+        /// save specific model into final model location,  delete temporary models and return model path
         /// </summary>
         /// <param name="trParams">Training parameters</param>
         /// <param name="tpl">Temporary stored model information</param>
@@ -529,7 +530,7 @@ namespace ANNdotNET.Core
             if (!Directory.Exists(finDir))
                 Directory.CreateDirectory(finDir);
 
-            //copy best model to finl location
+            //copy best model to final location
             var fName = Path.GetFileName(tpl.Item3);
             var fullPath =Path.Combine(finDir, fName);    
             File.Copy(tpl.Item3, fullPath);

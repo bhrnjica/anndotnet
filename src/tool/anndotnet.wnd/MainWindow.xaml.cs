@@ -241,7 +241,7 @@ namespace anndotnet.wnd
         {
             var tb = sender as System.Windows.Controls.TreeView;
             var dx = tb.SelectedValue as Models.BaseModel;
-            if (e.Key == Key.F2)
+            if (e.Key == Key.F2 && dx is MLConfigController)
                 renameModel(dx as MLConfigController);
             else if (e.Key == Key.Delete)
             {

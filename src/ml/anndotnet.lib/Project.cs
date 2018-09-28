@@ -188,7 +188,7 @@ namespace ANNdotNET.Lib
 
 
             //parse models
-            MLConfig = CreateMLConfigLists(projectMetaData);
+            MLConfig = GetMLConfigs(projectMetaData);
 
             //project info
             //parse feature variables
@@ -938,7 +938,7 @@ namespace ANNdotNET.Lib
         /// </summary>
         /// <param name="projectMetaData"></param>
         /// <returns></returns>
-        public static List<string> CreateMLConfigLists(string projectMetaData)
+        public static List<string> GetMLConfigs(string projectMetaData)
         {
             //parse feature variables
             var dataValues = projectMetaData.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);

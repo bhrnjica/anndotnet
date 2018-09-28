@@ -166,8 +166,8 @@ namespace anndotnet.wnd.Models
                     DataSet = ds;
                 }
 
-                //load existing models
-                var models = Project.CreateMLConfigLists(dicData["project"]);
+                //load existing mlconfigs
+                var models = Project.GetMLConfigs(dicData["project"]);
                 foreach(var model in models)
                 {
                     var m = new MLConfigController(activeModelChanged);
@@ -230,6 +230,7 @@ namespace anndotnet.wnd.Models
             var rawDataName = Project.GetParameterValue(dicData["data"], "RawData");
             if (string.IsNullOrEmpty(rawDataName))
                 rawDataName = $"{Name}_rawdata.txt";//naming convention for the raw dataset
+
             //create file of raw data
             var dataFile = Path.Combine(Settings.ProjectFolder, Name, rawDataName);
             writeRawData(dataFile, DataSet.Data);
