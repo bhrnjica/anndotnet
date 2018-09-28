@@ -68,6 +68,7 @@
     <Compile Include="..\anndotnet.lib.ext\extensions\CustomNNModels.cs">
       <Link>extensions\CustomNNModels.cs</Link>
     </Compile>
+    <Compile Include="extensions\PredictFutureSalesCustomModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

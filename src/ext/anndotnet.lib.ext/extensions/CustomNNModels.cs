@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace ANNdotNET.Lib.Ext
 {
-    public static class CustomNNModels
+    public static partial class CustomNNModels
     {
         /// <summary>
         /// This method is called from Desktop Application in order to run Custom network implementation. In order to change run custom 
@@ -32,7 +32,7 @@ namespace ANNdotNET.Lib.Ext
             try
             {
                 //Only one custom model is implemented for far
-                return CustomNNModels.PredictFutureSalesModel(variables, device);
+                return CustomNNModels.PredictFutureSalesModelv2(variables, device);
             }
             catch (System.Exception)
             {
@@ -76,6 +76,7 @@ namespace ANNdotNET.Lib.Ext
             var yearEmb = Embedding.Create(yearVar, yearVar.Shape.Dimensions[0] - 1, DataType.Float, device, 1, yearVar.Name+"_emb"); 
             var monthEmb = Embedding.Create(montVar, montVar.Shape.Dimensions[0]/2, DataType.Float, device, 1, montVar.Name + "_emb");
             var varshopEmb = Embedding.Create(shopVar, shopVar.Shape.Dimensions[0] / 2, DataType.Float, device, 1, shopVar.Name + "_emb");
+
             var itemEmb = Embedding.Create(itemVar, itemVar.Shape.Dimensions[0] / 2, DataType.Float, device, 1, itemVar.Name + "_emb");
             var itemEmb2 = Embedding.Create(itemEmb, itemEmb.Output.Shape.Dimensions[0] / 4, DataType.Float, device, 1, itemEmb.Name + "_emb");
 

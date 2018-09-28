@@ -304,9 +304,12 @@ namespace anndotnet.wnd.Models
                 var task2 = await Task.Run(() => Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.ResultyExtended, ProcessDevice.Default));
                 var resultValidation = task2;
 
+                if (resultTrain.Actual == null && resultTrain.Actual.Count <= 0)
+                    return mEval;
+
                 ////prepare evaluation result              
                 for (int i = 0; i < resultTrain.Actual.Count(); i++)
-                    mEval.TrainingValue.Add(new PointPair(i + 1, resultTrain.Actual[i]));
+                mEval.TrainingValue.Add(new PointPair(i + 1, resultTrain.Actual[i]));
 
                 for (int i = 0; i < resultTrain.Predicted.Count(); i++)
                     mEval.ModelValueTraining.Add(new PointPair(i + 1, resultTrain.Predicted[i]));
