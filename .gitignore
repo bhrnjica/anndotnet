@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /src/tool/anndotnet.tool/model_mlconfigs/iris/temp_models
+/src/ext/anndotnet.lib.ext.net/extensions/PredictFutureSalesCustomModels.cs

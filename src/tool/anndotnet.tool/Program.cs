@@ -13,8 +13,11 @@ namespace anndotnet.core.app
         {
             string strLocation1 = "D:\\repos\\anndotnet\\src\\tool\\";
 
-            for(int i=0; i< 10; i++)
-                runAllml_configurations(strLocation1);
+            runExample("Predict Future Sales",
+                "D:\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
+
+            //for(int i=0; i< 10; i++)
+            //    runAllml_configurations(strLocation1);
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
             Console.Read();
