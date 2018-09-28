@@ -134,7 +134,7 @@ performed:
 
 2.  Once the project is executed the following output is present:
 
-![](images/8a2d83c23a750272fd0bcdc4ff927f53.jpg)
+![](images/8a2d83c23a750272fd0bcdc4ff927f53.png)
 
 The output Window start by problem title ( in this case “Iris Flower
 Identification”), then depending on training parameters the training progress is
