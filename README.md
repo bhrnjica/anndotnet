@@ -1,9 +1,7 @@
 # ANNdotNET
 ![ANNdotNET Logo](./src/tool/anndotnet.wnd/Images/annLogo_start2.png)
 
-ANNdotNET –  is an open source project for deep learning written in C# and .NET platform. The main purpose of the project is 
-creating and training deep learning models. The application relies on Microsoft Cognitive Toolkit, CNTK, and it is 
-supposed to be GUI tool for CNTK library with extensions in data preprocessing, model evaluation,
+ANNdotNET –  is an open source project for deep learning written in C# and support .NET and .NET Core platform. The main purpose of the project is creating and training deep learning models. One of the main project component is ANNdotNET ML Engine which is based on Microsoft Cognitive Toolkit, CNTK. The project supposed to be GUI tool for CNTK library with extensions in data preprocessing, model evaluation,
  exporting and deploying. The project is hosted at http://github.com/bhrnjica/anndotnet.   
 
 The process of creating, training, evaluating and exporting models is provided from the GUI Application
@@ -11,9 +9,9 @@ The process of creating, training, evaluating and exporting models is provided f
 
 - more focus on network development and training process using classic desktop approach, instead of focusing on coding, 
 - less time spending on debugging source code, more focusing on different configuration and parameter variants,
-- ideal for engineers/users which are not familiar with programming languages, 
+- ideal for engineers/users who are not familiar with programming languages, 
 - in case the problem requires coding custom models, or training process, ANNdotNET CMD provides high level of API for such implementation,
-- all ml configurations developed with GUI tool,can be handling with CMD tool and vice versa.  
+- all ml configurations developed with GUI tool,can be handled with CMD tool and vice versa.  
 
 There are dozens of pre-calculated projects included in the installer which can be opened from the Start page as well as from CMD tool. The annprojects are
  based on famous datasets from several categories: regression, binary and multi class classification problems, image classifications, times series, etc.
