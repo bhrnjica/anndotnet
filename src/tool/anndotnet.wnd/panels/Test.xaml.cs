@@ -61,22 +61,23 @@ namespace anndotnet.wnd.Panels
                         }
                        
                         int index = 0;
-                        foreach(var c in testData.Where(x => x.Kind != DataKind.Label))
+                        //firs numeric column shoud be positioned first
+                        foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== DataType.Numeric))
                         {
-                            if(c.Type== DataType.Category)
-                            {
-                                var dgc = new DataGridComboBoxColumn();
-                                if (c.Classes!=null)
-                                    dgc.ItemsSource = c.Classes;
+                            //if(c.Type== DataType.Category)
+                            //{
+                            //    var dgc = new DataGridComboBoxColumn();
+                            //    if (c.Classes!=null)
+                            //        dgc.ItemsSource = c.Classes;
 
-                                dgc.Header = c.Name;
+                            //    dgc.Header = c.Name;
                                 
-                                dataGrid.Columns.Add(dgc);
+                            //    dataGrid.Columns.Add(dgc);
 
-                                Binding b = new Binding($"[{index}]");
-                                dgc.TextBinding = b;
-                            }
-                            else
+                            //    Binding b = new Binding($"[{index}]");
+                            //    dgc.TextBinding = b;
+                            //}
+                            if (c.Type == DataType.Numeric)
                             {
                                 var dgc = new DataGridTextColumn();
                                 dgc.Header = c.Name;
@@ -86,6 +87,33 @@ namespace anndotnet.wnd.Panels
                                 Binding b = new Binding($"[{index}]");
                                 dgc.Binding = b; 
                             }
+                            index++;
+                        }
+                        foreach (var c in testData.Where(x => x.Kind != DataKind.Label && x.Type == DataType.Category))
+                        {
+                            if (c.Type == DataType.Category)
+                            {
+                                var dgc = new DataGridComboBoxColumn();
+                                if (c.Classes != null)
+                                    dgc.ItemsSource = c.Classes;
+
+                                dgc.Header = c.Name;
+
+                                dataGrid.Columns.Add(dgc);
+
+                                Binding b = new Binding($"[{index}]");
+                                dgc.TextBinding = b;
+                            }
+                            //else
+                            //{
+                            //    var dgc = new DataGridTextColumn();
+                            //    dgc.Header = c.Name;
+
+                            //    dataGrid.Columns.Add(dgc);
+
+                            //    Binding b = new Binding($"[{index}]");
+                            //    dgc.Binding = b;
+                            //}
                             index++;
                         }
 
@@ -269,7 +297,7 @@ namespace anndotnet.wnd.Panels
             {
                 var model = (MLConfigController)DataContext;
                 var testMetaData = model.TestData;
-
+                var columns = dataGrid.Columns;
                 //check if the trained model exists
                 if (string.IsNullOrEmpty(model.TrainingParameters.LastBestModel) || string.IsNullOrEmpty(model.TrainingParameters.LastBestModel.Trim(' ')))
                 {
@@ -295,12 +323,15 @@ namespace anndotnet.wnd.Panels
                             throw new Exception($"Value cannot be empty.");
 
                         var value = m_TestData[i][j];
-                        if (testMetaData[j].Type == DataType.Category)
+                        
+                        if (columns[j] is DataGridComboBoxColumn)
                         {
-                            
-                            foreach(var c in testMetaData[j].Classes)
+                            var combo = columns[j] as DataGridComboBoxColumn;
+
+                            foreach (var itm in combo.ItemsSource)
                             {
-                                if(m_TestData[i][j].Equals(c, StringComparison.InvariantCultureIgnoreCase))
+                                var c = itm.ToString();
+                                if (m_TestData[i][j].Equals(c, StringComparison.InvariantCultureIgnoreCase))
                                     vector.Add(1);
                                 else
                                     vector.Add(0);

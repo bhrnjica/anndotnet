@@ -399,14 +399,16 @@ namespace anndotnet.wnd.Models
                     //validation data set
                     var actVData = mEval.ValidationValue.Select(x => x.Y).ToArray();
                     var preVData = mEval.ModelValueValidation.Select(x => x.Y).ToArray();
-                    mpv.SE = (float)actVData.SE(preVData);
-                    mpv.RMSE = (float)actVData.RMSE(preVData);
-                    mpv.NSE = (float)actVData.NSE(preVData);
-                    mpv.PB = (float)actVData.PBIAS(preVData);
-                    mpv.CORR = (float)actVData.R(preVData);
-                    mpv.DETC = (float)actVData.R2(preVData);
-
-
+                    if(actVData != null && actVData.Length > 0)
+                    {
+                        mpv.SE = (float)actVData.SE(preVData);
+                        mpv.RMSE = (float)actVData.RMSE(preVData);
+                        mpv.NSE = (float)actVData.NSE(preVData);
+                        mpv.PB = (float)actVData.PBIAS(preVData);
+                        mpv.CORR = (float)actVData.R(preVData);
+                        mpv.DETC = (float)actVData.R2(preVData);
+                    }
+                   
                 }
                 else if (mEval.ModelOutputDim > 1)
                 {

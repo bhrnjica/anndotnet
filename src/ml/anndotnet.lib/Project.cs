@@ -337,9 +337,9 @@ namespace ANNdotNET.Lib
             var dataPath = GetDataPath(dicMParameters, dsType);
             if (!MLFactory.IsFileExist(dataPath))
             {
-                //in case validation dataset is not defiend just export traininign dataset
-                if(dsType== DataSetType.Validation)
-                    dataPath = GetDataPath(dicMParameters, DataSetType.Training);
+                //in case test dataset is not defined just export validation dataset
+                if(dsType== DataSetType.Testing)
+                    dataPath = GetDataPath(dicMParameters, DataSetType.Validation);
                 if (!MLFactory.IsFileExist(dataPath))
                     return er;
             }

@@ -28,11 +28,15 @@ namespace ANNdotNET.Lib.Export
                 //
                 var ace = new AlphaCharEnum();
                 var wb = new XLWorkbook();
-                var ws1 = wb.Worksheets.Add("TRAINING DATA");
-                var ws2 = wb.Worksheets.Add("VALIDATION DATA");
+                var ws1 = wb.Worksheets.Add("Training");
+                IXLWorksheet ws2 = null;
                 ws1.Cell(1, 1).Value = "Training Data";
                 if (dataTest != null)
+                {
+                    ws2 = wb.Worksheets.Add("Validation");
                     ws2.Cell(1, 1).Value = "Validation Data";
+                }
+
 
                 writeDataToExcel(dataTrain,ws1, autoheader);
 
