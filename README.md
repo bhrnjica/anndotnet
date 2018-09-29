@@ -57,7 +57,7 @@ In order to run the application there are two possibilities:
 ## Run ANNdotNET from release section
 1. Got to http://github.com/bhrnjica/anndotnet/releases and find the ANNdotNET latest release,
 2. Download the zip installer, and extract the content on  your disk,
-3. Open extracted folder, select anndotnet.wnd.exe and run the application.
+3. Open extracted folder, select `anndotnet.wnd.exe` and run the application.
 4. Once the application is run, select one of many pre-calculated projects
     placed on Start Page.
 
@@ -68,22 +68,22 @@ GUI Tool
 
 ## How to install ANNdotNET Excel AddIn 
 
-In order to use ANNdotNET Export to Excel feature, the ANNdotNET.Excel.AddIn must be installed. In order to install Excel AddIn the following action must be performed:
+In order to use ANNdotNET Export to Excel feature, the `ANNdotNET.Excel.AddIn` must be installed. In order to install Excel AddIn the following action must be performed:
 - Install Microsoft Excel 64 bit version. **The ANNdotNET Excel AddIn is not compatible with Microsoft Excel 32bit version**.
-- Open Excel and select: File -> Options
+- Open Excel and select: `File -> Options`
 
 ![](./docs/images/anndotnet-exceladdin-img01.png)
 
 
-- From the Option Dialog select: Add-ins->ExcelAdd-ins -> press Go Button,
+- From the Option Dialog select: `Add-ins->ExcelAdd-ins -> press Go Button`,
 
 ![](./docs/images/anndotnet-exceladdin-img02.png)
 
-- From file open dialog, select: anndotnet.exceladdIn-AddIn64.xll, from the ANNdotNET binaries folder. 
+- From file open dialog, select: `anndotnet.exceladdIn-AddIn64.xll` file which is located at the ANNdotNET binaries folder. 
 
 ![](./docs/images/anndotnet-exceladdin-img03.png)
 
-- Add path to "ANNdotNET binaries folder" in system environment path, in order to register AddIn.
+- In order to register AddInAdd, ANNdotNET binaries folder must be registered in system environment path.
 
 ![](./docs/images/anndotnet-exceladdin-img04.png)
 
