@@ -53,7 +53,7 @@ namespace ANNdotNET.Lib.Export
                 ws1.Cell(2, dataTrain[0].Count + 1).Value = ouputColumn;
                 ws1.Cell(3, dataTrain[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
                 //write output classes on training sheet
-                if (outputClasses != null && outputClasses.Count > 0)
+                if (outputClasses != null && outputClasses.Count > 1)
                     writeOutputClasses(ws1, dataTrain[0].Count, outputClasses);
 
 
@@ -65,7 +65,7 @@ namespace ANNdotNET.Lib.Export
                     ws2.Cell(3, dataTest[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
                     
                     //write output classes on validation sheet
-                    if (outputClasses != null && outputClasses.Count > 0)
+                    if (outputClasses != null && outputClasses.Count > 1)
                         writeOutputClasses(ws2, dataTest[0].Count,outputClasses);
                 }
                     

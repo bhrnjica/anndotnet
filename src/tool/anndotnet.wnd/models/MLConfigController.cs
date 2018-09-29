@@ -818,7 +818,7 @@ namespace anndotnet.wnd.Models
                 List<string> strLine = new List<string>();
 
                 //
-                if(result.OutputClasses!=null && result.OutputClasses.Count>0)
+                if(result.OutputClasses!=null && result.OutputClasses.Count > 1)
                 {
                     var ss = "!#OutputClasses(";
                     for (int i = 0; i < result.OutputClasses.Count; i++)
