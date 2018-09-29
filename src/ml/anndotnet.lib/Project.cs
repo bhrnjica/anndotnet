@@ -1028,8 +1028,8 @@ namespace ANNdotNET.Lib
             var col = MLFactory.GetParameterValue(parser, "ColumnSeparator");
             if (string.IsNullOrEmpty(col))
                 dp.ColumnSeparator = new List<char>() { ' ', '\t', ';', }.ToArray();
-            else if (col == "\\t")
-                dp.ColumnSeparator = new List<char>() { '\t' }.ToArray();
+            else if (col == ";")
+                dp.ColumnSeparator = new List<char>() { ';' }.ToArray();
             else
             {
                 var separators = col.Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);
