@@ -339,7 +339,7 @@ namespace DataProcessing.Core
                     if (string.IsNullOrEmpty(row[j]))
                         value = "n/a";
                     else
-                        value = row[j];
+                        value = row[j]; 
 
                     //
                     if (i == 0 && isFirstRowHeader)

@@ -292,18 +292,6 @@
     <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_valid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_20833fde-23e8-46a1-9044-1e48a227528f.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\models\model_at_52of1000_epochs_TimeSpan_636730776915636980">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_20833fde-23e8-46a1-9044-1e48a227528f.checkpoint">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_20833fde-23e8-46a1-9044-1e48a227528f.checkpoint.ckp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\MNIST\MNIST-Project.ann">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -407,6 +395,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738334523502776">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\models\model_at_87of1000_epochs_TimeSpan_636738532791050245">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="anndotnet.ico" />

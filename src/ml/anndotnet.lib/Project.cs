@@ -1004,7 +1004,7 @@ namespace ANNdotNET.Lib
 
             //parse data
             var parser = dataValues.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-
+            
             //row separator
             var row = MLFactory.GetParameterValue(parser, "RowSeparator");
             if (string.IsNullOrEmpty(row))
@@ -1027,7 +1027,9 @@ namespace ANNdotNET.Lib
             //column separator
             var col = MLFactory.GetParameterValue(parser, "ColumnSeparator");
             if (string.IsNullOrEmpty(col))
-                dp.ColumnSeparator = new List<char>() { ' ', '\t', ';' }.ToArray();
+                dp.ColumnSeparator = new List<char>() { ' ', '\t', ';', }.ToArray();
+            else if (col == "\\t")
+                dp.ColumnSeparator = new List<char>() { '\t' }.ToArray();
             else
             {
                 var separators = col.Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);

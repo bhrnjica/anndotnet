@@ -159,7 +159,7 @@ namespace anndotnet.wnd.Models
                 if (fi.Exists)
                 {
                     //column separator is always ;
-                    var result = ANNDataSet.prepareData(File.ReadAllLines(filePath), new char[] { ';'}, parser.FirstRowHeader);
+                    var result = ANNDataSet.prepareData(File.ReadAllLines(filePath), parser.ColumnSeparator, parser.FirstRowHeader);
                     ds.Data = result.data;
                     ds.IsPrecentige = Settings.PrecentigeSplit;
                     ds.TestRows = Settings.ValidationSetCount;
@@ -236,9 +236,7 @@ namespace anndotnet.wnd.Models
             writeRawData(dataFile, DataSet.Data);
 
             //update project file with information about raw dataset
-            generateProjectFile(prjPath1, rawDataName);
-
-            
+            generateProjectFile(prjPath1, rawDataName);           
         }
 
         internal void CreateMLConfig(MLConfigController mlconfig)
