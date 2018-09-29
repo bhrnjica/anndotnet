@@ -853,6 +853,7 @@ namespace anndotnet.wnd.Models
         internal void ExportToONNX(string filepath)
         {
             return;
+            //Not available in C#
             if (string.IsNullOrEmpty(TrainingParameters.LastBestModel) || !File.Exists(TrainingParameters.LastBestModel))
             {
                 MessageBox.Show("No trained model exist. The mode cannot be exported.");
