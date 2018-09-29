@@ -21,7 +21,7 @@ namespace ANNdotNET.Lib.Export
 {
     public static class ExportToExcel
     {
-        public static void Export(List<List<string>> dataTrain, List<List<string>> dataTest, string strFilePath, string excelFormula, bool autoheader)
+        public static void Export(List<List<string>> dataTrain, List<List<string>> dataTest, string strFilePath, string excelFormula, bool autoheader, List<string> outputClasses=null)
         {
             try
             {
@@ -48,12 +48,25 @@ namespace ANNdotNET.Lib.Export
                 //column name for model output 
                 var colCount = dataTrain[0].Count;
                 var ouputColumn = dataTrain[0][colCount - 1].Replace("_actual", "_predicted");
+
+                //write output column for training sheet
                 ws1.Cell(2, dataTrain[0].Count + 1).Value = ouputColumn;
                 ws1.Cell(3, dataTrain[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
+                //write output classes on training sheet
+                if (outputClasses != null && outputClasses.Count > 0)
+                    writeOutputClasses(ws1, dataTrain[0].Count, outputClasses);
+
+
                 if (dataTest != null)
                 {
-                    ws1.Cell(2, dataTrain[0].Count + 1).Value = ouputColumn;
-                    ws2.Cell(3, dataTrain[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
+                    //write output column name for validation sheet
+                    ws2.Cell(2, dataTest[0].Count + 1).Value = ouputColumn;
+                    //write formula
+                    ws2.Cell(3, dataTest[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
+                    
+                    //write output classes on validation sheet
+                    if (outputClasses != null && outputClasses.Count > 0)
+                        writeOutputClasses(ws2, dataTest[0].Count,outputClasses);
                 }
                     
                 //
@@ -62,6 +75,19 @@ namespace ANNdotNET.Lib.Export
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        private static void writeOutputClasses(IXLWorksheet ws2, int startCoulmnIndex, List<string> outputClasses)
+        {
+            //write output classes if available
+            ws2.Cell(2, startCoulmnIndex + 5).Value = "Output Class Value";
+            ws2.Cell(2, startCoulmnIndex + 6).Value = "Output Class Name";
+
+            for (int i = 0; i < outputClasses.Count; i++)
+            {
+                ws2.Cell(3 + i, startCoulmnIndex + 5).Value = i.ToString();
+                ws2.Cell(3 + i, startCoulmnIndex + 6).Value = outputClasses[i];
             }
         }
 

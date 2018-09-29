@@ -788,7 +788,7 @@ namespace anndotnet.wnd.Models
                 List<List<string>> trainData = prepareToPersist(resultT);
                 List<List<string>> validData = prepareToPersist(resultV);
 
-                ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false);
+                ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false, resultT.OutputClasses);
             }
             catch (Exception)
             {
@@ -812,13 +812,28 @@ namespace anndotnet.wnd.Models
                 //
                 var result = Project.EvaluateModel(modelPath, DataProcessing.Core.DataSetType.Testing, EvaluationType.Results, ProcessDevice.Default);
                 if (result.Actual == null)
-                    throw new Exception("Export has failed. No training or validation datatset to export.");
+                    throw new Exception("Export has failed. No testing nor validation datatset to export.");
+
                 //
                 List<string> strLine = new List<string>();
-                strLine.Add(string.Join(";",result.Header));
+
+                //
+                if(result.OutputClasses!=null && result.OutputClasses.Count>0)
+                {
+                    var ss = "!#OutputClasses(";
+                    for (int i = 0; i < result.OutputClasses.Count; i++)
+                    {
+                        ss += $"[{i}={result.OutputClasses[i]}],";
+                    }
+                    var outputClassesStr = ss.Substring(0, ss.Length - 1) + ")";
+                    strLine.Add(outputClassesStr);
+                }
+                //make header
+                var headerStr = string.Join(";", result.Header);    
+                strLine.Add(headerStr);
 
                 //prepare for saving
-                for(int i=0; i< result.Actual.Count; i++)
+                for (int i=0; i< result.Actual.Count; i++)
                     strLine.Add($"{result.Actual[i]};{result.Predicted[i]}");
 
                 //store content to file

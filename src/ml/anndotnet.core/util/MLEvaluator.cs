@@ -47,30 +47,33 @@ namespace ANNdotNET.Core
                     var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
                     var mdDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
                     var inMap = new Dictionary<Variable, Value>();
-                    //
-                    for (int i = 0; i < mdDataEx.Count; i++)
-                    {
-                        var d = mdDataEx.ElementAt(i);
 
-                        if(!evParam.Ouptut.First().Name.Equals(d.Key.Name))
-                        {
-                            //
-                            var fv = MLValue.GetValues(d.Key, d.Value);
-                            if (featDic.ContainsKey(d.Key.Name))
-                                featDic[d.Key.Name].AddRange(fv);
-                            else
-                                featDic.Add(d.Key.Name, fv);
-                        }
+                    //input
+                    var vars = evParam.Input;
+                    for (int i = 0; i < vars.Count() /*mdDataEx.Count*/; i++)
+                    {
+                        var vv = vars.ElementAt(i);
+                        var d = mdDataEx.Where(x => x.Key.Name.Equals(vv.Name)).FirstOrDefault();
+                        //
+                        var fv = MLValue.GetValues(d.Key, d.Value);
+                        if (featDic.ContainsKey(d.Key.Name))
+                            featDic[d.Key.Name].AddRange(fv);
                         else
-                        {
-                            //
-                            var fv = MLValue.GetValues(d.Key, d.Value);
-                            var value = fv.Select(l=> new List <float>() { l.IndexOf(l.Max()) }).ToList();
-                            if (featDic.ContainsKey(d.Key.Name))
-                                featDic[d.Key.Name].AddRange(value);
-                            else
-                                featDic.Add(d.Key.Name, value);
-                        }
+                            featDic.Add(d.Key.Name, fv);
+                    }
+                    //output 
+                    var varso = evParam.Ouptut;
+                    for (int i = 0; i < varso.Count() /*mdDataEx.Count*/; i++)
+                    {
+                        var vv = varso.ElementAt(i);
+                        var d = mdDataEx.Where(x => x.Key.Name.Equals(vv.Name)).FirstOrDefault();
+                        //
+                        var fv = MLValue.GetValues(d.Key, d.Value);
+                        var value = fv.Select(l=> new List <float>() { l.IndexOf(l.Max()) }).ToList();
+                        if (featDic.ContainsKey(d.Key.Name))
+                            featDic[d.Key.Name].AddRange(value);
+                        else
+                            featDic.Add(d.Key.Name, value);
                     }
 
                     // check if sweep end reached

@@ -418,20 +418,28 @@ namespace ANNdotNET.Lib
         private static List<string> generateHeader(List<VariableDescriptor> cols)
         {
             var lst = new List<string>();
+            //first numeric column then categorical
             foreach(var c in cols.Where(x=>x.Kind!= DataKind.Label && x.Kind != DataKind.None))
             {
                 if (c.Type == DataType.None)
                     continue;
-                else if(c.Type== DataType.Category)
+                else if(c.Type== DataType.Numeric)
+                    lst.Add(c.Name);
+            }
+            //then categorical column
+            foreach (var c in cols.Where(x => x.Kind != DataKind.Label && x.Kind != DataKind.None))
+            {
+                if (c.Type == DataType.None)
+                    continue;
+                else if (c.Type == DataType.Category)
                 {
-                    for(int i=0; i < c.Classes.Length; i++)
+                    for (int i = 0; i < c.Classes.Length; i++)
                     {
                         var strCol = $"{c.Name}-{c.Classes[i]}";
                         lst.Add(strCol);
                     }
                 }
-                else
-                    lst.Add(c.Name);
+                
             }
             //the last one is Label
             foreach (var c in cols.Where(x => x.Kind == DataKind.Label && x.Kind != DataKind.None))
