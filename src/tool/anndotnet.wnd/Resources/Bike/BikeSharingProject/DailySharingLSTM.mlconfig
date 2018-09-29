@@ -5,4 +5,4 @@ labels:|cnt 1 0
 network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Embedding 10 0 0 None 0 0 |Layer:LSTM 240 240 0 TanH 1 1 |Layer:Drop 0 0 20 None 0 0 |Layer:Dense 20 0 0 TanH 0 0 |Layer:Dense 1 0 0 None 0 0 
 learning:|Type:AdaGradLearner |LRate:0.01 |Momentum:0.9 |Loss:SquaredError|Eval:MSError|L1:0.002|L2:0
 training:|Type:Default |BatchSize:500 |Epochs:1000 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:5 |ContinueTraining:0 |TrainedModel:models\model_at_1of1000_epochs_TimeSpan_636728883636485177 
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:DailySharingLSTM_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv |Logs:log 
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:DailySharingLSTM_result.csv |Logs:log 

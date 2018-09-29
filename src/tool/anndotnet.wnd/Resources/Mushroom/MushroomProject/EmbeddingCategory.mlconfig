@@ -5,4 +5,4 @@ labels:|classes 2 0
 network:|Layer:Embedding 70 0 0 None 0 0 |Layer:Embedding 20 0 0 None 0 0 |Layer:Dense 15 0 0 ReLU 0 0 |Layer:Drop 0 0 10 None 0 0 |Layer:Dense 10 0 0 TanH 0 0 |Layer:Dense 2 0 0 Softmax 0 0 
 learning:|Type:SGDLearner |LRate:0.001 |Momentum:1 |Loss:BinaryCrossEntropy|Eval:ClassificationAccuracy|L1:0|L2:0
 training:|Type:Default |BatchSize:120 |Epochs:100 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:2 |ContinueTraining:0 |TrainedModel:models\model_at_27of100_epochs_TimeSpan_636734026055657638  
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:TwoEmeddedLayers_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv |Logs:log 
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:TwoEmeddedLayers_result.csv |Logs:log 

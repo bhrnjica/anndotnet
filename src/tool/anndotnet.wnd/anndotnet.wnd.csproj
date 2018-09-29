@@ -322,12 +322,6 @@
     <Content Include="Resources\MNIST\MNIST-Project\FFnet\models\model_at_0of250_epochs_TimeSpan_636732107409817493">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_989of1000_epochs_TimeSpan_636733004292324173">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636733004652715160">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636733003278423117">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -403,6 +397,14 @@
     <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history" />
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636738146859906748" />
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint" />
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint.ckp" />
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history" />
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738146101634895" />
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint" />
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint.ckp" />
     <Resource Include="anndotnet.ico" />
     <Content Include="images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -477,22 +479,10 @@
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\data\mldataset_valid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint.ckp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\data\mldataset_train">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\data\mldataset_valid">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM.mlconfig">
@@ -565,12 +555,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\models\model_at_1of1000_epochs_TimeSpan_636728883636485177">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\log\model_4c2300e5-914e-49dd-a553-390701a6070e.history">
@@ -716,6 +700,7 @@
       <Name>dataprocessing.wnd</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets')" />

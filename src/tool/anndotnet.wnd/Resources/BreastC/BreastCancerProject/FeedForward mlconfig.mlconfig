@@ -1,9 +1,9 @@
 configid:753e75c9-917b-4bbd-a5fc-c769a818d1eb
-metadata:|Column02:Clump_Thickness;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column03:Uniformity_of_Cell_Size;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column04:Uniformity_of_ Cell_Shape;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column05:Marginal_Adhesion;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column06:Single_Epithelial_Cell_Size;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column07:Bare_Nuclei;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column08:Bland_Chromatin;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column09:Normal_Nucleoli;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column10:Mitoses;Category;Feature;Mode;1;10;2;3;4;5;6;7;8 |Column11:Class;Category;Label;Mode;2;4 
+metadata:|Column02:Clump_Thickness;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column03:Uniformity_of_Cell_Size;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column04:Uniformity_of_Cell_Shape;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column05:Marginal_Adhesion;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column06:Single_Epithelial_Cell_Size;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column07:Bare_Nuclei;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column08:Bland_Chromatin;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column09:Normal_Nucleoli;Category;Feature;Mode;1;10;2;3;4;5;6;7;8;9 |Column10:Mitoses;Category;Feature;Mode;1;10;2;3;4;5;6;7;8 |Column11:Class;Category;Label;Mode;2;4 
 !features
-features:|Column2 10 0	|Column3 10 0	|Column4 10 0	|Column5 10 0	|Column6 10 0	|Column7 10 0	|Column8 10 0	|Column9 10 0	|Column10 9 0	
-labels:|Column11 2 0	
+features:|Clump_Thickness 10 0	|Uniformity_of_Cell_Size 10 0	|Uniformity_of_Cell_Shape 10 0	|Marginal_Adhesion 10 0	|Single_Epithelial_Cell_Size 10 0	|Bare_Nuclei 10 0	|Bland_Chromatin 10 0	|Normal_Nucleoli 10 0	|Mitoses 9 0	
+labels:|Class 2 0	
 network:|Layer:Dense 10 0 0 TanH 0 0 |Layer:Dense 2 0 0 Softmax 0 0 
 learning:|Type:SGDLearner |LRate:0.001 |Momentum:1 |Loss:BinaryCrossEntropy|Eval:ClassificationAccuracy|L1:0|L2:0
-training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:25 |ContinueTraining:0 |TrainedModel:models\model_at_989of1000_epochs_TimeSpan_636733004292324173 
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FeedForwardModel_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv_result.csv |Logs:log 
+training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:25 |ContinueTraining:0 |TrainedModel:models\    
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FeedForwardModel_result.csv |Logs:log 
