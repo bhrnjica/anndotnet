@@ -398,13 +398,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history" />
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636738146859906748" />
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint" />
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint.ckp" />
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history" />
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738146101634895" />
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint" />
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint.ckp" />
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636738335237339134">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738334523502776">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="anndotnet.ico" />
     <Content Include="images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
