@@ -385,10 +385,14 @@
     <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint.ckp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history" />
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint" />
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint.ckp" />
-    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history" />
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint" />
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint.ckp" />
     <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636738335237339134">
@@ -407,6 +411,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\models\model_at_74of1000_epochs_TimeSpan_636738951668257665">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="anndotnet.ico" />
@@ -556,9 +563,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\log\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\models\model_at_1of1000_epochs_TimeSpan_636728883636485177">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\log\model_4c2300e5-914e-49dd-a553-390701a6070e.history">
