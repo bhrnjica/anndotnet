@@ -536,7 +536,7 @@ namespace anndotnet.wnd.Models
                 throw new Exception("The output dimension of the last layer in the network must be same as label dimension!");
             if(Network.Where(x=>x.HDimension<=0 && (x.Type!= LayerType.Normalization && x.Type != LayerType.Drop)).Count() > 0)
                 throw new Exception("Layer cannot be defined with zero output dimension.!");
-            if (Network.Where(x => x.CDimension <= 0 && x.Type== LayerType.LSTM).Count() > 0)
+            if (Network.Where(x => x.CDimension <= 0 && (x.Type== LayerType.LSTM || x.Name.StartsWith("CudaStacked"))).Count() > 0)
                 throw new Exception("Layer cannot be defined with zero output dimension.!");
         }
 

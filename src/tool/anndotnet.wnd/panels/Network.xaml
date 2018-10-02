@@ -44,7 +44,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="*"/>
@@ -55,6 +55,11 @@
                     <ComboBoxItem Content="LSTM Layer"/>
                     <ComboBoxItem Content="Embedding Layer"/>
                     <ComboBoxItem Content="Drop Layer"/>
+                    <ComboBoxItem Content="NALU Layer"/>
+                    <ComboBoxItem Content="CudaStackedLSTM Layer"/>
+                    <ComboBoxItem Content="CudaStackedGRU Layer"/>
+                    <!--<ComboBoxItem Content="CudaStackedTanH Layer"/>
+                    <ComboBoxItem Content="CudaStackedReLU Layer"/>-->
                 </ComboBox>
                 <Button Content="Add" Style="{StaticResource Windows10Button}" Margin="2" Grid.Column="2" Grid.Row="1" Command="cmd:AppCommands.AddLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedValue}"/>
                 <Button Content="Remove"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="3" Grid.Row="1" Command="cmd:AppCommands.RemoveLayerCommand" CommandParameter="{Binding ElementName=networkLayers, Path=SelectedItem}"/>

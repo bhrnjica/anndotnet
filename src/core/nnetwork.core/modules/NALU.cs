@@ -43,9 +43,9 @@ namespace NNetwork.Core.Network.Modules
         /// <param name="x"></param>
         /// <param name="outputDim"></param>
         /// <param name="dataType"></param>
-        /// <param name="seed"></param>
         /// <param name="device"></param>
-        public NALU(Variable x, int outputDim, DataType dataType, uint seed, DeviceDescriptor device)
+        /// <param name="seed"></param>
+        public NALU(Variable x, int outputDim, DataType dataType, DeviceDescriptor device, uint seed, string name = "")
         {
             var inputDim = x.Shape[0];
             var error = new Constant(new NDShape(0), dataType, 1e-10);
@@ -69,7 +69,8 @@ namespace NNetwork.Core.Network.Modules
             var o2 = CNTKLib.ElementTimes(CNTKLib.Minus(one, g), m);
 
             //NALU output
-            var output = CNTKLib.Plus(o1 , o2, "NALU");
+            var n = string.IsNullOrEmpty(name) ? "NALU" : name;
+            var output = CNTKLib.Plus(o1 , o2, n);
 
             //initialize output 
             X = x;

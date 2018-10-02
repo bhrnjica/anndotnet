@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:anndotnet.wnd.panels"
              mc:Ignorable="d" d:DesignWidth="450" Background="LightSteelBlue"  BorderThickness="1" BorderBrush="Black">
     <UserControl.Resources>
-        <cnv:BoolToGridRowHeightConverter x:Key="BoolToGridRowHeightConverter" />
+        <!--<cnv:BoolToGridRowHeightConverter x:Key="BoolToGridRowHeightConverter" />-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,31 +17,31 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="27" />
-            <RowDefinition  Height="{Binding Type, ConverterParameter=1, Converter={StaticResource BoolToGridRowHeightConverter}}"/>
-            <RowDefinition  Height="{Binding Type, ConverterParameter=2, Converter={StaticResource BoolToGridRowHeightConverter}}"/>
-            <RowDefinition  Height="{Binding Type, ConverterParameter=3, Converter={StaticResource BoolToGridRowHeightConverter}}"/>
+            <RowDefinition  Height="auto"/>
+            <RowDefinition  Height="auto"/>
+            <RowDefinition  Height="auto"/>
         </Grid.RowDefinitions>
         <Border BorderThickness="1"  Grid.ColumnSpan="3" Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">
             <Label Content="{Binding Name}" VerticalAlignment="Center" />
         </Border>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-            <Label Content="Output dimension :" Width="120" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
-            <TextBox Text="{Binding HDimension}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <Label x:Name="lblHdim" Content="Layer dimension :" Width="120" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
+            <TextBox x:Name="txtHdim" Text="{Binding HDimension}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
         </StackPanel >
         <StackPanel Grid.Row="2" Orientation="Horizontal" >
-            <Label Content="Cell dimension :" Width="120"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding CDimension}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <Label x:Name="lblCdim" Content="Cell dimension :" Width="120"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtCdim" Text="{Binding CDimension}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
         </StackPanel >
 
         <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <Label Content="Drop rate :" Width="120" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Value}" Width="50" Margin="7" VerticalAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" />
-            <Label Content="%"  VerticalAlignment="Center"/>
+            <Label x:Name="lblDrop" Content="Drop rate :" Width="120" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <TextBox x:Name="txtDrop" Text="{Binding Value}" Width="50" Margin="7" VerticalAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" />
+            <Label x:Name="lblPerc" Content="%"  VerticalAlignment="Center"/>
         </StackPanel >
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" >
-            <Label Content="Activation :" Width="70" IsEnabled="{Binding UseActivation}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <ComboBox Width="115" Text="{Binding Activation}" Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" IsEnabled="{Binding UseActivation}"  VerticalAlignment="Center"  HorizontalAlignment="Right">
+            <Label x:Name="lblAct" Content="Activation :" Width="70" IsEnabled="{Binding UseActivation}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <ComboBox x:Name="cmbAct" Width="115" Text="{Binding Activation}" Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" IsEnabled="{Binding UseActivation}"  VerticalAlignment="Center"  HorizontalAlignment="Right">
                 <ComboBoxItem>None</ComboBoxItem>
                 <ComboBoxItem>Softmax</ComboBoxItem>
                 <ComboBoxItem>TanH</ComboBoxItem>
@@ -49,8 +49,8 @@
             </ComboBox>
         </StackPanel >
         <StackPanel Grid.Row="2"  VerticalAlignment="Center" Grid.Column="1" Orientation="Horizontal" Margin="5,9,0,9" Height="14" >
-            <CheckBox Content="Self-stabilization " IsChecked="{Binding SelfStabilization}"/>
-            <CheckBox Content="Peepholes" IsChecked="{Binding Peephole}"/>
+            <CheckBox Content="Self-stabilization " IsChecked="{Binding SelfStabilization}" x:Name="isChecked1"/>
+            <CheckBox Content="Peepholes" IsChecked="{Binding Peephole}" x:Name="isChecked2"/>
         </StackPanel >
 
     </Grid>

@@ -20,6 +20,11 @@ namespace NNetwork.Core.Common
         Embedding,
         Drop,
         LSTM,
+        NALU,
+        CudaStackedLSTM,
+        CudaStackedGRU,
+        //CudaStackedTanH,
+        //CudaStackedReLU,
         Custom,
     }
 
@@ -38,10 +43,10 @@ namespace NNetwork.Core.Common
         //name of a layer
         public string Name { get; set; }
 
-        //Output dimension for the layer (Dense, Embedding, LSTM)
+        //Output dimension for the layer (Dense, Embedding, LSTM, CudaLSTM, GRU, TanH and ReLU)
         public int HDimension { get; set; }
 
-        //LSTM Cell dimension 
+        //LSTM Cell dimension, number of layers for StackedLSTM, GRU , TanH and ReLU
         public int CDimension { get; set; }
 
         //Parameter used in DropLayer (as dropRate)
@@ -53,7 +58,7 @@ namespace NNetwork.Core.Common
         //for LSTM layer only
         public bool SelfStabilization { get; set; }
 
-        //for LSTM layer only
+        //for LSTM layer only 
         public bool Peephole { get; set; }
 
         //is activation function may be used in the layer

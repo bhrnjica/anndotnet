@@ -142,7 +142,7 @@ namespace anndotnet.test.net.app
                 FeedForwaredNN ffn = new FeedForwaredNN(device, DataType.Float);
 
                 Function dense1 = ffn.Dense(scaledInput, 200, Activation.Sigmoid, "");
-                var nalu = new NALU(dense1, outDim, DataType.Float, 1, device);
+                var nalu = new NALU(dense1, outDim, DataType.Float, device, 1);
                 return nalu.H;
             }
             else if (nnType == 1/*FeedForward*/)

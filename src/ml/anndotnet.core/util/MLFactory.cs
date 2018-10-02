@@ -203,7 +203,7 @@ namespace ANNdotNET.Core
                 //extract features and label strings and create CNTK input variables 
                 var strFeatures = dicMParameters["features"];
                 var strLabels = dicMParameters["labels"];
-                var dynamicAxes = dicMParameters["network"].Contains("LSTM");
+                var dynamicAxes = dicMParameters["network"].Contains("LSTM") && !dicMParameters["network"].Contains("CudaStacked");
                 //create config streams
                 f.CreateIOVariables(strFeatures, strLabels, DataType.Float, dynamicAxes);
 
@@ -309,15 +309,7 @@ namespace ANNdotNET.Core
             return networkInput;
         }
 
-        public static bool IsFileExist(string filePath)
-        {
-            if (string.IsNullOrEmpty(filePath))
-                return false;
-
-            var fi = new FileInfo(filePath);
-            return fi.Exists;
-        }
-
+     
         /// <summary>
         /// Creates TrainingParameter object form string
         /// </summary>
@@ -629,6 +621,20 @@ namespace ANNdotNET.Core
                     net = RNN.RecurrenceLSTM(net, layer.HDimension, layer.CDimension, type, device, returnSequence, layer.Activation,
                         layer.Peephole, layer.SelfStabilization, 1);
                 }
+                else if (layer.Type == LayerType.NALU)
+                {
+                    var nalu =  new NALU(net, layer.HDimension, type, device, 1, layer.Name);
+                    net = nalu.H;
+                }
+                else if (layer.Type == LayerType.CudaStackedLSTM)
+                {
+                    net = RNN.RecurreceCudaStackedLSTM(net, layer.HDimension, layer.CDimension, layer.Peephole, device);
+                }
+                else if (layer.Type == LayerType.CudaStackedGRU)
+                {
+                    net = RNN.RecurreceCudaStackedGRU(net, layer.HDimension, layer.CDimension, layer.Peephole, device);
+                }
+                
             }
 
             //check if last layer is compatible with the output
@@ -975,6 +981,15 @@ namespace ANNdotNET.Core
                 default:
                     return DeviceDescriptor.UseDefaultDevice();
             }
+        }
+
+        public static bool IsFileExist(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return false;
+
+            var fi = new FileInfo(filePath);
+            return fi.Exists;
         }
 
         #endregion

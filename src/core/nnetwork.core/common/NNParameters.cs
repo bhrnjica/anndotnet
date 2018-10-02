@@ -57,14 +57,6 @@ namespace NNetwork.Core.Common
         Custom = 1,
     }
 
-    public enum NetworkTypes
-    {
-        FeedForward = 0,
-        DeepFF = 1,
-        LSTMRecurrent = 2,
-        EmbeddedLSTM = 3
-    }
-
     public enum LearnerType
     {
         SGDLearner = 0,

@@ -50,7 +50,7 @@ namespace anndotnet.wnd.converters
             }
             if (row == 2)
             {
-                if (type == LayerType.LSTM)
+                if (type == LayerType.LSTM || type.ToString().StartsWith("CudaStacked"))
                     return GridLength.Auto;
                 else
                     return new GridLength(0);

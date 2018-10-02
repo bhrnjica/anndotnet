@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using CNTK;
 using NNetwork.Core.Common;
@@ -79,6 +80,71 @@ namespace NNetwork.Core.Network
         public static Function RecurrenceGRU()
         {
             throw new NotImplementedException();
+        }
+
+
+        public static Function RecurreceCudaStackedLSTM(Variable input, int outputDim, int numLayers, bool isBidirectional, DeviceDescriptor device)
+
+        {
+            if (device.Type != DeviceKind.GPU)
+            {
+                throw new NotSupportedException();
+            }
+            
+            var net = new NetworkFoundation();
+            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+                                 
+            var cudaStackedLSTM =  CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "lstm");
+
+            return cudaStackedLSTM;
+        }
+
+        public static Function RecurreceCudaStackedGRU(Variable input, int outputDim, int numLayers, bool isBidirectional, DeviceDescriptor device)
+
+        {
+            if (device.Type != DeviceKind.GPU)
+            {
+                throw new NotSupportedException();
+            }
+
+            var net = new NetworkFoundation();
+            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+
+            var cudaStackedLSTM = CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "gru");
+
+            return cudaStackedLSTM;
+        }
+
+        public static Function RecurreceCudaStackedTanH(Variable input, int outputDim, int numLayers, bool isBidirectional, DeviceDescriptor device)
+
+        {
+            if (device.Type != DeviceKind.GPU)
+            {
+                throw new NotSupportedException();
+            }
+
+            var net = new NetworkFoundation();
+            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+
+            var cudaStackedLSTM = CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "rnnTanh");
+
+            return cudaStackedLSTM;
+        }
+
+        public static Function RecurreceCudaStackedReLU(Variable input, int outputDim, int numLayers, bool isBidirectional, DeviceDescriptor device)
+
+        {
+            if (device.Type != DeviceKind.GPU)
+            {
+                throw new NotSupportedException();
+            }
+
+            var net = new NetworkFoundation();
+            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+
+            var cudaStackedLSTM = CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "rnnReLU");
+
+            return cudaStackedLSTM;
         }
     }
 }
