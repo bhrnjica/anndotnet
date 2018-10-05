@@ -1,4 +1,5 @@
 # ANNdotNET
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md)
 ![ANNdotNET Logo](./src/tool/anndotnet.wnd/Images/annLogo_start2.png)
 
 ANNdotNET –  is an open source project for deep learning written in C# and supports .NET and .NET Core platform. The main purpose of the project is creating and training deep learning models. One of the main project component is ANNdotNET ML Engine which is based on Microsoft Cognitive Toolkit, CNTK. The project supposed to be GUI tool for CNTK library with extensions in data preprocessing, model evaluation,
