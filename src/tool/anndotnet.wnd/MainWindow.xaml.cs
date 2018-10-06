@@ -87,6 +87,8 @@ namespace anndotnet.wnd
         static Cursor Wait = null;
         public static void SetCursor(bool isWait)
         {
+            if (Application.Current.MainWindow == null)
+                return;
             var appContr = Application.Current.MainWindow.DataContext as AppController;
             if (isWait)
             {

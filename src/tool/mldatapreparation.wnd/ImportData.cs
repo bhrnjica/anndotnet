@@ -26,6 +26,7 @@ namespace MLDataPreparation.Dll
     public partial class ImportData : Form
     {
         private string originData = "";
+        private string[] originLines;
         public ImportData()
         {
             InitializeComponent();
@@ -41,8 +42,8 @@ namespace MLDataPreparation.Dll
                 return;
 
             textBox1.Text = strFile;
-
-            var data = string.Join(Environment.NewLine, File.ReadAllLines(strFile).Where(l => !l.StartsWith("@") && !l.StartsWith("#") && !l.StartsWith("!")));
+            originLines = File.ReadAllLines(strFile).Where(l => !l.StartsWith("@") && !l.StartsWith("#") && !l.StartsWith("!")).ToArray();
+            var data = string.Join(Environment.NewLine, originLines.Take(1000));
             originData = data;
             textBox3.Text = data;
             ProcesData();
@@ -67,7 +68,7 @@ namespace MLDataPreparation.Dll
 
         private void ProcesData()
         {
-            var data = originData;
+            var data = string.Join(Environment.NewLine, originLines.Take(1000));
             if (string.IsNullOrEmpty(data))
                 return;
 
@@ -115,9 +116,9 @@ namespace MLDataPreparation.Dll
 
                 var colDelimiter = GetColumDelimiter();
                 //define the row
-                string[] rows = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+                //string[] rows = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
-                var result = ANNDataSet.prepareData(rows, colDelimiter, checkBox1.Checked, radioButton1.Checked);
+                var result = ANNDataSet.prepareData(originLines, colDelimiter, checkBox1.Checked, radioButton1.Checked);
                 Header = result.header;
                 Data = result.data;
             }

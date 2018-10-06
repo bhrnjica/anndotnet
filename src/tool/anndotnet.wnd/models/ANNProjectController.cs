@@ -147,7 +147,7 @@ namespace anndotnet.wnd.Models
                 if (!string.IsNullOrEmpty(dataPath))
                     filePath = Path.Combine(Settings.ProjectFolder, Name, dataPath);
                 else
-                    filePath = Name + "_rawdata.txt";
+                    filePath = Path.Combine(Settings.ProjectFolder, Name,Name + "_rawdata.txt"); 
 
                 //load rawdataset
                 var parser = Project.CreateDataParser(dicData["parser"]);
@@ -195,7 +195,7 @@ namespace anndotnet.wnd.Models
                 return result;
             }
             else
-                throw new Exception($"File {filePath} is not found.");
+                return (null,null);
         }
 
         void loadProjectProgress(int current , int total)

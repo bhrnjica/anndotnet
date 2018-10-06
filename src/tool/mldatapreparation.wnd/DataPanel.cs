@@ -137,10 +137,10 @@ namespace MLDataPreparation.Dll
         /// </summary>
         /// <param name="header"></param>
         /// <param name="data"></param>
-        public void FillDataGrid(string[] header, List<List<string>> data)
+        public void FillDataGrid(string[] header, string[][] data)
         {
             m_strHeader = header;
-            m_strData = data.Select(x=>x.ToArray()).ToArray();
+            m_strData = data;
 
             //clear the list first
             listView1.Clear();
@@ -148,8 +148,8 @@ namespace MLDataPreparation.Dll
             listView1.HideSelection = false;
             if (data == null)
                 return;
-            int numRow = data.Count;
-            int numCol = data[0].Count;
+            int numRow = data.Length;
+            int numCol = data[0].Length;
 
             //inspect the data
             var cols = parseData(data, header);
@@ -159,7 +159,7 @@ namespace MLDataPreparation.Dll
             //setDefaultColumns(header, numCol);
 
             //insert data
-            setData(data);
+            setData(data.Take(10).Select(x=>x.ToList()).ToList());
 
             //set summary
             setSummary(m_strData, cols);
@@ -282,7 +282,7 @@ namespace MLDataPreparation.Dll
             }
         }
 
-        private List<MetaColumn> parseData(List<List<string>> data, string[] header)
+        private List<MetaColumn> parseData(string[][] data, string[] header)
         {
 
             var cols = new List<MetaColumn>();
@@ -290,7 +290,7 @@ namespace MLDataPreparation.Dll
             //in case no header is provided
             if (header == null)
             {
-                header = Enumerable.Range(1, data[0].Count).Select(x => $"Column{x}").ToArray();
+                header = Enumerable.Range(1, data[0].Length).Select(x => $"Column{x}").ToArray();
                 m_strHeader= header;
             }
 
@@ -305,7 +305,7 @@ namespace MLDataPreparation.Dll
 
                 //determine how many different values column has
                 var classes = columnData[i].Distinct().Count();
-                var count = data.Count;
+                var count = data.Length;
 
                 //type
                 if(classes < 5)
@@ -458,6 +458,8 @@ namespace MLDataPreparation.Dll
         
         private void setData(List<List<string>> data)
         {
+            if (data == null)
+                return;
             int numCol = data[0].Count;
             int numRow = data.Count > 10 ? 10 : data.Count;
             ListViewItem LVI = null;
@@ -487,7 +489,8 @@ namespace MLDataPreparation.Dll
 
         private void setSummary(string[][] data, List<MetaColumn> cols)
         {
-
+            if (data == null)
+                return;
             int numCol = data[0].Length;
             int numRow = data.Length;
             ListViewItem LVI = null;
@@ -634,7 +637,7 @@ namespace MLDataPreparation.Dll
 
         public void SetDataSet(ANNDataSet dataSet)
         {
-            if(dataSet==null || dataSet.MetaData==null)
+            if(dataSet==null || dataSet.Data==null || dataSet.MetaData==null)
             {
                 ResetExperimentalPanel();
                 return;
@@ -698,7 +701,7 @@ namespace MLDataPreparation.Dll
                     return;
                 m_strData = dlg.Data;
                 m_strHeader = dlg.Header;
-                FillDataGrid(dlg.Header, dlg.Data.Select(x=>x.ToList()).ToList());
+                FillDataGrid(dlg.Header, dlg.Data);
             }
         }
 
