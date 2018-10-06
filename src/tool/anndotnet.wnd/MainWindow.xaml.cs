@@ -87,9 +87,12 @@ namespace anndotnet.wnd
         static Cursor Wait = null;
         public static void SetCursor(bool isWait)
         {
-
+            var appContr = Application.Current.MainWindow.DataContext as AppController;
             if (isWait)
             {
+                
+                appContr.StatusMessage = "The application is processing data...";
+                appContr.SetRunnigColor(true);
                 var prev = App.Current.MainWindow.Cursor;
                 if (prev == null)
                     prev = System.Windows.Input.Cursors.Arrow;
@@ -108,39 +111,52 @@ namespace anndotnet.wnd
 
                 App.Current.MainWindow.Cursor = MainDefault;
                 Wait = prev;
+                appContr.SetRunnigColor(false);
             }
 
         }
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (isModelExist())
+            try
             {
-                var appCont = this.DataContext as AppController;
+                if (isModelExist())
+                {
+                    var appCont = this.DataContext as AppController;
 
-                if (appCont.IsRunChecked)
-                {
-                    if (MessageBox.Show("Training process is running. Closing Application you will lost recent changes.", "ANNdotNET", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                    if (appCont.IsRunChecked)
                     {
-                        e.Cancel = true;
-                        return;
+                        if (MessageBox.Show("Training process is running. Closing Application you will lost recent changes.", "ANNdotNET", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
                     }
-                }
-                else if (appCont.AppModel.Project.Count < 2)
-                {
-                    e.Cancel = false;
-                }
-                else
-                {
-                    if (MessageBox.Show("Are you sure you want to Exit ANNdotNET?", "ANNdotNET", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                    else if (appCont.AppModel.Project.Count < 2)
                     {
-                        e.Cancel = true;
+                        e.Cancel = false;
                     }
                     else
-                        appCont.onClose(null, null);
+                    {
+                        if (MessageBox.Show("Are you sure you want to Exit ANNdotNET?", "ANNdotNET", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                        {
+                            e.Cancel = true;
+                        }
+                        else
+                        {
+                            appCont.onClose(null, null);
+                        }
+
+
+                    }
 
                 }
-
             }
+            catch (Exception ex)
+            {
+                SetCursor(false);
+                ReportException(ex);
+                //throw;
+            }            
         }
 
         /// <summary>

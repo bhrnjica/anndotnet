@@ -54,11 +54,11 @@ namespace DataProcessing.Core
         public Experiment(ANNDataSet dataset)
         {
             //copy data
-            m_strData = new string[dataset.Data.Length][];
-            for (int i=0;i<dataset.Data.Length; i++)
+            m_strData = new string[dataset.Data.Count][];
+            for (int i=0;i<dataset.Data.Count; i++)
             {
-                m_strData[i]= new string[dataset.Data[i].Length];
-                for (int j = 0; j < dataset.Data[i].Length; j++)
+                m_strData[i]= new string[dataset.Data[i].Count];
+                for (int j = 0; j < dataset.Data[i].Count; j++)
                 {
                     m_strData[i][j] = dataset.Data[i][j];
                 }
@@ -71,7 +71,7 @@ namespace DataProcessing.Core
         public ANNDataSet GetDataSet()
         {
             var ds = new ANNDataSet();
-            ds.Data = m_strData;
+            ds.Data = m_strData.Select(x=>x.ToList()).ToList();
             ds.MetaData = GetMetadata();
             ds.TestRows = (m_testData == null || m_testData.Count == 0) ? 0 : m_testData[0].RowCount;
             return ds;

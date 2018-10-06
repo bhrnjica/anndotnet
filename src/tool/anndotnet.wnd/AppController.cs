@@ -14,6 +14,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
@@ -76,18 +77,7 @@ namespace anndotnet.wnd
             }
         }
 
-        /// <summary>
-        /// indicator shows if the application is in training process
-        /// </summary>
-        public bool IsTrainRunning
-        {
-            get
-            {
-                return !IsRunChecked;
-            }
-           
-        }
-
+        
         /// <summary>
         /// Main application model
         /// </summary>
@@ -170,7 +160,7 @@ namespace anndotnet.wnd
         /// and folder where other files will be created. No other  file location should exists. 
         /// </summary>
         /// <returns>currently created experiment</returns>
-        public ANNProjectController NewProject()
+        public async Task<ANNProjectController> NewProject()
         {
             try
             {
@@ -179,7 +169,7 @@ namespace anndotnet.wnd
                     return null;
                 var prj = new ANNProjectController(ActiveModelChanged);
                 Project.NewProjectFile(Path.GetFileNameWithoutExtension(filePath), filePath);
-                prj.Initproject(filePath);
+                await prj.Initproject(filePath);
                 return prj;
             }
             catch (Exception)
@@ -189,20 +179,30 @@ namespace anndotnet.wnd
             }
 
         }
-        public void OpenProject(string filePath)
+        public async void OpenProject(string filePath)
         {
             try
             {
+                //restore cursor 
+                MainWindow.SetCursor(true);
+
                 if (AppModel.Project.Count > 1)
                     throw new Exception("Close previous project, before open a new one.");
+                //
                 var existing = new ANNProjectController(ActiveModelChanged);
-                existing.Initproject(filePath);
+                await existing.Initproject(filePath);
+
+                //add project to appModel
                 m_appModel.Project.Add(existing);
                 existing.IsSelected = true;
                 existing.IsExpanded = true;
+                //restore cursor 
+                MainWindow.SetCursor(false);
             }
             catch (Exception ex)
             {
+                //restore cursor 
+                MainWindow.SetCursor(false);
                 ReportException(ex);
                 //throw;
             }
@@ -254,9 +254,12 @@ namespace anndotnet.wnd
                 Application.Current.Resources["RibbonThemeColorBrush"] = new SolidColorBrush(Colors.Green);
                 Application.Current.Resources["ANNdotNET.HighlightColor"] = Colors.Green;
                 Application.Current.Resources["ANNdotNET.InactiveForeground"] = Colors.Green;
-
-                AppStatus = "Running...";
-                StatusMessage = "ANNdotNET training process has been started! ";
+                if(IsRunChecked)
+                {
+                    AppStatus = "Running...";
+                    StatusMessage = "ANNdotNET training process has been started! ";
+                }
+               
             }
 
             else
@@ -266,6 +269,7 @@ namespace anndotnet.wnd
                 Application.Current.Resources["ANNdotNET.HighlightColor"] = Colors.BlueViolet;
                 Application.Current.Resources["ANNdotNET.InactiveForeground"] = Colors.Blue;
 
+               
                 AppStatus = "Ready";
                 StatusMessage = "No application message.";
             }
@@ -358,6 +362,34 @@ namespace anndotnet.wnd
 
                 ));
 
+
+            }
+            catch (Exception ex)
+            {
+                if (ReportException != null)
+                    ReportException(ex);
+            }
+        }
+        public void OpenProjectProgressAction(int currentValue, int totalValue)
+        {
+            try
+            {
+                if (!(ActiveViewModel is MLConfigController))
+                    return;
+
+                bool isCompleted = currentValue == totalValue;
+                if (isCompleted)
+                {
+                    //
+                    SetRunnigColor(false);
+                    StatusMessage = $"Open annProject completed!";
+                }
+                else
+                {
+                    //
+                    SetRunnigColor(true);
+                    StatusMessage = $"Open annProject {currentValue} of {totalValue}. Please wait....";
+                }
 
             }
             catch (Exception ex)
@@ -721,7 +753,7 @@ namespace anndotnet.wnd
             e.CanExecute = ActiveViewModel is ANNProjectController;
         }
 
-        public void onClose(object sender, ExecutedRoutedEventArgs e)
+        public async void onClose(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
@@ -729,9 +761,9 @@ namespace anndotnet.wnd
                 if (ActiveViewModel is ANNProjectController)
                 {
                     var prj = (ANNProjectController)ActiveViewModel;
-             
+
                     //save data
-                    prj.Save();
+                    await prj.Save();
                     //then close 
                     AppModel.Project.Remove(prj);
                     prj = null;
@@ -885,7 +917,7 @@ namespace anndotnet.wnd
             onCanExecSave(sender, e);
         }
 
-        private void onSaveAs(object sender, ExecutedRoutedEventArgs e)
+        private async void onSaveAs(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
@@ -901,7 +933,7 @@ namespace anndotnet.wnd
                 p.Settings.ProjectFolder = fi.Directory.FullName;
                 p.Settings.ProjectFile = fi.Name;
                 Project.NewProjectFile(Path.GetFileNameWithoutExtension(p.Settings.ProjectFile),filePath);
-                p.Save();
+                await p.Save();
 
             }
             catch (Exception ex)
@@ -916,7 +948,7 @@ namespace anndotnet.wnd
             e.CanExecute = !(ActiveViewModel is StartModel);
         }
 
-        private void onSave(object sender, ExecutedRoutedEventArgs e)
+        private async void onSave(object sender, ExecutedRoutedEventArgs e)
         {
 
             try
@@ -925,7 +957,7 @@ namespace anndotnet.wnd
                 if(ActiveViewModel is ANNProjectController)
                 {
                     var p = ActiveViewModel as ANNProjectController;
-                    p.Save();
+                    await p.Save();
                 }
                 else if (ActiveViewModel is MLConfigController)
                 {
@@ -978,14 +1010,14 @@ namespace anndotnet.wnd
             e.CanExecute = true;
         }
 
-        private void onNew(object sender, ExecutedRoutedEventArgs e)
+        private async void onNew(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
                 if (AppModel.Project.Count > 1)
                     throw new Exception("Existing project must be closed!");
 
-                var prj = NewProject();
+                var prj = await NewProject();
                 if (prj == null)
                     return;
                 AppModel.Project.Add(prj);

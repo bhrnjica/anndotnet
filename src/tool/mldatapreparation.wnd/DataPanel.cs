@@ -137,10 +137,10 @@ namespace MLDataPreparation.Dll
         /// </summary>
         /// <param name="header"></param>
         /// <param name="data"></param>
-        public void FillDataGrid(string[] header, string[][] data)
+        public void FillDataGrid(string[] header, List<List<string>> data)
         {
             m_strHeader = header;
-            m_strData = data;
+            m_strData = data.Select(x=>x.ToArray()).ToArray();
 
             //clear the list first
             listView1.Clear();
@@ -148,8 +148,8 @@ namespace MLDataPreparation.Dll
             listView1.HideSelection = false;
             if (data == null)
                 return;
-            int numRow = data.Length;
-            int numCol = data[0].Length;
+            int numRow = data.Count;
+            int numCol = data[0].Count;
 
             //inspect the data
             var cols = parseData(data, header);
@@ -282,14 +282,15 @@ namespace MLDataPreparation.Dll
             }
         }
 
-        private List<MetaColumn> parseData(string[][] data, string[] header)
+        private List<MetaColumn> parseData(List<List<string>> data, string[] header)
         {
+
             var cols = new List<MetaColumn>();
             var columnData = data.toColumnVector<string>();
-            //in case no hedader is provided
+            //in case no header is provided
             if (header == null)
             {
-                header = Enumerable.Range(1, data[0].Length).Select(x => $"Column{x}").ToArray();
+                header = Enumerable.Range(1, data[0].Count).Select(x => $"Column{x}").ToArray();
                 m_strHeader= header;
             }
 
@@ -302,9 +303,9 @@ namespace MLDataPreparation.Dll
                
                 mc.Name = header[i];
 
-                //determine how meny diferent values volumn has
+                //determine how many different values column has
                 var classes = columnData[i].Distinct().Count();
-                var count = data.Length;
+                var count = data.Count;
 
                 //type
                 if(classes < 5)
@@ -455,10 +456,10 @@ namespace MLDataPreparation.Dll
         }
         
         
-        private void setData(string[][] data)
+        private void setData(List<List<string>> data)
         {
-            int numCol = data[0].Length;
-            int numRow = data.Length>10?10: data.Length;
+            int numCol = data[0].Count;
+            int numRow = data.Count > 10 ? 10 : data.Count;
             ListViewItem LVI = null;
             //insert data
             for (int j = 0; j < numRow; j++)
@@ -480,7 +481,7 @@ namespace MLDataPreparation.Dll
                 }
 
             }
-            m_strData = data;
+            m_strData = data.Select(x=>x.ToArray()).ToArray();
             return;
         }
 
@@ -593,12 +594,13 @@ namespace MLDataPreparation.Dll
         /// </summary>
         /// <param name="omitIgnored"></param>
         /// <returns></returns>
-        private string[][] ParseData(MetaColumn[] metaCols)
+        private List<List<string>> ParseData(MetaColumn[] metaCols)
         {
             if (metaCols == null)
                 return null;
-
-            string[][] data = new string[this.m_strData.Length][];
+            var data = new List<List<string>>();
+            //string[][] data = new string[this.m_strData.Length][];
+            
             for (int k = 0; k < this.m_strData.Length; k++)
             {
                 var i = k;
@@ -606,11 +608,12 @@ namespace MLDataPreparation.Dll
 
                 //calculate number of columns
                 int col = row.Length;
-                data[k] = new string[col];
+                var rowData = new List<string>();
                 for (int j = 0; j < metaCols.Length; j++)
                 {
-                    data[k][j] = row[metaCols[j].Index];
+                    rowData.Add(row[metaCols[j].Index]);
                 }
+                data.Add(rowData);
             }
 
 
@@ -695,7 +698,7 @@ namespace MLDataPreparation.Dll
                     return;
                 m_strData = dlg.Data;
                 m_strHeader = dlg.Header;
-                FillDataGrid(dlg.Header, dlg.Data);
+                FillDataGrid(dlg.Header, dlg.Data.Select(x=>x.ToList()).ToList());
             }
         }
 

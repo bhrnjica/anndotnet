@@ -62,5 +62,26 @@ namespace DataProcessing.Core
             }
             return colVecData.ToArray();
         }
+        /// <summary>
+        /// Row based dataset convert into column based dataset
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static T[][] toColumnVector<T>(this List<List<T>> input)
+        {
+            var colVecData = new List<T[]>();
+            for (int j = 0; j < input[0].Count; j++)
+            {
+                var col = new T[input.Count];
+
+                for (int i = 0; i < input.Count; i++)
+                {
+                    col[i] = input[i][j];
+
+                }
+                colVecData.Add(col);
+            }
+            return colVecData.ToArray();
+        }
     }
 }

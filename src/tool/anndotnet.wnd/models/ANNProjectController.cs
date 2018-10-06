@@ -20,10 +20,12 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms.Integration;
+using System.Windows.Threading;
 
 namespace anndotnet.wnd.Models
 {
@@ -112,14 +114,15 @@ namespace anndotnet.wnd.Models
         public new string IconUri { get => "Images/experiment.png"; }
 
         //initialize project controllers with project information
-        internal void Initproject(string projectPath)
+        internal async Task<bool> Initproject(string projectPath)
         {
             try
             {
+
                 var fi = new FileInfo(projectPath);
                 if (!fi.Exists)
                     throw new Exception("Project File not found!");
-                
+
                 //load project information from file
                 var dicData = Project.LoadProjectData(projectPath);
 
@@ -129,46 +132,38 @@ namespace anndotnet.wnd.Models
                 Settings.ProjectFile = fi.Name;
 
                 //
-                Name = Project.GetParameterValue(dicData["project"],"Name");
+                Name = Project.GetParameterValue(dicData["project"], "Name");
 
                 //check which type the project is
                 var strType = Project.GetParameterValue(dicData["project"], "Type");
                 if (string.IsNullOrEmpty(strType))
                     Type = ProjectType.Default;
                 else
-                {
                     Type = (ProjectType)Enum.Parse(typeof(ProjectType), strType, true);
-                }
 
                 var prData = dicData["data"].Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 var dataPath = Project.GetParameterValue(prData, "RawData");
                 var filePath = "";
                 if (!string.IsNullOrEmpty(dataPath))
-                    filePath = Path.Combine(Settings.ProjectFolder,Name ,dataPath);
+                    filePath = Path.Combine(Settings.ProjectFolder, Name, dataPath);
                 else
                     filePath = Name + "_rawdata.txt";
 
+                //load rawdataset
+                var parser = Project.CreateDataParser(dicData["parser"]);
+                var result = await initRawData(filePath, parser);
+
                 //create dataset
                 var ds = new ANNDataSet();
-                
-                ds.InitMetaColumn(prData.Where(x => x.StartsWith("Column")).OrderBy(x => x));
-                var parser = Project.CreateDataParser(dicData["parser"]);
-
-                //check if raw data file exists
-                fi = new FileInfo(filePath);
-                if (fi.Exists)
-                {
-                    //column separator is always ;
-                    var result = ANNDataSet.prepareData(File.ReadAllLines(filePath), parser.ColumnSeparator, parser.FirstRowHeader);
-                    ds.Data = result.data;
-                    ds.IsPrecentige = Settings.PrecentigeSplit;
-                    ds.TestRows = Settings.ValidationSetCount;
-                    DataSet = ds;
-                }
+                ds.InitMetaColumn(prData.Where(x => x.StartsWith("Column")).OrderBy(x => x));             
+                ds.Data = result.data;
+                ds.IsPrecentige = Settings.PrecentigeSplit;
+                ds.TestRows = Settings.ValidationSetCount;
+                DataSet = ds;
 
                 //load existing mlconfigs
                 var models = Project.GetMLConfigs(dicData["project"]);
-                foreach(var model in models)
+                foreach (var model in models)
                 {
                     var m = new MLConfigController(activeModelChanged);
                     m.Settings = Settings;
@@ -176,7 +171,7 @@ namespace anndotnet.wnd.Models
                     m.Name = model;
                     Models.Add(m);
                 }
-
+                return true;
             }
             catch (Exception)
             {
@@ -186,63 +181,110 @@ namespace anndotnet.wnd.Models
             
         }
 
-       /// The method only saves the project file, no related mlconfigs are saved.
-       /// </summary>
-        internal void Save( )
+        private async Task<(List<string> header, List<List<string>> data)> initRawData(string filePath, DataParser parser)
         {
-            //access Data Pane in order to update data
-            DataPanel expCtrl = getDataPanel();
-            if (expCtrl == null)
-                return;
-            RichTextBox rtfCtrl = getRichCtrl();
+            
 
-            //get rich text to save content
-            if (rtfCtrl != null)
+            //check if raw data file exists
+            var fi = new FileInfo(filePath);
+            if (fi.Exists)
             {
-                saveRich(rtfCtrl);
-                
-            }
-               
-
-            //
-            DataSet = expCtrl.GetDataSet();
-            setCategoryEncoding(DataSet);
-            if (Settings == null)
-            {
-                var prjPath = promptToSaveFile();
-                Settings = new ProjectSettings();
                 //
-                var fi = new FileInfo(prjPath);
-                Settings.ProjectFolder = fi.Directory.FullName + "\\" + Name;
-                Settings.ProjectFile = fi.Name;
+                var result = await Task.Run<(List<string> header, List<List<string>> data)>(() => ANNDataSet.prepareDataFromFile(filePath, parser.ColumnSeparator, parser.FirstRowHeader, loadProjectProgress));
+
+                return result;
             }
-            //update setting info
-            Settings.PrecentigeSplit = DataSet.IsPrecentige;
-            //Settings.RandomizeData = DataSet.RandomizeData;
-            Settings.ValidationSetCount = DataSet.TestRows;
-
-            //load project information from file
-            var prjPath1 = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
-            var dicData = Project.LoadProjectData(prjPath1);
-
-
-            //save raw data file in to project folder
-            var rawDataName = Project.GetParameterValue(dicData["data"], "RawData");
-            if (string.IsNullOrEmpty(rawDataName))
-                rawDataName = $"{Name}_rawdata.txt";//naming convention for the raw dataset
-
-            //create file of raw data
-            var dataFile = Path.Combine(Settings.ProjectFolder, Name, rawDataName);
-            writeRawData(dataFile, DataSet.Data);
-
-            //update project file with information about raw dataset
-            generateProjectFile(prjPath1, rawDataName);           
+            else
+                throw new Exception($"File {filePath} is not found.");
         }
 
-        internal void CreateMLConfig(MLConfigController mlconfig)
+        void loadProjectProgress(int current , int total)
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                   DispatcherPriority.Background,
+               new Action(
+
+                   () =>
+                   {
+                       var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
+                       appCnt.OpenProjectProgressAction(current, total);
+                   }
+
+               ));
+           
+        }
+
+       /// The method only saves the project file, no related mlconfigs are saved.
+       /// </summary>
+        internal async Task<bool> Save( )
+        {
+            try
+            {
+                
+                MainWindow.SetCursor(true);
+                //access Data Pane in order to update data
+                DataPanel expCtrl = getDataPanel();
+                if (expCtrl == null)
+                    return false;
+                RichTextBox rtfCtrl = getRichCtrl();
+
+                //get rich text to save content
+                if (rtfCtrl != null)
+                {
+                    saveRich(rtfCtrl);
+
+                }
+
+
+                //
+                DataSet = expCtrl.GetDataSet();
+                setCategoryEncoding(DataSet);
+                if (Settings == null)
+                {
+                    var prjPath = promptToSaveFile();
+                    Settings = new ProjectSettings();
+                    //
+                    var fi = new FileInfo(prjPath);
+                    Settings.ProjectFolder = fi.Directory.FullName + "\\" + Name;
+                    Settings.ProjectFile = fi.Name;
+                }
+                //update setting info
+                Settings.PrecentigeSplit = DataSet.IsPrecentige;
+                //Settings.RandomizeData = DataSet.RandomizeData;
+                Settings.ValidationSetCount = DataSet.TestRows;
+
+                //load project information from file
+                var prjPath1 = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
+                var dicData = Project.LoadProjectData(prjPath1);
+
+
+                //save raw data file in to project folder
+                var rawDataName = Project.GetParameterValue(dicData["data"], "RawData");
+                if (string.IsNullOrEmpty(rawDataName))
+                    rawDataName = $"{Name}_rawdata.txt";//naming convention for the raw dataset
+
+                //create file of raw data
+                var dataFile = Path.Combine(Settings.ProjectFolder, Name, rawDataName);
+                await Task<bool>.Run(() => writeRawData(dataFile, DataSet.Data)); 
+
+                //update project file with information about raw dataset
+                generateProjectFile(prjPath1, rawDataName);
+                MainWindow.SetCursor(false);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                MainWindow.SetCursor(false);
+                throw;
+            }
+            
+        }
+
+        internal async Task<bool> CreateMLConfig(MLConfigController mlconfig)
         {
             //save project with new created mlconfig
-            Save();
+            await Save();
 
             //create model name 
             string modelName = $"MLConfig{Models.Count}";
@@ -318,7 +360,7 @@ namespace anndotnet.wnd.Models
             Models.Add(mlconfig);
 
             //save project with new created mlconfig
-            Save();
+            return await Save();
         }
 
         private RichTextBox getRichCtrl()
@@ -437,12 +479,13 @@ namespace anndotnet.wnd.Models
             //extract the categories from 
         }
 
-        private void writeRawData(string filePath, string[][] data)
+        private bool writeRawData(string filePath, List<List<string>> data)
         {
             if (data == null)
-                return;
+                return false;
             var cnt = data.Select(x=>string.Join(";",x)).ToArray();
             File.WriteAllLines(filePath, cnt);
+            return true;
         }
 
         private string toColumnToString(MetaColumn[] metaData)

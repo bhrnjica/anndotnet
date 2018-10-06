@@ -13,11 +13,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DataProcessing.Core
 {
+    public delegate void DataLoadingProgress(int currentValue, int totalValue);
     public enum DataSetType
     {
         Training,
@@ -190,7 +192,8 @@ namespace DataProcessing.Core
     public class ANNDataSet
     {
         public MetaColumn[] MetaData { get; set; }
-        public string[][] Data { get; set; }
+        //public string[][] Data { get; set; }
+        public List<List<string>> Data { get; set; }
         public int TestRows { get; set; }
         public bool IsPrecentige { get; set; }
         public bool RandomizeData { get; set; }
@@ -225,23 +228,25 @@ namespace DataProcessing.Core
             ds.TestRows = TestRows;
 
             //
-            string[][] data = new string[this.Data.Length][];
-            for (int i = 0; i < this.Data.Length; i++)
+            List<List<string>> data = new List<List<string>>();
+            for (int i = 0; i < this.Data.Count; i++)
             {
-                data[i] = new string[ds.MetaData.Length];
+                //data[i] = new string[ds.MetaData.Length];
+                var rowData = new List<string>();
                 for (int j = 0; j < ds.MetaData.Length; j++)
                 {
-                    data[i][j] = this.Data[i][ds.MetaData[j].Index];
+                    rowData.Add(this.Data[i][ds.MetaData[j].Index]);
                 }
+                data.Add(rowData);
             }
 
             if (randomizeData)
             {
                 var rnd = new Random((int)DateTime.UtcNow.Ticks);
-                var data1 = data.ToList<string[]>();
+                var data1 = data;
                 var res1 = data1.OrderBy(row => rnd.Next());
                 var res2 = res1.OrderBy(row => rnd.Next());
-                data = res2.ToArray();
+                data = res2.ToList();
             }
 
             ds.Data = data;
@@ -351,17 +356,70 @@ namespace DataProcessing.Core
                 }
             }
 
+            var head = removeInvalidCharFromHeader(header.ToList());
+            return (head.ToArray(), data);
+        }
+
+        /// <summary>
+        /// Initialize Projects with string data, with specific formating 
+        /// </summary>
+        /// <param name="strData"></param>
+        /// <param name="columDelimiter"></param>
+        /// <param name="isFirstRowHeader"></param>
+        /// <param name="isFloatingPoint"></param>
+        public static (List<string> header, List<List<string>> data) prepareDataFromFile(string filePath, char[] columDelimiter, bool isFirstRowHeader, DataLoadingProgress progress, bool isFloatingPoint = true)
+        {
+            var data = new List<List<string>>();
+            var header = new List<string>();
+            
+            var dd = File.ReadAllLines(filePath);
+            int totalValue = dd.Length;
+            string fileText = "";
+            for(int i=0; i< dd.Length; i++)
+            {
+                fileText = dd[i];    
+                if (fileText.StartsWith("!"))
+                    continue;
+
+                var row = fileText.Split(columDelimiter);
+                //column enumeration
+                var strRow = new List<string>();
+                for (int j = 0; j < row.Length; j++)
+                {
+                    //value format
+                    var value = "";
+                    if (string.IsNullOrEmpty(row[j]))
+                        value = "n/a";
+                    else
+                        value = row[j];
+
+                    //
+                    if (i==0 && isFirstRowHeader)
+                    {
+                        header.Add(value);
+                    }                           
+                    else
+                        strRow.Add(value);
+                }
+                data.Add(strRow);
+
+                if(progress!=null && (i==0 || i%1000==0))
+                    progress(i, totalValue);
+            }
             header = removeInvalidCharFromHeader(header);
+            if (progress != null)
+                progress(totalValue, totalValue);
+
             return (header, data);
         }
 
-        private static string[] removeInvalidCharFromHeader(string[] header)
+        private static List<string> removeInvalidCharFromHeader(List<string> header)
         {
 
-            if (header == null || header.Length < 1)
+            if (header == null || header.Count < 1)
                 return header;
 
-            for (int i = 0; i < header.Length; i++)
+            for (int i = 0; i < header.Count; i++)
             {
                 var s = header[i];
                 header[i] = Regex.Replace(s, "[^A-Za-z0-9_]", "_");
