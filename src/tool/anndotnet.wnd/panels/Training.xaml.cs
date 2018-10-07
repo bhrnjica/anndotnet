@@ -42,63 +42,81 @@ namespace anndotnet.wnd.Panels
 
         private void prepareGraphPanel1()
         {
-            var zedGraph = this.trainingMinibatchGraph;
+            try
+            {
+                var zedGraph = this.trainingMinibatchGraph;
 
-            var configCont = this.DataContext as MLConfigController;
-            var loss = configCont.LearningParameters.LossFunction.ToString(); 
-            var eval = configCont.LearningParameters.EvaluationFunction.ToString();
+                var configCont = this.DataContext as MLConfigController;
+                var loss = configCont.LearningParameters.LossFunction.ToString();
+                var eval = configCont.LearningParameters.EvaluationFunction.ToString();
 
-            ///chart for training/predicted data
-            zedGraph.GraphPane.Title.Text = "Minibatch training";
-            zedGraph.GraphPane.XAxis.Title.Text = "iterations";
-
-         
-            zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.YAxis.Title.Text = loss;
-            //zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
-            setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
+                ///chart for training/predicted data
+                zedGraph.GraphPane.Title.Text = "Minibatch training";
+                zedGraph.GraphPane.XAxis.Title.Text = "iterations";
 
 
-            zedGraph.GraphPane.Y2Axis.Title.Text = eval;
-            setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
-            //zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
+                zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
+                zedGraph.GraphPane.YAxis.Title.Text = loss;
+                //zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+                setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
+
+
+                zedGraph.GraphPane.Y2Axis.Title.Text = eval;
+                setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+                //zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
+
+                zedGraph.GraphPane.Y2Axis.IsVisible = true;
+                zedGraph.GraphPane.Legend.IsVisible = true;
+                zedGraph.GraphPane.Legend.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
+                zedGraph.GraphPane.Title.IsVisible = false;
+            }
+            catch (Exception)
+            {
+                //catch is already chatched 
+                //throw;
+            }
             
-            zedGraph.GraphPane.Y2Axis.IsVisible = true;
-            zedGraph.GraphPane.Legend.IsVisible = true;
-            zedGraph.GraphPane.Legend.Border= new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.Title.IsVisible = false;
 
         }
 
         private void prepareGraphPanel2()
         {
-            var zedGraph = this.trainingDatasetsGraph;
+            try
+            {
+                var zedGraph = this.trainingDatasetsGraph;
 
-            var configCont = this.DataContext as MLConfigController;
-            var loss = configCont.LearningParameters.LossFunction.ToString();
-            var eval = configCont.LearningParameters.EvaluationFunction.ToString();
+                var configCont = this.DataContext as MLConfigController;
+                var loss = configCont.LearningParameters.LossFunction.ToString();
+                var eval = configCont.LearningParameters.EvaluationFunction.ToString();
 
-            ///chart for training/predicted data
-            zedGraph.GraphPane.Title.Text = "Datasets Evaluation";            
-            zedGraph.GraphPane.XAxis.Title.Text = "iterations";
+                ///chart for training/predicted data
+                zedGraph.GraphPane.Title.Text = "Datasets Evaluation";
+                zedGraph.GraphPane.XAxis.Title.Text = "iterations";
 
-            //left axes
-            zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.YAxis.Title.Text = eval;//$"Training dataset ({eval})";
-            setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
-
-
-            //right axes
-            //zedGraph.GraphPane.Y2Axis.Title.FontSpec.Size = 16.0f;//4.0f * (zedGraph.Size.Width / 100);
-            zedGraph.GraphPane.Y2Axis.Title.Text = eval;// $"Validation dataset ({eval})";
-            zedGraph.GraphPane.Y2Axis.IsVisible = true;
-            setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+                //left axes
+                zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
+                zedGraph.GraphPane.YAxis.Title.Text = eval;//$"Training dataset ({eval})";
+                setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
 
 
-            //legend
-            zedGraph.GraphPane.Legend.IsVisible = true;
-            zedGraph.GraphPane.Legend.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-            zedGraph.GraphPane.Title.IsVisible = false;
+                //right axes
+                //zedGraph.GraphPane.Y2Axis.Title.FontSpec.Size = 16.0f;//4.0f * (zedGraph.Size.Width / 100);
+                zedGraph.GraphPane.Y2Axis.Title.Text = eval;// $"Validation dataset ({eval})";
+                zedGraph.GraphPane.Y2Axis.IsVisible = true;
+                setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+
+
+                //legend
+                zedGraph.GraphPane.Legend.IsVisible = true;
+                zedGraph.GraphPane.Legend.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
+                zedGraph.GraphPane.Title.IsVisible = false;
+            }
+            catch (Exception)
+            {
+
+               // throw;
+            }
+            
 
         }
 

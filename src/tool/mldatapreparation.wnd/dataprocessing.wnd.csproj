@@ -77,12 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExportData.cs" />
-    <Compile Include="OptionsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="OptionsPanel.Designer.cs">
-      <DependentUpon>OptionsPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -96,9 +90,6 @@
       <DependentUpon>ImportData.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="OptionsPanel.resx">
-      <DependentUpon>OptionsPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DataPanel.resx">
       <DependentUpon>DataPanel.cs</DependentUpon>
     </EmbeddedResource>

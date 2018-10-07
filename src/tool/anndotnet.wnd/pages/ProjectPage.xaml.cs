@@ -66,6 +66,7 @@ namespace anndotnet.wnd.Pages
                         project.ResetExperimentalPanel();
                         if (prjCont.DataSet != null)
                             project.SetDataSet(prjCont.DataSet);
+
                         //hide raw dataset when the project is no raw data set
                         if (prjCont.Type != ProjectType.Default)
                         {

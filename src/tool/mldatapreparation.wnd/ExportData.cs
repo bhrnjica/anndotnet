@@ -30,7 +30,7 @@ namespace MLDataPreparation.Dll
 
                 //get dataset based on options 
                 var ds = fulldata.GetDataSet(options.randomize);
-                ds.TestRows = options.testRows;
+                ds.RowsToValidation = options.testRows;
                 ds.IsPrecentige = options.precentige;
                 //create experiment based created dataset
                 var exp = new Experiment(ds);
@@ -61,7 +61,7 @@ namespace MLDataPreparation.Dll
 
                 //get dataset based on options 
                 var ds = fulldata.GetDataSet(options.randomize);
-                ds.TestRows = options.testRows;
+                ds.RowsToValidation = options.testRows;
                 ds.IsPrecentige = options.precentige;
                 //create experiment based created dataset
                 var exp = new Experiment(ds);
@@ -93,7 +93,7 @@ namespace MLDataPreparation.Dll
 
                 //get dataset based on options 
                 var ds = fulldata.GetDataSet(options.randomize);
-                ds.TestRows = options.testRows;
+                ds.RowsToValidation = options.testRows;
                 ds.IsPrecentige = options.precentige;
                 //create experiment based created dataset
                 var exp = new Experiment(ds);

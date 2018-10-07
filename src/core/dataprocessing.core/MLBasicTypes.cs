@@ -194,7 +194,8 @@ namespace DataProcessing.Core
         public MetaColumn[] MetaData { get; set; }
         //public string[][] Data { get; set; }
         public List<List<string>> Data { get; set; }
-        public int TestRows { get; set; }
+        public int RowsToValidation { get; set; }
+        public int RowsToTest { get; set; }
         public bool IsPrecentige { get; set; }
         public bool RandomizeData { get; set; }
 
@@ -225,7 +226,8 @@ namespace DataProcessing.Core
             //
             ds.MetaData = ls.ToArray();
             ds.IsPrecentige = IsPrecentige;
-            ds.TestRows = TestRows;
+            ds.RowsToValidation = RowsToValidation;
+            ds.RowsToTest = RowsToTest;
 
             //
             List<List<string>> data = new List<List<string>>();

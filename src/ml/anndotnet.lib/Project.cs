@@ -139,6 +139,9 @@ namespace ANNdotNET.Lib
             //ValidationSetCount
             strLine += " |ValidationSetCount:" + Settings.ValidationSetCount.ToString();
 
+            //TestSetCount
+            strLine += " |TestSetCount:" + Settings.TestSetCount.ToString();
+
             //PrecentigeSplit
             strLine += " |PrecentigeSplit:" + Settings.PrecentigeSplit.ToString();
 
@@ -764,11 +767,12 @@ namespace ANNdotNET.Lib
             {
                 Dictionary<string, string> strMlCOnfig = new Dictionary<string, string>();
 
-                var validPath = settings.ValidationSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath(false) : "";
+                var validPath = settings.ValidationSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Validation) : "";
+                var testPath = settings.TestSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Testing) : "";
                 //
-                var strPaths = $"|Training:{MLFactory.GetDefaultMLConfigDatSetPath(true)} " +
+                var strPaths = $"|Training:{MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Training)} " +
                                $"|Validation:{validPath} " +
-                               $"|Test:{MLFactory.GetDefaultMLConfigDatSetPath(false)} " +
+                               $"|Test:{testPath} " +
                                $"|TempModels:{MLFactory.m_MLTempModelFolder} |Models:{MLFactory.m_MLModelFolder} " +
                                $"|Result:{mlconfigName}_result.csv |Logs:{MLFactory.m_MLLogFolder} ";
 
@@ -807,7 +811,7 @@ namespace ANNdotNET.Lib
         public static Dictionary<string, string> EmptyProject(string projectName)
         {
             var dic = new Dictionary<string, string>();
-            dic.Add("project", $"|Name:{projectName} |ValidationSetCount:0 |PrecentigeSplit:0 |RandomizeData:0 |MLConfigs:  |Info:");
+            dic.Add("project", $"|Name:{projectName} |ValidationSetCount:0 |TestSetCount:0 |PrecentigeSplit:0 |RandomizeData:0 |MLConfigs:  |Info:");
             dic.Add("data", $"|RawData: ");
             dic.Add("parser", $"parser:|RowSeparator:rn | ColumnSeparator:, ; |Header:0 |SkipLines:0");
             return dic;
@@ -982,6 +986,12 @@ namespace ANNdotNET.Lib
                 settings.ValidationSetCount = 0;
             else
                 settings.ValidationSetCount = int.Parse(vsCount);
+            //test set count
+            var tsCount = MLFactory.GetParameterValue(dataValues, "TestSetCount");
+            if (string.IsNullOrEmpty(tsCount))
+                settings.TestSetCount = 0;
+            else
+                settings.TestSetCount = int.Parse(tsCount);
 
             //is percentage used when split data sets
             var isPrecentige = MLFactory.GetParameterValue(dataValues, "PrecentigeSplit");
@@ -1198,13 +1208,20 @@ namespace ANNdotNET.Lib
         /// <param name="mlconfigName"></param>
         /// <param name="isTrain"></param>
         /// <returns></returns>
-        public static string GetDefaultMLDatasetPath(ProjectSettings settings, string mlconfigName, bool isTrain)
+        public static string GetDefaultMLDatasetPath(ProjectSettings settings, string mlconfigName, DataSetType dsType)
         {
-            
-            if (isTrain)
-                return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName, MLFactory.GetDefaultMLConfigDatSetPath(isTrain));
+
+            if (dsType == DataSetType.Training)
+                return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName,
+                    MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Training));
+            else if (dsType == DataSetType.Validation)
+                return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName,
+                    MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Validation));
+            else if (dsType == DataSetType.Testing)
+                return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName,
+                    MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Testing));
             else
-                return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName, MLFactory.GetDefaultMLConfigDatSetPath(isTrain));
+                throw new Exception("Data set is not recognized.");
         }
 
         public static string GetTrainingHistoryPath(string mlconfigPath, string configid)

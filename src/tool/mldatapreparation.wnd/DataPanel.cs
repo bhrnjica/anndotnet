@@ -651,9 +651,10 @@ namespace MLDataPreparation.Dll
             setSummary(m_strData, dataSet.MetaData.ToList());
             
             //set 
-            numCtrlNumForTest.Value = dataSet.TestRows;
+            numCtrlNumForValidation.Value = dataSet.RowsToValidation;
+            numCtrlNumForTesting.Value = dataSet.RowsToTest;
             numberRadio.Checked = !dataSet.IsPrecentige;
-            presentigeRadio.Checked = dataSet.IsPrecentige;
+            percentigeRadio.Checked = dataSet.IsPrecentige;
         }
 
         public ANNDataSet GetDataSet(bool omitIgnored = false)
@@ -664,7 +665,9 @@ namespace MLDataPreparation.Dll
                 //
                 data1.MetaData = ParseHeader(omitIgnored);
 
-                data1.TestRows = (int)numCtrlNumForTest.Value;
+                data1.RowsToValidation = (int)numCtrlNumForValidation.Value;
+                data1.RowsToTest = (int)numCtrlNumForTesting.Value;
+
                 data1.IsPrecentige = !numberRadio.Checked;
 
                 var strData = ParseData(data1.MetaData);
@@ -679,19 +682,7 @@ namespace MLDataPreparation.Dll
             }
         }
 
-        public void ShowOptionPanel()
-        {
-            this.tableLayoutPanel1.RowStyles.Clear();
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-        }
-        public void HideOptionPanel()
-        {
-            this.tableLayoutPanel1.RowStyles.Clear();
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
-        }
-
+        
         public void LoadData()
         {
             ImportData dlg = new ImportData();
@@ -730,6 +721,15 @@ namespace MLDataPreparation.Dll
 
         #endregion
 
+        private void numberRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            numberTestRadion.Checked = numberRadio.Checked;
+        }
+
+        private void percentigeRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            percentigeRadioTest.Checked = percentigeRadio.Checked;
+        }
     }
 
 

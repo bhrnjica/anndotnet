@@ -117,6 +117,9 @@ namespace anndotnet.wnd.Models
 
             //
             var vsc = Project.GetParameterValue(strValue, "ValidationSetCount");
+            var tsc = Project.GetParameterValue(strValue, "TestSetCount");
+            if (string.IsNullOrEmpty(tsc))
+                tsc = "0";
             var ps = Project.GetParameterValue(strValue, "PrecentigeSplit");
             //
             var lstConfigs = Project.GetMLConfigs(strValue);
@@ -130,7 +133,7 @@ namespace anndotnet.wnd.Models
             }
             //update project
             var strMlconfigs = string.Join(";",lstConfigs);
-            var strProject = $"|Name:{projectName} |Type:{projectType}  |ValidationSetCount:{vsc} |PrecentigeSplit:{ps} |MLConfigs:{strMlconfigs} |Info:ProjectInfo.rtf";
+            var strProject = $"|Name:{projectName} |Type:{projectType}  |ValidationSetCount:{vsc}  |TestSetCount:{vsc} |PrecentigeSplit:{ps} |MLConfigs:{strMlconfigs} |Info:ProjectInfo.rtf";
             dicData["project"] = strProject;
             //add keyword to dicvalues
             for (int i = 0; i < dicData.Count(); i++)
@@ -635,13 +638,17 @@ namespace anndotnet.wnd.Models
 
                         if (!double.IsNaN(progress.TrainEval) && !double.IsInfinity(progress.TrainEval))
                             TrainingProgress.TrainEvalValue.Add(new PointPair(progress.EpochCurrent, progress.TrainEval));
+                        else
+                            TrainingProgress.TrainEvalValue.Add(new PointPair(progress.EpochCurrent, double.NaN));
 
                         if (!double.IsNaN(progress.ValidationEval) && !double.IsInfinity(progress.ValidationEval))
                             TrainingProgress.ValidationEvalValue.Add(new PointPair(progress.EpochCurrent, progress.ValidationEval));
+                        else
+                            TrainingProgress.ValidationEvalValue.Add(new PointPair(progress.EpochCurrent, double.NaN));
 
 
                         //update Graphs
-                        if(UpdateTrainingtGraphs!=null)
+                        if (UpdateTrainingtGraphs!=null)
                             UpdateTrainingtGraphs(progress.EpochCurrent, progress.MinibatchAverageLoss, progress.MinibatchAverageEval, progress.TrainEval, progress.ValidationEval);
                         //set status message
                         var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
@@ -782,13 +789,15 @@ namespace anndotnet.wnd.Models
 
                 var resultT = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
                 var resultV = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                var resultTe = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
                 //prepare headers
                 var header = resultT.Header;
 
                 List<List<string>> trainData = prepareToPersist(resultT);
                 List<List<string>> validData = prepareToPersist(resultV);
+                List<List<string>> testData = prepareToPersist(resultTe);
 
-                ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false, resultT.OutputClasses);
+                ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, testData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false, resultT.OutputClasses);
             }
             catch (Exception)
             {

@@ -158,7 +158,8 @@ namespace anndotnet.wnd.Models
                 ds.InitMetaColumn(prData.Where(x => x.StartsWith("Column")).OrderBy(x => x));             
                 ds.Data = result.data;
                 ds.IsPrecentige = Settings.PrecentigeSplit;
-                ds.TestRows = Settings.ValidationSetCount;
+                ds.RowsToValidation = Settings.ValidationSetCount;
+                ds.RowsToTest = Settings.TestSetCount;
                 DataSet = ds;
 
                 //load existing mlconfigs
@@ -251,7 +252,8 @@ namespace anndotnet.wnd.Models
                 //update setting info
                 Settings.PrecentigeSplit = DataSet.IsPrecentige;
                 //Settings.RandomizeData = DataSet.RandomizeData;
-                Settings.ValidationSetCount = DataSet.TestRows;
+                Settings.ValidationSetCount = DataSet.RowsToValidation;
+                Settings.TestSetCount = DataSet.RowsToTest;
 
                 //load project information from file
                 var prjPath1 = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
@@ -292,8 +294,9 @@ namespace anndotnet.wnd.Models
             //Define ml data file paths
             var strModelFolder = Project.GetMLConfigFolder(Settings, modelName);
             var strModelDataFolder = Project.GetMLConfigDataFolder(Settings, modelName);
-            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, true);
-            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, false);
+            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
+            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
+            var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
 
             //check if model folder exists
             if (!Directory.Exists(strModelFolder))
@@ -302,22 +305,31 @@ namespace anndotnet.wnd.Models
             if (!Directory.Exists(strModelDataFolder))
                 Directory.CreateDirectory(strModelDataFolder);
 
+            //ToDo: optimizes code for huge dataset
             //get dataset based on options 
             var ds = DataSet.GetDataSet(DataSet.RandomizeData);
             //we want whole data set later the data will be split
-            ds.TestRows = 0;
+            ds.RowsToValidation = 0;
+            ds.RowsToTest = 0;
             //create experiment based created dataset
             var exp = new Experiment(ds);
             var data = ExportData.PrepareDataSet(exp);
 
             //calculate validation and training rows
-            int validCount = DataSet.IsPrecentige ? (int)(DataSet.TestRows * data.Count / 100.0) : DataSet.TestRows;
+            int validCount = DataSet.IsPrecentige ? (int)(DataSet.RowsToValidation * data.Count / 100.0) : DataSet.RowsToValidation;
             //in case of empty validation data set skip file creation
             if (validCount == 0)
                 strPathValid = "";
 
+            //calculate testing rows
+            int testCount = DataSet.IsPrecentige ? (int)(DataSet.RowsToTest * data.Count / 100.0) : DataSet.RowsToValidation;
+            //in case of empty validation data set skip file creation
+            if (testCount == 0)
+                strPathTest = "";
+
             //create training ml ready dataset file
-            int trainCount = data.Count - validCount;
+            int trainCount = data.Count - validCount - testCount;
+            //check if the training count number valid
             if (trainCount <= 0)
             {
                 throw new Exception("Train dataset is empty. Split data set on correct parts.");
@@ -329,6 +341,12 @@ namespace anndotnet.wnd.Models
             {
                 var d = data.Skip(trainCount).Take(validCount).ToList();
                 File.WriteAllLines(strPathValid, d);
+            }
+            //in case of empty validation data set skip file creation
+            if (testCount > 0)
+            {
+                var d = data.Skip(trainCount + validCount).Take(testCount).ToList();
+                File.WriteAllLines(strPathTest, d);
             }
 
             //model name and settings 
@@ -452,7 +470,7 @@ namespace anndotnet.wnd.Models
             //var rd = Settings.RandomizeData ? 1 : 0;
             var dataStr = $"data:|RawData:{rawDataName} " + toColumnToString(DataSet.MetaData);
             var models = string.Join(";", Models.Select(x => x.Name));
-            var strProject = $"project:|Name:{Name} |Type:{Type}  |ValidationSetCount:{Settings.ValidationSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:ProjectInfo.rtf";
+            var strProject = $"project:|Name:{Name} |Type:{Type}  |ValidationSetCount:{Settings.ValidationSetCount}  |TestSetCount:{Settings.TestSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:ProjectInfo.rtf";
             var strParser = "parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0";
             
             //construct diction 

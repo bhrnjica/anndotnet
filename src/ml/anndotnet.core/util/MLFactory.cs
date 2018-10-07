@@ -43,6 +43,7 @@ namespace ANNdotNET.Core
         public static readonly string m_MLConfigSufix = "_mlconfig";
         public static readonly string m_SufixTrainingDataSet = "_train";
         public static readonly string m_SufixValidationDataSet = "_valid";
+        public static readonly string m_SufixTestDataSet = "_test";
         List<Variable> m_Inputs;
         List<Variable> m_Outputs;
         List<StreamConfiguration> m_StreamConfig;
@@ -921,17 +922,23 @@ namespace ANNdotNET.Core
         }
 
         /// <summary>
-        /// Returns default ml dataset path 
+        /// Returns default ml dataset path based on the dataset type
         /// </summary>
-        /// <param name="isTraining"></param>
+        /// <param name="datasettype">0-training, 1-validation and 2-testing dataset</param>
         /// <returns></returns>
-        public static string GetDefaultMLConfigDatSetPath(bool isTraining)
+        public static string GetDefaultMLConfigDatSetPath(int datasettype)
         {
-            if (isTraining)
+            if (datasettype == 0)
                 return $"{MLFactory.m_MLDataFolder}\\{MLFactory.m_MLDataSetName}{MLFactory.m_SufixTrainingDataSet}";
-            else
+            else if (datasettype == 1)
                 return $"{MLFactory.m_MLDataFolder}\\{MLFactory.m_MLDataSetName}{MLFactory.m_SufixValidationDataSet}";
+            else if (datasettype == 2)
+                return $"{MLFactory.m_MLDataFolder}\\{MLFactory.m_MLDataSetName}{MLFactory.m_SufixTestDataSet}";
+            else
+                throw new Exception("Unknown Dataset type!");
         }
+
+        
 
         /// <summary>
         /// Deletes all files and folders within the model

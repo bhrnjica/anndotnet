@@ -34,6 +34,11 @@ namespace ANNdotNET.Lib
         public int ValidationSetCount { get; set; }
 
         /// <summary>
+        /// Amount of raw data set to buld test dataset
+        /// </summary>
+        public int TestSetCount { get; set; }
+
+        /// <summary>
         /// Validation dataset can be defined as percentage of all instances 
         /// of raw dataset or number of instances for validation 
         /// </summary>

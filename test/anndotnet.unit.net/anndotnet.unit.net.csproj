@@ -173,10 +173,6 @@
       <Project>{75389c15-7c64-48fe-af29-99959d6f62a6}</Project>
       <Name>anndotnet.lib.net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\tool\anndotnet.exceladdIn\anndotnet.exceladdIn.csproj">
-      <Project>{f1ee07a0-be4e-4de1-b2bd-f1a658d1fd82}</Project>
-      <Name>anndotnet.exceladdIn</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\tool\anndotnet.wnd\anndotnet.wnd.csproj">
       <Project>{e5e0822a-df60-4e1b-b744-344f9675fafa}</Project>
       <Name>anndotnet.wnd</Name>

@@ -77,7 +77,18 @@ namespace anndotnet.wnd
             }
         }
 
-        
+        /// <summary>
+        /// indicator shows if the application is in training process
+        /// </summary>
+        public bool IsTrainRunning
+        {
+            get
+            {
+                return !IsRunChecked;
+            }
+
+        }
+
         /// <summary>
         /// Main application model
         /// </summary>
@@ -841,7 +852,7 @@ namespace anndotnet.wnd
         private void onCanExecStop(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true;
-            e.CanExecute = (ActiveViewModel is MLConfigController && IsRunChecked);
+            e.CanExecute = true;// (ActiveViewModel is MLConfigController && IsRunChecked);
         }
 
         private void onStop(object sender, ExecutedRoutedEventArgs e)

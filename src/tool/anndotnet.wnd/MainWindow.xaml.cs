@@ -227,32 +227,41 @@ namespace anndotnet.wnd
         string oldText;
         private void editableTextBoxHeader_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            try
             {
-                var tb = sender as System.Windows.Controls.TextBox;
-                var exp = tb.DataContext as Models.ANNProjectController;
-                var mod = tb.DataContext as Models.MLConfigController;
-                if (exp != null)
+                if (e.Key == Key.Enter)
                 {
-                    exp.Name = tb.Text;
-                    exp.IsEditing = false;
-                }
-                else if (mod != null)
-                {
-                    mod.Name = tb.Text;
-                    mod.IsEditing = false;
-                }
+                    var tb = sender as System.Windows.Controls.TextBox;
+                    var exp = tb.DataContext as Models.ANNProjectController;
+                    var mod = tb.DataContext as Models.MLConfigController;
+                    if (exp != null)
+                    {
+                        exp.Name = tb.Text;
+                        exp.IsEditing = false;
+                    }
+                    else if (mod != null)
+                    {
+                        mod.Name = tb.Text;
+                        mod.IsEditing = false;
+                    }
 
 
+                }
+                if (e.Key == Key.Escape)
+                {
+                    var tb = sender as System.Windows.Controls.TextBox;
+                    var dx = tb.DataContext as Models.BaseModel;
+                    tb.Text = oldText;
+
+                    dx.IsEditing = false;
+                }
             }
-            if (e.Key == Key.Escape)
+            catch (Exception ex)
             {
-                var tb = sender as System.Windows.Controls.TextBox;
-                var dx = tb.DataContext as Models.BaseModel;
-                tb.Text = oldText;
-                 
-                dx.IsEditing = false;
+
+                ReportException(ex);
             }
+            
         }
 
         private void treeCtrl_KeyDown(object sender, KeyEventArgs e)

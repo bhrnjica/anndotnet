@@ -65,7 +65,7 @@ namespace DataProcessing.Core
 
             }
             //
-            Init(dataset.MetaData.ToList(), dataset.TestRows, dataset.IsPrecentige);
+            Init(dataset.MetaData.ToList(), dataset.RowsToValidation, dataset.IsPrecentige);
         }
 
         public ANNDataSet GetDataSet()
@@ -73,7 +73,7 @@ namespace DataProcessing.Core
             var ds = new ANNDataSet();
             ds.Data = m_strData.Select(x=>x.ToList()).ToList();
             ds.MetaData = GetMetadata();
-            ds.TestRows = (m_testData == null || m_testData.Count == 0) ? 0 : m_testData[0].RowCount;
+            ds.RowsToValidation = (m_testData == null || m_testData.Count == 0) ? 0 : m_testData[0].RowCount;
             return ds;
         }
 
