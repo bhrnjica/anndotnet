@@ -159,7 +159,7 @@ namespace MLDataPreparation.Dll
             //setDefaultColumns(header, numCol);
 
             //insert data
-            setData(data.Take(10).Select(x=>x.ToList()).ToList());
+            setData(data.Select(x=>x.ToList()).ToList());
 
             //set summary
             setSummary(m_strData, cols);

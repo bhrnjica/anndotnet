@@ -355,6 +355,8 @@ namespace DataProcessing.Core
 
                 }
             }
+            if (header == null)
+                return (null, data);
 
             var head = removeInvalidCharFromHeader(header.ToList());
             return (head.ToArray(), data);

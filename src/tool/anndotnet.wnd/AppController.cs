@@ -474,7 +474,7 @@ namespace anndotnet.wnd
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
         }
 
-        private void onCreateModel(object sender, ExecutedRoutedEventArgs e)
+        private async void onCreateModel(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
@@ -482,7 +482,7 @@ namespace anndotnet.wnd
                 if (prj != null)
                 {
                     var m = new MLConfigController(ActiveModelChanged);
-                    prj.CreateMLConfig(m);
+                    await prj.CreateMLConfig(m);
                 }
 
                 return;
@@ -841,7 +841,7 @@ namespace anndotnet.wnd
         private void onCanExecStop(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true;
-            e.CanExecute = true;
+            e.CanExecute = (ActiveViewModel is MLConfigController && IsRunChecked);
         }
 
         private void onStop(object sender, ExecutedRoutedEventArgs e)
