@@ -69,11 +69,22 @@ namespace ANNdotNET.Core
                         var d = mdDataEx.Where(x => x.Key.Name.Equals(vv.Name)).FirstOrDefault();
                         //
                         var fv = MLValue.GetValues(d.Key, d.Value);
-                        var value = fv.Select(l=> new List <float>() { l.IndexOf(l.Max()) }).ToList();
-                        if (featDic.ContainsKey(d.Key.Name))
-                            featDic[d.Key.Name].AddRange(value);
+                        if (vv.Shape.Dimensions.Last() == 1)
+                        {
+                            var value = fv.Select(l => new List<float>() { l.First() }).ToList();
+                            if (featDic.ContainsKey(d.Key.Name))
+                                featDic[d.Key.Name].AddRange(value);
+                            else
+                                featDic.Add(d.Key.Name, value);
+                        }
                         else
-                            featDic.Add(d.Key.Name, value);
+                        {
+                            var value = fv.Select(l => new List<float>() { l.IndexOf(l.Max()) }).ToList();
+                            if (featDic.ContainsKey(d.Key.Name))
+                                featDic[d.Key.Name].AddRange(value);
+                            else
+                                featDic.Add(d.Key.Name, value);
+                        }
                     }
 
                     // check if sweep end reached
