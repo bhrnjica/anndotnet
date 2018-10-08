@@ -578,10 +578,10 @@ namespace anndotnet.wnd.Models
                         {
                             var row = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                             int it = int.Parse(row[0]);
-                            float lossMB = (float)double.Parse(row[1]);
-                            float evalMB = (float)double.Parse(row[2]);
-                            float trainEval = (float)double.Parse(row[3]);
-                            float valiEval = (float)double.Parse(row[4]);
+                            float lossMB = (float)double.Parse(row[1], CultureInfo.InvariantCulture);
+                            float evalMB = (float)double.Parse(row[2], CultureInfo.InvariantCulture);
+                            float trainEval = (float)double.Parse(row[3], CultureInfo.InvariantCulture);
+                            float valiEval = (float)double.Parse(row[4], CultureInfo.InvariantCulture);
                             trProg.MBLossValue.Add(new PointPair(it, lossMB));
                             trProg.MBEvaluationValue.Add(new PointPair(it, evalMB));
                             trProg.TrainEvalValue.Add(new PointPair(it, trainEval));
@@ -834,7 +834,7 @@ namespace anndotnet.wnd.Models
 
                 //prepare for saving
                 for (int i=0; i< result.Actual.Count; i++)
-                    strLine.Add($"{result.Actual[i]};{result.Predicted[i]}");
+                    strLine.Add($"{result.Actual[i].ToString(CultureInfo.InvariantCulture)};{result.Predicted[i].ToString(CultureInfo.InvariantCulture)}");
 
                 //store content to file
                 File.WriteAllLines(filepath, strLine.ToArray());
@@ -1000,7 +1000,7 @@ namespace anndotnet.wnd.Models
                 for (int j = 0; j < result.DataSet.Values.Count(); j++)
                 {
                     var value = result.DataSet.Values.ElementAt(j)[i];
-                    strLine.AddRange(value.Select(x => x.ToString()));
+                    strLine.AddRange(value.Select(x => x.ToString(CultureInfo.InvariantCulture)));
                 }
                 strList.Add(strLine);
             }
