@@ -87,8 +87,6 @@ namespace ANNdotNET.Core
                         }
                     }
 
-                    }
-
                     // check if sweep end reached
                     if (mbData.Any(x => x.Value.sweepEnd))
                         break;
