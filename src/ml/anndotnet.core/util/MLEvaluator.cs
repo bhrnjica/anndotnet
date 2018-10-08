@@ -69,7 +69,7 @@ namespace ANNdotNET.Core
                         var d = mdDataEx.Where(x => x.Key.Name.Equals(vv.Name)).FirstOrDefault();
                         //
                         var fv = MLValue.GetValues(d.Key, d.Value);
-                        if(vv.Shape.Dimensions.Last()==1)
+                        if (vv.Shape.Dimensions.Last() == 1)
                         {
                             var value = fv.Select(l => new List<float>() { l.First() }).ToList();
                             if (featDic.ContainsKey(d.Key.Name))
@@ -85,6 +85,7 @@ namespace ANNdotNET.Core
                             else
                                 featDic.Add(d.Key.Name, value);
                         }
+                    }
 
                     }
 

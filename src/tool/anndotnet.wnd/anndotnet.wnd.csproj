@@ -401,9 +401,6 @@
     <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738334523502776">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\models\model_at_87of1000_epochs_TimeSpan_636738532791050245">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -416,6 +413,7 @@
     <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\models\model_at_74of1000_epochs_TimeSpan_636738951668257665">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history" />
     <Resource Include="anndotnet.ico" />
     <Content Include="images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -467,6 +465,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="..\..\..\.travis.yml">
+      <Link>.travis.yml</Link>
+    </None>
     <None Include="..\..\..\README.md">
       <Link>README.md</Link>
     </None>

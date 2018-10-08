@@ -17,6 +17,7 @@ using NNetwork.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -339,7 +340,9 @@ namespace anndotnet.wnd.Panels
                         }
                         else
                         {
-                            var vald = double.Parse(m_TestData[i][j]);
+                            if (m_TestData[i][j].Contains(","))
+                                throw new Exception("Decimal separator should be point.");
+                            var vald = double.Parse(m_TestData[i][j], CultureInfo.InvariantCulture);
                             vector.Add((float)vald);
                         }
                     }
