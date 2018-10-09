@@ -154,6 +154,7 @@ namespace anndotnet.wnd.Models
         public ObservableCollection<IOLayer> OutLayer { get; set; }
 
         public ObservableCollection<NNLayer> Network { get; set; }
+        public int SelectedIndex { get; set; }
 
         public List<VariableDescriptor> TestData { get; set; }
 

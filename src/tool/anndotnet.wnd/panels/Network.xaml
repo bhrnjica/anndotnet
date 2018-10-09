@@ -63,8 +63,9 @@
                 </ComboBox>
                 <Button Content="Add" Style="{StaticResource Windows10Button}" Margin="2" Grid.Column="2" Grid.Row="1" Command="cmd:AppCommands.AddLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedValue}"/>
                 <Button Content="Remove"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="3" Grid.Row="1" Command="cmd:AppCommands.RemoveLayerCommand" CommandParameter="{Binding ElementName=networkLayers, Path=SelectedItem}"/>
+                <Button Content="Insert"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="4" Grid.Row="1" Command="cmd:AppCommands.InsertLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedItem}"/>
 
-                <ListBox Name="networkLayers" ItemsSource="{Binding Network}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
+                <ListBox Name="networkLayers" ItemsSource="{Binding Network}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <panels:LayerItem Height="Auto"/>

@@ -180,7 +180,17 @@ namespace anndotnet.wnd.commands
                 return m_RemoveLayerCommand;
             }
         }
+        private static readonly RoutedUICommand m_InsertLayerCommand =
+            new RoutedUICommand("Insert layer above selected layer from network.", "InsertLayerCommand", typeof(AppCommands));
 
+        public static RoutedCommand InsertLayerCommand
+        {
+            get
+            {
+                return m_InsertLayerCommand;
+            }
+        }
+        
         private static readonly RoutedUICommand m_RenameConfigCommand =
            new RoutedUICommand("Rename MLConfig item.", "RenameConfigCommand", typeof(AppCommands));
         public static RoutedCommand RenameConfigCommand
