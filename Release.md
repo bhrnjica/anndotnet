@@ -1,25 +1,25 @@
 # ANNdotNET v1.0-rc20181009
-	ANNdotNET v1.0 - deep learning tool on .NET platform
-	============
+ANNdotNET v1.0 - deep learning tool on .NET platform
+============
 
-	ANNdotNET – is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, elvaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine ` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine ` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluaton models.
+ANNdotNET – is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, elvaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine ` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine ` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluaton models.
 
-	- For software requiremens please see previous release note.
-	- For instruction how to start the application please see previous release note.
+- For software requirements please see previous release note.
+- For instruction how to start the application please see previous release note.
 
-	## The following enhancments has been made in this release
+## The following enhancements has been made in this release
 
-	- Export improvements for diferent label type (numeric, classification type)
-	- Export and result display for djiferent localized PCs
-	- Pre-calculated ann project improvements
+- Export improvements for different label type (numeric, classification type)
+- Export and result display for different localized PCs
+- Pre-calculated `annproject`s improvements []
 
 
-	## Bug Fixes
+## Bug Fixes
 
-	- Empty output classes bug fix 
-	- Column separator bug fix when importing rawdataset
-	- Added missing files from precalculated ann projects
-	- Export regression model bug fix
+- Empty output classes bug fix 
+- Column separator bug fix when importing `rawdataset`
+- Added missing files from pre-calculated `annproject`s
+- Export regression model bug fix
 
 
 # ANNdotNET v1.0-rc20180929
