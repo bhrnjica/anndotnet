@@ -68,6 +68,8 @@ namespace MLDataPreparation.Dll
 
         private void ProcesData()
         {
+            if (string.IsNullOrEmpty(originData))
+                return;
             var data = string.Join(Environment.NewLine, originLines.Take(1000));
             if (string.IsNullOrEmpty(data))
                 return;
@@ -87,7 +89,7 @@ namespace MLDataPreparation.Dll
             }
 
             //if header is present separate data with horizontal line
-            if (checkBox1.Checked)
+            if (firstRowHeaderCheck.Checked)
             {
                 var index = data.IndexOf(Environment.NewLine);
                 var index2 = data.IndexOf(Environment.NewLine, index + 1);
@@ -118,7 +120,7 @@ namespace MLDataPreparation.Dll
                 //define the row
                 //string[] rows = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
 
-                var result = ANNDataSet.prepareData(originLines, colDelimiter, checkBox1.Checked, radioButton1.Checked);
+                var result = ANNDataSet.prepareData(originLines, colDelimiter, firstRowHeaderCheck.Checked, radioButton1.Checked);
                 Header = result.header;
                 Data = result.data;
             }
@@ -207,7 +209,7 @@ namespace MLDataPreparation.Dll
 
                 if(numCtrlNumForTest.Value < 1 && numCtrlNumForTest.Value > originData.Length)
                 {
-                    MessageBox.Show("Invalid number of time leg. PLease specify the time leg between 1 and row number.");
+                    MessageBox.Show("Invalid number of time lag. Please specify the time lag between 1 and row number.");
                     return;
                 }
 
@@ -218,10 +220,10 @@ namespace MLDataPreparation.Dll
                 //define the row
                 string[] tdata = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
                 //transform the time series into data frame
-                string[] prepData = prepareTimeSeriesData(tdata, (int)numCtrlNumForTest.Value);
+                var result = prepareTimeSeriesData(tdata, (int)numCtrlNumForTest.Value, colDelimiter, firstRowHeaderCheck.Checked);
 
-                //prepare data for loading
-                var result = ANNDataSet.prepareData(prepData, new char[] {';'}, checkBox1.Checked, radioButton1.Checked);
+                ////prepare data for loading
+                //var result = ANNDataSet.prepareData(prepData, new char[] {';'}, firstRowHeaderCheck.Checked, radioButton1.Checked);
                 Header = result.header;
                 Data = result.data;
             }
@@ -236,44 +238,83 @@ namespace MLDataPreparation.Dll
         /// Transforms the string of time series into data frame string 
         /// </summary>
         /// <param name="tdata"></param>
-        /// <param name="legTime"></param>
+        /// <param name="lagTime"></param>
         /// <returns></returns>
-        private string[] prepareTimeSeriesData(string[] tdata,int legTime)
+        private (string[] header, string[][] data) prepareTimeSeriesData(string[] tdata, int lagTime, char[] delimiters ,bool isHeader)
         {
             //split data on for feature and label datasets
-            var a = new string[tdata.Length - legTime];
-            var b = new string[tdata.Length - legTime];
-
-            for (int l = 0; l < tdata.Length; l++)
+            var header = new List<string>();
+            var data = new List<string[]>();
+            
+            //dfine header if specified
+            if(isHeader)
             {
                 //
-                if (l < tdata.Length - legTime)
-                    a[l] = tdata[l];
+                var cols = tdata[0].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-                //
-                if (l >= legTime)
-                    b[l - legTime] = tdata[l];
+                for (int j=0; j < cols.Length; j++)
+                {
+                    if(j+1 < cols.Length)
+                    {
+                        //add regular header
+                        header.Add(cols[j]);
+                    }
+                    else
+                    {
+                        //add lagged features header
+                        for (int i = 0; i < lagTime; i++)
+                            header.Add($"{cols[j]}-{lagTime-i}");
+
+                        //add last column header
+                        header.Add($"{cols[j]}");
+                    }
+                   
+                }         
             }
-
-            //make arrays of data
-            var strDataFrame = new List<string>();
             //
-            for (int i = 0; i < tdata.Length - legTime; i++)
+            int l = isHeader ? 1 : 0;
+            var lagValues = new Queue<string>(); 
+            for (; l < tdata.Length; l++)
             {
-                //features
-                var row = new string[legTime+1];
-                int j = 0;
-                for (j = 0; j < legTime; j++)
-                    row[j] = tdata[i + j];
+                
+                var col = tdata[l].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-                //label column at the end of the list
-                row[j] = tdata[i + j];
+                //fill lagged features
+                if (lagValues.Count > lagTime)
+                    lagValues.Dequeue();
+                lagValues.Enqueue(col.Last());
 
-                //create features row
-                strDataFrame.Add(string.Join(";",row));
+                //until lagged features are not defined don't add data to dataframe
+                var row = new List<string>();
+                for (int j = 0; j < col.Length && lagValues.Count > lagTime; j++)
+                {
+                    
+                    if (j + 1 < col.Length)
+                    {
+                        //add regular header
+                        row.Add(col[j]);
+                    }
+                    else
+                    {
+                        //add lagged features
+                        for (int f = 0; f < lagTime; f++)
+                        {
+                            row.Add(lagValues.ElementAt(f));
+                        }
+                        //add label
+                        row.Add(col[j]);
+                    }
+
+                }
+
+                if (lagValues.Count > lagTime)
+                    data.Add(row.ToArray());
+
             }
 
-            return strDataFrame.ToArray();
+            //
+            return (header.ToArray(), data.ToArray());
+
         }
     }
 }

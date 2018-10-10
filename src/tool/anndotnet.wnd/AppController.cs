@@ -24,6 +24,7 @@ using System.Windows.Threading;
 using anndotnet.wnd.commands;
 using anndotnet.wnd.Models;
 using anndotnet.wnd.Mvvm;
+using anndotnet.wnd.Panels;
 using ANNdotNET.Lib;
 using MLDataPreparation.Dll;
 using NNetwork.Core.Common;
@@ -529,6 +530,8 @@ namespace anndotnet.wnd
                 //prepare control to load data
                 var cntCtrl = e.Parameter as DependencyObject;
                 var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
+                if (ctrl.Child is StartPanel)
+                    return;
                 var expCtrl = (DataPanel)ctrl.Child;
                 if (expCtrl == null)
                     return;
