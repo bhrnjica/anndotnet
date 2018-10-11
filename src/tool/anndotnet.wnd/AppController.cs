@@ -473,7 +473,7 @@ namespace anndotnet.wnd
 
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
 
-            binding = new CommandBinding(AppCommands.CreateModelCommand, onCreateModel, onCanExecCreateModel);
+            binding = new CommandBinding(AppCommands.CreateModelCommand, onCreateMLConfig, onCanExecCreateMLConfig);
 
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
 
@@ -490,7 +490,7 @@ namespace anndotnet.wnd
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
         }
 
-        private async void onCreateModel(object sender, ExecutedRoutedEventArgs e)
+        private async void onCreateMLConfig(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
@@ -510,7 +510,7 @@ namespace anndotnet.wnd
             
         }
 
-        private void onCanExecCreateModel(object sender, CanExecuteRoutedEventArgs e)
+        private void onCanExecCreateMLConfig(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true;
             var prj = ActiveViewModel as ANNProjectController;

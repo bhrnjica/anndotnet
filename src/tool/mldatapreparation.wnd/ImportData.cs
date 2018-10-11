@@ -218,9 +218,9 @@ namespace MLDataPreparation.Dll
 
                 //
                 //define the row
-                string[] tdata = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+                //string[] tdata = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
                 //transform the time series into data frame
-                var result = prepareTimeSeriesData(tdata, (int)numCtrlNumForTest.Value, colDelimiter, firstRowHeaderCheck.Checked);
+                var result = prepareTimeSeriesData(originLines, (int)numCtrlNumForTest.Value, colDelimiter, firstRowHeaderCheck.Checked);
 
                 ////prepare data for loading
                 //var result = ANNDataSet.prepareData(prepData, new char[] {';'}, firstRowHeaderCheck.Checked, radioButton1.Checked);
@@ -242,6 +242,7 @@ namespace MLDataPreparation.Dll
         /// <returns></returns>
         private (string[] header, string[][] data) prepareTimeSeriesData(string[] tdata, int lagTime, char[] delimiters ,bool isHeader)
         {
+            
             //split data on for feature and label datasets
             var header = new List<string>();
             var data = new List<string[]>();

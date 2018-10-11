@@ -2,8 +2,11 @@
 using CNTK;
 using NNetwork.Core;
 using System.Threading;
+using System.Linq;
 using NNetwork.Core.Common;
 using ANNdotNET.Lib.Ext;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace anndotnet.core.app
 {
@@ -11,7 +14,8 @@ namespace anndotnet.core.app
     {
         static void Main(string[] args)
         {
-
+            transformDailyLevelVeanaLake();
+            //return;
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
@@ -32,6 +36,42 @@ namespace anndotnet.core.app
             Console.Read();
 
         }
+
+        private static void transformDailyLevelVeanaLake()
+        {
+            var cnt = System.IO.File.ReadAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\dailylevel-1978-2017.txt");
+            var data = new List<List<object>>();
+            var date = new DateTime(1978,1,1);
+            foreach (var line in cnt)
+            {
+                
+                var col = line.Split(new char[] {'\t' },StringSplitOptions.RemoveEmptyEntries);
+                foreach(var c in col)
+                {
+                    var row = new List<object>();
+                    row.Add(date);
+                    row.Add(float.Parse(c));
+                    data.Add(row);
+                    date =date.AddDays(1);
+                }
+
+            }
+            Func<DateTime, int> weekProjector =
+    d => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+         d,
+         CalendarWeekRule.FirstFourDayWeek,
+         DayOfWeek.Sunday);
+            //daily data
+            var weeklyData = data.GroupBy(x => new { year= DateTime.Parse(x[0].ToString()).Year,
+                week = weekProjector(DateTime.Parse(x[0].ToString()))}).Select(x=> new {at1=x.Key.week,at2=x.Key.year,at3=x.Average(r=>float.Parse(r.ElementAt(1).ToString())) }).ToList();
+
+
+            System.IO.File.WriteAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\weeklyTimeserieslevel-1978-2017v.1.2.txt",
+                weeklyData.Select(x => string.Join(";", x)));
+
+        }
+
+        
 
         private static void runAllml_configurations(string root)
         {
