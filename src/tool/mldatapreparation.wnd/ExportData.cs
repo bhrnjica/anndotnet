@@ -142,6 +142,7 @@ namespace MLDataPreparation.Dll
                 for (int j = 0; j < catCols.Count; j++)
                 {
                     var col = catCols[j];
+                    col.Name = col.Name.Trim();
                     var str = $"|{col.Name} {string.Join(" ", col.GetEncodedValue(i))} ";
                     line += str;
                 }
@@ -151,7 +152,8 @@ namespace MLDataPreparation.Dll
                 for (int j = 0; j < labCols.Count; j++)
                 {
                     var col = labCols[j];
-                    if(col.ColumnDataType== ColumnType.Category)
+                    col.Name = col.Name.Trim();
+                    if (col.ColumnDataType== ColumnType.Category)
                     {
                         var str = $"|{col.Name} {string.Join(" ", col.GetEncodedValue(i))} ";
                         line += str;
