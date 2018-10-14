@@ -1,0 +1,1871 @@
+
+version("
+uidBCompositeFunction3245ªˆ
+primitive_functions‘ˆ	Z‰ˆ
+»
+b´
+version(
+typeBPrimitiveFunction
+uidBTanh3120)
+inputs	Z
+BPlus3047_Output_0
+nameBTanHCt
+op(
+
+attributes
+b
+ş
+b÷
+version(
+uidB	Times3031
+typeBPrimitiveFunctionC
+inputs9	Z3
+BParameter3030
+BPastValue3126_Output_0T
+
+attributesF
+b@&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+
+outputRank(
+op(
+
+b†
+version(
+typeBPrimitiveFunction
+uidB	Times3024?
+inputs5	Z/
+BParameter3023
+BBlock2874_Output_0
+name	B_wx
+op(T
+
+attributesF
+b@
+
+outputRank(&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+Ğ
+bÉ
+version(
+uidBPlus3027
+typeBPrimitiveFunction
+
+attributes
+b
+op(?
+inputs5	Z/
+BParameter3022
+BTimes3024_Output_0
+nameB_wx_b
+¿
+b¸
+version(
+typeBPrimitiveFunction
+uidBPlus3034C
+inputs9	Z3
+BPlus3027_Output_0
+BTimes3031_Output_0
+op(
+
+attributes
+b
+½
+b¶
+version(
+typeBPrimitiveFunction
+uidBTanh3038)
+inputs	Z
+BPlus3034_Output_0
+nameBTanHCt_1
+op(
+
+attributes
+b
+½
+b¶
+version(
+uidBElementTimes2993
+typeBPrimitiveFunction9
+inputs/	Z)
+BConstant2990
+BParameter2992
+
+attributes
+b
+op(
+¬
+b¥
+version(
+uidBExp2996
+typeBPrimitiveFunction1
+inputs'	Z!
+BElementTimes2993_Output_0
+
+attributes
+b
+op(
+¸
+b±
+version(
+uidBPlus3000
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2999
+BExp2996_Output_0
+
+attributes
+b
+op(
+¤
+b
+version(
+typeBPrimitiveFunction
+uidBLog3003)
+inputs	Z
+BPlus3000_Output_0
+op(
+
+attributes
+b
+À
+b¹
+version(
+typeBPrimitiveFunction
+uidBElementTimes3006<
+inputs2	Z,
+BConstant2991
+BLog3003_Output_0
+op(
+
+attributes
+b
+Ó
+bÌ
+version(
+typeBPrimitiveFunction
+uidBElementTimes3009O
+inputsE	Z?
+BElementTimes3006_Output_0
+BPastValue3129_Output_0
+op(
+
+attributes
+b
+Ê
+bÃ
+version(
+typeBPrimitiveFunction
+uidBElementTimes3013F
+inputs<	Z6
+BParameter3012
+BElementTimes3009_Output_0
+op(
+
+attributes
+b
+½
+b¶
+version(
+uidBElementTimes2956
+typeBPrimitiveFunction9
+inputs/	Z)
+BConstant2953
+BParameter2955
+
+attributes
+b
+op(
+¬
+b¥
+version(
+uidBExp2959
+typeBPrimitiveFunction1
+inputs'	Z!
+BElementTimes2956_Output_0
+
+attributes
+b
+op(
+¸
+b±
+version(
+uidBPlus2963
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2962
+BExp2959_Output_0
+
+attributes
+b
+op(
+¤
+b
+version(
+uidBLog2966
+typeBPrimitiveFunction)
+inputs	Z
+BPlus2963_Output_0
+
+attributes
+b
+op(
+À
+b¹
+version(
+uidBElementTimes2969
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2954
+BLog2966_Output_0
+
+attributes
+b
+op(
+Ó
+bÌ
+version(
+uidBElementTimes2972
+typeBPrimitiveFunctionO
+inputsE	Z?
+BElementTimes2969_Output_0
+BPastValue3126_Output_0
+
+attributes
+b
+op(
+
+bú
+version(
+typeBPrimitiveFunction
+uidB	Times2984F
+inputs<	Z6
+BParameter2983
+BElementTimes2972_Output_0
+op(T
+
+attributesF
+b@
+
+outputRank(&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+
+b†
+version(
+typeBPrimitiveFunction
+uidB	Times2977?
+inputs5	Z/
+BParameter2976
+BBlock2874_Output_0
+name	B_wx
+op(T
+
+attributesF
+b@
+
+outputRank(&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+Ğ
+bÉ
+version(
+typeBPrimitiveFunction
+uidBPlus2980?
+inputs5	Z/
+BParameter2975
+BTimes2977_Output_0
+nameB_wx_b
+op(
+
+attributes
+b
+¿
+b¸
+version(
+typeBPrimitiveFunction
+uidBPlus2987C
+inputs9	Z3
+BPlus2980_Output_0
+BTimes2984_Output_0
+op(
+
+attributes
+b
+Æ
+b¿
+version(
+typeBPrimitiveFunction
+uidBPlus3016J
+inputs@	Z:
+BPlus2987_Output_0
+BElementTimes3013_Output_0
+op(
+
+attributes
+b
+Ç
+bÀ
+version(
+typeBPrimitiveFunction
+uidBStableSigmoid3019)
+inputs	Z
+BPlus3016_Output_0
+nameB	InputGate
+op(K
+
+attributes
+b
+å
+bŞ
+version(
+typeBPrimitiveFunction
+uidBElementTimes3044K
+inputsA	Z;
+ BStableSigmoid3019_Output_0
+BTanh3038_Output_0
+nameBittanH
+op(
+
+attributes
+b
+Ï
+bÈ
+version(
+typeBPrimitiveFunction
+uidBPastValue3129<
+inputs2	Z,
+BPlus3047_Output_0
+BConstant507
+op(%(
+
+attributes
+b
+offset(
+½
+b¶
+version(
+typeBPrimitiveFunction
+uidBElementTimes29249
+inputs/	Z)
+BConstant2921
+BParameter2923
+op(
+
+attributes
+b
+¬
+b¥
+version(
+uidBExp2927
+typeBPrimitiveFunction1
+inputs'	Z!
+BElementTimes2924_Output_0
+
+attributes
+b
+op(
+¸
+b±
+version(
+uidBPlus2931
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2930
+BExp2927_Output_0
+
+attributes
+b
+op(
+¤
+b
+version(
+uidBLog2934
+typeBPrimitiveFunction)
+inputs	Z
+BPlus2931_Output_0
+
+attributes
+b
+op(
+À
+b¹
+version(
+uidBElementTimes2937
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2922
+BLog2934_Output_0
+
+attributes
+b
+op(
+Ó
+bÌ
+version(
+uidBElementTimes2940
+typeBPrimitiveFunctionO
+inputsE	Z?
+BElementTimes2937_Output_0
+BPastValue3129_Output_0
+
+attributes
+b
+op(
+Ê
+bÃ
+version(
+uidBElementTimes2944
+typeBPrimitiveFunctionF
+inputs<	Z6
+BParameter2943
+BElementTimes2940_Output_0
+
+attributes
+b
+op(
+½
+b¶
+version(
+uidBElementTimes2887
+typeBPrimitiveFunction9
+inputs/	Z)
+BConstant2884
+BParameter2886
+
+attributes
+b
+op(
+¬
+b¥
+version(
+uidBExp2890
+typeBPrimitiveFunction1
+inputs'	Z!
+BElementTimes2887_Output_0
+
+attributes
+b
+op(
+¸
+b±
+version(
+uidBPlus2894
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2893
+BExp2890_Output_0
+
+attributes
+b
+op(
+¤
+b
+version(
+uidBLog2897
+typeBPrimitiveFunction)
+inputs	Z
+BPlus2894_Output_0
+
+attributes
+b
+op(
+À
+b¹
+version(
+uidBElementTimes2900
+typeBPrimitiveFunction<
+inputs2	Z,
+BConstant2885
+BLog2897_Output_0
+
+attributes
+b
+op(
+Ó
+bÌ
+version(
+uidBElementTimes2903
+typeBPrimitiveFunctionO
+inputsE	Z?
+BElementTimes2900_Output_0
+BPastValue3126_Output_0
+
+attributes
+b
+op(
+
+bú
+version(
+uidB	Times2915
+typeBPrimitiveFunctionF
+inputs<	Z6
+BParameter2914
+BElementTimes2903_Output_0T
+
+attributesF
+b@&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+
+outputRank(
+op(
+
+b†
+version(
+uidB	Times2908
+typeBPrimitiveFunctionT
+
+attributesF
+b@&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+
+outputRank(
+op(?
+inputs5	Z/
+BParameter2907
+BBlock2874_Output_0
+name	B_wx
+Ğ
+bÉ
+version(
+typeBPrimitiveFunction
+uidBPlus2911?
+inputs5	Z/
+BParameter2906
+BTimes2908_Output_0
+nameB_wx_b
+op(
+
+attributes
+b
+¿
+b¸
+version(
+typeBPrimitiveFunction
+uidBPlus2918C
+inputs9	Z3
+BPlus2911_Output_0
+BTimes2915_Output_0
+op(
+
+attributes
+b
+Æ
+b¿
+version(
+typeBPrimitiveFunction
+uidBPlus2947J
+inputs@	Z:
+BPlus2918_Output_0
+BElementTimes2944_Output_0
+op(
+
+attributes
+b
+È
+bÁ
+version(
+typeBPrimitiveFunction
+uidBStableSigmoid2950)
+inputs	Z
+BPlus2947_Output_0
+nameB
+ForgetGate
+op(K
+
+attributes
+b
+ê
+bã
+version(
+typeBPrimitiveFunction
+uidBElementTimes3041P
+inputsF	Z@
+ BStableSigmoid2950_Output_0
+BPastValue3129_Output_0
+nameBftct_1
+op(
+
+attributes
+b
+ç
+bà
+version(
+typeBPrimitiveFunction
+uidBPlus3047R
+inputsH	ZB
+BElementTimes3041_Output_0
+BElementTimes3044_Output_0
+nameB	CellState
+op(
+
+attributes
+b
+½
+b¶
+version(
+typeBPrimitiveFunction
+uidBElementTimes30909
+inputs/	Z)
+BConstant3087
+BParameter3089
+op(
+
+attributes
+b
+¬
+b¥
+version(
+typeBPrimitiveFunction
+uidBExp30931
+inputs'	Z!
+BElementTimes3090_Output_0
+op(
+
+attributes
+b
+¸
+b±
+version(
+typeBPrimitiveFunction
+uidBPlus3097<
+inputs2	Z,
+BConstant3096
+BExp3093_Output_0
+op(
+
+attributes
+b
+¤
+b
+version(
+typeBPrimitiveFunction
+uidBLog3100)
+inputs	Z
+BPlus3097_Output_0
+op(
+
+attributes
+b
+À
+b¹
+version(
+typeBPrimitiveFunction
+uidBElementTimes3103<
+inputs2	Z,
+BConstant3088
+BLog3100_Output_0
+op(
+
+attributes
+b
+Î
+bÇ
+version(
+typeBPrimitiveFunction
+uidBElementTimes3106J
+inputs@	Z:
+BElementTimes3103_Output_0
+BPlus3047_Output_0
+op(
+
+attributes
+b
+Ê
+bÃ
+version(
+typeBPrimitiveFunction
+uidBElementTimes3110F
+inputs<	Z6
+BParameter3109
+BElementTimes3106_Output_0
+op(
+
+attributes
+b
+×
+bĞ
+version(
+typeBPrimitiveFunction
+uidBPastValue3126D
+inputs:	Z4
+BElementTimes3123_Output_0
+BConstant507
+op(%(
+
+attributes
+b
+offset(
+½
+b¶
+version(
+typeBPrimitiveFunction
+uidBElementTimes30539
+inputs/	Z)
+BConstant3050
+BParameter3052
+op(
+
+attributes
+b
+¬
+b¥
+version(
+typeBPrimitiveFunction
+uidBExp30561
+inputs'	Z!
+BElementTimes3053_Output_0
+op(
+
+attributes
+b
+¸
+b±
+version(
+typeBPrimitiveFunction
+uidBPlus3060<
+inputs2	Z,
+BConstant3059
+BExp3056_Output_0
+op(
+
+attributes
+b
+¤
+b
+version(
+typeBPrimitiveFunction
+uidBLog3063)
+inputs	Z
+BPlus3060_Output_0
+op(
+
+attributes
+b
+À
+b¹
+version(
+typeBPrimitiveFunction
+uidBElementTimes3066<
+inputs2	Z,
+BConstant3051
+BLog3063_Output_0
+op(
+
+attributes
+b
+Ó
+bÌ
+version(
+typeBPrimitiveFunction
+uidBElementTimes3069O
+inputsE	Z?
+BElementTimes3066_Output_0
+BPastValue3126_Output_0
+op(
+
+attributes
+b
+
+bú
+version(
+typeBPrimitiveFunction
+uidB	Times3081F
+inputs<	Z6
+BParameter3080
+BElementTimes3069_Output_0
+op(T
+
+attributesF
+b@
+
+outputRank(&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+»
+b´
+version(
+uidB	Minus2868
+typeBPrimitiveFunction>
+inputs4	Z.
+BPlaceholder3385
+BPlaceholder3386
+
+attributes
+b
+op(
+Å
+b¾
+version(
+uidBElementTimes2871
+typeBPrimitiveFunctionA
+inputs7	Z1
+BMinus2868_Output_0
+BPlaceholder3387
+
+attributes
+b
+op(
+±
+bª
+version(
+uidB	Block2874
+typeBPrimitiveFunction
+block_function_composite€
+bz
+version(
+typeBCompositeFunction"
+uidBCompositeFunction2872
+rootBElementTimes2871
+
+attributes
+b
+op(9I
+inputs?	Z9
+B	Input2859
+BConstant2863
+BConstant2864
+nameBNumFeatures_norm;
+block_function_op_name!BPerDimMeanVarianceNormalizez
++block_function_composite_arguments_map_keysK	ZE
+BPlaceholder3385
+BPlaceholder3386
+BPlaceholder3387p
+-block_function_composite_arguments_map_values?	Z9
+B	Input2859
+BConstant2863
+BConstant2864
+
+b†
+version(
+uidB	Times3074
+typeBPrimitiveFunctionT
+
+attributesF
+b@&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+
+outputRank(
+op(?
+inputs5	Z/
+BParameter3073
+BBlock2874_Output_0
+name	B_wx
+Ğ
+bÉ
+version(
+uidBPlus3077
+typeBPrimitiveFunction
+
+attributes
+b
+op(?
+inputs5	Z/
+BParameter3072
+BTimes3074_Output_0
+nameB_wx_b
+¿
+b¸
+version(
+uidBPlus3084
+typeBPrimitiveFunctionC
+inputs9	Z3
+BPlus3077_Output_0
+BTimes3081_Output_0
+
+attributes
+b
+op(
+Æ
+b¿
+version(
+uidBPlus3113
+typeBPrimitiveFunctionJ
+inputs@	Z:
+BPlus3084_Output_0
+BElementTimes3110_Output_0
+
+attributes
+b
+op(
+È
+bÁ
+version(
+uidBStableSigmoid3116
+typeBPrimitiveFunction
+
+attributes
+b
+op(K)
+inputs	Z
+BPlus3113_Output_0
+nameB
+OutputGate
+å
+bŞ
+version(
+uidBElementTimes3123
+typeBPrimitiveFunction
+
+attributes
+b
+op(K
+inputsA	Z;
+ BStableSigmoid3116_Output_0
+BTanh3120_Output_0
+nameBOutput
+Ç
+bÀ
+version(%
+uidBReconcileDynamicAxis3211
+typeBPrimitiveFunction;
+inputs1	Z+
+BConstant3210
+BPlaceholder3460
+
+attributes
+b
+op(2
+â
+bÛ
+version(
+uidBFutureValue3215
+typeBPrimitiveFunctionM
+inputsC	Z=
+'B!ReconcileDynamicAxis3211_Output_0
+BConstant3214(
+
+attributes
+b
+offset(
+op(&
+Ç
+bÀ
+version(
+uidB	Where3218
+typeBPrimitiveFunction0
+inputs&	Z 
+BFutureValue3215_Output_0¯
+
+attributes 
+b™8
+newDynamicAxes&	Z 
+RÿÿÿÿdefaultBatchAxis,
+"newSequenceAxisLengthScalingFactor( -
+#newSequenceAxisLengthAdditiveFactor 
+op(
+Ä
+b½
+version(
+uidBPackedIndex3221
+typeBPrimitiveFunctionA
+inputs7	Z1
+BPlaceholder3460
+BWhere3218_Output_0
+
+attributes
+b
+op(
+Ë
+bÄ
+version(
+uidBGatherPacked3224
+typeBPrimitiveFunctionG
+inputs=	Z7
+BPlaceholder3460
+BPackedIndex3221_Output_0
+
+attributes
+b
+op(
+Ï
+bÈ
+version(L
++block_function_composite_arguments_map_keys	Z
+BPlaceholder3460
+uidB	Block3227
+typeBPrimitiveFunctionY
+inputsO	ZI
+BConstant3210
+BConstant3214
+BElementTimes3123_Output_0
+block_function_composite€
+bz
+version(
+typeBCompositeFunction"
+uidBCompositeFunction3225
+rootBGatherPacked3224
+
+attributes
+b
+op(9/
+block_function_op_nameBSequence::SliceX
+-block_function_composite_arguments_map_values'	Z!
+BElementTimes3123_Output_0
+
+b‰
+version(
+uidB	Times3238
+typeBPrimitiveFunctionT
+
+attributesF
+b@&
+inferInputRankToMap ÿÿÿÿÿÿÿÿÿ
+
+outputRank(
+op(?
+inputs5	Z/
+BParameter3237
+BBlock3227_Output_0
+nameBHsr_wx
+Î
+bÇ
+version(
+uidBPlus3241
+typeBPrimitiveFunction
+
+attributes
+b
+op(?
+inputs5	Z/
+BParameter3236
+BTimes3238_Output_0
+name	BHsr
+typeBCompositeFunction
+rootBPlus3241¹|
+inputs®|	Z§|
+‚
+bû
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3236
+typeBVariable
+dynamic_axis	Z 
+nameB_b
+	is_sparse 
+shape	J
+
+valuej
+"
+åÂB
+ 
+b™
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3237
+typeBVariable
+dynamic_axis	Z 
+nameB_w
+	is_sparse 
+shape
+J
+;
+value2j,
+""
+ tO„ÂåˆÂ ftÂôˆÂl„ÂHh€B¦…Â8ıˆÂ
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3210
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+    
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3214
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+¬
+b¥
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBPlaceholder3460
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+nameBOutput
+	is_sparse 
+shape	J
+
+
+b—
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3072
+typeBVariable
+dynamic_axis	Z 
+nameB_b
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ Kr›?F ×?:Í@…@˜m?M­°@R=@íÈé?
+À
+b¹
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3073
+typeBVariable
+dynamic_axis	Z 
+nameB_w
+	is_sparse 
+shape
+J
+[
+valueRjL
+"B
+@Ş@M>?íõ‘¾lx”>ü6?¤¬”?<Ñÿ?Ë½:?}íy?æŠ¾?t?^÷>Îãr?®ä¿–í@œÆ6¿
+«
+b¤
+needs_gradient 
+version(
+	data_type(
+kind( 
+uidB	Input2859
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+nameBNumFeatures
+	is_sparse 
+shape	J
+
+‡
+b€
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBConstant2863
+typeBVariable
+dynamic_axis	Z 
+name
+Bmean
+	is_sparse 
+shape	J
+"
+valuej
+"
+
+£•CK•C
+†
+bÿ
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBConstant2864
+typeBVariable
+dynamic_axis	Z 
+name	Bstd
+	is_sparse 
+shape	J
+"
+valuej
+"
+
+4<à<
+å
+bŞ
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBPlaceholder3387
+typeBVariable
+dynamic_axis	Z 
+name	Bstd
+	is_sparse 
+shape	J
+
+±
+bª
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBPlaceholder3385
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+nameBNumFeatures
+	is_sparse 
+shape	J
+
+æ
+bß
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBPlaceholder3386
+typeBVariable
+dynamic_axis	Z 
+name
+Bmean
+	is_sparse 
+shape	J
+
+…
+bş
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3080
+typeBVariable
+dynamic_axis	Z 
+nameB_u
+	is_sparse 
+shape
+J
+Ÿ
+value•j
+"ƒ
+€üŸ¼ ï?3ã>vÅá>¼-»¾ì_0>‘˜p¾u<9½”Ë>‚v¾=ók±=¹"?ßoö>²½¯½p¿>H]¾óa½›w¥¼åê?Üšk¾­^¾oä>Œ˜<¨&?±q¿İèº¾ö¿:nƒ¾	ÙŸ¾#Ù`>ëFØ=Œ8½'X¨¾ŒPˆ¾»¾Ãü<•'‚>:ã¾.hú¾k“<7Ì”¾¿")>D¯³¾‡¹>j¢k>ŠGØ>İÑ>wW?B%¼Q+¥=€r¿Á¿>¦çŒ½
+D®¾D‰h>*"[=°vê¾<ÂÅ<š­?ª¯Á>WÕ”¾ğ=¿’ÿ¿
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3051
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3059
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3050
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €@
+„
+bı
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3052
+typeBVariable
+dynamic_axis	Z 
+nameB
+_stabilize
+	is_sparse 
+shapeJ 
+valuej "
+"Ñ~?
+¶
+b¯
+needs_gradient 
+version(
+	data_type(
+kind(&
+uidBElementTimes3123_Output_0
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+nameBOutput
+	is_sparse 
+shape	J
+
+è
+bá
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant507
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+    
+¡
+bš
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3109
+typeBVariable
+dynamic_axis	Z 
+nameB_peep
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ ¢å ÀÕ6+Àä‰¿¬Ü	ÀÂÌÀRÏÀ¼•ˆ"?š§À
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3088
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3096
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant3087
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €@
+„
+bı
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3089
+typeBVariable
+dynamic_axis	Z 
+nameB
+_stabilize
+	is_sparse 
+shapeJ 
+valuej "
+úáj@
+
+b—
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2906
+typeBVariable
+dynamic_axis	Z 
+nameB_b
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ 
+×#<
+×#<
+×#<
+×#<
+×#<
+×#<
+×#<
+×#<
+À
+b¹
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2907
+typeBVariable
+dynamic_axis	Z 
+nameB_w
+	is_sparse 
+shape
+J
+[
+valueRjL
+"B
+@À3¿Ø2¿gÈš½lõ=¿ˆl¾V$#?œ—9½¿Ç(¿›İ=ı†V>øÑ"¿Ò=²=‰¿å>ëËÜ¾ª¾yÆ¾
+¹
+b²
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBBlock2874_Output_0
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+nameBNumFeatures_norm
+	is_sparse 
+shape	J
+
+…
+bş
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2914
+typeBVariable
+dynamic_axis	Z 
+nameB_u
+	is_sparse 
+shape
+J
+Ÿ
+value•j
+"ƒ
+€vı>SŸÛ>¢ù±>Z?Qòš¾*Sä¾m»¬¾
+û¾’×¿ i>s>A>¯Û?¸5¾>Fæ¾Ñ¢»¾”¿_:?úy¥=¥ı3¾UÃ¾­Í
+¿ÕŸ¿Ä2½ë½ím­>˜uX¾Â ½5Øè¾M'¾¾iË¾'zº½h2¾ÜÖ?XşJ¾@]¾…ÍÛ=ZÀb>3=!¥²>˜?ƒ'ï¾d>a>ß>!†>¾†t¾›¢¶>{‚Ï¾ø+Ã>_¿¹äÚ¾ÊwŠ>±¿Õá¾µ[¾ò¿o–³<PƒÎ¾µ[<uÈ>"I>½…‡>B*¾[zÈ¾
+
+b–
+needs_gradient 
+version(
+	data_type(
+shape	J
+
+kind(#
+uidBPastValue3126_Output_0
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+	is_sparse 
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2885
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2893
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2884
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €@
+„
+bı
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2886
+typeBVariable
+dynamic_axis	Z 
+nameB
+_stabilize
+	is_sparse 
+shapeJ 
+valuej "
+"Ñ~?
+¡
+bš
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2943
+typeBVariable
+dynamic_axis	Z 
+nameB_peep
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ ‰Ä=¡^ş¾mæ>'s€¾úÇ=uíg¾¦[Æ>ÚT¾
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2922
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2930
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2921
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €@
+„
+bı
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2923
+typeBVariable
+dynamic_axis	Z 
+nameB
+_stabilize
+	is_sparse 
+shapeJ 
+valuej "
+"Ñ~?
+±
+bª
+needs_gradient 
+version(
+	data_type(
+kind(
+uidBPlus3047_Output_0
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+nameB	CellState
+	is_sparse 
+shape	J
+
+
+b—
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2975
+typeBVariable
+dynamic_axis	Z 
+nameB_b
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ Ù­@,¡@ôçx@[3‹@@È"³@z÷ @ÇÛ @
+À
+b¹
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2976
+typeBVariable
+dynamic_axis	Z 
+nameB_w
+	is_sparse 
+shape
+J
+[
+valueRjL
+"B
+@¾,{?êaÀÔ*@¾Â¿" œ?Ôõ•¼À@@Ï?@Ôğ(@Âø•@;V¡?‡TŠ@ Ş+@	?A›@ğÙ?
+…
+bş
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2983
+typeBVariable
+dynamic_axis	Z 
+nameB_u
+	is_sparse 
+shape
+J
+Ÿ
+value•j
+"ƒ
+€ ³>šg½ hì=&;	¿Ÿ´p=˜¿"öÕ>5«¿â >¯u¬>²5[>Òƒ½ŞÕ½lr¾ór?&k>íŞ(¾n»¾¬° ?“Ñ–> ºÕ>ÒY¾íF?çÀ½ıŞ¾³b¦¾œoø>bç?eØú¾‘G€¾h•–¾’é«¾ &ı¾Ã>ğS°>†-¿6Ÿ\>:Ûƒ¾Ìwú>e‚¯¾5~ê¾ÙT=Ó7?=»Æ¾„K?_?Ş[>™Pü½£—´>i8ì½mÎ…>R§Ã=U5A;lbü=ñâé¾«
+¿Øß/<)¦ƒ¾ò¥¾Jã?gÅ›>=Ú?1íÚ¾l4ø>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2954
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2962
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2953
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €@
+„
+bı
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2955
+typeBVariable
+dynamic_axis	Z 
+nameB
+_stabilize
+	is_sparse 
+shapeJ 
+valuej "
+"Ñ~?
+¡
+bš
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3012
+typeBVariable
+dynamic_axis	Z 
+nameB_peep
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ Â²><î@¿'¯å¾x“>ß>+¿_¿(¿À¿1 >
+
+b–
+needs_gradient 
+version(
+	data_type(
+shape	J
+
+kind(#
+uidBPastValue3129_Output_0
+typeBVariableZ
+dynamic_axisJ	ZD
+"RÿÿÿÿdefaultDynamicAxis
+RÿÿÿÿdefaultBatchAxis
+	is_sparse 
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2991
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €>
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2999
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €?
+é
+bâ
+needs_gradient 
+version(
+	data_type(
+shapeJ 
+kind(
+uidBConstant2990
+typeBVariable
+dynamic_axis	Z 
+	is_sparse 
+valuej "
+  €@
+„
+bı
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter2992
+typeBVariable
+dynamic_axis	Z 
+nameB
+_stabilize
+	is_sparse 
+shapeJ 
+valuej "
+"Ñ~?
+
+b—
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3022
+typeBVariable
+dynamic_axis	Z 
+nameB_b
+	is_sparse 
+shape	J
+:
+value1j+
+""
+ Œf‘Àm;yÀ‘ƒ’¿Í7vÀ"KÀ©ùÀ¢´?igÀ
+À
+b¹
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3023
+typeBVariable
+dynamic_axis	Z 
+nameB_w
+	is_sparse 
+shape
+J
+[
+valueRjL
+"B
+@Ãæ
+?„2l?*~m@Tîî?ç>~¿p!À	ê?½@{ÜTÀl¯ÀµÕ¬À/1aÀ…`À––Ç@V†À`ªÀ
+…
+bş
+needs_gradient
+version(
+	data_type(
+kind(
+uidBParameter3030
+typeBVariable
+dynamic_axis	Z 
+nameB_u
+	is_sparse 
+shape
+J
+Ÿ
+value•j
+"ƒ
+€½­>÷½–=¤ä½>[£À>¸J?¾¡l¾ÄÍ=ÄP=é…¿qU=>H´¿*Té>)Cá¼©M£¾ˆC4>Á‚>Qg|=Ù	0=š±>Ñ9¾Í¿¾İ¾ê«/>âğ¿< Ç`=ëD‡½½lŞ>ûQ1>­Í·¾`Ù¥½L¤ï>/O–¾åV*¼ğÌ¿ü¾<³>ğj,>bÜã=ı¸”>ØÆå¾dÈ²=Kâ>x¬?®•>Â§¼Æh?X¿¤ç<–:—¾‹~Ë>UVò¾ß¾1zš¾ÃFÁ½‹|À¾£¬=2û?@^ï=(¡¶¾%u)>ŒUĞ¾%Ô<>£VØ>RĞi>
+name	BHsr

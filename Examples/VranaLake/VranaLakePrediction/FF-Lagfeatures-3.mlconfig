@@ -1,0 +1,8 @@
+configid:2cbef3e7-1dda-4f0d-a4a9-dfcd48414e66
+metadata:|Column01:Hsr-3;Numeric;Feature;Ignore; |Column02:Hsr-2;Numeric;Feature;Ignore; |Column03:Hsr-1;Numeric;Feature;Ignore; |Column04:Hsr;Numeric;Label;Ignore; 
+features:|NumFeatures  3 0	
+labels:|Hsr 1 0	
+network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 8 0 0 TanH 0 0 |Layer:Dense 1 0 0 None 0 0 
+learning:|Type:MomentumSGDLearner |LRate:0.001 |Momentum:0.85 |Loss:SquaredError|Eval:MSError|L1:0|L2:0
+training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:5 |ContinueTraining:0 |TrainedModel:models\model_at_287of1000_epochs_TimeSpan_636750296434834802     
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_test |TempModels:temp_models |Models:models |Result:MLConfig0_result.csv |Logs:log 

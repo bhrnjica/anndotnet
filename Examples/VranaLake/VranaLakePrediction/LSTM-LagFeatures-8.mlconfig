@@ -1,0 +1,8 @@
+configid:9eb073f2-26d3-435a-999f-03dcdce0d8c1
+metadata:|Column01:Hsr-8;Numeric;Feature;Ignore; |Column02:Hsr-7;Numeric;Feature;Ignore; |Column03:Hsr-6;Numeric;Feature;Ignore; |Column04:Hsr-5;Numeric;Feature;Ignore; |Column05:Hsr-4;Numeric;Feature;Ignore; |Column06:Hsr-3;Numeric;Feature;Ignore; |Column07:Hsr-2;Numeric;Feature;Ignore; |Column08:Hsr-1;Numeric;Feature;Ignore; |Column09:Hsr;Numeric;Label;Ignore; 
+features:|NumFeatures  8 0	
+labels:|Hsr 1 0	
+network:|Layer:Normalization 0 0 0 None 0 0 |Layer:LSTM 8 8 0 TanH 1 1 |Layer:Dense 1 0 0 None 0 0 
+learning:|Type:MomentumSGDLearner |LRate:0.001 |Momentum:0.85 |Loss:SquaredError|Eval:RMSError|L1:0|L2:0
+training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:5 |ContinueTraining:0 |TrainedModel:models\model_at_851of1000_epochs_TimeSpan_636750300946687505     
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_test |TempModels:temp_models |Models:models |Result:MLConfig1_result.csv |Logs:log 
