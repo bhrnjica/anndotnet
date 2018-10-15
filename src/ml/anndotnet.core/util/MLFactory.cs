@@ -854,8 +854,9 @@ namespace ANNdotNET.Core
                 dicValues.Add("Validation", val);
             val = MLFactory.GetParameterValue(pathsValues, "Test");
             if (string.IsNullOrEmpty(val))
-                throw new Exception("One of model paths (Test) is not defined!");
-            dicValues.Add("Test", val);
+                dicValues.Add("Test", " ");
+            else
+                dicValues.Add("Test", val);
             val = MLFactory.GetParameterValue(pathsValues, "TempModels");
             if (string.IsNullOrEmpty(val))
                 throw new Exception("One of model paths (TempModels) is not defined!");
