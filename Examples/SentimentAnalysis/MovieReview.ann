@@ -1,0 +1,3 @@
+project:|Name:MovieReview |Type:NoRawData  |ValidationSetCount:0  |TestSetCount:0 |PrecentigeSplit:0 |MLConfigs:LSTM-Net |Info:ProjectInfo.rtf
+data:|RawData:MovieReview_rawdata.txt 
+parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0
