@@ -69,19 +69,6 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <panels:LayerItem Height="Auto"/>
-                            <!--<ContentControl x:Name="content"    Content="{Binding}" >
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type models:ProjectController}" >
-                                        <views:ProjectPage x:Name="experimentCtrl" />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type  models:MLConfig}">
-                                        <views:TrainingPage />
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type  models:StartModel}">
-                                        <views:StartPage x:Name="startPage" />
-                                    </DataTemplate>
-                                </ContentControl.Resources>
-                            </ContentControl>-->
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

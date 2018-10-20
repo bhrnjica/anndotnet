@@ -530,7 +530,7 @@ namespace anndotnet.wnd
                 //prepare control to load data
                 var cntCtrl = e.Parameter as DependencyObject;
                 var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
-                if (ctrl.Child is StartPanel)
+                if (!(ctrl.Child is DataPanel))
                     return;
                 var expCtrl = (DataPanel)ctrl.Child;
                 if (expCtrl == null)
