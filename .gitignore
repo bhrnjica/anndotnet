@@ -261,3 +261,6 @@ __pycache__/
 *.pyc
 /src/tool/anndotnet.tool/model_mlconfigs/iris/temp_models
 /src/ext/anndotnet.lib.ext.net/extensions/PredictFutureSalesCustomModels.cs
+/Examples/SentimentAnalysis/MovieReview/LSTM-Net/models
+/Examples/SentimentAnalysis/MovieReview/LSTM-Net/model_msdn-oct-2018-issue-sentiment-analysis-article.checkpoint.ckp
+/Examples/SentimentAnalysis/MovieReview/LSTM-Net/model_msdn-oct-2018-issue-sentiment-analysis-article.checkpoint
