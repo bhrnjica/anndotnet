@@ -264,3 +264,6 @@ __pycache__/
 /Examples/SentimentAnalysis/MovieReview/LSTM-Net/models
 /Examples/SentimentAnalysis/MovieReview/LSTM-Net/model_msdn-oct-2018-issue-sentiment-analysis-article.checkpoint.ckp
 /Examples/SentimentAnalysis/MovieReview/LSTM-Net/model_msdn-oct-2018-issue-sentiment-analysis-article.checkpoint
+/src/tool/anndotnet.tool/model_mlconfigs/BCML/models
+/src/tool/anndotnet.tool/model_mlconfigs/daily_sales/models
+/src/tool/anndotnet.tool/model_mlconfigs/iris/models
