@@ -262,3 +262,6 @@ __pycache__/
 /src/tool/anndotnet.tool/model_mlconfigs/iris/temp_models
 /src/ext/anndotnet.lib.ext.net/extensions/PredictFutureSalesCustomModels.cs
 /Examples/SentimentAnalysis-anndotnet-project.zip
+/src/tool/anndotnet.tool/model_mlconfigs/BCML/models
+/src/tool/anndotnet.tool/model_mlconfigs/daily_sales/models
+/src/tool/anndotnet.tool/model_mlconfigs/iris/models
