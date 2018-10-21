@@ -9,29 +9,63 @@ namespace anndotnet.core.app
 {
     class Program
     {
+        static Value GetValue()
+        {
+            var a = new NDArrayView(DataType.Float, new int[] { 1, 2, 3 }, DeviceDescriptor.CPUDevice);
+            return new Value(a);
+        }
+
+        static MinibatchData GetMinibatchData()
+        {
+            var mb= new MinibatchData();
+            mb.data = GetValue();
+             
+            return mb;
+        }
+        private static void testValidValue()
+        {
+            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
+
+            var value = GetMinibatchData().data.DeepClone();
+            //            var value = GetValue();
+
+            GC.Collect();
+
+            Console.WriteLine(value.IsValid); // => true
+            Console.WriteLine(string.Join(", ", value.Shape.Dimensions)); // => exception occurs
+
+        }
         static void Main(string[] args)
         {
+            //https://github.com/Microsoft/CNTK/issues/3439
+            //testValidValue();
 
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
-            var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"****Iris flower recognition****");
-            Console.WriteLine(Environment.NewLine);
-            var token2 = new CancellationToken();
-            var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
-            //evaluate model and export the result of testing
-            MachineLearning.EvaluateModel(mlConfigFile2, result.BestModelFile, DeviceDescriptor.UseDefaultDevice());
+            //var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
+            //Console.WriteLine(Environment.NewLine);
+            //Console.WriteLine($"****Iris flower recognition****");
+            //Console.WriteLine(Environment.NewLine);
+            //var token2 = new CancellationToken();
+            //var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
+            ////evaluate model and export the result of testing
+            //MachineLearning.EvaluateModel(mlConfigFile2, result.BestModelFile, DeviceDescriptor.UseDefaultDevice());
 
             //******run all configurations in the solution******
-            //string strLocation1 = "D:\\repos\\anndotnet\\src\\tool\\";
-            //for(int i=0; i< 10; i++)
+            //string strLocation1 = "C:\\sc\\github\\anndotnet\\src\\tool\\";
+            //for (int i = 0; i < 10; i++)
             //    runAllml_configurations(strLocation1);
+
+            runExample("Predict Solar Production",
+               "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
             Console.Read();
 
         }
+
+       
 
         private static void runAllml_configurations(string root)
         {
@@ -45,13 +79,13 @@ namespace anndotnet.core.app
                 $"{root}anndotnet.tool\\model_mlconfigs\\daily_sales.mlconfig");
 
             runExample("Predict Solar Production",
-                "D:\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
 
             runExample("Predict Future Sales",
-                "D:\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
 
             runExample("Predict Future Sales",
-                "D:\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig");
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig");
 
             runExample("Titanic Survival",
                 $"{root}anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig");

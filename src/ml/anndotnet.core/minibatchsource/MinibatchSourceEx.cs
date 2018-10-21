@@ -101,7 +101,7 @@ namespace ANNdotNET.Core
                 {
                     var k = retVal.ElementAt(i);
                     //this is fix for 2.6 version since the Value  data is not valid, so it must be clone in order to create MiniBatchData
-                   // var mbData = new MinibatchData(k.Value.data.DeepClone(), k.Value.numberOfSequences, k.Value.numberOfSamples, k.Value.sweepEnd);
+                    var mbData = new MinibatchData(k.Value.data.DeepClone(true), k.Value.numberOfSequences, k.Value.numberOfSamples, k.Value.sweepEnd);
                    
                     var si = new StreamInformation();
                     si.m_definesMbSize = StreamConfigurations[i].m_definesMbSize;
@@ -109,8 +109,8 @@ namespace ANNdotNET.Core
                     si.m_name = StreamConfigurations[i].m_streamName;
 
                     //
-                   //mb.Add(si, mbData);
-                   mb.Add(si, k.Value);
+                   mb.Add(si, mbData);
+                   //mb.Add(si, k.Value);
                 }
 
                 return mb;
@@ -219,30 +219,7 @@ namespace ANNdotNET.Core
 
         }
 
-        /// <summary>
-        /// Convert minibatch data 
-        /// </summary>
-        /// <param name="args"> data being converted</param>
-        /// <returns></returns>
-        public static UnorderedMapVariableMinibatchData ToMinibatchData(UnorderedMapStreamInformationMinibatchData args, List<Variable> vars, MinibatchType type)
-        {
-            var arguments = new UnorderedMapVariableMinibatchData();
-            foreach (var mbd in args)
-            {
-                var v = vars.Where(x => x.Name == mbd.Key.m_name).FirstOrDefault();
-                if (v == null)
-                    throw new Exception("Stream is invalid!");
-                if(type== MinibatchType.Custom)
-                {
-                    var mbd1 = new MinibatchData(mbd.Value.data.DeepClone(), mbd.Value.numberOfSamples,mbd.Value.sweepEnd);
-                    arguments.Add(v, mbd1);
-                }
-                   
-                else
-                    arguments.Add(v, mbd.Value);
-            }
-            return arguments;
-        }
+
         /// <summary>
         /// Convert minibatch data to Value 
         /// </summary>
