@@ -261,3 +261,6 @@ __pycache__/
 *.pyc
 /src/tool/anndotnet.tool/model_mlconfigs/iris/temp_models
 /src/ext/anndotnet.lib.ext.net/extensions/PredictFutureSalesCustomModels.cs
+/src/tool/anndotnet.tool/model_mlconfigs/BCML/models
+/src/tool/anndotnet.tool/model_mlconfigs/iris/models
+/src/tool/anndotnet.tool/model_mlconfigs/daily_sales/models
