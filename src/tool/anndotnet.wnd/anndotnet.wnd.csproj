@@ -81,12 +81,17 @@
     <Reference Include="Fluent, Version=6.1.0.326, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Fluent.Ribbon.6.1.0.326\lib\net462\Fluent.dll</HintPath>
     </Reference>
+    <Reference Include="Octokit, Version=0.32.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Octokit.0.32.0\lib\net45\Octokit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\System.Drawing.Common.4.5.1\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
@@ -163,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="pages\StartPageEx.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="panels\components\Multiclass.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -184,10 +193,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="pages\TrainingPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="pages\StartPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -213,12 +218,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="forms\StartPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="forms\StartPanel.Designer.cs">
-      <DependentUpon>StartPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -227,12 +226,16 @@
     <Compile Include="models\entities\ModelPerformance.cs" />
     <Compile Include="models\entities\TestColumn.cs" />
     <Compile Include="models\entities\TrainingHistory.cs" />
+    <Compile Include="models\entities\ExamplesModel.cs" />
     <Compile Include="models\entities\ModelEvaluation.cs" />
     <Compile Include="models\entities\TrainingProgress.cs" />
     <Compile Include="models\entities\InputLayer.cs" />
     <Compile Include="models\ANNProjectController.cs" />
     <Compile Include="models\MLConfigController.cs" />
     <Compile Include="models\StartModel.cs" />
+    <Compile Include="pages\StartPageEx.xaml.cs">
+      <DependentUpon>StartPageEx.xaml</DependentUpon>
+    </Compile>
     <Compile Include="panels\components\Multiclass.xaml.cs">
       <DependentUpon>Multiclass.xaml</DependentUpon>
     </Compile>
@@ -251,9 +254,6 @@
     </Compile>
     <Compile Include="pages\TrainingPage.xaml.cs">
       <DependentUpon>TrainingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="pages\StartPage.xaml.cs">
-      <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="panels\components\BinaryClassification.xaml.cs">
       <DependentUpon>BinaryClassification.xaml</DependentUpon>
@@ -460,9 +460,6 @@
     <EmbeddedResource Include="forms\MModelEvaluation.resx">
       <DependentUpon>MModelEvaluation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="forms\StartPanel.resx">
-      <DependentUpon>StartPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -592,7 +589,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="images\annabout.png" />
