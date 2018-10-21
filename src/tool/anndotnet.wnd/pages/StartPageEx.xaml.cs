@@ -26,6 +26,8 @@ namespace anndotnet.wnd.Pages
     /// </summary>
     public partial class StartPageEx
     {
+        private string m_defaultBranch = "anndotnet-vNext";
+        //private string m_defaultBranch = "master";
         public Action<Exception> ReportException { get; internal set; }
 
         public StartPageEx()
@@ -81,15 +83,15 @@ namespace anndotnet.wnd.Pages
                 var model = new List<ExamplesModel>();
                 var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("anndotnet"));
                 //var cnt = await client.Repository.Content.GetAllContents("bhrnjica", "anndotnet", "Examples");
-                var cnt = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", "Examples", "anndotnet-vNext");
+                var cnt = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", "Examples", m_defaultBranch);
                 //
-                foreach (var f in cnt)
+                foreach (var f in cnt.Where(x=>x.Name.EndsWith("zip")))
                 {
                     var em = new ExamplesModel();
                     em.Name = f.Name;
                     em.Path = f.Path;
                     var pathReadm = f.Path.Replace(f.Name, System.IO.Path.GetFileNameWithoutExtension(f.Name)+".txt");
-                    var fileWithContent = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", pathReadm, "anndotnet-vNext");
+                    var fileWithContent = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", pathReadm, m_defaultBranch);
                     em.Description = fileWithContent.FirstOrDefault()?.Content;
                     model.Add(em);
                 }
@@ -147,7 +149,7 @@ namespace anndotnet.wnd.Pages
                 var example = ((ListViewItem)sender).Content as ExamplesModel;
 
                 //create folder in case doesnt exist
-                var fullPathFolder = $"{exampleDir}{example.Name}\\";
+                var fullPathFolder = $"{exampleDir}{System.IO.Path.GetFileNameWithoutExtension(example.Name)}\\";
                 if (!System.IO.Directory.Exists(exampleDir))
                 {
                     System.IO.Directory.CreateDirectory(exampleDir);
@@ -155,7 +157,7 @@ namespace anndotnet.wnd.Pages
 
                 //download the files
                 var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("anndotnet"));
-                var cont = await client.Repository.Content.GetAllContents("bhrnjica", "anndotnet", example.Path);
+                var cont = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", example.Path, m_defaultBranch);
                 //
                 //downloadAndSave(client, cont, fullPathFolder);
                 var zipFile = cont.Where(x => x.Name.Contains($".zip")).FirstOrDefault();
@@ -164,7 +166,7 @@ namespace anndotnet.wnd.Pages
                     MessageBox.Show("File not found.","ANNDotNET");
                     return;
                 }
-                var remoteUrl = $"https://github.com/bhrnjica/anndotnet/raw/anndotnet-vNext/{zipFile.Path}";
+                var remoteUrl = $"https://github.com/bhrnjica/anndotnet/raw/{m_defaultBranch}/{zipFile.Path}";
                 var fullPath = exampleDir + zipFile.Name;
                 //
                 var fi = new System.IO.FileInfo(fullPath);
