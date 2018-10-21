@@ -35,22 +35,13 @@ namespace anndotnet.unit
             var value = GetMinibatchData().data;
 
             GC.Collect();
+
             Assert.True(value.IsValid);
-           
-            var ex = Assert.Throws<System.ApplicationException>(() =>
-            {
-                var lst = value.Shape.Dimensions.ToList();
 
-            });
-
-            var result = $"This Value object is invalid and can no longer be accessed." +
-                    $"This usually happens when a temporary Value object returned by the CNTK library is not cloned and " +
-                    $"accessed later after it has been erased by the library. The Value objects created inside and " +
-                    $"returned by the library from APIs like Forward, Backward etc. are temporary and are only guaranteed " +
-                    $"to be valid until the next Forward/Backward call. If you want to access the Values later, you must " +
-                    $"explicitly clone them.";
-                  
-           //  Assert.True(result);
+            Action testCode = () => { var lst = value.Shape.Dimensions.ToString(); };
+            var ex = Record.Exception(testCode);
+            
+           Assert.False(value.IsValid);
 
         }
 
