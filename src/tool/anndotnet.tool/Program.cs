@@ -9,36 +9,10 @@ namespace anndotnet.core.app
 {
     class Program
     {
-        static Value GetValue()
-        {
-            var a = new NDArrayView(DataType.Float, new int[] { 1, 2, 3 }, DeviceDescriptor.CPUDevice);
-            return new Value(a);
-        }
-
-        static MinibatchData GetMinibatchData()
-        {
-            var mb= new MinibatchData();
-            mb.data = GetValue();
-             
-            return mb;
-        }
-        private static void testValidValue()
-        {
-            DeviceDescriptor.TrySetDefaultDevice(DeviceDescriptor.CPUDevice);
-
-            var value = GetMinibatchData().data.DeepClone();
-            //            var value = GetValue();
-
-            GC.Collect();
-
-            Console.WriteLine(value.IsValid); // => true
-            Console.WriteLine(string.Join(", ", value.Shape.Dimensions)); // => exception occurs
-
-        }
+        
         static void Main(string[] args)
         {
-            //https://github.com/Microsoft/CNTK/issues/3439
-            //testValidValue();
+            
 
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris

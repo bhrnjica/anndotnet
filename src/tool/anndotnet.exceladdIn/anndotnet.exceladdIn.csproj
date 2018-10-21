@@ -78,13 +78,13 @@
     <None Include="Properties\ExcelDna.Build.props" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\core\nnetwork.core.net\nnetwork.core.net.csproj">
-      <Project>{3c000d09-ff02-4f12-a74d-deb41998bc23}</Project>
-      <Name>nnetwork.core.net</Name>
+    <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj">
+      <Project>{36ebb382-0747-4cb1-9f5b-64fade94bfd3}</Project>
+      <Name>nnetwork.core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ml\anndotnet.core.net\anndotnet.core.net.csproj">
-      <Project>{32d1a1cc-f57d-4efc-9fbb-c4414bc7a2cc}</Project>
-      <Name>anndotnet.core.net</Name>
+    <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj">
+      <Project>{93f8ed05-87a4-42db-91a2-77c7353fa3d2}</Project>
+      <Name>anndotnet.core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
