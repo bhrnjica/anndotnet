@@ -322,6 +322,7 @@ namespace ANNdotNET.Lib
             er.Header = new List<string>();
             //device definition
             DeviceDescriptor device = MLFactory.GetDevice(pdevice);
+
             //Load ML model configuration file
             var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
             //add full path of model folder since model file doesn't contains any absolute path
@@ -568,7 +569,7 @@ namespace ANNdotNET.Lib
                 var retVal = MLFactory.PrepareNNData(dicMParameters, CustomNNModels.CustomModelCallEntryPoint, device);
 
                 //create trainer 
-                MLTrainerEx tr = new MLTrainerEx(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
+                var tr = new MLTrainer(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
 
                 //setup model checkpoint
                 string modelCheckPoint = null;

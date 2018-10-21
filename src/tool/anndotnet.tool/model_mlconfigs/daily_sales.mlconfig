@@ -22,7 +22,7 @@ network:|Layer:Embedding 20 0 0 None 0 0 |Layer:LSTM 60 60 0 TanH 1 1 |Layer:Dro
 learning:|Type:MomentumSGDLearner |LRate:0.0003 |Momentum: 0.5 |Loss:SquaredError |Eval:RMSError  
 
 !training process is defined with 200 iteration, but it can be more. ALso the normalization is enabled as separate network layer, since during data transformation no normalization has been performed.
-training:|Type:Default |BatchSize:480 |Epochs:200 |Normalization:Sale |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:1 |ContinueTraining:0 |TrainedModel:models\model_at_107of200_epochs_TimeSpan_636732999213001157 
+training:|Type:Default |BatchSize:480 |Epochs:200 |Normalization:Sale |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:1 |ContinueTraining:0 |TrainedModel:models\model_at_107of200_epochs_TimeSpan_636756747246391815 
 
 !various paths needed in order to train, evaluate, export model
 paths:|Training:data\daily_sales_train_cntk.txt |Validation:data\daily_sales_valid_cntk.txt |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 

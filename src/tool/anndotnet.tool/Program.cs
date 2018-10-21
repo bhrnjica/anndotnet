@@ -12,25 +12,30 @@ namespace anndotnet.core.app
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             transformDailyLevelVeanaLake();
             //return;
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
-            var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"****Iris flower recognition****");
-            Console.WriteLine(Environment.NewLine);
-            var token2 = new CancellationToken();
-            var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
-            //evaluate model and export the result of testing
-            MachineLearning.EvaluateModel(mlConfigFile2, result.BestModelFile, DeviceDescriptor.UseDefaultDevice());
+            //var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
+            //Console.WriteLine(Environment.NewLine);
+            //Console.WriteLine($"****Iris flower recognition****");
+            //Console.WriteLine(Environment.NewLine);
+            //var token2 = new CancellationToken();
+            //var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
+            ////evaluate model and export the result of testing
+            //MachineLearning.EvaluateModel(mlConfigFile2, result.BestModelFile, DeviceDescriptor.UseDefaultDevice());
 
             //******run all configurations in the solution******
-            //string strLocation1 = "D:\\repos\\anndotnet\\src\\tool\\";
-            //for(int i=0; i< 10; i++)
+            //string strLocation1 = "C:\\sc\\github\\anndotnet\\src\\tool\\";
+            //for (int i = 0; i < 10; i++)
             //    runAllml_configurations(strLocation1);
+
+            runExample("Predict Solar Production",
+               "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
             Console.Read();
@@ -73,6 +78,8 @@ namespace anndotnet.core.app
 
         
 
+       
+
         private static void runAllml_configurations(string root)
         {
             runExample("Iris Flower Identification",
@@ -85,13 +92,13 @@ namespace anndotnet.core.app
                 $"{root}anndotnet.tool\\model_mlconfigs\\daily_sales.mlconfig");
 
             runExample("Predict Solar Production",
-                "D:\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
 
             runExample("Predict Future Sales",
-                "D:\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales_custom.mlconfig", CustomNNModels.CustomModelCallEntryPoint);
 
             runExample("Predict Future Sales",
-                "D:\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig");
+                "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\predict_future_sales.mlconfig");
 
             runExample("Titanic Survival",
                 $"{root}anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig");
