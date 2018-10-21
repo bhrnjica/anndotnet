@@ -80,14 +80,16 @@ namespace anndotnet.wnd.Pages
             {
                 var model = new List<ExamplesModel>();
                 var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("anndotnet"));
-                var cnt = await client.Repository.Content.GetAllContents("bhrnjica", "anndotnet", "Examples");
+                //var cnt = await client.Repository.Content.GetAllContents("bhrnjica", "anndotnet", "Examples");
+                var cnt = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", "Examples", "anndotnet-vNext");
                 //
                 foreach (var f in cnt)
                 {
                     var em = new ExamplesModel();
                     em.Name = f.Name;
                     em.Path = f.Path;
-                    var fileWithContent = await client.Repository.Content.GetAllContents("bhrnjica", "anndotnet", f.Path+"/Readme.txt");
+                    var pathReadm = f.Path.Replace(f.Name, System.IO.Path.GetFileNameWithoutExtension(f.Name)+".txt");
+                    var fileWithContent = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", pathReadm, "anndotnet-vNext");
                     em.Description = fileWithContent.FirstOrDefault()?.Content;
                     model.Add(em);
                 }
@@ -162,7 +164,7 @@ namespace anndotnet.wnd.Pages
                     MessageBox.Show("File not found.","ANNDotNET");
                     return;
                 }
-                var remoteUrl = $"https://github.com/bhrnjica/anndotnet/raw/master/{zipFile.Path}";
+                var remoteUrl = $"https://github.com/bhrnjica/anndotnet/raw/anndotnet-vNext/{zipFile.Path}";
                 var fullPath = exampleDir + zipFile.Name;
                 //
                 var fi = new System.IO.FileInfo(fullPath);
