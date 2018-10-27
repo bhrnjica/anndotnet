@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading;
 using ANNdotNET.Lib.Ext;
 using DataProcessing.Core;
+using System.Threading.Tasks;
 
 namespace ANNdotNET.Lib
 {
@@ -204,55 +205,6 @@ namespace ANNdotNET.Lib
         #region Methods exposed to ANNTool
 
         /// <summary>
-        /// Parses raw dataset and extract the list of Variables.
-        /// </summary>
-        /// <param name="metaDataValues"></param>
-        /// <returns></returns>
-        public static List<VariableDescriptor> ParseRawDataSet(string metaDataValues)
-        {
-            try
-            {
-                //parse data
-                var mdata = metaDataValues.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-
-                //define columns 
-                var cols = new List<VariableDescriptor>();
-                //parse meta data
-                foreach (var c in mdata.Where(x => x.StartsWith("Column")).OrderBy(x => x))
-                {
-                    VariableDescriptor col = new VariableDescriptor();
-                    //check if double point appear more than one time. In that case raise exception
-                    if (c.Count(x => x == ':') > 1)
-                        throw new Exception("Column data contains double point ':' which is reserved char. PLease remove double point from metadata.");
-
-                    var strData = c.Substring(c.IndexOf(":") + 1);
-                    var colValues = strData.Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);
-                    col.Name = colValues[0];
-                    col.Type = (DataType)Enum.Parse(typeof(DataType), colValues[1], true);
-                    col.Kind = (DataKind)Enum.Parse(typeof(DataKind), colValues[2], true);
-                    col.MissingValue = (MissingValue)Enum.Parse(typeof(MissingValue), colValues[3], true);
-                    //
-                    if (col.Type == DataType.Category)
-                    {
-                        var cl = DataDescriptor.GetColumnClasses(c);
-                        if (cl != null)
-                            col.Classes = cl.ToArray();
-                    }
-
-                    //add parsed column to the collection
-                    cols.Add(col);
-                }
-                return cols;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-        /// <summary>
         /// Deletes all files and folder withing the path
         /// </summary>
         /// <param name="mlconfigFolder"></param>
@@ -273,14 +225,14 @@ namespace ANNdotNET.Lib
         /// <summary>
         /// Saves the mlconfig in CNTK format.
         /// </summary>
-        /// <param name="mlconfigPath"></param>
-        /// <param name="savedMLConfig"></param>
+        /// <param name="filePathToCopy"></param>
+        /// <param name="newFilePath"></param>
         /// <returns></returns>
-        public static bool SaveCNTKModel(string mlconfigPath, string savedMLConfig)
+        public static bool SaveCNTKModel(string filePathToCopy, string newFilePath)
         {
             try
             {
-                File.Copy(savedMLConfig, mlconfigPath);
+                File.Copy(newFilePath, filePathToCopy);
                 return true;
             }
             catch (Exception)
@@ -316,234 +268,14 @@ namespace ANNdotNET.Lib
             return MLEvaluator.TestModel(mlconfigPath, vector, device);
         }
 
-        public static EvaluationResult EvaluateModel(string mlconfigPath, DataSetType dsType, EvaluationType evType, ProcessDevice pdevice)
+        public static async Task<EvaluationResult> EvaluateMLConfig(string mlconfigPath, DataSetType dsType, EvaluationType evType, ProcessDevice pdevice)
         {
-            var er = new EvaluationResult();
-            er.Header = new List<string>();
             //device definition
             DeviceDescriptor device = MLFactory.GetDevice(pdevice);
-
-            //Load ML model configuration file
-            var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
-            //add full path of model folder since model file doesn't contains any absolute path
-            dicMParameters.Add("root", Project.GetMLConfigFolder(mlconfigPath));
-
-            // get model data paths
-            var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
-            var modelName = Project.GetParameterValue(dicMParameters["training"], "TrainedModel");
-            var nnModelPath = Path.Combine(dicMParameters["root"], modelName);
-            //check if model exists
-            if (!MLFactory.IsFileExist(nnModelPath))
-                return er;
-
-
-            //check if dataset files exist
-            var dataPath = GetDataPath(dicMParameters, dsType);
-            if (!MLFactory.IsFileExist(dataPath))
-            {
-                //in case test dataset is not defined just export validation dataset
-                if(dsType== DataSetType.Testing)
-                    dataPath = GetDataPath(dicMParameters, DataSetType.Validation);
-                if (!MLFactory.IsFileExist(dataPath))
-                    return er;
-            }
-
-            //get output classes in case the ml problem is classification
-            var strCls = dicMParameters.ContainsKey("metadata") ? dicMParameters["metadata"] : "";
-            er.OutputClasses = DataDescriptor.GetOutputClasses(strCls);
-
-            //Minibatch type
-            var mbTypestr = Project.GetParameterValue(dicMParameters["training"], "Type");
-            MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
-            var mbSizetr = Project.GetParameterValue(dicMParameters["training"], "BatchSize");
-
-            var mf = MLFactory.CreateMLFactory(dicMParameters);
-            //perform evaluation
-            var evParams = new EvaluationParameters()
-            {
-
-                MinibatchSize = uint.Parse(mbSizetr),
-                MBSource = new MinibatchSourceEx(mbType, mf.StreamConfigurations.ToArray(), dataPath, null, MinibatchSource.FullDataSweep, false),
-                Input=mf.InputVariables,
-                Ouptut = mf.OutputVariables,
-            };
-            
-            //evaluate model
-            if (evType == EvaluationType.FeaturesOnly)
-            {
-                if (!dicMParameters.ContainsKey("metadata"))
-                    throw new Exception("The result cannot be exported to Excel, since no metadata is stored in mlconfig file.");
-                var desc = ParseRawDataSet(dicMParameters["metadata"]);
-                er.Header = generateHeader(desc);
-                er.DataSet = FeatureAndLabels(nnModelPath, dataPath, evParams, device);
-                
-                return er;
-            }
-            else if (evType == EvaluationType.Results)
-            {
-                //define header
-                er.Header.Add(evParams.Ouptut.First().Name + "_actual");
-                er.Header.Add(evParams.Ouptut.First().Name + "_predicted");
-
-                var result = EvaluateFunction(nnModelPath, dataPath, evParams, device);
-                er.Actual = result.actual.ToList();
-                er.Predicted = result.predicted.ToList();
-                return er;
-            }
-            else if (evType == EvaluationType.ResultyExtended)
-            {
-                //define header
-                er.Header.Add(evParams.Ouptut.First().Name + "_actual");
-                er.Header.Add(evParams.Ouptut.First().Name + "_predicted");
-                er.Actual = new List<float>();
-                er.Predicted = new List<float>();
-                er.ActualEx = new List<List<float>>();
-                er.PredictedEx = new List<List<float>>();
-                //
-                var resultEx = EvaluateFunctionEx(nnModelPath, dataPath, evParams, device);
-                for (int i = 0; i < resultEx.actual.Count(); i++)
-                {
-                    var res1 = MLValue.GetResult(resultEx.actual[i]);
-                    er.Actual.Add(res1);
-                    var res2 = MLValue.GetResult(resultEx.predicted[i]);
-                    er.Predicted.Add(res2);
-                }
-                er.ActualEx = resultEx.actual;
-                er.PredictedEx = resultEx.predicted;
-
-                return er;
-            }
-            else
-                throw new Exception("Unknown evaluation type!");
-
-
-        }
-
-        private static List<string> generateHeader(List<VariableDescriptor> cols)
-        {
-            var lst = new List<string>();
-            //first numeric column then categorical
-            foreach(var c in cols.Where(x=>x.Kind!= DataKind.Label && x.Kind != DataKind.None))
-            {
-                if (c.Type == DataType.None)
-                    continue;
-                else if(c.Type== DataType.Numeric)
-                    lst.Add(c.Name);
-            }
-            //then categorical column
-            foreach (var c in cols.Where(x => x.Kind != DataKind.Label && x.Kind != DataKind.None))
-            {
-                if (c.Type == DataType.None)
-                    continue;
-                else if (c.Type == DataType.Category)
-                {
-                    for (int i = 0; i < c.Classes.Length; i++)
-                    {
-                        var strCol = $"{c.Name}-{c.Classes[i]}";
-                        lst.Add(strCol);
-                    }
-                }
-                
-            }
-            //the last one is Label
-            foreach (var c in cols.Where(x => x.Kind == DataKind.Label && x.Kind != DataKind.None))
-            {
-                if (c.Type == DataType.None)
-                    continue;
-                //else if (c.Type == DataType.Category)
-                //{
-                //    for (int i = 0; i < c.Classes.Length; i++)
-                //    {
-                //        var strCol = $"{c.Name}-{c.Classes[i]}";
-                //        lst.Add(strCol);
-                //    }
-                //}
-                else
-                    lst.Add(c.Name + "_actual");
-            }
-
-            return lst;
+            return await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, dsType, evType);
         }
 
 
-        public static Dictionary<string, List<List<float>>> FeatureAndLabels(string nnModel, string dataPath,EvaluationParameters evParam, DeviceDescriptor device)
-        {
-            try
-            {
-                var fun = Function.Load(nnModel, device);
-                //
-                return MLEvaluator.FeaturesAndLabels(fun, evParam, device);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-        public static (IEnumerable<float> actual, IEnumerable<float> predicted) EvaluateFunction(string nnModel, string dataPath, EvaluationParameters evParam, DeviceDescriptor device)
-        {
-            try
-            {
-                var fun = Function.Load(nnModel, device);
-                //
-                return MLEvaluator.EvaluateFunction(fun, evParam, device);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-        public static (List<List<float>> actual, List<List<float>> predicted) EvaluateFunctionEx(string nnModel, string dataPath, EvaluationParameters evParam, DeviceDescriptor device)
-        {
-            try
-            {
-                var fun = Function.Load(nnModel, device);
-                //
-                return MLEvaluator.EvaluateFunctionEx(fun, evParam, device);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-
-
-        /// <summary>
-        /// Return path for specified dataset
-        /// </summary>
-        /// <param name="dicPath"></param>
-        /// <param name="dsType"></param>
-        /// <returns></returns>
-        private static string GetDataPath(Dictionary<string, string> dicPath, DataSetType dsType)
-        {
-            var dataPaths = MLFactory.GetMLConfigComponentPaths(dicPath["paths"]);
-            //
-            if (dsType == DataSetType.Training)
-            {
-                //
-                var strPath = $"{dicPath["root"]}\\{dataPaths["Training"]}";
-                return strPath;
-            }
-            else if (dsType == DataSetType.Validation)
-            {
-                var strPath = $"{dicPath["root"]}\\{dataPaths["Validation"]}";
-                return strPath;
-            }
-            else if (dsType == DataSetType.Testing)
-            {
-                var strPath = $"{dicPath["root"]}\\{dataPaths["Test"]}";
-                return strPath;
-            }
-            else
-                return null;
-        }
 
         /// <summary>
         /// Main methods for model training
@@ -607,13 +339,17 @@ namespace ANNdotNET.Lib
         {
             try
             {
-                return MLFactory.ReplaceBestModel(trainingParameters,mlconfigPath, bestModelFile);
+                return MLFactory.ReplaceBestModel(trainingParameters, mlconfigPath, bestModelFile);
             }
             catch (Exception)
             {
-
                 throw;
             }
+        }
+
+        public static List<VariableDescriptor> ParseRawDataSet(string metaDataValues)
+        {
+           return MLFactory.ParseRawDataSet(metaDataValues);
         }
 
         /// <summary>
@@ -629,28 +365,28 @@ namespace ANNdotNET.Lib
                 var strFeatures = $"features:";
 
                 //first create features and labels based on data descriptor
-                var numDim = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == DataType.Numeric).Count();
+                var numDim = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Numeric).Count();
                 if (numDim > 0)
                     strFeatures += $"{ProjectSettings.m_NumFeaturesGroupName} {numDim} 0\t";
                 //create category features
-                foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == DataType.Category))
+                foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Category))
                 {
                     strFeatures += $"|{c.Name} {c.Classes.Length} 0\t";
                 }
                 //create label
                 var strLabel = $"labels:";
-                foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type == DataType.Category))
+                foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type == MLDataType.Category))
                 {
                     strLabel += $"|{c.Name} {c.Classes.Length} 0\t";
                 }
                 //
-                foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type == DataType.Numeric))
+                foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type == MLDataType.Numeric))
                 {
                     strLabel += $"|{c.Name} {1} 0\t";
                 }
 
                 //only one Label is supported 
-                var countLabel = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type != DataType.None).Count();
+                var countLabel = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Label && x.Type != MLDataType.None).Count();
                 if (countLabel == 0)
                     throw new Exception("The mlconfig cannot be created, no label is defined!");
                 if (countLabel > 1)
@@ -756,6 +492,7 @@ namespace ANNdotNET.Lib
                 throw;
             }
         }
+        
         /// <summary>
         /// Returns full paths of the model components specified by its name
         /// </summary>
@@ -857,7 +594,7 @@ namespace ANNdotNET.Lib
 
                 throw;
             }
-            
+
         }
 
         /// <summary>
@@ -934,7 +671,7 @@ namespace ANNdotNET.Lib
             var projectValues = strData.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
             return MLFactory.GetParameterValue(projectValues, name);
         }
-        
+
         /// <summary>
         /// Parses the array of string find the parameter and return parameter value 
         /// </summary>
@@ -1015,7 +752,7 @@ namespace ANNdotNET.Lib
 
             //parse data
             var parser = dataValues.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-            
+
             //row separator
             var row = MLFactory.GetParameterValue(parser, "RowSeparator");
             if (string.IsNullOrEmpty(row))
@@ -1167,7 +904,7 @@ namespace ANNdotNET.Lib
 
                 throw;
             }
-         
+
         }
         /// <summary>
         /// Return full path of the mlconfig folder by specifying full mlconfig path
@@ -1201,7 +938,7 @@ namespace ANNdotNET.Lib
         {
             return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName, MLFactory.m_MLDataFolder);
         }
-       
+
         /// <summary>
         /// Returns default full path of ml dataset
         /// </summary>

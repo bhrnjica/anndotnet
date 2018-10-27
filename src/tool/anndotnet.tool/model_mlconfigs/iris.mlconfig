@@ -4,6 +4,8 @@
 features:|NumFeatures 4 0
 labels:|species 3 0
 
+metadata:|Column01:x1;Numeric;Feature;Average;|Column01:x1;Numeric;Feature;Average;|Column01:x1;Numeric;Feature;Average;|Column01:x1;Numeric;Feature;Average; |Column05:Flower;Category;Label;None;setosa;versicolor;virginica
+
 ! network
 network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 5 0 0 ReLU 0 0 |Layer:Dense 3 0 0 Softmax 0 0 
 

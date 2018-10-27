@@ -674,6 +674,123 @@ namespace ANNdotNET.Core
 
         }
 
+        /// <summary>
+        /// Parses raw dataset and extract the list of Variables.
+        /// </summary>
+        /// <param name="metaDataValues"></param>
+        /// <returns></returns>
+        public static List<VariableDescriptor> ParseRawDataSet(string metaDataValues)
+        {
+            try
+            {
+                //parse data
+                var mdata = metaDataValues.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
+
+                //define columns 
+                var cols = new List<VariableDescriptor>();
+                //parse meta data
+                foreach (var c in mdata.Where(x => x.StartsWith("Column")).OrderBy(x => x))
+                {
+                    VariableDescriptor col = new VariableDescriptor();
+                    //check if double point appear more than one time. In that case raise exception
+                    if (c.Count(x => x == ':') > 1)
+                        throw new Exception("Column data contains double point ':' which is reserved char. PLease remove double point from metadata.");
+
+                    var strData = c.Substring(c.IndexOf(":") + 1);
+                    var colValues = strData.Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);
+                    col.Name = colValues[0];
+                    col.Type = (MLDataType)Enum.Parse(typeof(MLDataType), colValues[1], true);
+                    col.Kind = (DataKind)Enum.Parse(typeof(DataKind), colValues[2], true);
+                    col.MissingValue = (MissingValue)Enum.Parse(typeof(MissingValue), colValues[3], true);
+                    //
+                    if (col.Type == MLDataType.Category)
+                    {
+                        var cl = MLFactory.GetColumnClasses(c);
+                        if (cl != null)
+                            col.Classes = cl.ToArray();
+                    }
+
+                    //add parsed column to the collection
+                    cols.Add(col);
+                }
+                return cols;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Return path for specified dataset
+        /// </summary>
+        /// <param name="dicPath"></param>
+        /// <param name="dsType"></param>
+        /// <returns></returns>
+        public static string GetDataPath(Dictionary<string, string> dicPath, DataSetType dsType)
+        {
+            var dataPaths = MLFactory.GetMLConfigComponentPaths(dicPath["paths"]);
+            //
+            if (dsType == DataSetType.Training)
+            {
+                //
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Training"]}";
+                return strPath;
+            }
+            else if (dsType == DataSetType.Validation)
+            {
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Validation"]}";
+                return strPath;
+            }
+            else if (dsType == DataSetType.Testing)
+            {
+                var strPath = $"{dicPath["root"]}\\{dataPaths["Test"]}";
+                return strPath;
+            }
+            else
+                return null;
+        }
+        public static List<string> GenerateHeader(List<VariableDescriptor> cols)
+        {
+            var lst = new List<string>();
+            //first numeric column then categorical
+            foreach (var c in cols.Where(x => x.Kind != DataKind.Label && x.Kind != DataKind.None))
+            {
+                if (c.Type == MLDataType.None)
+                    continue;
+                else if (c.Type == MLDataType.Numeric)
+                    lst.Add(c.Name);
+            }
+            //then categorical column
+            foreach (var c in cols.Where(x => x.Kind != DataKind.Label && x.Kind != DataKind.None))
+            {
+                if (c.Type == MLDataType.None)
+                    continue;
+                else if (c.Type == MLDataType.Category)
+                {
+                    for (int i = 0; i < c.Classes.Length; i++)
+                    {
+                        var strCol = $"{c.Name}-{c.Classes[i]}";
+                        lst.Add(strCol);
+                    }
+                }
+
+            }
+            //the last one is Label
+            foreach (var c in cols.Where(x => x.Kind == DataKind.Label && x.Kind != DataKind.None))
+            {
+                if (c.Type == MLDataType.None)
+                    continue;
+                else
+                    lst.Add(c.Name + "_actual");
+            }
+
+            return lst;
+        }
+
         #endregion
 
         #region Private Methods
@@ -758,6 +875,34 @@ namespace ANNdotNET.Core
                 throw;
             }
 
+        }
+
+        public static List<string> GetOutputClasses(string strMetadata)
+        {
+            if (string.IsNullOrEmpty(strMetadata))
+                return null;
+
+
+            var columns = strMetadata.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
+            var labelColumn = columns.Where(x => x.Contains("Label")).FirstOrDefault();
+            if (string.IsNullOrEmpty(labelColumn))
+                return null;
+
+            return GetColumnClasses(labelColumn);
+        }
+
+        public static List<string> GetColumnClasses(string columnData)
+        {
+            var lst = new List<string>();
+            var paramName = columnData.Split(MLFactory.m_ParameterNameSeparator, StringSplitOptions.RemoveEmptyEntries);
+            if (paramName == null || paramName.Length != 2)
+                return null;
+
+
+            var par = paramName[1].Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);
+
+            lst = par.Skip(4).Select(x => x.Trim(' ')).ToList();
+            return lst;
         }
 
         /// <summary>

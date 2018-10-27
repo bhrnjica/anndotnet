@@ -7,6 +7,7 @@ using NNetwork.Core.Common;
 using ANNdotNET.Lib.Ext;
 using System.Collections.Generic;
 using System.Globalization;
+using ANNdotNET.Core;
 
 namespace anndotnet.core.app
 {
@@ -17,6 +18,7 @@ namespace anndotnet.core.app
         {
             //transformDailyLevelVeanaLake();
             //return;
+
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
@@ -25,16 +27,21 @@ namespace anndotnet.core.app
             Console.WriteLine(Environment.NewLine);
             var token2 = new CancellationToken();
             var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
+            
+
             //evaluate model and export the result of testing
-            MachineLearning.EvaluateModel(mlConfigFile2, result.BestModelFile, DeviceDescriptor.UseDefaultDevice());
+            MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), 
+                "./model_mlconfigs/iris_result.csv" );
+
+
 
             //******run all configurations in the solution******
             //string strLocation1 = "C:\\sc\\github\\anndotnet\\src\\tool\\";
             //for (int i = 0; i < 10; i++)
             //    runAllml_configurations(strLocation1);
 
-            runExample("Predict Solar Production",
-               "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+            //runExample("Predict Solar Production",
+            //   "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
 
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");

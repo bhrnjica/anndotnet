@@ -23,13 +23,10 @@ namespace ANNdotNET.Core
 
     public class EvaluationParameters
     {
-        //public string DataFilePath { get; set; }
         public uint MinibatchSize { get; set; }
         public MinibatchSourceEx MBSource { get; set; }
         public List<Variable> Input { get; set; }
         public List<Variable> Ouptut { get; set; }
-
-        //  public StreamConfiguration[] StrmsConfig { get; set; }
     }
 }
     

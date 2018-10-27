@@ -1003,7 +1003,7 @@ namespace anndotnet.wnd
             e.Handled = true;
         }
 
-        private void onExport(object sender, ExecutedRoutedEventArgs e)
+        private async void onExport(object sender, ExecutedRoutedEventArgs e)
         {
             try
             {
@@ -1019,26 +1019,28 @@ namespace anndotnet.wnd
                 {
                     var filepath = promptToSaveFile("Microsoft Excel files", " *.xlsx");
                     if (!string.IsNullOrEmpty(filepath))
-                        mlConfigC.ExportToExcel(filepath);
+                        await mlConfigC.ExportToExcel(filepath);
                 }
                 if (e.Parameter.ToString() == "CSV")
                 {
                     var filepath = promptToSaveFile("comma separated values files", " *.csv");
                     if (!string.IsNullOrEmpty(filepath))
-                        mlConfigC.ExportToCSV(filepath);
+                       await  mlConfigC.ExportToCSV(filepath);
                 }
                 else if (e.Parameter.ToString() == "CNTK")
                 {
                     var filepath = promptToSaveFile("Microsoft CNTK files", " *.cntk");
                     if (!string.IsNullOrEmpty(filepath))
-                        mlConfigC.ExportToCNTK(filepath);
+                        await mlConfigC.ExportToCNTK(filepath);
                 }
                 else if (e.Parameter.ToString() == "ONNX")
                 {
                     var filepath = promptToSaveFile("ONNX files", " *.onnx");
                     if (!string.IsNullOrEmpty(filepath))
-                        mlConfigC.ExportToONNX(filepath);
+                       await mlConfigC.ExportToONNX(filepath);
                 }
+
+                return;
             }
             catch (Exception ex)
             {

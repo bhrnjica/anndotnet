@@ -99,6 +99,14 @@ namespace NNetwork.Core.Common
         }
     }
 
+    public enum DataSetType
+    {
+        Training,
+        Validation,
+        Testing,
+        Custom,
+    }
+
     public class TrainingParameters
     {
         public MinibatchType Type { get; set; }

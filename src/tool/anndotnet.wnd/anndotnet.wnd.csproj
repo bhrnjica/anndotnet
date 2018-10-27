@@ -223,7 +223,6 @@
     </Compile>
     <Compile Include="models\AppModel.cs" />
     <Compile Include="commons\BaseModel.cs" />
-    <Compile Include="models\entities\ModelPerformance.cs" />
     <Compile Include="models\entities\TestColumn.cs" />
     <Compile Include="models\entities\TrainingHistory.cs" />
     <Compile Include="models\entities\ExamplesModel.cs" />

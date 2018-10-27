@@ -10,26 +10,23 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using anndotnet.wnd.Mvvm;
-using ANNdotNET.Core;
-using System.Collections.Generic;
-using ZedGraph;
+using System.ComponentModel;
 
-namespace anndotnet.wnd.Models
+namespace ANNdotNET.Lib
 {
+    
 
-    public class ModelEvaluation : ObservableObject
+    //Scaling of the numerical column
+    public enum DataNormalization
     {
-        public List<PointPair> TrainingValue { get; set; }
-        public List<PointPair> ValidationValue { get; set; }
-        public List<PointPair> ModelValueTraining { get; set; }
-        public List<PointPair> ModelValueValidation { get; set; }
-        public int ModelOutputDim { get; internal set; }
-        public List<string> Classes { get; internal set; }
-
-        public ModelPerformance TrainPerformance { get; internal set; }
-        public ModelPerformance ValidationPerformance { get; internal set; }
-
-        
+        [Description("None")]
+        None,
+        [Description("MinMax")]
+        MinMax,
+        [Description("Gauss")]
+        Gauss,
+        [Description("Custom")]
+        Custom,
     }
+
 }

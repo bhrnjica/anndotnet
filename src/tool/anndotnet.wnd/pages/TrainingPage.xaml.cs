@@ -62,7 +62,7 @@ namespace anndotnet.wnd.Pages
                     evaluation.DataContext = model;
                     model.Init();
                     //disable testing in case metadata is not presented
-                    if (model.TestData == null || model.TestData.Where(x => x.Kind == ANNdotNET.Lib.DataKind.Feature).Count() == 0)
+                    if (model.TestData == null || model.TestData.Where(x => x.Kind == ANNdotNET.Core.DataKind.Feature).Count() == 0)
                         testTab.Visibility = Visibility.Collapsed;
 
                     //restore cursor 

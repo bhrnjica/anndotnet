@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using ANNdotNet.Wnd.Dialogs;
+using ANNdotNET.Core;
 using GPdotNet.MathStuff;
 using System;
 using System.Linq;
@@ -32,11 +33,11 @@ namespace anndotnet.wnd.panels
 
         private void BinaryClassification_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!(this.DataContext is Models.ModelPerformance))
+            if (!(this.DataContext is ModelPerformance))
                 return;
 
-            var modelPerf = (Models.ModelPerformance)this.DataContext;
-            var perfData = ((Models.ModelPerformance)this.DataContext).PerformanceData;
+            var modelPerf = (ModelPerformance)this.DataContext;
+            var perfData = ((ModelPerformance)this.DataContext).PerformanceData;
             if (perfData == null)
                 return;
             //
@@ -60,11 +61,11 @@ namespace anndotnet.wnd.panels
 
         private void ROCCurve_Click(object sender, RoutedEventArgs e)
         {
-            if (!(this.DataContext is Models.ModelPerformance))
+            if (!(this.DataContext is ModelPerformance))
                 return;
 
-            var modelPerf = (Models.ModelPerformance)this.DataContext;
-            var ret = ((Models.ModelPerformance)this.DataContext).PerformanceData;
+            var modelPerf = (ModelPerformance)this.DataContext;
+            var ret = ((ModelPerformance)this.DataContext).PerformanceData;
 
             BModelEvaluation dlg = new BModelEvaluation();
             dlg.Text = $"Model performance for {modelPerf.DatSetName}.";
@@ -77,11 +78,11 @@ namespace anndotnet.wnd.panels
 
         private void CMatric_Click(object sender, RoutedEventArgs e)
         {
-            if (!(this.DataContext is Models.ModelPerformance))
+            if (!(this.DataContext is ModelPerformance))
                 return;
 
-            var modelPerf = (Models.ModelPerformance)this.DataContext;
-            var ret = ((Models.ModelPerformance)this.DataContext).PerformanceData;
+            var modelPerf = (ModelPerformance)this.DataContext;
+            var ret = ((ModelPerformance)this.DataContext).PerformanceData;
 
             MModelEvaluation dlg = new MModelEvaluation();
             dlg.Text = $"Confusion matrix for {modelPerf.DatSetName}";

@@ -10,16 +10,15 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using anndotnet.wnd.Mvvm;
 using System.Collections.Generic;
 
-namespace anndotnet.wnd.Models
+namespace ANNdotNET.Core
 {
 
-    public class ModelPerformance : ObservableObject
+    public class ModelPerformance
     {
         public string DatSetName { get; set; }
-        public Dictionary<string, List<object>> PerformanceData { get; internal set; }
+        public Dictionary<string, List<object>> PerformanceData { get; set; }
 
         //regression
         public float SE { set; get; }
@@ -44,6 +43,7 @@ namespace anndotnet.wnd.Models
         //Classification error
         public float ER { set; get; }
 
+        //classification class values
         public string[] Classes { set; get; }
 
         //Classification accuracy

@@ -73,4 +73,10 @@
     <PackageReference Include="CNTK.GPU" Version="2.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="model_mlconfigs\iris.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

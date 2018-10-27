@@ -1,18 +1,9 @@
-﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool                                                       //
-// Copyright 2017-2018 Bahrudin Hrnjica                                                 //
-//                                                                                      //
-// This code is free software under the MIT License                                     //
-// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
-//                                                                                      //
-// Bahrudin Hrnjica                                                                     //
-// bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
-// http://bhrnjica.net                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 
-namespace ANNdotNET.Lib
+namespace ANNdotNET.Core
 {
     /// <summary>
     /// Class implements one column of Raw Data set.
@@ -23,7 +14,7 @@ namespace ANNdotNET.Lib
 
         public string Name { get; set; }
 
-        public DataType Type { get; set; }
+        public MLDataType Type { get; set; }
 
         public DataKind Kind { get; set; }
 
@@ -32,21 +23,8 @@ namespace ANNdotNET.Lib
         public string[] Classes { get; set; }
     }
 
-    //Scaling of the numerical column
-    public enum DataNormalization
-    {
-        [Description("None")]
-        None,
-        [Description("MinMax")]
-        MinMax,
-        [Description("Gauss")]
-        Gauss,
-        [Description("Custom")]
-        Custom,
-    }
-
     //Data type only numric and category
-    public enum DataType
+    public enum MLDataType
     {
         [Description("None")]
         None, // ignore columns in modeling
@@ -65,7 +43,7 @@ namespace ANNdotNET.Lib
         Feature, //-treat column as input parameter or feature
         [Description("Label")]
         Label, // - treat column as output value or label
-        
+
     }
     //Different way of handling missing value. 
     public enum MissingValue
@@ -85,5 +63,4 @@ namespace ANNdotNET.Lib
         [Description("Min")]
         Min //recalculate the column and put Min value in all missing rows
     }
-
 }

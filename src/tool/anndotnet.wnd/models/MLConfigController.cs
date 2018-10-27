@@ -11,10 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-using ANNdotNET.Core;
-using ANNdotNET.Lib;
-using GPdotNet.MathStuff;
-using NNetwork.Core.Common;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +22,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using ANNdotNET.Core;
+using ANNdotNET.Lib;
+using GPdotNet.MathStuff;
+using NNetwork.Core.Common;
 using ZedGraph;
 namespace anndotnet.wnd.Models
 {
@@ -389,11 +390,11 @@ namespace anndotnet.wnd.Models
                 if (!fi.Exists)
                     return mEval;
                 //evaluate model against training data 
-                var task1 = await Task.Run(()=> Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Training, EvaluationType.ResultyExtended, ProcessDevice.Default));
+                var task1 = await Task.Run(()=> Project.EvaluateMLConfig(modelMLPath, DataSetType.Training, EvaluationType.ResultExtended, ProcessDevice.Default));
                 var resultTrain = task1;
 
                 //evaluate model against validation data
-                var task2 = await Task.Run(() => Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.ResultyExtended, ProcessDevice.Default));
+                var task2 = await Task.Run(() => Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.ResultExtended, ProcessDevice.Default));
                 var resultValidation = task2;
 
                 if (resultTrain.Actual == null && resultTrain.Actual.Count <= 0)
@@ -418,51 +419,16 @@ namespace anndotnet.wnd.Models
                         mEval.ModelValueValidation.Add(new PointPair(i + 1, resultValidation.Predicted[i]));
                 }
 
-
                 ////
                 mEval.Classes = resultTrain.OutputClasses;
                 mEval.ModelOutputDim = resultTrain.OutputClasses == null ? 1 : resultTrain.OutputClasses.Count;
 
-                if (mEval.ModelOutputDim == 1)
-                {
-                    //Training data set
-                    var actTData = mEval.TrainingValue.Select(x => x.Y).ToArray();
-                    var preTData = mEval.ModelValueTraining.Select(x => x.Y).ToArray();
-                    mpt.SE = (float)actTData.SE(preTData);
-                    mpt.RMSE = (float)actTData.RMSE(preTData);
-                    mpt.NSE = (float)actTData.NSE(preTData);
-                    mpt.PB = (float)actTData.PBIAS(preTData);
-                    mpt.CORR = (float)actTData.R(preTData);
-                    mpt.DETC = (float)actTData.R2(preTData);
+                //training performance result
+                mpt = MLEvaluator.CalculatePerformance(resultTrain, "Training set");
+                //validation performance result
+                mpv = MLEvaluator.CalculatePerformance(resultValidation, "Validation set");
 
-                    //validation data set
-                    var actVData = mEval.ValidationValue.Select(x => x.Y).ToArray();
-                    var preVData = mEval.ModelValueValidation.Select(x => x.Y).ToArray();
-                    if(actVData != null && actVData.Length > 0)
-                    {
-                        mpv.SE = (float)actVData.SE(preVData);
-                        mpv.RMSE = (float)actVData.RMSE(preVData);
-                        mpv.NSE = (float)actVData.NSE(preVData);
-                        mpv.PB = (float)actVData.PBIAS(preVData);
-                        mpv.CORR = (float)actVData.R(preVData);
-                        mpv.DETC = (float)actVData.R2(preVData);
-                    }
-                   
-                }
-                else if (mEval.ModelOutputDim > 1)
-                {
-                    var retVal = CalculatePerformance(resultTrain.ActualEx, resultTrain.PredictedEx, null, null);
-                    retVal.Add("Classes", mEval.Classes.ToList<object>());
-                    mpt.PerformanceData = retVal;
-
-                    //in case validation set is defined
-                    if (resultValidation.Actual != null && resultValidation.Actual.Count > 0)
-                    {
-                        var retValV = CalculatePerformance(resultValidation.ActualEx, resultValidation.PredictedEx, null, null);
-                        retValV.Add("Classes", mEval.Classes.ToList<object>());
-                        mpv.PerformanceData = retValV;
-                    }
-                }
+                
                 mEval.TrainPerformance = mpt;
                 if (mEval.Classes != null)
                     mEval.TrainPerformance.Classes = mEval.Classes.ToArray();
@@ -641,7 +607,7 @@ namespace anndotnet.wnd.Models
             }
         }
 
-        void trainingProgress(ProgressData progress)
+        private void trainingProgress(ProgressData progress)
         {
             try
             {
@@ -698,11 +664,6 @@ namespace anndotnet.wnd.Models
                 var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
                 appCnt.ReportException(ex);
             }
-            
-
-            ////
-            //Console.WriteLine($"Epoch={progress.EpochCurrent} of {progress.EpochTotal};\t Evaluation of {progress.EvaluationFunName}=" +
-            //    $"(TrainMB = {progress.MinibatchAverageEval},TrainFull = {progress.TrainEval}, Valid = {progress.ValidationEval})");
         }
 
         #region Helper Methods for model saving/Loading
@@ -800,32 +761,33 @@ namespace anndotnet.wnd.Models
         #endregion
 
         #region Export Methods
-        internal void ExportToExcel(string filepath)
+
+        internal async Task<bool> ExportToExcel(string filepath)
         {
             try
             {
                 if (string.IsNullOrEmpty(TrainingParameters.LastBestModel))
                 {
                     MessageBox.Show("No trained model exist. The model cannot be exported.");
-                    return;
+                    return true;
                 }
                 if (TestData==null)
                 {
                     MessageBox.Show("Export is not possible. No metadata is defined in the mlconfig file.");
-                    return;
+                    return true;
                 }
                 //prepare for excel export
                 //save cntk model in document folder
                 var networkPath = filepath + ".model";
                 //save cntk model in document folder
-                ExportToCNTK(networkPath);
+                await ExportToCNTK(networkPath);
 
                 //Load ML configuration file
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
 
-                var resultT = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
-                var resultV = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
-                var resultTe = Project.EvaluateModel(modelMLPath, DataProcessing.Core.DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                var resultT = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                var resultV = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                var resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
                 //prepare headers
                 var header = resultT.Header;
 
@@ -834,6 +796,7 @@ namespace anndotnet.wnd.Models
                 List<List<string>> testData = prepareToPersist(resultTe);
 
                 ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, testData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false, resultT.OutputClasses);
+                return true;
             }
             catch (Exception)
             {
@@ -842,47 +805,19 @@ namespace anndotnet.wnd.Models
             }
         }
 
-        internal void ExportToCSV(string filepath)
+        internal async Task<bool> ExportToCSV(string filepath)
         {
             try
             {
                 if (string.IsNullOrEmpty(TrainingParameters.LastBestModel))
                 {
                     MessageBox.Show("No trained model exist. The model result cannot be exported.");
-                    return;
+                    return false;
                 }
-
                 //Load ML configuration file
-                var modelPath = Project.GetMLConfigPath(Settings, Name);
-                //
-                var result = Project.EvaluateModel(modelPath, DataProcessing.Core.DataSetType.Testing, EvaluationType.Results, ProcessDevice.Default);
-                if (result.Actual == null)
-                    throw new Exception("Export has failed. No testing nor validation datatset to export.");
-
-                //
-                List<string> strLine = new List<string>();
-
-                //
-                if(result.OutputClasses!=null && result.OutputClasses.Count > 1)
-                {
-                    var ss = "!#OutputClasses(";
-                    for (int i = 0; i < result.OutputClasses.Count; i++)
-                    {
-                        ss += $"[{i}={result.OutputClasses[i]}],";
-                    }
-                    var outputClassesStr = ss.Substring(0, ss.Length - 1) + ")";
-                    strLine.Add(outputClassesStr);
-                }
-                //make header
-                var headerStr = string.Join(";", result.Header);    
-                strLine.Add(headerStr);
-
-                //prepare for saving
-                for (int i=0; i< result.Actual.Count; i++)
-                    strLine.Add($"{result.Actual[i].ToString(CultureInfo.InvariantCulture)};{result.Predicted[i].ToString(CultureInfo.InvariantCulture)}");
-
-                //store content to file
-                File.WriteAllLines(filepath, strLine.ToArray());
+                var mlConfigPath = Project.GetMLConfigPath(Settings, Name);
+                await MLExport.ExportToCSV(mlConfigPath, MLFactory.GetDevice(ProcessDevice.Default), filepath);
+                return true;
             }
             catch (Exception)
             {
@@ -891,7 +826,7 @@ namespace anndotnet.wnd.Models
             }
         }
 
-        internal void ExportToCNTK(string filepath)
+        internal async Task<bool> ExportToCNTK(string filepath)
         {
 
             try
@@ -899,11 +834,12 @@ namespace anndotnet.wnd.Models
                 if (string.IsNullOrEmpty(TrainingParameters.LastBestModel))
                 {
                     MessageBox.Show("No trained model exist. The model cannot be exported.");
-                    return;
+                    return false;
                 }
                 //save cntk model in document folder
                 var bestModelFullPath = $"{Project.GetMLConfigFolder(Settings, Name)}\\{TrainingParameters.LastBestModel}";
-                Project.SaveCNTKModel(filepath, bestModelFullPath);
+                await Task.Run(()=> Project.SaveCNTKModel(filepath, bestModelFullPath));
+                return true;
             }
             catch (Exception)
             {
@@ -912,118 +848,20 @@ namespace anndotnet.wnd.Models
             }
         }
 
-        internal void ExportToONNX(string filepath)
+        internal async Task<bool> ExportToONNX(string filepath)
         {
-            return;
+            await Task.Delay(1);
+            return true;
             //Not available in C#
             if (string.IsNullOrEmpty(TrainingParameters.LastBestModel) || !File.Exists(TrainingParameters.LastBestModel))
             {
                 MessageBox.Show("No trained model exist. The mode cannot be exported.");
-                return;
+                return true;
             }
             //save cntk model in document folder
             var modelPath = filepath + ".model";
 
             Project.SaveCNTKModel(modelPath, TrainingParameters.LastBestModel);
-        }
-
-
-        public Dictionary<string, List<object>> CalculatePerformance(List<List<float>> ActualT, List<List<float>> PredictedT, 
-            List<List<float>> ActualV, List<List<float>> PredictedV)
-        {
-
-            var dic = new Dictionary<string, List<object>>();
-            //get output for training data set
-            List<double> actualT = new List<double>();
-            List<double> predictedT = new List<double>();
-            List<double> actualV = new List<double>();
-            List<double> predictedV = new List<double>();
-            //
-            if (ActualT != null && ActualT.Count > 0)
-            {
-                
-                
-                //category output
-                for (int i = 0; i < ActualT.Count; i++)
-                {
-                    float act = 0;
-                    float pred = 0;
-                    //category output
-                    if (ActualT[i].Count > 2)
-                    {
-                        act = ActualT[i].IndexOf(ActualT[i].Max());
-                        pred = PredictedT[i].IndexOf(PredictedT[i].Max());
-                    }
-                    else if (ActualT[i].Count == 2)
-                    {
-                        act = ActualT[i].IndexOf(ActualT[i].Max());
-                        pred = PredictedT[i][1];
-                    }
-                    else
-                    {
-                        act = ActualT[i].First();
-                        pred = PredictedT[i].First();
-                    }
-
-
-                    actualT.Add(act);
-                    predictedT.Add(pred);
-                }
-            }
-
-            //
-            if (ActualV != null && ActualV.Count > 0)
-            {
-                
-
-                //category output
-                for (int i = 0; i < ActualV.Count; i++)
-                {
-                    float act = 0;
-                    float pred = 0;
-                    //category output
-                    if (ActualV[i].Count > 2)
-                    {
-                        act = ActualV[i].IndexOf(ActualV[i].Max());
-                        pred = PredictedV[i].IndexOf(PredictedV[i].Max());
-                    }
-                    else if (ActualV[i].Count == 2)
-                    {
-                        act = ActualV[i].IndexOf(ActualT[i].Max());
-                        pred = (1.0f - PredictedV[i][0]);
-                    }
-                    else
-                    {
-                        act = ActualV[i].First();
-                        pred = PredictedV[i].First();
-                    }
-
-
-                    actualV.Add(act);
-                    predictedV.Add(pred);
-                }
-            }
-                //
-                //if (evalM.ModelOutputDim > 1)
-                //    dic.Add("Classes", evalM.Classes.ToList<object>());
-
-
-                if(actualT!=null)
-                {
-                    //add data sets
-                    dic.Add("obs_train", actualT.Select(x => (object)x).ToList<object>());
-                    dic.Add("prd_train", predictedT.Select(x => (object)x).ToList<object>());
-                }
-
-                //add test dataset
-                if (actualV != null)
-                {
-                    dic.Add("obs_test", actualV.Select(x => (object)x).ToList<object>());
-                    dic.Add("prd_test", predictedV.Select(x => (object)x).ToList<object>());
-                }
-
-                return dic;
-
         }
 
         /// <summary>

@@ -46,7 +46,7 @@ namespace ANNdotNET.Lib
 
             var colls = Columns;
             if (excludeNone)
-                colls = Columns.Where(x => x.Type != DataType.None && x.Kind != DataKind.None).ToList();
+                colls = Columns.Where(x => x.Type != MLDataType.None && x.Kind != DataKind.None).ToList();
 
             foreach (var c in colls)
             {
@@ -67,30 +67,12 @@ namespace ANNdotNET.Lib
 
         public static List<string> GetOutputClasses(string strMetadata)
         {
-            if (string.IsNullOrEmpty(strMetadata))
-                return null;
-            
-
-            var columns = strMetadata.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-            var labelColumn = columns.Where(x => x.Contains("Label")).FirstOrDefault();
-            if (string.IsNullOrEmpty(labelColumn))
-                return null;
-
-            return GetColumnClasses(labelColumn);
+            return MLFactory.GetOutputClasses(strMetadata);
         }
 
         public static List<string> GetColumnClasses(string columnData)
         {
-            var lst = new List<string>();
-            var paramName = columnData.Split(MLFactory.m_ParameterNameSeparator, StringSplitOptions.RemoveEmptyEntries);
-            if (paramName == null || paramName.Length != 2)
-                return null;
-
-
-            var par = paramName[1].Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);
-
-            lst = par.Skip(4).Select(x=>x.Trim(' ')).ToList();
-            return lst;
+            return MLFactory.GetColumnClasses(columnData);
         }
         #endregion
     }

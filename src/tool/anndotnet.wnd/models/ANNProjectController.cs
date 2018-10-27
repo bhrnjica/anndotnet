@@ -10,10 +10,12 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using ANNdotNET.Core;
 using ANNdotNET.Lib;
 using DataProcessing.Core;
 using DocumentFormat.OpenXml.Presentation;
 using MLDataPreparation.Dll;
+using NNetwork.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -359,7 +361,7 @@ namespace anndotnet.wnd.Models
             proj.Load(strPPath);
 
             //enumerate all column and setup column information needed for mlconfig creation
-            foreach (var c in proj.Descriptor.Columns.Where(x => x.Type == DataType.Category && x.Kind != DataKind.None))
+            foreach (var c in proj.Descriptor.Columns.Where(x => x.Type == MLDataType.Category && x.Kind != DataKind.None))
             {
                 var cc = exp.GetColumns().Where(x => x.Name == c.Name && x.ColumnDataType == ColumnType.Category).FirstOrDefault();
                 if (cc == null)

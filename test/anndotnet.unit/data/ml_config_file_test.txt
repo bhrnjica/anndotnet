@@ -1,13 +1,21 @@
 !you can make a comment into file by starting '!' character
 
+!********mlconfigig*******
+mlconfigid:unique-mlconfig-identification
+
+!***************metadata for the dataset
+
+metadata:|Column01:x1;Numeric;Feature;Average;|Column01:x1;Numeric;Feature;Average;|Column01:x1;Numeric;Feature;Average;|Column01:x1;Numeric;Feature;Average; |Column05:Flower;Category;Label;None;setosa;versicolor;virginica
+
+
 !****Features and Lebels*****
 !features labels define features of training data set
 !Example of defining features and labels
 !features:|[featurename1] [dimension] [hasdynamicaxes] [isSparsedata]	|[featurename2] [dimension] [hasdynamicaxes] [isSparsedata] ...
 !labels:|[labename1] [dimension] [hasdynamicaxes] [isSparsedata]	|[labename2] [dimension] [hasdynamicaxes] [isSparsedata] ...
 
-features:|features 1 0
-labels:|labels 1 0
+features:|features 4 0
+labels:|labels 3 0
 
 !*********Network Model******
 !set of separated Names:values for nn creation
@@ -22,7 +30,7 @@ labels:|labels 1 0
 ! EmbeddingDim - output dimension for embedded layer.
 ! DropRate  - droprate for the DropOut layer (0,1)
 
-network:|Type: EmbeddedLSTM |HLayers:3 |HDimensions:1000 500 125 |HActivation: tanh |OActivation:sigmoid |HLSTM:14 |LSTMCell: 3 |EmbeddingDim: 14 |DropRate:0.2 
+network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 5 0 0 ReLU 0 0 |Layer:Dense 3 0 0 Softmax 0 0 
 
 
 !******Learning Parameters********
@@ -36,9 +44,9 @@ network:|Type: EmbeddedLSTM |HLayers:3 |HDimensions:1000 500 125 |HActivation: t
 ! - RMSError - root mean square error
 ! - MSError - mean squared error
 
-!training parameters
+!learning parameters
 
-! supported trainers: 
+! supported learners: 
 ! - MomentumSGDLearner 
 ! - FSAdaGradLearner
 ! - AdaGradLearner
@@ -49,7 +57,7 @@ network:|Type: EmbeddedLSTM |HLayers:3 |HDimensions:1000 500 125 |HActivation: t
 ! - momentum:0.9
 
 
-learning:|Type:MomentumSGDLearner |LRate:0.005 |Momentum: 0.9 |Loss: SquaredError |Eval: RMSError  
+learning:|Type:SGDLearner |LRate:0.01 |Momentum:0 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
 
 
 !******* Training Parameters***********
@@ -63,16 +71,16 @@ learning:|Type:MomentumSGDLearner |LRate:0.005 |Momentum: 0.9 |Loss: SquaredErro
 ! - custom  - reader with variable sequence length
 ! - default - default text format reader minibatch
 
-training: |Type: custom |BatchSize: 120 |Epochs:10 |Normalization:0 |SaveWhileTraining: 0 |RandomizeBatch: 0 |ProgressFrequency: 1000
+training:|Type:Default |BatchSize:100 |Epochs:1000 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:50 |ContinueTraining:0 |TrainedModel:
 
-!******* Trainign validation and testing files
-!evaluation process
-trainingPath:C:/sc/vs/SolarPowerForcastingPrediction/SolarPowerForecastingTest/data/solar_cntk_train.ctf
-validationPath:C:/sc/vs/SolarPowerForcastingPrediction/SolarPowerForecastingTest/data/solar_cntk_val.ctf
-testPath:../../../Data/solar_cntk_test.cft
+!*******************Paths of mconfig files**************************
+!the keyword contains 7 parameters with 7 parameter values which represent paths for different components 
+!1. ParameterName= Training - relative path to the training dataset
+!2. ParameterName= Validation - relative path to the validation dataset 
+!3. ParameterName= Test - relative path to the test dataset
+!4. ParameterName= TempModels - relative folder path for saving models during training
+!5. ParametersName=Models - relative path folder for to save model after training
+!6. ParameterName= Result - folder where the results are saved during export 
+!7. ParameterName = Log - folder where th etraining history is saved.
 
-!post evaluation process
-modelTempFile:../../../Data/solar_cntk_model
-modelFinalFile:../../../Data/solar_cntk_model.cntk 
-!File path for storing model evaluation result of Actual and Predicted values of specified test dataset
-modelEvalResult:../../../modelsFinal/sales_model_result.csv 
+paths:|Training:data\iris_with_hot_vector.txt |Validation:data\iris_with_hot_vector_test.txt |Test:data\iris_with_hot_vector_test.txt |TempModels:temp_models |Models:models |Result:FFNModel_result.csv |Logs:log 

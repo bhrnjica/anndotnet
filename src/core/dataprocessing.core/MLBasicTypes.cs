@@ -20,13 +20,7 @@ using System.Text.RegularExpressions;
 namespace DataProcessing.Core
 {
     public delegate void DataLoadingProgress(int currentValue, int totalValue);
-    public enum DataSetType
-    {
-        Training,
-        Validation,
-        Testing,
-        Custom,
-    }
+ 
     public enum MetaData
     {
         [Description("Name:")]

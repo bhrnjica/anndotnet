@@ -12,7 +12,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using CNTK;
 using ANNdotNET.Core;
-using ANNdotNET.Lib.Ext;
 using NNetwork.Core.Common;
 using System;
 using System.Collections.Generic;

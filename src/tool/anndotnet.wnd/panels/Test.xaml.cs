@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Models;
+using ANNdotNET.Core;
 using ANNdotNET.Lib;
 using MLDataPreparation.Dll;
 using NNetwork.Core.Common;
@@ -63,22 +64,10 @@ namespace anndotnet.wnd.Panels
                        
                         int index = 0;
                         //firs numeric column shoud be positioned first
-                        foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== DataType.Numeric))
+                        foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== MLDataType.Numeric))
                         {
-                            //if(c.Type== DataType.Category)
-                            //{
-                            //    var dgc = new DataGridComboBoxColumn();
-                            //    if (c.Classes!=null)
-                            //        dgc.ItemsSource = c.Classes;
-
-                            //    dgc.Header = c.Name;
-                                
-                            //    dataGrid.Columns.Add(dgc);
-
-                            //    Binding b = new Binding($"[{index}]");
-                            //    dgc.TextBinding = b;
-                            //}
-                            if (c.Type == DataType.Numeric)
+                
+                            if (c.Type == MLDataType.Numeric)
                             {
                                 var dgc = new DataGridTextColumn();
                                 dgc.Header = c.Name;
@@ -90,9 +79,9 @@ namespace anndotnet.wnd.Panels
                             }
                             index++;
                         }
-                        foreach (var c in testData.Where(x => x.Kind != DataKind.Label && x.Type == DataType.Category))
+                        foreach (var c in testData.Where(x => x.Kind != DataKind.Label && x.Type == MLDataType.Category))
                         {
-                            if (c.Type == DataType.Category)
+                            if (c.Type == MLDataType.Category)
                             {
                                 var dgc = new DataGridComboBoxColumn();
                                 if (c.Classes != null)
@@ -105,16 +94,7 @@ namespace anndotnet.wnd.Panels
                                 Binding b = new Binding($"[{index}]");
                                 dgc.TextBinding = b;
                             }
-                            //else
-                            //{
-                            //    var dgc = new DataGridTextColumn();
-                            //    dgc.Header = c.Name;
-
-                            //    dataGrid.Columns.Add(dgc);
-
-                            //    Binding b = new Binding($"[{index}]");
-                            //    dgc.Binding = b;
-                            //}
+                          
                             index++;
                         }
 
@@ -349,7 +329,7 @@ namespace anndotnet.wnd.Panels
                     //
                     var val = Project.Predict(strModelToEvaluatePath, vector.ToArray(), pd);
                     var labelCol = testMetaData.Where(x => x.Kind == DataKind.Label).FirstOrDefault();
-                    if (labelCol.Type == DataType.Category)
+                    if (labelCol.Type == MLDataType.Category)
                     {
                         var ind = int.Parse(val.ToString());
                         listResult.Items.Add(labelCol.Classes[ind]);
