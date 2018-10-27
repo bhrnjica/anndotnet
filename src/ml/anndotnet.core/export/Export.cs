@@ -15,39 +15,76 @@ namespace ANNdotNET.Core
     public class MLExport
     {
        
-        public static async Task<string> PrintPerformance(string mlconfigPath, DeviceDescriptor device)
+        public static async Task<List<string>> PrintPerformance(string mlconfigPath, DeviceDescriptor device)
         {
             try
             {
-                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, DataSetType.Testing ,EvaluationType.Results);
+                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, DataSetType.Testing ,EvaluationType.ResultExtended);
 
                 if (er.Actual == null)
                     throw new Exception("Export has failed. No testing nor validation datatset to export.");
 
+                var pa = MLEvaluator.CalculatePerformance(er, "Testing data");
+                
+                //print performance result
+                var strB = new List<string>();
+                var problemType = pa.Classes.Count() == 1 ? "Regression" : (pa.Classes.Count() == 2 ? "Binary" : "Multiclass");
+                ///////////////////////////////REGRESSION////////////////////////////////
+                strB.Add("*************               ANNdotNET                    ********************");
+                strB.Add("**********************Model Performance Analysis*****************************");
+                strB.Add($"Model name={"ML Config Evaluation"}");
+                strB.Add($"Problem Type ={problemType}");
+                strB.Add($"DataSet Name = {pa.DatSetName}");
+                strB.Add(" ");
                 //
-                List<string> strLine = new List<string>();
-
-                //include label categorical values in the export
-                if (er.OutputClasses != null && er.OutputClasses.Count > 1)
+                if(problemType=="Regression")
                 {
-                    var ss = "!#OutputClasses(";
-                    for (int i = 0; i < er.OutputClasses.Count; i++)
-                    {
-                        ss += $"[{i}={er.OutputClasses[i]}],";
-                    }
-                    var outputClassesStr = ss.Substring(0, ss.Length - 1) + ")";
-                    strLine.Add(outputClassesStr);
+                   // strB.Add($"************Performance Parameters Value*************************************");
+                    strB.Add(" ");
+                    strB.Add($"Squared Error={pa.SE}");
+                    strB.Add($"RMSE = {pa.RMSE}");
+                    strB.Add($"Correlation Coefficient={pa.CORR}");
+                    strB.Add($"Determination Coefficient={pa.DETC}");
                 }
-                //make header
-                var headerStr = string.Join(";", er.Header);
-                strLine.Add(headerStr);
+                else if (problemType == "Binary")
+                {
 
-                //prepare for saving
-                for (int i = 0; i < er.Actual.Count; i++)
-                    strLine.Add($"{er.Actual[i].ToString(CultureInfo.InvariantCulture)};{er.Predicted[i].ToString(CultureInfo.InvariantCulture)}");
+                    /////////////////////BINARY CLASS/////////////////////////////////////////////
+                   // strB.Add($"************Performance Parameters Value*************************************");
+                    strB.Add(" ");
+                    strB.Add($"Positive Label={pa.Classes.First()} \t\t Negative Label={pa.Classes.Last()}");
+                    strB.Add($" ");
+                    //
+                    strB.Add($"True Positive = {pa.TP} \t\t False Positive = {pa.FP}");
+                    strB.Add($"True Negative = {pa.TN} \t\t False Negative = {pa.FN}");
+                    strB.Add($" ");
+                    //
+                    strB.Add($"Accuracy = {pa.Acc}, \t\t Error = {pa.ER}");
+                    strB.Add($"Precision= {pa.Precision}, \t\t  Recall = {pa.Recall}");
+                    strB.Add($"F1 Score= {pa.F1Score}, \t\t   ");
+                    strB.Add($" ");
+                    strB.Add($"HSS={pa.HSS}; \t PSS={pa.PSS}");
+                    strB.Add($" ");
+                    //strB.Add($"* - Heideke Skill Score; \t **- Peirce Scill Score");
+                }
+                else if (problemType == "Multiclass")
+                {
+                    /////////////////MULTICLASS//////////////////////////////////
+                    //strB.Add($"************Performance Parameters Value*************************************");
+                    strB.Add(" ");
+                    strB.Add($"Overall Accuracy={pa.OAcc} \t\t\t Average Accuracy={pa.AAcc}");
+                    //
+                    strB.Add($"Micro avg. Precision = {pa.MicPrec} \t\t Macro avg. Precision = {pa.MacPrec}");
+                    strB.Add($"Micro avg. Recall = {pa.MicRcall} \t\t Macro avg. Recall = {pa.MacRcall}");
+                    //
+                    strB.Add($"HSS ={pa.HSS}; \t\t\t PSS ={pa.PSS}");
+                    strB.Add($" ");
+                    //strB.Add($"* - Heideke Skill Score; \t **- Peirce Scill Score");
+                    //* - Heideke Skill Score; \t **- Peirce Scill Score;
+                }
+                strB.Add($"************End of Performance Report*************************************");
 
-
-                return "";
+                return strB;
             }
             catch (Exception)
             {

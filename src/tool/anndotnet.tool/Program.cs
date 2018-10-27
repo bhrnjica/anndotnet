@@ -16,22 +16,32 @@ namespace anndotnet.core.app
         
         static void Main(string[] args)
         {
+            string root = "C:\\sc\\github\\anndotnet\\src\\tool\\";
+
             //transformDailyLevelVeanaLake();
             //return;
 
-            //Iris flower recognition
-            //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
-            var mlConfigFile2 = "./model_mlconfigs/iris.mlconfig";
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"****Iris flower recognition****");
-            Console.WriteLine(Environment.NewLine);
-            var token2 = new CancellationToken();
-            var result = MachineLearning.Run(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
+            //regression 
+            var mlConfigFile1 = $"{root}anndotnet.wnd\\Resources\\Concrete\\ConcreteSlumpProject\\FFNModel.mlconfig";
             
+            //binary classification
+            var mlConfigFile2 = $"{root}anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig";
+            
+            //Multiclass classification
+            //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
+            var mlConfigFile3 = "./model_mlconfigs/iris.mlconfig";
 
+            //run example
+            var token2 = new CancellationToken();
+            //var result = MachineLearning.Run(mlConfigFile3, DeviceDescriptor.UseDefaultDevice(), token2, trainingProgress, null);
+
+            //print evaluation result on console
+            var task = MLExport.PrintPerformance(mlConfigFile1, DeviceDescriptor.UseDefaultDevice());
+            task.Wait();
+            foreach (var s in task.Result)
+                Console.WriteLine(s);
             //evaluate model and export the result of testing
-            MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(), 
-                "./model_mlconfigs/iris_result.csv" );
+            //MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(),"./model_mlconfigs/iris_result.csv" ).Wait();
 
 
 

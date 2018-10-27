@@ -31,7 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="model_mlconfigs\BCML\data\BCMLData.txt" />
+    <Content Include="model_mlconfigs\BCML\data\BCMLData.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Include="model_mlconfigs\BCML\data\BCMLData_train.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -74,6 +76,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="model_mlconfigs\BCML.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="model_mlconfigs\iris.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

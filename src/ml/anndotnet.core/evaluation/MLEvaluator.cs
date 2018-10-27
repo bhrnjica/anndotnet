@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using GPdotNet.MathStuff;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ANNdotNET.Core
 {
@@ -344,29 +345,77 @@ namespace ANNdotNET.Core
             }
             else if (evalResult.OutputClasses.Count > 1)
             {
-                var retVal = TransformResult(evalResult.ActualEx, evalResult.PredictedEx, null, null);
+                var retVal = TransformResult(evalResult.ActualEx, evalResult.PredictedEx);
                 retVal.Add("Classes", mpt.Classes.ToList<object>());
                 mpt.PerformanceData = retVal;
+
+                if (evalResult.OutputClasses.Count == 2)
+                {
+                   
+                    //construct confusion matrix 
+                    var o = retVal["obs_train"].Select(x => int.Parse(x.ToString())).ToArray();
+                    var p = retVal["prd_train"].Select(x => ((double)x) < 0.5 ? 0 : 1).ToArray();
+                    var cm = new ConfusionMatrix(o, p, 2);
+                    //get result
+                    mpt.ER = (float)ConfusionMatrix.Error(cm.Matrix);
+                    //mpt.AUC = 
+
+                    //confusion matrix for current threshold
+                    mpt.Acc = (float)ConfusionMatrix.OAC(cm.Matrix);
+                    mpt.ER = (float)ConfusionMatrix.Error(cm.Matrix);
+
+                    mpt.Precision = (float)ConfusionMatrix.Precision(cm.Matrix, 1);
+                    mpt.Recall = (float)ConfusionMatrix.Recall(cm.Matrix, 1);
+                    mpt.F1Score = (float)ConfusionMatrix.Fscore(cm.Matrix, 1) ;
+
+                    mpt.HSS = (float)ConfusionMatrix.HSS(cm.Matrix, o.Length) ;
+                    mpt.PSS = (float)ConfusionMatrix.PSS(cm.Matrix, o.Length) ;
+
+                    //lab
+                    //mpt.Label = m_Classes[1];// "TRUE";
+                    //txNegativeLable.Text = m_Classes[0];// "FALSE";
+
+                    //false and true positive negative
+                    mpt.FN = (float)cm.Matrix[1][0];//cm.FalseNegatives 
+                    mpt.FP = (float)cm.Matrix[0][1];//cm.FalsePositives 
+                    mpt.TP = (float)cm.Matrix[1][1];//cm.TruePositives 
+                    mpt.TN = (float)cm.Matrix[0][0];//cm.TrueNegatives 
+                }
+                else 
+                {
+                    //construct confusion matrix 
+                    var o = retVal["obs_train"].Select(x => int.Parse(x.ToString())).ToArray();
+                    var p = retVal["prd_train"].Select(x => int.Parse(x.ToString())).ToArray();
+                    var cm = new ConfusionMatrix(o, p, evalResult.OutputClasses.Count);
+
+                    //confusion matrix for current threshold
+                    mpt.OAcc = (float)ConfusionMatrix.OAC(cm.Matrix);
+                    mpt.AAcc = (float)ConfusionMatrix.AAC(cm.Matrix);
+                    mpt.MacPrec = (float)ConfusionMatrix.MacroPrecision(cm.Matrix);
+                    mpt.MacRcall = (float)ConfusionMatrix.MacroRecall(cm.Matrix);
+                    mpt.MicPrec = (float)ConfusionMatrix.MicroPrecision(cm.Matrix);
+                    mpt.MicRcall = (float)ConfusionMatrix.MicroRecall(cm.Matrix);
+                    //mpt.MacFscore = (float)ConfusionMatrix.MacroFscore(cm.Matrix);
+                    //mpt.MicFscore = (float)ConfusionMatrix.MicroFscore(cm.Matrix);
+
+                    mpt.HSS = (float)ConfusionMatrix.HSS(cm.Matrix, o.Length);
+                    mpt.PSS = (float)ConfusionMatrix.PSS(cm.Matrix, o.Length);
+                }
             }
 
             return mpt;
         }
 
-        public static Dictionary<string, List<object>> TransformResult(List<List<float>> ActualT, List<List<float>> PredictedT,
-          List<List<float>> ActualV, List<List<float>> PredictedV)
+        public static Dictionary<string, List<object>> TransformResult(List<List<float>> ActualT, List<List<float>> PredictedT)
         {
 
             var dic = new Dictionary<string, List<object>>();
             //get output for training data set
             List<double> actualT = new List<double>();
             List<double> predictedT = new List<double>();
-            List<double> actualV = new List<double>();
-            List<double> predictedV = new List<double>();
             //
             if (ActualT != null && ActualT.Count > 0)
             {
-
-
                 //category output
                 for (int i = 0; i < ActualT.Count; i++)
                 {
@@ -395,51 +444,13 @@ namespace ANNdotNET.Core
                 }
             }
 
-            //
-            if (ActualV != null && ActualV.Count > 0)
-            {
-
-
-                //category output
-                for (int i = 0; i < ActualV.Count; i++)
-                {
-                    float act = 0;
-                    float pred = 0;
-                    //category output
-                    if (ActualV[i].Count > 2)
-                    {
-                        act = ActualV[i].IndexOf(ActualV[i].Max());
-                        pred = PredictedV[i].IndexOf(PredictedV[i].Max());
-                    }
-                    else if (ActualV[i].Count == 2)
-                    {
-                        act = ActualV[i].IndexOf(ActualT[i].Max());
-                        pred = (1.0f - PredictedV[i][0]);
-                    }
-                    else
-                    {
-                        act = ActualV[i].First();
-                        pred = PredictedV[i].First();
-                    }
-
-
-                    actualV.Add(act);
-                    predictedV.Add(pred);
-                }
-            }
+            
             //add train data
             if (actualT != null)
             {
                 //add data sets
                 dic.Add("obs_train", actualT.Select(x => (object)x).ToList<object>());
                 dic.Add("prd_train", predictedT.Select(x => (object)x).ToList<object>());
-            }
-
-            //add validation dataset
-            if (actualV != null)
-            {
-                dic.Add("obs_test", actualV.Select(x => (object)x).ToList<object>());
-                dic.Add("prd_test", predictedV.Select(x => (object)x).ToList<object>());
             }
 
             return dic;
@@ -529,7 +540,7 @@ namespace ANNdotNET.Core
                     throw new Exception($"The '{functionName}' function is not supported!");
             }
         }
-       
+
         #endregion
     }
 }
