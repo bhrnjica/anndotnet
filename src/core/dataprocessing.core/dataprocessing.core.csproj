@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\gpdotnet.math\gpdotnet.math.csproj" />
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0-unstable1035" />
   </ItemGroup>
 
 </Project>

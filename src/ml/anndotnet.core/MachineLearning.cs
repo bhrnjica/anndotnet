@@ -19,10 +19,15 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
+
+
+
 namespace anndotnet.core.app
 {
     public static class MachineLearning
     {
+        public static DeviceDescriptor Device = DeviceDescriptor.UseDefaultDevice();
+
         /// <summary>
         /// Main method to perform training process
         /// </summary>
@@ -31,7 +36,7 @@ namespace anndotnet.core.app
         /// <param name="token">Cancellation token for interrupting training process on user request.</param>
         /// <param name="trainingProgress">training progress object</param>
         /// <param name="customModel">custom neural network model if available</param>
-        public static TrainResult Run(string mlconfigPath, DeviceDescriptor device, CancellationToken token, TrainingProgress trainingProgress, CreateCustomModel customModel = null)
+        public static TrainResult Train(string mlconfigPath, TrainingProgress trainingProgress, CancellationToken token, CreateCustomModel customModel = null)
         {
 
             //LOad ML configuration file
@@ -42,7 +47,7 @@ namespace anndotnet.core.app
             //add path of model folder
             dicMParameters.Add("root", folderPath);
 
-            var retVal = MLFactory.PrepareNNData(dicMParameters, customModel, device);
+            var retVal = MLFactory.PrepareNNData(dicMParameters, customModel, Device);
 
             //create trainer 
             var tr = new MLTrainer(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
@@ -53,13 +58,19 @@ namespace anndotnet.core.app
             {
                 modelCheckPoint = MLFactory.GetModelCheckPointPath(mlconfigPath, dicMParameters["configid"].Trim(' '));
             }
-            //setup history of training path
-            //TODO
+
+            //setup model checkpoint
+            string historyPath = null;
+            if (dicMParameters.ContainsKey("configid"))
+            {
+                historyPath = MLFactory.GetTrainingHistoryPath(mlconfigPath, dicMParameters["configid"].Trim(' '));
+            }
+
             //create trainer 
-            var trainer = tr.CreateTrainer(retVal.nnModel, retVal.lrData, retVal.trData, modelCheckPoint,null);
+            var trainer = tr.CreateTrainer(retVal.nnModel, retVal.lrData, retVal.trData, modelCheckPoint, historyPath);
 
             //perform training
-            var result = tr.Train(trainer, retVal.nnModel, retVal.trData, retVal.mbs, device, token, trainingProgress, modelCheckPoint, null);
+            var result = tr.Train(trainer, retVal.nnModel, retVal.trData, retVal.mbs, Device, token, trainingProgress, modelCheckPoint, historyPath);
 
             //delete previous best model before change variable values
             retVal.trData.LastBestModel =  MLFactory.ReplaceBestModel(retVal.trData, mlconfigPath, result.BestModelFile);
@@ -74,116 +85,54 @@ namespace anndotnet.core.app
         }
 
         /// <summary>
-        /// Evaluate the model against dataset sored in the dataset file, and exports the result in csv format for further analysis
+        /// Prints the performance analysis on the console
         /// </summary>
-        /// <param name="mlF"> ml factory object contains members needed to evaluation process</param>
-        /// <param name="mbs"> Minibatch source which provides helpers members needed for for evaluation</param>
-        /// <param name="strDataSetPath"> file of dataset</param>
-        /// <param name="modelPath"> models which will be evaluate</param>
-        /// <param name="resultExportPath"> result file in which the result will be exported</param>
-        /// <param name="device"> device for computation</param>
-        public static void EvaluateModel(string mlconfigPath, string bestTrainedModelPath, DeviceDescriptor device)
+        /// <param name="mlConfigPath"></param>
+        public static void PrintPerformance(string mlConfigPath)
         {
-
-            //Load ML model configuration file
-            var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
-            //add full path of model folder since model file doesn't contains any absolute path
-            dicMParameters.Add("root", MLFactory.GetMLConfigFolder(mlconfigPath));
-
-            //get model daa paths
-            var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
-
-            //parse feature variables
-            var projectValues = dicMParameters["training"].Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-            var trainedModelRelativePath = MLFactory.GetParameterValue(projectValues, "TrainedModel");
-
-
-            //Minibatch type
-            var mbTypestr = MLFactory.GetParameterValue(projectValues, "Type");
-            MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
-
-            //add full path of model folder since model file doesn't contains any apsolute path
-            var fi = new FileInfo(mlconfigPath);
-            dicMParameters.Add("root", MLFactory.GetMLConfigFolder(fi.FullName));
-
-            //prepare MLFactory 
-            var f = MLFactory.CreateMLFactory(dicMParameters);
-
-            //prepare data paths for mini-batch source
-            var strTrainPath = $"{dicMParameters["root"]}\\{dicPath["Training"]}";
-            var strValidPath = $"{dicMParameters["root"]}\\{dicPath["Validation"]}";
-            var strResult = $"{dicMParameters["root"]}\\{dicPath["Result"]}";
-           
-            var bestModelFullPath = $"{dicMParameters["root"]}\\{bestTrainedModelPath}";
-            //decide what data to evaluate 
-            var dataPath = strValidPath;
-
-            //load model
-            var model = Function.Load(bestModelFullPath, device);
-
-            //get data for evaluation by calling GetFullBatch
-            var minibatchData = MinibatchSourceEx.GetFullBatch(mbType, dataPath, f.StreamConfigurations.ToArray(), device);
-            //input map creation for model evaluation
-            var inputMap = new Dictionary<Variable, Value>();
-            foreach (var v in minibatchData)
-            {
-                var vv = model.Arguments.Where(x => x.Name == v.Key.m_name).FirstOrDefault();
-                var streamInfo = v.Key;
-                if (vv != null)
-                    inputMap.Add(vv, minibatchData[streamInfo].data);
-
-            }
-
-            //output map 
-            var predictedDataMap = new Dictionary<Variable, Value>();
-            foreach (var outp in model.Outputs)
-            {
-                predictedDataMap.Add(outp, null);
-            }
-
-            //model evaluation
-            model.Evaluate(inputMap, predictedDataMap, device);
-
-            //retrieve actual and predicted values from model
-            List<List<float>> actual = new List<List<float>>();
-            List<List<float>> predict = new List<List<float>>();
-
-            foreach (var output in model.Outputs)
-            {
-                //label stream
-                var labelStream = minibatchData.Keys.Where(x => x.m_name == output.Name).First();
-
-                //actual values
-                List<List<float>> av = MLValue.GetValues(output, minibatchData[labelStream].data);
-                //predicted values
-                List<List<float>> pv = MLValue.GetValues(output, predictedDataMap[output]);
-
-                for (int i = 0; i < av.Count; i++)
-                {
-                    //actual
-                    var act = av[i];
-                    if (actual.Count <= i)
-                        actual.Add(new List<float>());
-                    actual[i].AddRange(act);
-                    //prediction
-                    var prd = pv[i];
-                    if (predict.Count <= i)
-                        predict.Add(new List<float>());
-                    predict[i].AddRange(prd);
-                }
-            }
-
-
-            //export result
-            MLValue.ValueToFile(actual, predict, strResult);
-
-            //
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"*******************Model Evaluation**************");
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine($"Model Evaluation successfully exported result into file {strResult}!");
-            Console.WriteLine(Environment.NewLine);
+            //print evaluation result on console
+            var performanceData = MLExport.PrintPerformance(mlConfigPath, DeviceDescriptor.UseDefaultDevice());
+            performanceData.Wait();
+            foreach (var s in performanceData.Result)
+                Console.WriteLine(s);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        public static Dictionary<string, List<Tuple<int, float, float, float, float>>> ShowTrainingHistory(string mlConfigPath)
+        {
+           var mlConfigId = MLFactory.GetMLConfigId(mlConfigPath);
+           var historyPath =  MLFactory.GetTrainingHistoryPath(mlConfigPath, mlConfigId);
+            //read history from file
+            //load history of training in case continuation of training is requested
+            var historyData = MLFactory.LoadTrainingHistory(historyPath);
+            var historyHeader = File.ReadAllLines(historyPath).FirstOrDefault();
+            //create graph for Training and validation set
+            var d= new Dictionary<string, List<Tuple<int, float, float, float, float>>>();
+            d.Add(historyHeader, historyData);
+            return d;
+        }
+
+        /// <summary>
+        /// Export result for specific dataset based on trained model in the mlconfig file
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <param name="resultPath"></param>
+        public static void ExportResult(string mlConfigPath, string resultPath)
+        {
+
+        }
+
+        /// <summary>
+        /// Export result for specific dataset based on trained model in the mlconfig file
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <param name="resultPath"></param>
+        public static void Predict(string mlConfigPath, string resultPath)
+        {
+
+        }
     }
 }

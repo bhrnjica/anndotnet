@@ -1145,6 +1145,79 @@ namespace ANNdotNET.Core
             return fi.Exists;
         }
 
+
+        /// <summary>
+        /// Saves the current training process into file.
+        /// </summary>
+        /// <param name="historydata">training data</param>
+        /// <param name="historyDataPath">file path</param>
+        public static void SaveTrainingHistory(List<Tuple<int, float, float, float, float>> historydata, string header, string historyDataPath)
+        {
+            try
+            {
+                if (historydata == null || historydata.Count <= 0)
+                    return;
+
+                List<string> strData = new List<string>();
+
+                //the first line is reserved for the information about Loss and Evaluation functions as well as some other info
+                strData.Add(header);
+
+                //prepare training data for every frequently iterations
+                foreach (var line in historydata)
+                {
+                    var strRow = string.Join(";", line.Item1.ToString(CultureInfo.InvariantCulture), line.Item2.ToString(CultureInfo.InvariantCulture), line.Item3.ToString(CultureInfo.InvariantCulture), line.Item4.ToString(CultureInfo.InvariantCulture), line.Item5.ToString(CultureInfo.InvariantCulture));
+                    strData.Add(strRow);
+                }
+                System.IO.FileInfo file = new System.IO.FileInfo(historyDataPath);
+                file.Directory.Create(); // If the directory already exists, this method does nothing.
+                File.WriteAllLines(historyDataPath, strData.ToArray());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        /// <summary>
+        /// loads the data from previous training process
+        /// </summary>
+        /// <param name="historyDataPath"></param>
+        /// <returns></returns>
+        public static List<Tuple<int, float, float, float, float>> LoadTrainingHistory(string historyDataPath)
+        {
+            try
+            {
+                var valList = new List<Tuple<int, float, float, float, float>>();
+                var fi = new FileInfo(historyDataPath);
+                if (!fi.Exists)
+                    return valList;
+
+                var strData = File.ReadAllLines(historyDataPath);
+
+                //skip first line since the first line contains loss and evaluation function name,
+                //as well as some other common information
+                foreach (var line in strData.Skip(1))
+                {
+                    var strLine = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var it = int.Parse(strLine[0]);
+                    var val1 = double.Parse(strLine[1], CultureInfo.InvariantCulture);
+                    var val2 = double.Parse(strLine[2], CultureInfo.InvariantCulture);
+                    var val3 = double.Parse(strLine[3], CultureInfo.InvariantCulture);
+                    var val4 = double.Parse(strLine[4], CultureInfo.InvariantCulture);
+                    var tuple = new Tuple<int, float, float, float, float>(it, (float)val1, (float)val2, (float)val3, (float)val4);
+                    valList.Add(tuple);
+                }
+
+                return valList;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         #endregion
     }
 }

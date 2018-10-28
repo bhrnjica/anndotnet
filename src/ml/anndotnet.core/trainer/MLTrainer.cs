@@ -36,6 +36,8 @@ namespace ANNdotNET.Core
         protected List<Tuple<double, double, string>> m_ModelEvaluations;
         protected UnorderedMapVariableMinibatchData m_TrainData;
         protected UnorderedMapVariableMinibatchData m_ValidationData;
+        //training history: header name of loss and evaluation function
+        //data: Iteration, AvgMinibatchLoss, AvgMinibatchEvaluation, FullTrainDSEvaluation, FullValidationDSEvaluation
         protected List<Tuple<int, float, float, float, float>> m_trainingHistory;
 
         public MLTrainer(List<StreamConfiguration> stream, List<Variable> inputs, List<Variable> outputs)
@@ -80,7 +82,7 @@ namespace ANNdotNET.Core
                     {
                         trainer.RestoreFromCheckpoint(modelCheckPoint);
                         //load history of training in case continuation of training is requested
-                        m_trainingHistory = loadTrainingHistory(historyPath);
+                        m_trainingHistory = MLFactory.LoadTrainingHistory(historyPath);
                     }
                     catch (Exception)
                     {
@@ -112,79 +114,7 @@ namespace ANNdotNET.Core
             
         }
 
-        /// <summary>
-        /// Saves the current training process into file.
-        /// </summary>
-        /// <param name="historydata">training data</param>
-        /// <param name="historyDataPath">file path</param>
-        private void saveTrainingHistory(List<Tuple<int, float, float, float, float>>  historydata,string header, string historyDataPath)
-        {
-            try
-            {
-                if (historydata == null || historydata.Count <= 0)
-                    return;
-
-                List<string> strData = new List<string>();
-
-                //the first line is reserved for the information about Loss and Evaluation functions as well as some other info
-                strData.Add(header);
-
-                //prepare training data for every frequently iterations
-                foreach (var line in historydata)
-                {
-                    var strRow = string.Join(";", line.Item1.ToString(CultureInfo.InvariantCulture), line.Item2.ToString(CultureInfo.InvariantCulture), line.Item3.ToString(CultureInfo.InvariantCulture), line.Item4.ToString(CultureInfo.InvariantCulture), line.Item5.ToString(CultureInfo.InvariantCulture));
-                    strData.Add(strRow);
-                }
-                System.IO.FileInfo file = new System.IO.FileInfo(historyDataPath);
-                file.Directory.Create(); // If the directory already exists, this method does nothing.
-                File.WriteAllLines(historyDataPath, strData.ToArray());
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-        }
-        /// <summary>
-        /// loads the data from previous training process
-        /// </summary>
-        /// <param name="historyDataPath"></param>
-        /// <returns></returns>
-        private List<Tuple<int, float, float, float, float>> loadTrainingHistory(string historyDataPath)
-        {
-            try
-            {
-                var valList = new List<Tuple<int, float, float, float, float>>();
-                var fi = new FileInfo(historyDataPath);
-                if (!fi.Exists)
-                    return valList;
-                
-                var strData = File.ReadAllLines(historyDataPath);
-
-                //skip first line since the first line contains loss and evaluation function name,
-                //as well as some other common information
-                foreach (var line in strData.Skip(1))
-                {
-                    var strLine = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    var it = int.Parse(strLine[0]);
-                    var val1 = double.Parse(strLine[1],CultureInfo.InvariantCulture);
-                    var val2 = double.Parse(strLine[2], CultureInfo.InvariantCulture);
-                    var val3 = double.Parse(strLine[3], CultureInfo.InvariantCulture);
-                    var val4 = double.Parse(strLine[4], CultureInfo.InvariantCulture);
-                    var tuple = new Tuple<int, float, float, float, float>(it, (float)val1, (float)val2, (float)val3, (float)val4);
-                    valList.Add(tuple);
-                }
-
-                return valList;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }           
-        }
-
+        
         /// <summary>
         /// Main method for training 
         /// </summary>
@@ -253,7 +183,7 @@ namespace ANNdotNET.Core
                             if (!string.IsNullOrEmpty(historyPath))
                             {
                                 string header = $"{trainer.LossFunction().Name};{trainer.EvaluationFunction().Name};";
-                                saveTrainingHistory(m_trainingHistory, header, historyPath);
+                                MLFactory.SaveTrainingHistory(m_trainingHistory, header, historyPath);
                             }
 
                             //save best or last trained model and send report last time before trainer completes 
@@ -281,7 +211,7 @@ namespace ANNdotNET.Core
                         if (!string.IsNullOrEmpty(historyPath))
                         {
                             string header = $"{trainer.LossFunction().Name};{trainer.EvaluationFunction().Name};";
-                            saveTrainingHistory(m_trainingHistory, header, historyPath);
+                            MLFactory.SaveTrainingHistory(m_trainingHistory, header, historyPath);
                         }
 
                         //sometime stopping training process can be before first epoch passed so make a incomplete progress 

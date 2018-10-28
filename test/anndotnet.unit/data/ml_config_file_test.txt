@@ -1,7 +1,7 @@
 !you can make a comment into file by starting '!' character
 
 !********mlconfigig*******
-mlconfigid:unique-mlconfig-identification
+configid:unique-mlconfig-identification
 
 !***************metadata for the dataset
 

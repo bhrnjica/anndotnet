@@ -267,3 +267,5 @@ __pycache__/
 /src/tool/anndotnet.tool/model_mlconfigs/daily_sales/models
 /src/ext/anndotnet.lib.ext.net/extensions/PredictFutureSalesCustomModels.cs
 /src/tool/anndotnet.tool/model_mlconfigs/BCML/models/model_at_1of1000_epochs_TimeSpan_636756746081780265
+/src/tool/anndotnet.wnd/Resources/Concrete/ConcreteSlumpProject/FFNModel/models
+/src/tool/anndotnet.wnd/Resources/Titanic/TitanicProject/DNNModel/models
