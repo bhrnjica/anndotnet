@@ -465,9 +465,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="..\..\..\.travis.yml">
-      <Link>.travis.yml</Link>
-    </None>
     <None Include="..\..\..\README.md">
       <Link>README.md</Link>
     </None>
