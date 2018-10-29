@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using CNTK;
 using NNetwork.Core;
 using NNetwork.Core.Common;
+using System.Globalization;
 
 namespace ANNdotNET.Core
 {
@@ -315,7 +316,7 @@ namespace ANNdotNET.Core
             foreach (var stream in m_streamConfig)
             {
                 var strvalues = streams.Where(x => x.StartsWith(stream.m_streamName)).Select(x => x.Substring(stream.m_streamName.Length)).FirstOrDefault();
-                var lst = strvalues.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x)).ToList();
+                var lst = strvalues.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x,CultureInfo.InvariantCulture)).ToList();
                 retVal.Add(stream, lst);
             }
             return retVal;

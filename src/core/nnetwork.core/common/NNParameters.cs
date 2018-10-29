@@ -101,7 +101,7 @@ namespace NNetwork.Core.Common
         {
             var strValue = $"|Type:{LearnerType} |LRate:{LearningRate.ToString(CultureInfo.InvariantCulture)} " +
                 $"|Momentum:{Momentum.ToString(CultureInfo.InvariantCulture)} |Loss:{LossFunction}" +
-                $"|Eval:{EvaluationFunction}" + $"|L1:{L1Regularizer}" + $"|L2:{L2Regularizer}";
+                $"|Eval:{EvaluationFunction}" + $"|L1:{L1Regularizer.ToString(CultureInfo.InvariantCulture)}" + $"|L2:{L2Regularizer.ToString(CultureInfo.InvariantCulture)}";
 
             return strValue;
         }

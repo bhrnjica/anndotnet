@@ -60,6 +60,7 @@ namespace anndotnet.wnd.Models
                 {
                     try
                     {
+                        bool isNameAllowedToChang = true;
                         //filenames on disk are not case sensitive 
                         if(!string.IsNullOrEmpty(m_Name) && !m_Name.Equals(value,StringComparison.OrdinalIgnoreCase))
                         {
@@ -68,24 +69,41 @@ namespace anndotnet.wnd.Models
                                 //change model file
                                 var filePathold = Project.GetMLConfigPath(Settings, m_Name);
                                 var filePathnew = Project.GetMLConfigPath(Settings, value);
-                                System.IO.File.Move(filePathold, filePathnew);
+                                
                                 //model folder path
                                 var folderPathold = Project.GetMLConfigFolder(Settings, m_Name);
                                 var folderPathnew = Project.GetMLConfigFolder(Settings, value);
 
                                 //change model folder
-                                System.IO.Directory.Move(folderPathold, folderPathnew);
+
+                                if(!FileInUse(filePathold))
+                                {
+                                    System.IO.Directory.Move(folderPathold, folderPathnew);
+                                    System.IO.File.Move(filePathold, filePathnew);
+                                    
+                                   
+                                }
+                                else
+                                {
+                                    isNameAllowedToChang = false;
+                                }
+                               
 
                             }
                         }
                         //change property
                         var temPane = m_Name;
-                        m_Name = value;
-                        RaisePropertyChangedEvent("Name");
+                        if(isNameAllowedToChang)
+                        {
+                            m_Name = value;
+                            RaisePropertyChangedEvent("Name");
+                            //in case of renaming 
+                            if (!string.IsNullOrEmpty(temPane) && !string.IsNullOrEmpty(value))
+                                updateMLConfigNameInProject(temPane, value);
+                        }
+                        
 
-                        //in case of renaming 
-                        if(!string.IsNullOrEmpty(temPane) && !string.IsNullOrEmpty(value))
-                            updateMLConfigNameInProject(temPane, value);
+                        
                     }
                     catch (Exception)
                     {
@@ -95,6 +113,23 @@ namespace anndotnet.wnd.Models
 
 
                 }
+            }
+        }
+        
+        private bool FileInUse(string path)
+        {
+            try
+            {
+                //if file is not lock then below statement will successfully executed otherwise it's goes to catch.
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                }
+                return false;
+            }
+            catch
+            {
+                return true;
+
             }
         }
 
@@ -578,10 +613,10 @@ namespace anndotnet.wnd.Models
                         {
                             var row = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                             int it = int.Parse(row[0]);
-                            float lossMB = (float)double.Parse(row[1]);
-                            float evalMB = (float)double.Parse(row[2]);
-                            float trainEval = (float)double.Parse(row[3]);
-                            float valiEval = (float)double.Parse(row[4]);
+                            float lossMB = (float)double.Parse(row[1], CultureInfo.InvariantCulture);
+                            float evalMB = (float)double.Parse(row[2], CultureInfo.InvariantCulture);
+                            float trainEval = (float)double.Parse(row[3], CultureInfo.InvariantCulture);
+                            float valiEval = (float)double.Parse(row[4], CultureInfo.InvariantCulture);
                             trProg.MBLossValue.Add(new PointPair(it, lossMB));
                             trProg.MBEvaluationValue.Add(new PointPair(it, evalMB));
                             trProg.TrainEvalValue.Add(new PointPair(it, trainEval));
@@ -834,7 +869,7 @@ namespace anndotnet.wnd.Models
 
                 //prepare for saving
                 for (int i=0; i< result.Actual.Count; i++)
-                    strLine.Add($"{result.Actual[i]};{result.Predicted[i]}");
+                    strLine.Add($"{result.Actual[i].ToString(CultureInfo.InvariantCulture)};{result.Predicted[i].ToString(CultureInfo.InvariantCulture)}");
 
                 //store content to file
                 File.WriteAllLines(filepath, strLine.ToArray());
@@ -1000,7 +1035,7 @@ namespace anndotnet.wnd.Models
                 for (int j = 0; j < result.DataSet.Values.Count(); j++)
                 {
                     var value = result.DataSet.Values.ElementAt(j)[i];
-                    strLine.AddRange(value.Select(x => x.ToString()));
+                    strLine.AddRange(value.Select(x => x.ToString(CultureInfo.InvariantCulture)));
                 }
                 strList.Add(strLine);
             }

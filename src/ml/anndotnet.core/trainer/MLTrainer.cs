@@ -15,6 +15,7 @@ using NNetwork.Core.Common;
 using NNetwork.Core.Metrics;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime;
@@ -131,7 +132,7 @@ namespace ANNdotNET.Core
                 //prepare training data for every frequently iterations
                 foreach (var line in historydata)
                 {
-                    var strRow = string.Join(";", line.Item1, line.Item2, line.Item3, line.Item4, line.Item5);
+                    var strRow = string.Join(";", line.Item1.ToString(CultureInfo.InvariantCulture), line.Item2.ToString(CultureInfo.InvariantCulture), line.Item3.ToString(CultureInfo.InvariantCulture), line.Item4.ToString(CultureInfo.InvariantCulture), line.Item5.ToString(CultureInfo.InvariantCulture));
                     strData.Add(strRow);
                 }
                 System.IO.FileInfo file = new System.IO.FileInfo(historyDataPath);
@@ -167,10 +168,10 @@ namespace ANNdotNET.Core
                 {
                     var strLine = line.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                     var it = int.Parse(strLine[0]);
-                    var val1 = double.Parse(strLine[1]);
-                    var val2 = double.Parse(strLine[2]);
-                    var val3 = double.Parse(strLine[3]);
-                    var val4 = double.Parse(strLine[4]);
+                    var val1 = double.Parse(strLine[1],CultureInfo.InvariantCulture);
+                    var val2 = double.Parse(strLine[2], CultureInfo.InvariantCulture);
+                    var val3 = double.Parse(strLine[3], CultureInfo.InvariantCulture);
+                    var val4 = double.Parse(strLine[4], CultureInfo.InvariantCulture);
                     var tuple = new Tuple<int, float, float, float, float>(it, (float)val1, (float)val2, (float)val3, (float)val4);
                     valList.Add(tuple);
                 }
