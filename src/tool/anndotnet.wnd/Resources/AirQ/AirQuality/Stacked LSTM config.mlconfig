@@ -5,4 +5,4 @@ labels:|CO_level 5 0
 network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Embedding 24 0 0 None 0 0 |Layer:LSTM 24 24 0 TanH 1 1 |Layer:LSTM 12 12 0 TanH 1 1 |Layer:Drop 0 0 10 None 0 0 |Layer:Dense 12 0 0 TanH 0 0 |Layer:Dense 5 0 0 Softmax 0 0 
 learning:|Type:AdamLearner |LRate:0.08 |Momentum:0.9 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
 training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:1 |ContinueTraining:0 |TrainedModel:models\model_at_87of1000_epochs_TimeSpan_636738532791050245    
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:MLConfig2_result.csv |Logs:log 
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test: |TempModels:temp_models |Models:models |Result:MLConfig2_result.csv |Logs:log 

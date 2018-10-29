@@ -253,6 +253,32 @@ namespace ANNdotNET.Core
             return nnModel;
         }
 
+        public static Tuple<bool, bool, bool> GetDataSetAviability(string mlConfigPath)
+        {
+            try
+            {
+                //Load ML model configuration file
+                var dicMParameters = MLFactory.LoadMLConfiguration(mlConfigPath);
+                //add full path of model folder since model file doesn't contains any absolute path
+                dicMParameters.Add("root", MLFactory.GetMLConfigFolder(mlConfigPath));
+
+                //get model daa paths
+                var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
+                var training = dicPath["Training"]!= " ";
+                var validation = dicPath["Validation"] != " ";
+                var test = dicPath["Test"] != " ";
+                return new Tuple<bool, bool, bool>(training, validation, test);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+
+        }
+
         /// <summary>
         /// Perform normalization against input features and creates Normalization Layer prior to neural network creation. 
         /// On this way data normalization is included
@@ -992,16 +1018,19 @@ namespace ANNdotNET.Core
             if (string.IsNullOrEmpty(val))
                 throw new Exception("One of model paths (Training) is not defined!");
             dicValues.Add("Training", val);
+
             val = MLFactory.GetParameterValue(pathsValues, "Validation");
             if (string.IsNullOrEmpty(val))
                 dicValues.Add("Validation", " ");
             else
                 dicValues.Add("Validation", val);
+
             val = MLFactory.GetParameterValue(pathsValues, "Test");
             if (string.IsNullOrEmpty(val))
                 dicValues.Add("Test", " ");
             else
                 dicValues.Add("Test", val);
+
             val = MLFactory.GetParameterValue(pathsValues, "TempModels");
             if (string.IsNullOrEmpty(val))
                 throw new Exception("One of model paths (TempModels) is not defined!");

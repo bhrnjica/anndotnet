@@ -242,6 +242,20 @@ namespace ANNdotNET.Lib
             }
         }
 
+        public static Tuple<bool, bool, bool> GetDataSetAviability(string mlConfigPath)
+        {
+            try
+            {
+                return MLFactory.GetDataSetAviability(mlConfigPath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+        }
+
         /// <summary>
         /// Returns full path of project info file
         /// </summary>

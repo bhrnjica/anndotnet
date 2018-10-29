@@ -66,8 +66,8 @@ namespace anndotnet.wnd.Panels
                         //firs numeric column shoud be positioned first
                         foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== MLDataType.Numeric))
                         {
-                
-                            if (c.Type == MLDataType.Numeric)
+                            //
+                            if (c.Type == DataType.Numeric)
                             {
                                 var dgc = new DataGridTextColumn();
                                 dgc.Header = c.Name;
@@ -293,6 +293,7 @@ namespace anndotnet.wnd.Panels
                 dicMParameters.Add("root", Project.GetMLConfigFolder(modelPath));
                 var strModelToEvaluatePath = $"{dicMParameters["root"]}\\{trainedModelRelativePath}";
                 ProcessDevice pd = ProcessDevice.Default;
+                listResult.Items.Clear();
                 //parse each row and transform it to ML ready data in order to predict the result
                 for (int i = 0; i < m_TestData.Count; i++)
                 {
