@@ -287,6 +287,20 @@ namespace ANNdotNET.Lib
             }
         }
 
+        public static Tuple<bool, bool, bool> GetDataSetAviability(string mlConfigPath)
+        {
+            try
+            {
+                return MLFactory.GetDataSetAviability(mlConfigPath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+        }
+
         /// <summary>
         /// Returns full path of project info file
         /// </summary>
@@ -769,7 +783,7 @@ namespace ANNdotNET.Lib
                 //
                 var strPaths = $"|Training:{MLFactory.GetDefaultMLConfigDatSetPath(true)} " +
                                $"|Validation:{validPath} " +
-                               $"|Test:{MLFactory.GetDefaultMLConfigDatSetPath(false)} " +
+                               $"|Test: " +
                                $"|TempModels:{MLFactory.m_MLTempModelFolder} |Models:{MLFactory.m_MLModelFolder} " +
                                $"|Result:{mlconfigName}_result.csv |Logs:{MLFactory.m_MLLogFolder} ";
 

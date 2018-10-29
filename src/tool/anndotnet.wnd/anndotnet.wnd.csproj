@@ -141,6 +141,7 @@
     <Compile Include="AppController.cs" />
     <Compile Include="commons\TreeeViewAttachedProperties.cs" />
     <Compile Include="commons\TreeViewHelper.cs" />
+    <Compile Include="converters\BoolToColorConverter.cs" />
     <Compile Include="converters\LPToRegularizersToVisibility.cs" />
     <Compile Include="converters\LearnerParametersToVisibility.cs" />
     <Compile Include="converters\BoolToOpositeValueConverter.cs" />

@@ -25,4 +25,4 @@ training:|Type:Default |BatchSize:750 |Epochs:250 |Normalization:0 |RandomizeBat
 
 !******* Training validation and testing files
 !various paths needed in order to train, evaluate, export model
-paths:|Training:data\MNIST-train-reduced.txt |Validation:data\MNIST-validation.txt |Test:data\MNIST-validation.txt |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 
+paths:|Training:data\MNIST-train-reduced.txt |Validation:data\MNIST-validation.txt |Test: |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 

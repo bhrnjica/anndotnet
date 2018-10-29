@@ -5,4 +5,4 @@ labels:|species 3 0
 network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 5 0 0 ReLU 0 0 |Layer:Dense 3 0 0 Softmax 0 0 
 learning:|Type:SGDLearner |LRate:0.01 |Momentum:1 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
 training:|Type:Default |BatchSize:100 |Epochs:1000 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:50 |ContinueTraining:0 |TrainedModel:models\model_at_983of1000_epochs_TimeSpan_636729018198856673 
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test: |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 

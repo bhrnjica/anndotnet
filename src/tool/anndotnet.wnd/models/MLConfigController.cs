@@ -32,10 +32,10 @@ namespace anndotnet.wnd.Models
     /// <summary>
     /// Main VieModel for Modeling. Contains all information needed for GP running.
     /// </summary>
-    public class MLConfigController: BaseModel
+    public class MLConfigController : BaseModel
     {
         #region Fields and Constructors
-        ProcessDevice m_device= ProcessDevice.Default;
+        ProcessDevice m_device = ProcessDevice.Default;
         string m_Name;
         TrainingProgress m_TrainingProgress;
         /// <summary>
@@ -62,38 +62,38 @@ namespace anndotnet.wnd.Models
                     {
                         bool isNameAllowedToChang = true;
                         //filenames on disk are not case sensitive 
-                        if(!string.IsNullOrEmpty(m_Name) && !m_Name.Equals(value,StringComparison.OrdinalIgnoreCase))
+                        if (!string.IsNullOrEmpty(m_Name) && !m_Name.Equals(value, StringComparison.OrdinalIgnoreCase))
                         {
                             if (!string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(m_Name))
                             {
                                 //change model file
                                 var filePathold = Project.GetMLConfigPath(Settings, m_Name);
                                 var filePathnew = Project.GetMLConfigPath(Settings, value);
-                                
+
                                 //model folder path
                                 var folderPathold = Project.GetMLConfigFolder(Settings, m_Name);
                                 var folderPathnew = Project.GetMLConfigFolder(Settings, value);
 
                                 //change model folder
 
-                                if(!FileInUse(filePathold))
+                                if (!FileInUse(filePathold))
                                 {
                                     System.IO.Directory.Move(folderPathold, folderPathnew);
                                     System.IO.File.Move(filePathold, filePathnew);
-                                    
-                                   
+
+
                                 }
                                 else
                                 {
                                     isNameAllowedToChang = false;
                                 }
-                               
+
 
                             }
                         }
                         //change property
                         var temPane = m_Name;
-                        if(isNameAllowedToChang)
+                        if (isNameAllowedToChang)
                         {
                             m_Name = value;
                             RaisePropertyChangedEvent("Name");
@@ -101,9 +101,9 @@ namespace anndotnet.wnd.Models
                             if (!string.IsNullOrEmpty(temPane) && !string.IsNullOrEmpty(value))
                                 updateMLConfigNameInProject(temPane, value);
                         }
-                        
 
-                        
+
+
                     }
                     catch (Exception)
                     {
@@ -115,7 +115,8 @@ namespace anndotnet.wnd.Models
                 }
             }
         }
-        
+
+        public Tuple<bool,bool, bool> DataSetsDefined { get; set; }
         private bool FileInUse(string path)
         {
             try
@@ -243,8 +244,8 @@ namespace anndotnet.wnd.Models
         {
             try
             {
-                var modelPath = Project.GetMLConfigPath(Settings, Name);
-                var modValues = Project.LoadMLConfig(modelPath);
+                var mlConfigPath = Project.GetMLConfigPath(Settings, Name);
+                var modValues = Project.LoadMLConfig(mlConfigPath);
                 if (modValues == null)
                     throw new Exception("Model configuration is not found.");
                 //initialize network model
@@ -267,9 +268,13 @@ namespace anndotnet.wnd.Models
                 //initialize progress
                 TrainingProgress = inittrainingProgress();
 
+                //which datasets is defined
+                DataSetsDefined = Project.GetDataSetAviability(mlConfigPath);
+
                 //initialize evaluation
                 var meta = modValues.ContainsKey("metadata") ? modValues["metadata"] : null;
                 TestData = initializeTestData(meta);
+
                 return true;
             }
             catch (Exception)
