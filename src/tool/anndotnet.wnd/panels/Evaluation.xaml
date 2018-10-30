@@ -36,7 +36,7 @@
             <TextBlock HorizontalAlignment="Center" Foreground="Blue" Text="Predicted" VerticalAlignment="Center"/>
         </StackPanel>
         <WindowsFormsHost Grid.Row="2" Grid.Column="1" FontSize="14">
-            <zed:ZedGraphControl Font="Segoe UI, 12pt" x:Name="trainingGraph"/>
+            <local:ZedChartExt Font="Segoe UI, 12pt" x:Name="trainingGraph"/>
         </WindowsFormsHost>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3" >
             <TextBlock HorizontalAlignment="Center"  Foreground="Orange"  Text="Validation" VerticalAlignment="Center"/>
@@ -44,7 +44,7 @@
             <TextBlock HorizontalAlignment="Center" Foreground="Blue" Text="Predicted" VerticalAlignment="Center"/>
         </StackPanel>
         <WindowsFormsHost Grid.Row="2" Grid.Column="3" FontSize="14">
-            <zed:ZedGraphControl Font="Segoe UI, 12pt" x:Name="validationGraph"/>
+            <local:ZedChartExt  Font="Segoe UI, 12pt" x:Name="validationGraph"/>
         </WindowsFormsHost>
         <TextBlock HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1" Text="Training Performance" VerticalAlignment="Top" />
         <!--<ContentControl Grid.Row="5" Grid.Column="1" FontSize="12" x:Name="trainingContent" HorizontalContentAlignment="Stretch"/>-->
@@ -64,7 +64,7 @@
                 <local:Multiclass />
             </ItemsControl>
         </ScrollViewer>
-        <Button Content="Refresh" Style="{StaticResource GelButton}" Grid.Column="1" HorizontalAlignment="Left" IsEnabled="{Binding IsRunning, Converter={StaticResource BoolToOpositeValueConverter}}"  Grid.Row="1" VerticalAlignment="Center" Click="Button_Click" Height="25" />
+        <Button Content="Refresh" Visibility="Collapsed" Style="{StaticResource GelButton}" Grid.Column="1" HorizontalAlignment="Left" IsEnabled="{Binding IsRunning, Converter={StaticResource BoolToOpositeValueConverter}}"  Grid.Row="1" VerticalAlignment="Center" Click="Button_Click" Height="25" />
         
     </Grid>
 </UserControl>

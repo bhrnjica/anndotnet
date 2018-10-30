@@ -115,7 +115,30 @@ namespace anndotnet.wnd.Models
                 }
             }
         }
-
+        bool m_IsTrainRunning;
+        public bool IsTrainRunning
+        {
+            get
+            {
+                return m_IsTrainRunning;
+            }
+            set
+            {
+                if(value != m_IsTrainRunning)
+                {
+                    m_IsTrainRunning = value;
+                    RaisePropertyChangedEvent("IsTrainRunning");
+                    RaisePropertyChangedEvent("IsnotTrainRunning");
+                }
+            }
+        }
+        public bool IsnotTrainRunning
+        {
+            get
+            {
+                return !m_IsTrainRunning;
+            }
+        }
         public Tuple<bool,bool, bool> DataSetsDefined { get; set; }
         private bool FileInUse(string path)
         {
@@ -373,16 +396,21 @@ namespace anndotnet.wnd.Models
                 var mpv = new ModelPerformance();
                 mpv.DatSetName = "Validation set";
 
-
+               
                 //check if the trained model exists
                 if (string.IsNullOrEmpty(TrainingParameters.LastBestModel) || string.IsNullOrEmpty(TrainingParameters.LastBestModel.Trim(' ')))
                 {
+                   await Application.Current.Dispatcher.BeginInvoke(
+                  DispatcherPriority.Background,
+                          new Action(
+                     ()=>MainWindow.SetCursor(false)
+                       ));
+
+                    
                     return mEval;
                 }
                 
-                //save model before evaluation since there is a data must be stored into model file.
-                Save();
-
+                
                 //get model full path
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
                 //check if file exists
@@ -492,6 +520,8 @@ namespace anndotnet.wnd.Models
         {
             try
             {
+                IsTrainRunning = true;
+
                 //check if the model parameters are valid for training
                 isModelParametersValid();
 
@@ -536,6 +566,9 @@ namespace anndotnet.wnd.Models
                     RaisePropertyChangedEvent("IsRunning");
                     appCnt.TrainingCompleated(res);
 
+                    //save the mlconfig file after thraining process is over
+                    Save();
+                    IsTrainRunning = false;
                 }
                 else
                 {
@@ -545,6 +578,7 @@ namespace anndotnet.wnd.Models
                     IconUri = "Images/model.png";
                     RaisePropertyChangedEvent("IsRunning");
                     appCnt.TrainingCompleated(new TrainResult() { ProcessState= ProcessState.Compleated, Iteration= TrainingParameters.Epochs });
+                    IsTrainRunning = false;
                 }
 
             }
@@ -563,6 +597,7 @@ namespace anndotnet.wnd.Models
                 TrainingParameters.LastBestModel = res.BestModelFile;
                 appCnt.TrainingCompleated(res);
                 appCnt.ReportException(ex);
+                IsTrainRunning = false;
             }
            
         }
