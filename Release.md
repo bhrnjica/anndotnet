@@ -1,10 +1,15 @@
 ANNdotNET v1.1-rc20181029 - deep learning tool on .NET platform
 ============
 This version brings upgrade of Machine Learning Engine and set of minor bug fixes identified in the application.
-## Bug Fixes
-- After identification of the mayor issue with using CNTK 2.6, the ANNdotNET MLEngine now relies on CNTK 2.6. 
-- Test Tab Page had bug which add new rows whenever the user press Evaluate button.   
+## The following enhancements has been made in this release
+- The ANNdotNET MLEngine now relies on CNTK 2.6. 
+- Information about datasets has been added to Network Page
+- Chart controls on Training and Evaluation pages are simplified and improved visibility.
+- Refresh button has been removed and added automatic model evaluation.
 
+## Bug Fixes
+- Test Tab Page had bug which add new rows whenever the user press Evaluate button. 
+-  
 
 ANNdotNET v1.0 - deep learning tool on .NET platform
 ============
