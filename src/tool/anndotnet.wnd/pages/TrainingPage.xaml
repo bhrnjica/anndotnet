@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:ctrl="clr-namespace:anndotnet.wnd.Panels"
       mc:Ignorable="d" 
-      d:DesignHeight="550" d:DesignWidth="800" Background="{DynamicResource ANNdotNET.CustomColorBrush}"
+      d:DesignHeight="560" d:DesignWidth="800" Background="{DynamicResource ANNdotNET.CustomColorBrush}"
 	>
 
     <Grid>

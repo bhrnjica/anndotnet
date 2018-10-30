@@ -320,7 +320,7 @@ namespace anndotnet.wnd
                 //un check run button
                 var mainWnd = App.Current.MainWindow as MainWindow;
                 mainWnd.StopButtonClick();
-
+                //
                 Application.Current.Dispatcher.BeginInvoke(
                     DispatcherPriority.Background,
                 new Action(

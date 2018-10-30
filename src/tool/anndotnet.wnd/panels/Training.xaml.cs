@@ -54,28 +54,24 @@ namespace anndotnet.wnd.Panels
                 zedGraph.GraphPane.Title.Text = "Minibatch training";
                 zedGraph.GraphPane.XAxis.Title.Text = "iterations";
 
+            zedGraph.SetFont();
+           
 
-                zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-                zedGraph.GraphPane.YAxis.Title.Text = loss;
-                //zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
-                setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
+            zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
+            zedGraph.GraphPane.YAxis.Title.Text = loss;
+            zedGraph.GraphPane.YAxis.Title.IsVisible = false;
+            //zedGraph.GraphPane.YAxis.Title.FontSpec.FontColor = System.Drawing.Color.Blue;
+            setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
 
-
-                zedGraph.GraphPane.Y2Axis.Title.Text = eval;
-                setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
-                //zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
-
-                zedGraph.GraphPane.Y2Axis.IsVisible = true;
-                zedGraph.GraphPane.Legend.IsVisible = true;
-                zedGraph.GraphPane.Legend.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-                zedGraph.GraphPane.Title.IsVisible = false;
-            }
-            catch (Exception)
-            {
-                //catch is already chatched 
-                //throw;
-            }
+            zedGraph.GraphPane.Y2Axis.Title.IsVisible = false;
+            zedGraph.GraphPane.Y2Axis.Title.Text = eval;
+            setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+            //zedGraph.GraphPane.Y2Axis.Title.FontSpec.FontColor = System.Drawing.Color.Orange;
             
+            zedGraph.GraphPane.Y2Axis.IsVisible = true;
+            zedGraph.GraphPane.Legend.IsVisible = true;
+            zedGraph.GraphPane.Legend.Border= new ZedGraph.Border(System.Drawing.Color.White, 0);
+            zedGraph.GraphPane.Title.IsVisible = false;
 
         }
 
@@ -93,17 +89,18 @@ namespace anndotnet.wnd.Panels
                 zedGraph.GraphPane.Title.Text = "Datasets Evaluation";
                 zedGraph.GraphPane.XAxis.Title.Text = "iterations";
 
-                //left axes
-                zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
-                zedGraph.GraphPane.YAxis.Title.Text = eval;//$"Training dataset ({eval})";
-                setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
+            //left axes
+            zedGraph.GraphPane.Border = new ZedGraph.Border(System.Drawing.Color.White, 0);
+            zedGraph.GraphPane.YAxis.Title.Text = eval;//$"Training dataset ({eval})";
+            setAxesColor(zedGraph.GraphPane.YAxis, System.Drawing.Color.Blue);
 
+            zedGraph.SetFont();
 
-                //right axes
-                //zedGraph.GraphPane.Y2Axis.Title.FontSpec.Size = 16.0f;//4.0f * (zedGraph.Size.Width / 100);
-                zedGraph.GraphPane.Y2Axis.Title.Text = eval;// $"Validation dataset ({eval})";
-                zedGraph.GraphPane.Y2Axis.IsVisible = true;
-                setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
+            //right axes
+            //zedGraph.GraphPane.Y2Axis.Title.FontSpec.Size = 16.0f;//4.0f * (zedGraph.Size.Width / 100);
+            zedGraph.GraphPane.Y2Axis.Title.Text = eval;// $"Validation dataset ({eval})";
+            zedGraph.GraphPane.Y2Axis.IsVisible = true;
+            setAxesColor(zedGraph.GraphPane.Y2Axis, System.Drawing.Color.Orange);
 
 
                 //legend
@@ -117,6 +114,8 @@ namespace anndotnet.wnd.Panels
                // throw;
             }
             
+
+            chart2Title.Text = $"{eval} ";
 
         }
 
@@ -294,7 +293,8 @@ namespace anndotnet.wnd.Panels
             evalValidationSerie.Symbol.Size = 1;
             evalValidationSerie.YAxisIndex = 0;
             evalValidationSerie.IsY2Axis = true;
-            
+             
+
 
             // Make it a smooth line
             evalMinibatchSerie.Line.IsSmooth = true;

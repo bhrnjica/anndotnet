@@ -14,6 +14,7 @@ using anndotnet.wnd.Models;
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace anndotnet.wnd.Pages
@@ -28,6 +29,19 @@ namespace anndotnet.wnd.Pages
             InitializeComponent();
 
             this.DataContextChanged += ModelPage_DataContextChanged;
+            trainingTab.SelectionChanged += TrainingTab_SelectionChanged;
+        }
+
+        private async void TrainingTab_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var page = trainingTab.SelectedItem as anndotnet.wnd.Panels.Evaluation;
+            if(trainingTab.SelectedIndex == 2)
+            {
+                //force the tab page to evaluate model if available
+               await evaluation.EvaluateModel();
+            }
+
+
         }
 
         /// <summary>
@@ -36,7 +50,7 @@ namespace anndotnet.wnd.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ModelPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private async void ModelPage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
             {
@@ -67,6 +81,12 @@ namespace anndotnet.wnd.Pages
 
                     //restore cursor 
                     MainWindow.SetCursor(false);
+
+                    if (trainingTab.SelectedIndex == 2)
+                    {
+                        //force the tab page to evaluate model if available
+                        await evaluation.EvaluateModel();
+                    }
                 }
             }
             catch (System.Exception ex)
@@ -74,7 +94,7 @@ namespace anndotnet.wnd.Pages
                 //restore cursor 
                 MainWindow.SetCursor(false);
 
-                Application.Current.Dispatcher.BeginInvoke(
+                await Application.Current.Dispatcher.BeginInvoke(
                 DispatcherPriority.Background,
                 new Action(
 
