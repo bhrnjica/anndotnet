@@ -65,19 +65,7 @@ namespace anndotnet.wnd.Panels
                         //firs numeric column shoud be positioned first
                         foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== DataType.Numeric))
                         {
-                            //if(c.Type== DataType.Category)
-                            //{
-                            //    var dgc = new DataGridComboBoxColumn();
-                            //    if (c.Classes!=null)
-                            //        dgc.ItemsSource = c.Classes;
-
-                            //    dgc.Header = c.Name;
-                                
-                            //    dataGrid.Columns.Add(dgc);
-
-                            //    Binding b = new Binding($"[{index}]");
-                            //    dgc.TextBinding = b;
-                            //}
+                            //
                             if (c.Type == DataType.Numeric)
                             {
                                 var dgc = new DataGridTextColumn();
@@ -105,16 +93,7 @@ namespace anndotnet.wnd.Panels
                                 Binding b = new Binding($"[{index}]");
                                 dgc.TextBinding = b;
                             }
-                            //else
-                            //{
-                            //    var dgc = new DataGridTextColumn();
-                            //    dgc.Header = c.Name;
-
-                            //    dataGrid.Columns.Add(dgc);
-
-                            //    Binding b = new Binding($"[{index}]");
-                            //    dgc.Binding = b;
-                            //}
+                           
                             index++;
                         }
 
@@ -313,6 +292,7 @@ namespace anndotnet.wnd.Panels
                 dicMParameters.Add("root", Project.GetMLConfigFolder(modelPath));
                 var strModelToEvaluatePath = $"{dicMParameters["root"]}\\{trainedModelRelativePath}";
                 ProcessDevice pd = ProcessDevice.Default;
+                listResult.Items.Clear();
                 //parse each row and transform it to ML ready data in order to predict the result
                 for (int i = 0; i < m_TestData.Count; i++)
                 {

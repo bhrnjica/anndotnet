@@ -46,7 +46,7 @@ namespace anndotnet.core.app
             var retVal = MLFactory.PrepareNNData(dicMParameters, customModel, device);
 
             //create trainer 
-            MLTrainerEx tr = new MLTrainerEx(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
+            var tr = new MLTrainer(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
 
             //setup model checkpoint
             string modelCheckPoint = null;
@@ -83,11 +83,13 @@ namespace anndotnet.core.app
         /// <param name="modelPath"> models which will be evaluate</param>
         /// <param name="resultExportPath"> result file in which the result will be exported</param>
         /// <param name="device"> device for computation</param>
-        public static void EvaluateModel(string configPath, string bestTrainedModelPath, DeviceDescriptor device)
+        public static void EvaluateModel(string mlconfigPath, string bestTrainedModelPath, DeviceDescriptor device)
         {
 
             //Load ML model configuration file
-            var dicMParameters = MLFactory.LoadMLConfiguration(configPath);
+            var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
+            //add full path of model folder since model file doesn't contains any absolute path
+            dicMParameters.Add("root", MLFactory.GetMLConfigFolder(mlconfigPath));
 
             //get model daa paths
             var dicPath = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
@@ -95,14 +97,11 @@ namespace anndotnet.core.app
             //parse feature variables
             var projectValues = dicMParameters["training"].Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
             var trainedModelRelativePath = MLFactory.GetParameterValue(projectValues, "TrainedModel");
+
+
             //Minibatch type
             var mbTypestr = MLFactory.GetParameterValue(projectValues, "Type");
             MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
-
-            //add full path of model folder since model file doesn't contains any apsolute path
-            var fi = new FileInfo(configPath);
-            dicMParameters.Add("root", MLFactory.GetMLConfigFolder(fi.FullName));
-
             //prepare MLFactory 
             var f = MLFactory.CreateMLFactory(dicMParameters);
 

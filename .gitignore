@@ -260,6 +260,11 @@ paket-files/
 __pycache__/
 *.pyc
 /src/tool/anndotnet.tool/model_mlconfigs/iris/temp_models
+/src/tool/anndotnet.tool/model_mlconfigs/iris/models
+/src/tool/anndotnet.tool/model_mlconfigs/BCML/temp_models
+/src/tool/anndotnet.tool/model_mlconfigs/BCML/models
+/src/tool/anndotnet.tool/model_mlconfigs/daily_sales/temp_models
+/src/tool/anndotnet.tool/model_mlconfigs/daily_sales/models
 /src/ext/anndotnet.lib.ext.net/extensions/PredictFutureSalesCustomModels.cs
 /Examples/SentimentAnalysis/MovieReview/LSTM-Net/models
 /Examples/SentimentAnalysis/MovieReview/LSTM-Net/model_msdn-oct-2018-issue-sentiment-analysis-article.checkpoint.ckp
@@ -267,3 +272,4 @@ __pycache__/
 /src/tool/anndotnet.tool/model_mlconfigs/BCML/models
 /src/tool/anndotnet.tool/model_mlconfigs/daily_sales/models
 /src/tool/anndotnet.tool/model_mlconfigs/iris/models
+/src/tool/anndotnet.tool/model_mlconfigs/BCML/models/model_at_1of1000_epochs_TimeSpan_636756746081780265

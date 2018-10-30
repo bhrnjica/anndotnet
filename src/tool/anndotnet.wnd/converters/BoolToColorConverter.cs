@@ -10,26 +10,42 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System.Collections.ObjectModel;
+using NNetwork.Core.Common;
+using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
 
-namespace anndotnet.wnd.Models
+namespace anndotnet.wnd.converters
 {
-    public class AppModel
+    [ValueConversion(typeof(bool), typeof(Brush))]
+    public class BoolToColorConverter : IValueConverter
     {
-        public AppModel()
+        /// <summary>
+        /// converter to show or hide corresponded fields specific for each layer
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Project = new ObservableCollection<BaseModel>();
-        }
-
-        public ObservableCollection<BaseModel> Project { get; set; }
-
-        public string AppName
-        {
-            get
+            if (value == null)
+                return Brushes.Black;
+            else if ((bool)value)
             {
-                return "ANNdotNET v1.1-rc20181030";
+                return Brushes.Green;
             }
-        }
+            else
+                return Brushes.Red;
 
+        }  
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {    // Don't need any convert back
+            return null;
+        }
     }
 }

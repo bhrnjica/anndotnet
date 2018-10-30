@@ -229,15 +229,16 @@ namespace ANNdotNET.Core
                 //training process
                 while (true)
                 {
-                    //get mini batch data 
-                    var args = miniBatchSource.GetNextMinibatch(trParams.BatchSize, device);
-
-                    var arguments = MinibatchSourceEx.ToMinibatchData(args, vars, miniBatchSource.Type);
-                    //
-                    trainer.TrainMinibatch(arguments, device);
-
+                    //get next mini batch data 
+                    var args = miniBatchSource.GetNextMinibatch(trParams.BatchSize, device);                  
+                    var isSweepEnd = args.Any(a => a.Value.sweepEnd);
+                    //prepare the data for trainer
+                    var arguments = MinibatchSourceEx.ToMinibatchValueData(args, vars);
+                    GC.Collect();//remove this line after testing phase
+                    trainer.TrainMinibatch(arguments, isSweepEnd, device);
+                    
                     //make progress
-                    if (args.Any(a => a.Value.sweepEnd))
+                    if (isSweepEnd)
                     {
                         //check the progress of the training process
                         prData = progressTraining(trParams, trainer, network, miniBatchSource, epoch, progress, device);
@@ -316,71 +317,60 @@ namespace ANNdotNET.Core
             }
         }
 
-        
+
         #endregion
 
         #region Private Members
-        /// <summary>
-        /// Calback from the training in order to inform user about trining progress
-        /// </summary>
-        /// <param name="trParams"></param>
-        /// <param name="trainer"></param>
-        /// <param name="network"></param>
-        /// <param name="mbs"></param>
-        /// <param name="epoch"></param>
-        /// <param name="progress"></param>
-        /// <param name="device"></param>
-        /// <returns></returns>
-        protected virtual ProgressData progressTraining(TrainingParameters trParams, Trainer trainer, 
+        protected virtual ProgressData progressTraining(TrainingParameters trParams, Trainer trainer,
             Function network, MinibatchSourceEx mbs, int epoch, TrainingProgress progress, DeviceDescriptor device)
         {
             //calculate average training loss and evaluation
             var mbAvgLoss = trainer.PreviousMinibatchLossAverage();
             var mbAvgEval = trainer.PreviousMinibatchEvaluationAverage();
-            var vars = InputVariables.Union(OutputVariables).ToList();
+
             //get training dataset
             double trainEval = mbAvgEval;
             //sometimes when the data set is huge validation model against
             // full training dataset could take time, so we can skip it by setting parameter 'FullTrainingSetEval'
             if (trParams.FullTrainingSetEval)
             {
-                if (m_TrainData == null || m_TrainData.Values.Any(x => x.data.IsValid == false))
+                var evParams = new EvaluationParameters()
                 {
-                    using (var streamDatat = MinibatchSourceEx.GetFullBatch(mbs.Type, mbs.TrainingDataFile, mbs.StreamConfigurations, device))
-                    {
-                        //get full training dataset
-                        m_TrainData = MinibatchSourceEx.ToMinibatchData(streamDatat, vars, mbs.Type);
-                        
-                    }
-                    //perform evaluation of the current model on whole training dataset
-                    trainEval = trainer.TestMinibatch(m_TrainData, device);
-                }
-                
+
+                    MinibatchSize = trParams.BatchSize,
+                    MBSource = new MinibatchSourceEx(mbs.Type, StreamConfigurations.ToArray(), mbs.TrainingDataFile, null, MinibatchSource.FullDataSweep, false),
+                    Ouptut = OutputVariables,
+                    Input = InputVariables,
+                };
+
+                var result = MLEvaluator.EvaluateFunction(trainer.Model(), evParams, device);
+                trainEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result.actual, result.predicted, device);
+
             }
 
             string bestModelPath = m_bestModelPath;
             double validEval = 0;
 
-            //in case validation data set is empty don't perform test-minibatch
+            //in case validation data set is empty don't perform testminibatch
             if (!string.IsNullOrEmpty(mbs.ValidationDataFile))
             {
-                if (m_ValidationData == null || m_ValidationData.Values.Any(x=>x.data.IsValid == false))
+                var evParams = new EvaluationParameters()
                 {
-                    //get validation dataset
-                    using (var streamData = MinibatchSourceEx.GetFullBatch(mbs.Type, mbs.ValidationDataFile, mbs.StreamConfigurations, device))
-                    {
-                        //store validation data for future testing
-                        m_ValidationData = MinibatchSourceEx.ToMinibatchData(streamData, vars, mbs.Type);
-                       
-                    }
-                }
-                //perform evaluation of the current model with validation dataset
-                validEval = trainer.TestMinibatch(m_ValidationData, device);
+                    MinibatchSize = trParams.BatchSize,
+                    //StrmsConfig = StreamConfigurations.ToArray(),
+                    MBSource = new MinibatchSourceEx(mbs.Type, StreamConfigurations.ToArray(), mbs.ValidationDataFile, null, MinibatchSource.FullDataSweep, false),
+                    Ouptut = OutputVariables,
+                    Input = InputVariables,
+                };
+                //
+                var result = MLEvaluator.EvaluateFunction(trainer.Model(), evParams, device);
+                validEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result.actual, result.predicted, device);
+
             }
 
             //here we should decide if the current model worth to be saved into temp location
             // depending of the Evaluation function which sometimes can be better if it is greater that previous (e.g. ClassificationAccuracy)
-            if(isBetterThanPrevious(trainEval, validEval, StatMetrics.IsGoalToMinimize(trainer.EvaluationFunction())) && trParams.SaveModelWhileTraining)
+            if (isBetterThanPrevious(trainEval, validEval, StatMetrics.IsGoalToMinimize(trainer.EvaluationFunction())) && trParams.SaveModelWhileTraining)
             {
                 //save model
                 var strFilePath = $"{trParams.ModelTempLocation}\\model_at_{epoch}of{trParams.Epochs}_epochs_TimeSpan_{DateTime.Now.Ticks}";
@@ -399,7 +389,7 @@ namespace ANNdotNET.Core
                 m_ModelEvaluations.Add(tpl);
             }
 
-            
+
             m_bestModelPath = bestModelPath;
 
             //create progressData object
@@ -411,7 +401,8 @@ namespace ANNdotNET.Core
             prData.ValidationEval = validEval;
             prData.MinibatchAverageEval = mbAvgEval;
             prData.MinibatchAverageLoss = mbAvgLoss;
-            
+            //prData.BestModel = bestModelPath;
+
             //the progress is only reported if satisfied the following condition
             if (progress != null && (epoch % trParams.ProgressFrequency == 0 || epoch == 1 || epoch == trParams.Epochs))
             {
@@ -428,6 +419,112 @@ namespace ANNdotNET.Core
             //return progress data
             return prData;
         }
+
+        /// <summary>
+        /// Calback from the training in order to inform user about trining progress
+        /// </summary>
+        /// <param name="trParams"></param>
+        /// <param name="trainer"></param>
+        /// <param name="network"></param>
+        /// <param name="mbs"></param>
+        /// <param name="epoch"></param>
+        /// <param name="progress"></param>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        //protected virtual ProgressData progressTraining(TrainingParameters trParams, Trainer trainer, 
+        //    Function network, MinibatchSourceEx mbs, int epoch, TrainingProgress progress, DeviceDescriptor device)
+        //{
+        //    //calculate average training loss and evaluation
+        //    var mbAvgLoss = trainer.PreviousMinibatchLossAverage();
+        //    var mbAvgEval = trainer.PreviousMinibatchEvaluationAverage();
+        //    var vars = InputVariables.Union(OutputVariables).ToList();
+        //    //get training dataset
+        //    double trainEval = mbAvgEval;
+        //    //sometimes when the data set is huge validation model against
+        //    // full training dataset could take time, so we can skip it by setting parameter 'FullTrainingSetEval'
+        //    if (trParams.FullTrainingSetEval)
+        //    {
+        //        if (m_TrainData == null || m_TrainData.Values.Any(x => x.data.IsValid == false))
+        //        {
+        //            using (var streamDatat = MinibatchSourceEx.GetFullBatch(mbs.Type, mbs.TrainingDataFile, mbs.StreamConfigurations, device))
+        //            {
+        //                //get full training dataset
+        //                m_TrainData = MinibatchSourceEx.ToMinibatchData(streamDatat, vars, mbs.Type);
+
+        //            }
+        //            //perform evaluation of the current model on whole training dataset
+        //            trainEval = trainer.TestMinibatch(m_TrainData, device);
+        //        }
+
+        //    }
+
+        //    string bestModelPath = m_bestModelPath;
+        //    double validEval = 0;
+
+        //    //in case validation data set is empty don't perform test-minibatch
+        //    if (!string.IsNullOrEmpty(mbs.ValidationDataFile))
+        //    {
+        //        //get validation dataset
+        //        using (var streamData = MinibatchSourceEx.GetFullBatch(mbs.Type, mbs.ValidationDataFile, mbs.StreamConfigurations, device))
+        //        {
+        //            //store validation data for future testing
+        //            m_ValidationData = MinibatchSourceEx.ToMinibatchData(streamData, vars, mbs.Type);
+
+        //        }
+        //        //perform evaluation of the current model with validation dataset
+        //        validEval = trainer.TestMinibatch(m_ValidationData, device);
+        //    }
+
+        //    //here we should decide if the current model worth to be saved into temp location
+        //    // depending of the Evaluation function which sometimes can be better if it is greater that previous (e.g. ClassificationAccuracy)
+        //    if(isBetterThanPrevious(trainEval, validEval, StatMetrics.IsGoalToMinimize(trainer.EvaluationFunction())) && trParams.SaveModelWhileTraining)
+        //    {
+        //        //save model
+        //        var strFilePath = $"{trParams.ModelTempLocation}\\model_at_{epoch}of{trParams.Epochs}_epochs_TimeSpan_{DateTime.Now.Ticks}";
+        //        if (!Directory.Exists(trParams.ModelTempLocation))
+        //            Directory.CreateDirectory(trParams.ModelTempLocation);
+
+        //        //save temp model
+        //        network.Save(strFilePath);
+
+        //        //set training and validation evaluation to previous state
+        //        m_PrevTrainingEval = trainEval;
+        //        m_PrevValidationEval = validEval;
+        //        bestModelPath = strFilePath;
+
+        //        var tpl = Tuple.Create<double, double, string>(trainEval, validEval, strFilePath);
+        //        m_ModelEvaluations.Add(tpl);
+        //    }
+
+
+        //    m_bestModelPath = bestModelPath;
+
+        //    //create progressData object
+        //    var prData = new ProgressData();
+        //    prData.EpochTotal = trParams.Epochs;
+        //    prData.EpochCurrent = epoch;
+        //    prData.EvaluationFunName = trainer.EvaluationFunction().Name;
+        //    prData.TrainEval = trainEval;
+        //    prData.ValidationEval = validEval;
+        //    prData.MinibatchAverageEval = mbAvgEval;
+        //    prData.MinibatchAverageLoss = mbAvgLoss;
+
+        //    //the progress is only reported if satisfied the following condition
+        //    if (progress != null && (epoch % trParams.ProgressFrequency == 0 || epoch == 1 || epoch == trParams.Epochs))
+        //    {
+        //        //add info to the history
+        //        m_trainingHistory.Add(new Tuple<int, float, float, float, float>(epoch, (float)mbAvgLoss, (float)mbAvgEval,
+        //            (float)trainEval, (float)validEval));
+
+        //        //send progress 
+        //        progress(prData);
+        //        //
+        //        //Console.WriteLine($"Epoch={epoch} of {trParams.Epochs} processed.");
+        //    }
+
+        //    //return progress data
+        //    return prData;
+        //}
 
         /// <summary>
         /// Try to figure out is the current model better than previous. 

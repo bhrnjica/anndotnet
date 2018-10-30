@@ -47,13 +47,13 @@
                 <Label Content="Epoch: " Grid.Row="1" VerticalAlignment="Center"  HorizontalAlignment="Right" Grid.Column="1" />
                 <Label Content="Mini-batch size: " Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"  Grid.Column="1" />
                 <Label Content="Progress frequency: " Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <CheckBox Content="Randomize minibatch during training"  VerticalAlignment="Center" IsChecked="{Binding TrainingParameters.RandomizeBatch}" Grid.Row="4"  Grid.ColumnSpan="3"  />
-                <CheckBox Content="Continue training if possible"  VerticalAlignment="Center" IsChecked="{Binding TrainingParameters.ContinueTraining}" Grid.Row="5"  Grid.ColumnSpan="3"  />
+                <CheckBox Content="Randomize minibatch during training"  VerticalAlignment="Center" IsEnabled="{Binding IsnotTrainRunning}" IsChecked="{Binding TrainingParameters.RandomizeBatch}" Grid.Row="4"  Grid.ColumnSpan="3"  />
+                <CheckBox Content="Continue training if possible"  VerticalAlignment="Center"  IsEnabled="{Binding IsnotTrainRunning}" IsChecked="{Binding TrainingParameters.ContinueTraining}" Grid.Row="5"  Grid.ColumnSpan="3"  />
                 <!--<CheckBox Content="Early stopping"  VerticalAlignment="Center" IsChecked="{Binding TrainingParameters.EarlyStopping}" Grid.Row="6"  Grid.ColumnSpan="3"   />-->
-                <CheckBox Content="Save good models during iterations " IsChecked="{Binding TrainingParameters.SaveModelWhileTraining}" VerticalAlignment="Center"  Grid.Row="6" Grid.ColumnSpan="4" Margin="0,5" Height="16"  />
-                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding TrainingParameters.Epochs}" PreviewTextInput="TextBox_PreviewTextInput"  Margin="0,2,0,2"/>
-                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding TrainingParameters.BatchSize}" PreviewTextInput="TextBox_PreviewTextInput"  Margin="0,2,0,2"/>
-                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding TrainingParameters.ProgressFrequency}" PreviewTextInput="TextBox_PreviewTextInput"   Margin="0,2,0,2"/>
+                <CheckBox Content="Save good models during iterations "  IsEnabled ="{Binding IsnotTrainRunning}" IsChecked="{Binding TrainingParameters.SaveModelWhileTraining}" VerticalAlignment="Center"  Grid.Row="6" Grid.ColumnSpan="4" Margin="0,5" Height="16"  />
+                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding TrainingParameters.Epochs}" IsReadOnly="{Binding IsTrainRunning}" PreviewTextInput="TextBox_PreviewTextInput"  Margin="0,2,0,2"/>
+                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding TrainingParameters.BatchSize}"  IsReadOnly="{Binding IsTrainRunning}" PreviewTextInput="TextBox_PreviewTextInput"  Margin="0,2,0,2"/>
+                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding TrainingParameters.ProgressFrequency}"  IsReadOnly="{Binding IsTrainRunning}" PreviewTextInput="TextBox_PreviewTextInput"   Margin="0,2,0,2"/>
                 <TextBlock Grid.Row="7" TextWrapping="Wrap" Text="Current MB training loss:" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="0,5"/>
                 <TextBlock Grid.Row="7" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding TrainingProgress.TrainingLoss }"  Grid.Column="2" Margin="0,2,0,2"/>
             </Grid>
@@ -77,7 +77,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock HorizontalAlignment="Center" Text="Minibatch Training" VerticalAlignment="Top" />
                     <WindowsFormsHost Grid.Row="1" Grid.Column="1" FontSize="14">
-                        <zed:ZedGraphControl BorderStyle="None" Font="Segoe UI, 12pt" x:Name="trainingMinibatchGraph"/>
+                        <local:ZedChartExt BorderStyle="None" Font="Segoe UI, 25pt" x:Name="trainingMinibatchGraph"/>
                     </WindowsFormsHost>
                     <!--<lvc:CartesianChart  Grid.Row="1" FontSize="14" DisableAnimations="true" Hoverable="False" DataTooltip="{x:Null}">
                         <lvc:CartesianChart.AxisY>
@@ -106,14 +106,14 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Center" Text="Evaluation of " VerticalAlignment="Center"/>
-                        <TextBlock HorizontalAlignment="Center"  Foreground="Blue"  Text="Training" VerticalAlignment="Center"  FontWeight="Bold"/>
-                        <TextBlock HorizontalAlignment="Center" Text=" and " VerticalAlignment="Center"/>
+                        <TextBlock x:Name="chart2Title" HorizontalAlignment="Center" Text="Squared Error" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center"  Text=" evaluation" VerticalAlignment="Center"  />
+                        <!--<TextBlock HorizontalAlignment="Center" Text=" and " VerticalAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Center" Foreground="Orange" Text="Validation" VerticalAlignment="Center"  FontWeight="Bold"/>
-                        <TextBlock HorizontalAlignment="Center" Text=" data" VerticalAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Center" Text=" data" VerticalAlignment="Center"/>-->
                     </StackPanel>
                     <WindowsFormsHost Grid.Row="1" Grid.Column="1" FontSize="14">
-                        <zed:ZedGraphControl BorderStyle="None" Font="Segoe UI, 12pt" x:Name="trainingDatasetsGraph"/>
+                        <local:ZedChartExt BorderStyle="None" Font="Segoe UI, 25pt" x:Name="trainingDatasetsGraph"/>
                     </WindowsFormsHost>
                     <!--<lvc:CartesianChart Grid.Row="1" FontSize="14" DisableAnimations="true" Hoverable="False" DataTooltip="{x:Null}">
                         <lvc:CartesianChart.AxisY>

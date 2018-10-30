@@ -10,7 +10,7 @@
                     
                     WindowStartupLocation="CenterScreen"
                     ResizeMode="CanResizeWithGrip" Focusable="True" Width="990" Height="614" 
-                   MinWidth="1100" MinHeight="700" FontFamily="Segoe UI" FontSize="12" AllowDrop="True"
+                   MinWidth="1100" MinHeight="760" FontFamily="Segoe UI" FontSize="12" AllowDrop="True"
                     DataContext="{StaticResource mainViewModel}"  
                      Icon="Images/anndotnet.ico" Title="{Binding ActiveViewModel.TitleWindow}"
                      Background="{DynamicResource ANNdotNET.CustomColorBrush}">

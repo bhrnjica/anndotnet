@@ -41,12 +41,10 @@ namespace anndotnet.wnd.Panels
             //prepage graph
             prepareGraphPanel(trainingGraph);
             prepareGraphPanel(validationGraph);
+
+            
         }
-        object emptyContent(string strTitle)
-        {
-            return  new Rectangle() { StrokeThickness = 1, Stroke = Brushes.Black };
-           // validationContent.Content = new Rectangle() { StrokeThickness = 1, Stroke = Brushes.Black };
-        }
+        
         private void Evaluation_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
@@ -74,6 +72,8 @@ namespace anndotnet.wnd.Panels
                 itm21.Visibility = Visibility.Collapsed;
                 var itm31 = validatingItems.Items[2] as Multiclass;
                 itm31.Visibility = Visibility.Collapsed;
+
+                
             }
             catch (Exception ex)
             {
@@ -91,7 +91,6 @@ namespace anndotnet.wnd.Panels
             //clear prev. state
             trainingGraph.GraphPane.CurveList.Clear();
             validationGraph.GraphPane.CurveList.Clear();
-                        
 
             //prepare series
             prepareSeriesGraph(modelEval, trainingGraph, ref actualTraining, ref predictedTraining);
@@ -116,8 +115,11 @@ namespace anndotnet.wnd.Panels
 
         }
 
-        private void prepareSeriesGraph(ModelEvaluation modelEval, ZedGraphControl zedGraph, ref LineItem actualSeries, ref LineItem predictedSeries)
+        private void prepareSeriesGraph(ModelEvaluation modelEval, ZedChartExt zedGraph, ref LineItem actualSeries, ref LineItem predictedSeries)
         {
+            zedGraph.SetFont();
+
+
             // 
             if (modelEval.ModelOutputDim == 1)
             {
@@ -182,6 +184,7 @@ namespace anndotnet.wnd.Panels
         List<string> Classes;
         private string YAxis_ScaleFormatEvent(GraphPane pane, Axis axis, double val, int index)
         {
+            
             //zedModel.GraphPane.XAxis.Scale.Min = 0;
             pane.YAxis.Scale.Min = -0.1;
             pane.YAxis.Scale.Max = max + 0.2;
@@ -198,27 +201,27 @@ namespace anndotnet.wnd.Panels
                 return String.Format("{0}", Classes[(int)val]);
         }
 
-        /// <summary>
-        /// Refresh evaluation
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        public async Task<ModelEvaluation> EvaluateModel()
         {
+        
+
             try
             {
+                MainWindow.SetCursor(true);
+
                 MLConfigController pCont = this.DataContext as MLConfigController;
                 var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
+                
                 appCnt.ModelEvaluationAction(false);
 
                 //send model evaluation in the background
-                var modeEval = await Task<ModelEvaluation>.Run(()=> pCont.EvaluateModel());
+                var modeEval = await Task<ModelEvaluation>.Run(() => pCont.EvaluateModel()).ConfigureAwait(true);
 
                 appCnt.ModelEvaluationAction(true);
 
                 PrepareGraphs(modeEval);
 
-                for (int i=0; i<modeEval.TrainingValue.Count; i++)
+                for (int i = 0; i < modeEval.TrainingValue.Count; i++)
                 {
                     actualTraining.AddPoint(modeEval.TrainingValue[i]);
                     predictedTraining.AddPoint(modeEval.ModelValueTraining[i]);
@@ -229,13 +232,13 @@ namespace anndotnet.wnd.Panels
                     predictedValidation.AddPoint(modeEval.ModelValueValidation[i]);
                 }
 
-            
+
                 //Refresh the charts
                 trainingGraph.RestoreScale(trainingGraph.GraphPane);
                 validationGraph.RestoreScale(validationGraph.GraphPane);
 
                 //regression
-                if (modeEval.ModelOutputDim==1)
+                if (modeEval.ModelOutputDim == 1)
                 {
                     var itm = trainingItems.Items[0] as Regression;
                     itm.Visibility = Visibility.Visible;
@@ -253,10 +256,10 @@ namespace anndotnet.wnd.Panels
                     itm31.Visibility = Visibility.Collapsed;
                     itm11.DataContext = modeEval.ValidationPerformance;
                 }//binary classification
-                else if(modeEval.ModelOutputDim==2)
+                else if (modeEval.ModelOutputDim == 2)
                 {
                     var itm = trainingItems.Items[0] as Regression;
-                    itm.Visibility = Visibility.Collapsed;                  
+                    itm.Visibility = Visibility.Collapsed;
                     var itm2 = trainingItems.Items[1] as BinaryClassification;
                     itm2.Visibility = Visibility.Visible;
                     var itm3 = trainingItems.Items[2] as Multiclass;
@@ -291,15 +294,28 @@ namespace anndotnet.wnd.Panels
                     itm31.DataContext = modeEval.ValidationPerformance;
                 }
 
+                return modeEval;
             }
             catch (Exception ex)
             {
 
                 AppController appCont = App.Current.MainWindow.DataContext as AppController;
                 appCont.ReportException(ex);
+                return null;
             }
-           
-
+            finally
+            {
+                MainWindow.SetCursor(false);
+            }
+        }
+        /// <summary>
+        /// Refresh evaluation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await EvaluateModel();
         }
     }
 }

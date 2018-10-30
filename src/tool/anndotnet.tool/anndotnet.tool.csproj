@@ -59,14 +59,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CNTK.GPU" Version="2.6.0-rc0.dev20180920" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj" />
     <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
     <ProjectReference Include="..\..\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
     <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="model_mlconfigs\iris\models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CNTK.GPU" Version="2.6.0" />
   </ItemGroup>
 
 </Project>

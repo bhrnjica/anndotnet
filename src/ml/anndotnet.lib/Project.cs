@@ -287,6 +287,20 @@ namespace ANNdotNET.Lib
             }
         }
 
+        public static Tuple<bool, bool, bool> GetDataSetAviability(string mlConfigPath)
+        {
+            try
+            {
+                return MLFactory.GetDataSetAviability(mlConfigPath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+        }
+
         /// <summary>
         /// Returns full path of project info file
         /// </summary>
@@ -319,6 +333,7 @@ namespace ANNdotNET.Lib
             er.Header = new List<string>();
             //device definition
             DeviceDescriptor device = MLFactory.GetDevice(pdevice);
+
             //Load ML model configuration file
             var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
             //add full path of model folder since model file doesn't contains any absolute path
@@ -565,7 +580,7 @@ namespace ANNdotNET.Lib
                 var retVal = MLFactory.PrepareNNData(dicMParameters, CustomNNModels.CustomModelCallEntryPoint, device);
 
                 //create trainer 
-                MLTrainerEx tr = new MLTrainerEx(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
+                var tr = new MLTrainer(retVal.f.StreamConfigurations, retVal.f.InputVariables, retVal.f.OutputVariables);
 
                 //setup model checkpoint
                 string modelCheckPoint = null;
@@ -768,7 +783,7 @@ namespace ANNdotNET.Lib
                 //
                 var strPaths = $"|Training:{MLFactory.GetDefaultMLConfigDatSetPath(true)} " +
                                $"|Validation:{validPath} " +
-                               $"|Test:{MLFactory.GetDefaultMLConfigDatSetPath(false)} " +
+                               $"|Test: " +
                                $"|TempModels:{MLFactory.m_MLTempModelFolder} |Models:{MLFactory.m_MLModelFolder} " +
                                $"|Result:{mlconfigName}_result.csv |Logs:{MLFactory.m_MLLogFolder} ";
 
