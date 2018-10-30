@@ -28,10 +28,7 @@ namespace anndotnet.core.app
             //******run all configurations in the solution******
             //string strLocation1 = "C:\\sc\\github\\anndotnet\\src\\tool\\";
             //for (int i = 0; i < 10; i++)
-            //    runAllml_configurations(strLocation1);
-
-            runExample("Predict Solar Production",
-               "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models\\solar_production.mlconfig");
+            //    runAllml_configurations(strLocation1)
 
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
