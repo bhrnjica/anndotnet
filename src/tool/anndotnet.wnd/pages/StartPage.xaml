@@ -11,7 +11,7 @@
     <Grid>
         <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
         <WindowsFormsHost  x:Name="hostWF"   >
-            <forms:StartPanel AutoScaleMode="Dpi" x:Name="start"  />
+            <forms:StartPanel  x:Name="start"  />
         </WindowsFormsHost>
     </Grid>
 </UserControl>
