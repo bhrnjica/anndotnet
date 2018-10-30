@@ -34,7 +34,7 @@ namespace anndotnet.core.app
 
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
-            Console.Read();
+            Console.ReadKey();
 
         }
 

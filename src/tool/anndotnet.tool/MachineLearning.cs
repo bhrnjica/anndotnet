@@ -102,11 +102,6 @@ namespace anndotnet.core.app
             //Minibatch type
             var mbTypestr = MLFactory.GetParameterValue(projectValues, "Type");
             MinibatchType mbType = (MinibatchType)Enum.Parse(typeof(MinibatchType), mbTypestr, true);
-
-            //add full path of model folder since model file doesn't contains any apsolute path
-            var fi = new FileInfo(mlconfigPath);
-            dicMParameters.Add("root", MLFactory.GetMLConfigFolder(fi.FullName));
-
             //prepare MLFactory 
             var f = MLFactory.CreateMLFactory(dicMParameters);
 
