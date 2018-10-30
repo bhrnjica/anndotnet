@@ -24,16 +24,16 @@ namespace anndotnet.core.app
             var rnd = new Random(1);
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
-            string root = "C:\\sc\\github\\anndotnet\\src\\tool\\";
+            string root = "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\bin\\x64\\Debug";
 
             //transformDailyLevelVeanaLake();
             //return;
 
             //regression 
-            var mlConfigFile1 = $"{root}anndotnet.wnd\\Resources\\Concrete\\ConcreteSlumpProject\\FFNModel.mlconfig";
+            var mlConfigFile1 = $"{root}\\Resources\\Concrete\\ConcreteSlumpProject\\FFNModel.mlconfig";
             
             //binary classification
-            var mlConfigFile2 = $"{root}anndotnet.wnd\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig";
+            var mlConfigFile2 = $"{root}\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig";
             
             //Multiclass classification
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
@@ -43,7 +43,7 @@ namespace anndotnet.core.app
             var token2 = new CancellationToken();
 
             //train mlconfig 
-            var result = MachineLearning.Train(mlConfigFile1, trainingProgress, token2, null);
+            //var result = MachineLearning.Train(mlConfigFile1, trainingProgress, token2, null);
 
             //once the mode is trained you can write performance analysis of the model
             MachineLearning.PrintPerformance(mlConfigFile1);

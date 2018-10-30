@@ -38,24 +38,13 @@ namespace anndotnet.core.app
             var token2 = new CancellationToken();
 
             //train mlconfig 
-            //var result = MachineLearning.Train(mlConfigFile3, trainingProgress, token2, null);
+            var result = MachineLearning.Train(mlConfigFile3, trainingProgress, token2, null);
 
             //once the mode is trained you can write performance analysis of the model
-            //MachineLearning.PrintPerformance(mlConfigFile1);
+            MachineLearning.PrintPerformance(mlConfigFile1);
 
-            //SHow training history
-            var history = MachineLearning.ShowTrainingHistory(mlConfigFile3);
-            var data = history.First().Value;
-            var header = history.First().Key;
-            var x = header.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            var model1 = Visualization.Core.Chart.LinePlot("Class scatter",
-                data.Select(d => (double)d.Item1).ToArray(),
-                data.Select(d => (double)d.Item4).ToArray(),
-                Color.Blue, MarkerType.None,
-                "Iteration", x.First());
-           // showPlot(model1).Wait();
             //evaluate model and export the result of testing
-            //MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(),"./model_mlconfigs/iris_result.csv" ).Wait();
+            MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(),"./model_mlconfigs/iris_result.csv" ).Wait();
 
 
 

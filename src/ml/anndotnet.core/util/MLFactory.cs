@@ -768,11 +768,17 @@ namespace ANNdotNET.Core
             }
             else if (dsType == DataSetType.Validation)
             {
+                if (string.IsNullOrEmpty(dataPaths["Validation"]) || dataPaths["Validation"] == " ")
+                    return dataPaths["Validation"];
+
                 var strPath = $"{dicPath["root"]}\\{dataPaths["Validation"]}";
                 return strPath;
             }
             else if (dsType == DataSetType.Testing)
             {
+                if (string.IsNullOrEmpty(dataPaths["Test"]) || dataPaths["Test"] == " ")
+                    return dataPaths["Test"];
+
                 var strPath = $"{dicPath["root"]}\\{dataPaths["Test"]}";
                 return strPath;
             }

@@ -60,8 +60,8 @@ namespace ANNdotNET.Core
                     return er;
                 //
                 var dataset = MLFactory.GetDataPath(dicMParameters, dsType);
-                if (string.IsNullOrEmpty(dataset))
-                    throw new Exception($"No {dsType.ToString()} of validation set to evaluate model.");
+                if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset))
+                    throw new Exception($"No {dsType.ToString()} data set to evaluate model.");
 
                 //get output classes in case the ml problem is classification
                 var strCls = dicMParameters.ContainsKey("metadata") ? dicMParameters["metadata"] : "";

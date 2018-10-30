@@ -67,7 +67,7 @@ namespace anndotnet.wnd.Panels
                         foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== MLDataType.Numeric))
                         {
                             //
-                            if (c.Type == DataType.Numeric)
+                            if (c.Type == MLDataType.Numeric)
                             {
                                 var dgc = new DataGridTextColumn();
                                 dgc.Header = c.Name;

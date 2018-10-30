@@ -15,11 +15,11 @@ namespace ANNdotNET.Core
     public class MLExport
     {
        
-        public static async Task<List<string>> PrintPerformance(string mlconfigPath, DeviceDescriptor device)
+        public static async Task<List<string>> PrintPerformance(string mlconfigPath, DataSetType dsType, DeviceDescriptor device)
         {
             try
             {
-                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, DataSetType.Testing ,EvaluationType.ResultExtended);
+                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, dsType, EvaluationType.ResultExtended);
 
                 if (er.Actual == null)
                     throw new Exception("Export has failed. No testing nor validation datatset to export.");

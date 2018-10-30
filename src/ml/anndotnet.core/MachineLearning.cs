@@ -90,11 +90,20 @@ namespace anndotnet.core.app
         /// <param name="mlConfigPath"></param>
         public static void PrintPerformance(string mlConfigPath)
         {
-            //print evaluation result on console
-            var performanceData = MLExport.PrintPerformance(mlConfigPath, DeviceDescriptor.UseDefaultDevice());
-            performanceData.Wait();
-            foreach (var s in performanceData.Result)
-                Console.WriteLine(s);
+            try
+            {
+                //print evaluation result on console
+                var performanceData = MLExport.PrintPerformance(mlConfigPath, DataSetType.Validation, DeviceDescriptor.UseDefaultDevice());
+                performanceData.Wait();
+                foreach (var s in performanceData.Result)
+                    Console.WriteLine(s);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         /// <summary>
@@ -103,16 +112,25 @@ namespace anndotnet.core.app
         /// <param name="mlConfigPath"></param>
         public static Dictionary<string, List<Tuple<int, float, float, float, float>>> ShowTrainingHistory(string mlConfigPath)
         {
-           var mlConfigId = MLFactory.GetMLConfigId(mlConfigPath);
-           var historyPath =  MLFactory.GetTrainingHistoryPath(mlConfigPath, mlConfigId);
-            //read history from file
-            //load history of training in case continuation of training is requested
-            var historyData = MLFactory.LoadTrainingHistory(historyPath);
-            var historyHeader = File.ReadAllLines(historyPath).FirstOrDefault();
-            //create graph for Training and validation set
-            var d= new Dictionary<string, List<Tuple<int, float, float, float, float>>>();
-            d.Add(historyHeader, historyData);
-            return d;
+            try
+            {
+                var mlConfigId = MLFactory.GetMLConfigId(mlConfigPath);
+                var historyPath = MLFactory.GetTrainingHistoryPath(mlConfigPath, mlConfigId);
+                //read history from file
+                //load history of training in case continuation of training is requested
+                var historyData = MLFactory.LoadTrainingHistory(historyPath);
+                var historyHeader = File.ReadAllLines(historyPath).FirstOrDefault();
+                //create graph for Training and validation set
+                var d = new Dictionary<string, List<Tuple<int, float, float, float, float>>>();
+                d.Add(historyHeader, historyData);
+                return d;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         /// <summary>
@@ -122,7 +140,7 @@ namespace anndotnet.core.app
         /// <param name="resultPath"></param>
         public static void ExportResult(string mlConfigPath, string resultPath)
         {
-
+            //TODO
         }
 
         /// <summary>
@@ -132,7 +150,7 @@ namespace anndotnet.core.app
         /// <param name="resultPath"></param>
         public static void Predict(string mlConfigPath, string resultPath)
         {
-
+            //TODO
         }
     }
 }
