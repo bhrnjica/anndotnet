@@ -212,6 +212,14 @@ namespace anndotnet.wnd.commands
             }
         }
 
-
+        private static readonly RoutedUICommand m_EvaluateModelCommand =
+            new RoutedUICommand("Evaluate MLConfig item.", "EvaluateModelCommand", typeof(AppCommands));
+        public static RoutedCommand EvaluateModelCommand
+        {
+            get
+            {
+                return m_EvaluateModelCommand;
+            }
+        }
     }
 }

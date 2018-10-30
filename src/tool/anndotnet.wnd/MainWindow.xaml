@@ -326,10 +326,10 @@
                 <ContentControl x:Name="content"   Grid.Column="3" Grid.Row="1" Content="{Binding ActiveViewModel, Mode=TwoWay}" >
                     <ContentControl.Resources>
                         <DataTemplate DataType="{x:Type models:ANNProjectController}" >
-                            <views:ProjectPage x:Name="experimentCtrl" />
+                            <views:ProjectPage x:Name="annProjectPage" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type  models:MLConfigController}">
-                            <views:TrainingPage />
+                            <views:TrainingPage x:Name="trainingPage" />
                         </DataTemplate>
                         <DataTemplate DataType="{x:Type  models:StartModel}">
                             <views:StartPage x:Name="startPage" />

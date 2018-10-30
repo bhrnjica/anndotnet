@@ -566,7 +566,7 @@ namespace anndotnet.wnd.Models
                     RaisePropertyChangedEvent("IsRunning");
                     appCnt.TrainingCompleated(res);
 
-                    //save the mlconfig file after thraining process is over
+                    //save the mlconfig file after training process is over
                     Save();
                     IsTrainRunning = false;
                 }

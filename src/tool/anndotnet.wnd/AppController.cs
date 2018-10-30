@@ -311,6 +311,8 @@ namespace anndotnet.wnd
 
                     () =>
                     {
+                        if (AppCommands.EvaluateModelCommand != null)
+                            AppCommands.EvaluateModelCommand.Execute(null,null);
                         //
                         IsRunChecked = false;
                         SetRunnigColor(false);
