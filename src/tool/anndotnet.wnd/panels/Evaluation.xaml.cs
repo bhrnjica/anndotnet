@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using ZedGraph;
 
 namespace anndotnet.wnd.Panels
@@ -215,7 +216,7 @@ namespace anndotnet.wnd.Panels
                 appCnt.ModelEvaluationAction(false);
 
                 //send model evaluation in the background
-                var modeEval = await Task<ModelEvaluation>.Run(() => pCont.EvaluateModel()).ConfigureAwait(true);
+                var modeEval = await Task<ModelEvaluation>.Run(() => pCont.EvaluateModel());
 
                 appCnt.ModelEvaluationAction(true);
 
@@ -306,6 +307,16 @@ namespace anndotnet.wnd.Panels
             finally
             {
                 MainWindow.SetCursor(false);
+                await Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                new Action(
+
+                    () =>
+                    {
+                        MainWindow.SetCursor(false); 
+                    }
+
+                ));
             }
         }
         /// <summary>
