@@ -229,6 +229,7 @@ namespace anndotnet.unit
             var ph = ft.Where(p => p.Name.Contains("_peep")).ToList();
             var totalPh = ph.Sum(v => v.Shape.TotalSize);
             Assert.Equal(9, totalPh);
+           
             //stabilize
             var st = ft.Where(p => p.Name.Contains("_stabilize")).ToList();
             var totalst = st.Sum(v => v.Shape.TotalSize);

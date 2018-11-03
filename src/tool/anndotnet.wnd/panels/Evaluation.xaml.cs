@@ -207,7 +207,7 @@ namespace anndotnet.wnd.Panels
 
             try
             {
-                MainWindow.SetCursor(true);
+                //MainWindow.SetCursor(true);
 
                 MLConfigController pCont = this.DataContext as MLConfigController;
                 var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
@@ -305,7 +305,7 @@ namespace anndotnet.wnd.Panels
             }
             finally
             {
-                MainWindow.SetCursor(false);
+               // MainWindow.SetCursor(false);
             }
         }
         /// <summary>
