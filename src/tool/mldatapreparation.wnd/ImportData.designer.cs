@@ -44,11 +44,11 @@
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnImportData = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.firstRowHeaderCheck = new System.Windows.Forms.CheckBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnImportTS = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlNumForTest)).BeginInit();
@@ -59,7 +59,7 @@
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(16, 50);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(942, 31);
@@ -69,7 +69,7 @@
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(984, 44);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(116, 42);
             this.button1.TabIndex = 1;
@@ -82,9 +82,9 @@
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Location = new System.Drawing.Point(16, 119);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(360, 190);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
@@ -94,7 +94,7 @@
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(50, 87);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(210, 29);
             this.radioButton2.TabIndex = 1;
@@ -106,7 +106,7 @@
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(50, 33);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(4);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(188, 29);
             this.radioButton1.TabIndex = 0;
@@ -126,9 +126,9 @@
             this.groupBox3.Controls.Add(this.checkBox2);
             this.groupBox3.Controls.Add(this.textBox2);
             this.groupBox3.Location = new System.Drawing.Point(402, 106);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox3.Size = new System.Drawing.Size(478, 204);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
@@ -138,7 +138,7 @@
             // 
             this.numCtrlNumForTest.Enabled = false;
             this.numCtrlNumForTest.Location = new System.Drawing.Point(324, 146);
-            this.numCtrlNumForTest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numCtrlNumForTest.Margin = new System.Windows.Forms.Padding(4);
             this.numCtrlNumForTest.Name = "numCtrlNumForTest";
             this.numCtrlNumForTest.Size = new System.Drawing.Size(128, 31);
             this.numCtrlNumForTest.TabIndex = 22;
@@ -159,7 +159,7 @@
             // 
             this.checkBox7.AutoSize = true;
             this.checkBox7.Location = new System.Drawing.Point(216, 100);
-            this.checkBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox7.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(158, 29);
             this.checkBox7.TabIndex = 20;
@@ -171,7 +171,7 @@
             // 
             this.checkBox6.AutoSize = true;
             this.checkBox6.Location = new System.Drawing.Point(36, 162);
-            this.checkBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox6.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(81, 29);
             this.checkBox6.TabIndex = 18;
@@ -183,7 +183,7 @@
             // 
             this.checkBox5.AutoSize = true;
             this.checkBox5.Location = new System.Drawing.Point(216, 48);
-            this.checkBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox5.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(93, 29);
             this.checkBox5.TabIndex = 17;
@@ -195,7 +195,7 @@
             // 
             this.checkBox4.AutoSize = true;
             this.checkBox4.Location = new System.Drawing.Point(36, 121);
-            this.checkBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox4.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(105, 29);
             this.checkBox4.TabIndex = 16;
@@ -207,7 +207,7 @@
             // 
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(36, 85);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox3.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(117, 29);
             this.checkBox3.TabIndex = 15;
@@ -221,7 +221,7 @@
             this.checkBox2.Checked = true;
             this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox2.Location = new System.Drawing.Point(36, 46);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBox2.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(144, 29);
             this.checkBox2.TabIndex = 14;
@@ -232,25 +232,25 @@
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(324, 46);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.MaxLength = 1;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(78, 31);
             this.textBox2.TabIndex = 5;
             // 
-            // button2
+            // btnImportData
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(888, 160);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(214, 42);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Import Data";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnImportData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnImportData.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnImportData.Enabled = false;
+            this.btnImportData.Location = new System.Drawing.Point(888, 160);
+            this.btnImportData.Margin = new System.Windows.Forms.Padding(4);
+            this.btnImportData.Name = "btnImportData";
+            this.btnImportData.Size = new System.Drawing.Size(214, 42);
+            this.btnImportData.TabIndex = 5;
+            this.btnImportData.Text = "Import Data";
+            this.btnImportData.UseVisualStyleBackColor = true;
+            this.btnImportData.Click += new System.EventHandler(this.button2_Click);
             // 
             // textBox3
             // 
@@ -258,7 +258,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox3.Location = new System.Drawing.Point(16, 319);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
@@ -270,7 +270,7 @@
             // 
             this.firstRowHeaderCheck.AutoSize = true;
             this.firstRowHeaderCheck.Location = new System.Drawing.Point(904, 119);
-            this.firstRowHeaderCheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.firstRowHeaderCheck.Margin = new System.Windows.Forms.Padding(4);
             this.firstRowHeaderCheck.Name = "firstRowHeaderCheck";
             this.firstRowHeaderCheck.Size = new System.Drawing.Size(210, 29);
             this.firstRowHeaderCheck.TabIndex = 7;
@@ -278,31 +278,31 @@
             this.firstRowHeaderCheck.UseVisualStyleBackColor = true;
             this.firstRowHeaderCheck.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // button3
+            // btnCancel
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button3.Location = new System.Drawing.Point(888, 267);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(214, 42);
-            this.button3.TabIndex = 14;
-            this.button3.Text = "Cancel";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(888, 267);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(214, 42);
+            this.btnCancel.TabIndex = 14;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btnImportTS
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(888, 213);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(214, 42);
-            this.button4.TabIndex = 15;
-            this.button4.Text = "Import Time Series";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnImportTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnImportTS.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnImportTS.Enabled = false;
+            this.btnImportTS.Location = new System.Drawing.Point(888, 213);
+            this.btnImportTS.Margin = new System.Windows.Forms.Padding(4);
+            this.btnImportTS.Name = "btnImportTS";
+            this.btnImportTS.Size = new System.Drawing.Size(214, 42);
+            this.btnImportTS.TabIndex = 15;
+            this.btnImportTS.Text = "Import Time Series";
+            this.btnImportTS.UseVisualStyleBackColor = true;
+            this.btnImportTS.Click += new System.EventHandler(this.button4_Click);
             // 
             // ImportData
             // 
@@ -310,17 +310,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(1116, 835);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnImportTS);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.firstRowHeaderCheck);
             this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnImportData);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ImportData";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Import Experimental Data";
@@ -343,7 +343,7 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnImportData;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.CheckBox firstRowHeaderCheck;
         private System.Windows.Forms.CheckBox checkBox6;
@@ -351,10 +351,10 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnImportTS;
         public System.Windows.Forms.NumericUpDown numCtrlNumForTest;
     }
 }

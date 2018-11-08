@@ -49,7 +49,7 @@ namespace MLDataPreparation.Dll
             ProcesData();
             
             if (!string.IsNullOrEmpty(data))
-                button2.Enabled = true;
+                btnImportData.Enabled = true;
         }
 
         public static string GetFileFromOpenDialog(string fileDescription = "All files ", string extension = "*.*")
@@ -178,15 +178,15 @@ namespace MLDataPreparation.Dll
         {
             if(checkBox7.Checked)
             {
-                button2.Enabled = false;
-                button4.Enabled = true;
+                btnImportData.Enabled = false;
+                btnImportTS.Enabled = true;
                 label1.Enabled = true;
                 numCtrlNumForTest.Enabled = true;
             }
             else
             {
-                button2.Enabled = true;
-                button4.Enabled = false;
+                btnImportData.Enabled = true;
+                btnImportTS.Enabled = false;
                 label1.Enabled = false;
                 numCtrlNumForTest.Enabled = false;
             }
@@ -247,7 +247,7 @@ namespace MLDataPreparation.Dll
             var header = new List<string>();
             var data = new List<string[]>();
             
-            //dfine header if specified
+            //define header if specified
             if(isHeader)
             {
                 //
@@ -285,7 +285,7 @@ namespace MLDataPreparation.Dll
                     lagValues.Dequeue();
                 lagValues.Enqueue(col.Last());
 
-                //until lagged features are not defined don't add data to dataframe
+                //until lagged features are not defined don't add data to data-frame
                 var row = new List<string>();
                 for (int j = 0; j < col.Length && lagValues.Count > lagTime; j++)
                 {

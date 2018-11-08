@@ -35,9 +35,7 @@ namespace anndotnet.wnd.Panels
         public Training()
         {
             InitializeComponent();
-            DataContextChanged += Training_DataContextChanged;
-           
-            
+            DataContextChanged += Training_DataContextChanged;           
         }
 
         private void prepareGraphPanel1()
