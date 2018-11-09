@@ -825,9 +825,16 @@ namespace anndotnet.wnd.Models
                 //Load ML configuration file
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
 
+                EvaluationResult resultV = null;
+                EvaluationResult resultTe = null;
                 var resultT = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
-                var resultV = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
-                var resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+
+                if (Project.HasValidationDataSet(modelMLPath))
+                    resultV = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+
+                if (Project.HasTestDataSet(modelMLPath))
+                    resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+
                 //prepare headers
                 var header = resultT.Header;
 
@@ -912,6 +919,8 @@ namespace anndotnet.wnd.Models
         private static List<List<string>> prepareToPersist(EvaluationResult result)
         {
             List<List<string>> strList = new List<List<string>>();
+            if (result == null)
+                return null;
             //first add header
             strList.Add(result.Header);
             if (result.DataSet == null)

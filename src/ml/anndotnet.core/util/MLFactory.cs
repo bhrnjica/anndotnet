@@ -133,6 +133,54 @@ namespace ANNdotNET.Core
 
         #region Public Methods
         /// <summary>
+        /// Returns true if Validation dataset defined in the mlconfig.
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <returns></returns>
+        public static bool HasValidationDataSet(string mlConfigPath)
+        {
+            try
+            {
+                var dicMParameters = MLFactory.LoadMLConfiguration(mlConfigPath);
+                var dataPaths = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
+
+                if (dataPaths.ContainsKey("Validation") && dataPaths["Validation"] != " " && !string.IsNullOrEmpty(dataPaths["Validation"]))
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if Testing dataset defined in the mlconfig.
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <returns></returns>
+        public static bool HasTestDataSet(string mlConfigPath)
+        {
+            try
+            {
+                var dicMParameters = MLFactory.LoadMLConfiguration(mlConfigPath);
+                var dataPaths = MLFactory.GetMLConfigComponentPaths(dicMParameters["paths"]);
+
+                if (dataPaths.ContainsKey("Test") && dataPaths["Test"] != " " && !string.IsNullOrEmpty(dataPaths["Test"]))
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Prepares all ml data to start training process
         /// </summary>
         /// <param name="dicMParameters">Where all parameters are stored.</param>

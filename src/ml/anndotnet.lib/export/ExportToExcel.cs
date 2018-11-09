@@ -33,12 +33,12 @@ namespace ANNdotNET.Lib.Export
                 IXLWorksheet ws3 = null;
                 ws1.Cell(1, 1).Value = "Training Data";
 
-                if (dataValid != null)
+                if (dataValid != null && dataValid.Count > 0)
                 {
                     ws2 = wb.Worksheets.Add("Validation");
                     ws2.Cell(1, 1).Value = "Validation Data";
                 }
-                if (dataTest != null)
+                if (dataTest != null && dataTest.Count > 0)
                 {
                     ws3 = wb.Worksheets.Add("Test");
                     ws3.Cell(1, 1).Value = "Test Data";
@@ -47,10 +47,10 @@ namespace ANNdotNET.Lib.Export
 
                 writeDataToExcel(dataTrain,ws1, autoheader);
 
-                if (dataValid != null)
+                if (dataValid != null && dataValid.Count > 0)
                     writeDataToExcel(dataValid, ws2, autoheader);
 
-                if (dataTest != null)
+                if (dataTest != null && dataTest.Count > 0)
                     writeDataToExcel(dataTest, ws3, autoheader);
 
 
@@ -68,7 +68,7 @@ namespace ANNdotNET.Lib.Export
                     writeOutputClasses(ws1, dataTrain[0].Count, outputClasses);
 
 
-                if (dataValid != null)
+                if (dataValid != null && dataValid.Count > 0)
                 {
                     //write output column name for validation sheet
                     ws2.Cell(2, dataValid[0].Count + 1).Value = ouputColumn;
@@ -80,7 +80,7 @@ namespace ANNdotNET.Lib.Export
                         writeOutputClasses(ws2, dataValid[0].Count,outputClasses);
                 }
 
-                if (dataTest != null)
+                if (dataTest != null && dataTest.Count > 0)
                 {
                     //write output column name for validation sheet
                     ws3.Cell(2, dataTest[0].Count + 1).Value = ouputColumn;

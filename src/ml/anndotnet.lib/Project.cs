@@ -205,6 +205,44 @@ namespace ANNdotNET.Lib
         #region Methods exposed to ANNTool
 
         /// <summary>
+        /// Returns true if Validation dataset defined in the mlconfig.
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <returns></returns>
+        public static bool HasValidationDataSet(string mlConfigPath)
+        {
+            try
+            {
+                var retVal = MLFactory.HasValidationDataSet(mlConfigPath);
+                return retVal;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        /// <summary>
+        /// Returns true if Testing dataset defined in the mlconfig.
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <returns></returns>
+        public static bool HasTestDataSet(string mlConfigPath)
+        {
+            try
+            {
+                var retVal = MLFactory.HasTestDataSet(mlConfigPath);
+                return retVal;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Deletes all files and folder withing the path
         /// </summary>
         /// <param name="mlconfigFolder"></param>
