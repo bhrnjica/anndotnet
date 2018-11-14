@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool                                                       //
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
 // Copyright 2017-2018 Bahrudin Hrnjica                                                 //
 //                                                                                      //
 // This code is free software under the MIT License                                     //
@@ -327,6 +327,8 @@ namespace anndotnet.wnd
 
                     () =>
                     {
+                        if (AppCommands.EvaluateModelCommand != null)
+                            AppCommands.EvaluateModelCommand.Execute(null,null);
                         //
                         IsRunChecked = false;
                         SetRunnigColor(false);

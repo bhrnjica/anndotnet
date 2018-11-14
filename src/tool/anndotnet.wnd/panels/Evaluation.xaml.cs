@@ -1,13 +1,13 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool                                                       //
+// ANNdotNET - Deep Learning Tool on .NET Platform                                      //
 // Copyright 2017-2018 Bahrudin Hrnjica                                                 //
 //                                                                                      //
 // This code is free software under the MIT License                                     //
-// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md //
 //                                                                                      //
 // Bahrudin Hrnjica                                                                     //
 // bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
+// Bihac, Bosnia and Herzegovina                                                        //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using anndotnet.wnd.Models;
@@ -19,6 +19,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using ZedGraph;
 
 namespace anndotnet.wnd.Panels
@@ -215,7 +216,7 @@ namespace anndotnet.wnd.Panels
                 appCnt.ModelEvaluationAction(false);
 
                 //send model evaluation in the background
-                var modeEval = await Task<ModelEvaluation>.Run(() => pCont.EvaluateModel()).ConfigureAwait(true);
+                var modeEval = await Task<ModelEvaluation>.Run(() => pCont.EvaluateModel());
 
                 appCnt.ModelEvaluationAction(true);
 

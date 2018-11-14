@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool                                                       //
+// ANNdotNET - Deep Learning Tool on .NET Platform                                      //
 // Copyright 2017-2018 Bahrudin Hrnjica                                                 //
 //                                                                                      //
 // This code is free software under the MIT License                                     //
@@ -32,7 +32,7 @@ namespace anndotnet.wnd
         {
             InitializeComponent();
 
-            this.Closing += MainWindow_Closing; ;
+            this.Closing += MainWindow_Closing;
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 var dc = DataContext as AppController;
@@ -47,7 +47,7 @@ namespace anndotnet.wnd
                 m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header="Rename", Command= commands.AppCommands.RenameConfigCommand  });
               //  m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Duplicate", Command = commands.AppCommands.DuplicateConfigCommand });
                 m_CMenu.Items.Add(new System.Windows.Controls.MenuItem() { Header = "Delete", Command = commands.AppCommands.DeleteConfigCommand });
-
+                
             }
         }
 

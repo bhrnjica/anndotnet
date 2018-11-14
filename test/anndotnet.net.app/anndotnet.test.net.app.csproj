@@ -56,14 +56,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cntk.Core.Managed-2.5.1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
-      <HintPath>..\..\packages\CNTK.GPU.2.5.1\lib\net45\x64\Cntk.Core.Managed-2.5.1.dll</HintPath>
+    <Reference Include="Cntk.Core.Managed-2.6, Version=2.6.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
+      <HintPath>..\..\packages\CNTK.GPU.2.6.0\lib\netstandard2.0\Cntk.Core.Managed-2.6.dll</HintPath>
     </Reference>
-    <Reference Include="Emgu.CV.UI, Version=3.4.1.2976, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EMGU.CV.3.4.1.2976\lib\net35\Emgu.CV.UI.dll</HintPath>
+    <Reference Include="Emgu.CV.UI, Version=3.4.3.3016, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EMGU.CV.3.4.3.3016\lib\net35\Emgu.CV.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Emgu.CV.World, Version=3.4.1.2976, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EMGU.CV.3.4.1.2976\lib\net35\Emgu.CV.World.dll</HintPath>
+    <Reference Include="Emgu.CV.World, Version=3.4.3.3016, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EMGU.CV.3.4.3.3016\lib\net35\Emgu.CV.World.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -102,32 +102,47 @@
     <Content Include="License-LGPL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\core\nnetwork.core.net\nnetwork.core.net.csproj">
-      <Project>{3C000D09-FF02-4F12-A74D-DEB41998BC23}</Project>
-      <Name>nnetwork.core.net</Name>
+    <ProjectReference Include="..\..\src\core\dataprocessing.core\dataprocessing.core.csproj">
+      <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>
+      <Name>dataprocessing.core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\ext\anndotnet.lib.ext.net\anndotnet.lib.ext.net.csproj">
-      <Project>{54e952a7-df26-46c4-b4d8-ff5fee1fa6a0}</Project>
-      <Name>anndotnet.lib.ext.net</Name>
+    <ProjectReference Include="..\..\src\core\gpdotnet.math\gpdotnet.math.csproj">
+      <Project>{2c9ba4c2-1d8f-4e67-b7eb-88763df896f4}</Project>
+      <Name>gpdotnet.math</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\ml\anndotnet.core.net\anndotnet.core.net.csproj">
-      <Project>{32d1a1cc-f57d-4efc-9fbb-c4414bc7a2cc}</Project>
-      <Name>anndotnet.core.net</Name>
+    <ProjectReference Include="..\..\src\core\nnetwork.core\nnetwork.core.csproj">
+      <Project>{36ebb382-0747-4cb1-9f5b-64fade94bfd3}</Project>
+      <Name>nnetwork.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj">
+      <Project>{eb203955-c2e4-4595-a40a-2e33ba2f7928}</Project>
+      <Name>anndotnet.lib.ext</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ml\anndotnet.core\anndotnet.core.csproj">
+      <Project>{93f8ed05-87a4-42db-91a2-77c7353fa3d2}</Project>
+      <Name>anndotnet.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ml\anndotnet.lib\anndotnet.lib.csproj">
+      <Project>{f6617707-5ae0-4514-bbcb-51a0bb22eaeb}</Project>
+      <Name>anndotnet.lib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <Error Condition="!Exists('..\..\packages\EMGU.CV.3.4.1.2976\build\EMGU.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EMGU.CV.3.4.1.2976\build\EMGU.CV.targets'))" />
-    <Error Condition="!Exists('..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets'))" />
-    <Error Condition="!Exists('..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets'))" />
-    <Error Condition="!Exists('..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets'))" />
-    <Error Condition="!Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets'))" />
-    <Error Condition="!Exists('..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets'))" />
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets'))" />
+    <Error Condition="!Exists('..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets'))" />
+    <Error Condition="!Exists('..\..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets'))" />
   </Target>
-  <Import Project="..\..\packages\EMGU.CV.3.4.1.2976\build\EMGU.CV.targets" Condition="Exists('..\..\packages\EMGU.CV.3.4.1.2976\build\EMGU.CV.targets')" />
-  <Import Project="..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\packages\CNTK.Deps.Cuda.2.5.1\build\net45\CNTK.Deps.Cuda.targets')" />
-  <Import Project="..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets" Condition="Exists('..\..\packages\CNTK.Deps.cuDNN.2.5.1\build\net45\CNTK.Deps.cuDNN.targets')" />
-  <Import Project="..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets" Condition="Exists('..\..\packages\CNTK.Deps.MKL.2.5.1\build\net45\CNTK.Deps.MKL.targets')" />
-  <Import Project="..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.5.1\build\net45\CNTK.Deps.OpenCV.Zip.targets')" />
-  <Import Project="..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets" Condition="Exists('..\..\packages\CNTK.GPU.2.5.1\build\net45\CNTK.GPU.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets" Condition="Exists('..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets" Condition="Exists('..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets')" />
+  <Import Project="..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" />
+  <Import Project="..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets" Condition="Exists('..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets')" />
+  <Import Project="..\..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets" Condition="Exists('..\..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" />
 </Project>

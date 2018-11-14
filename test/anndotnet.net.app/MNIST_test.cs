@@ -48,7 +48,10 @@ namespace anndotnet.test.net.app
             //create minibatch source
             var sConfigs = new StreamConfiguration[]
                 { new StreamConfiguration("features", inDim), new StreamConfiguration("labels", outDim) };
-            var minibatchSource = MinibatchSource.TextFormatMinibatchSource("C:\\sc\\Datasets\\MNIST\\MNIST-TrainData.txt", sConfigs, MinibatchSource.InfinitelyRepeat);
+
+            //this file is huge and cannot be uploaded on GitHUb.
+            //it can be downloaded from: https://github.com/Microsoft/CNTK/tree/987b22a8350211cb4c44278951857af1289c3666/Examples/Image/DataSets/MNIST
+            var minibatchSource = MinibatchSource.TextFormatMinibatchSource("..\\..\\..\\Data\\MNIST-TrainData.txt", sConfigs, MinibatchSource.InfinitelyRepeat);
             var minibatchSize = (uint)754;
             var featureStreamInfo = minibatchSource.StreamInfo("features");
             var labelStreamInfo = minibatchSource.StreamInfo("labels");

@@ -13,13 +13,13 @@ namespace anndotnet.test.net.app
         static void Main(string[] args)
         {
             //test for NALU implementation
-            MNIST_test.Run_MNIST_Test();
+            //MNIST_test.Run_MNIST_Test();
 
             ////run all defined samples
             //runAllml_configurations();
 
             ////run evaluation test 
-            //runEvaluationText();
+            runEvaluationText();
         }
 
         private static void runAllml_configurations()

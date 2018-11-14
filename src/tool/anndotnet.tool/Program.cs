@@ -57,7 +57,7 @@ namespace anndotnet.core.app
 
 
             //******run all configurations in the solution******
-            //string strLocation1 = "C:\\sc\\github\\anndotnet\\src\\tool\\";
+            
             //for (int i = 0; i < 10; i++)
             //    runAllml_configurations(strLocation1);
 

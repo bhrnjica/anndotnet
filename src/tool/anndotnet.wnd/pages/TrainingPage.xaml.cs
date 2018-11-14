@@ -1,20 +1,22 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool                                                       //
+// ANNdotNET - Deep Learning Tool on .NET Platform                                      //
 // Copyright 2017-2018 Bahrudin Hrnjica                                                 //
 //                                                                                      //
 // This code is free software under the MIT License                                     //
-// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md //
 //                                                                                      //
 // Bahrudin Hrnjica                                                                     //
 // bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
+// Bihac, Bosnia and Herzegovina                                                        //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using anndotnet.wnd.commands;
 using anndotnet.wnd.Models;
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace anndotnet.wnd.Pages
@@ -30,18 +32,24 @@ namespace anndotnet.wnd.Pages
 
             this.DataContextChanged += ModelPage_DataContextChanged;
             trainingTab.SelectionChanged += TrainingTab_SelectionChanged;
+            registerCommands();
         }
 
-        private async void TrainingTab_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void registerCommands()
         {
-            var page = trainingTab.SelectedItem as anndotnet.wnd.Panels.Evaluation;
-            if(trainingTab.SelectedIndex == 2)
-            {
-                //force the tab page to evaluate model if available
-               await evaluation.EvaluateModel();
-            }
+            var binding = new CommandBinding(AppCommands.EvaluateModelCommand, onEvaluate, null);
 
+            CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
+        }
 
+        private async void onEvaluate(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(this.trainingTab.SelectedIndex == 2)
+                await evaluation.EvaluateModel();
+        }
+         private void TrainingTab_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            onEvaluate(null, null);
         }
 
         /// <summary>
