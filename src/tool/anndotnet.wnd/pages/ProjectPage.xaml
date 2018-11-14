@@ -26,7 +26,7 @@
                 <Grid>
                     <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
                     <WindowsFormsHost  x:Name="hostWF" >
-                        <forms:DataPanel AutoScaleMode="Dpi"  x:Name="project"  />
+                        <forms:DataPanel AutoScaleMode="Font"  x:Name="project"  />
                     </WindowsFormsHost>
                 </Grid>
             </TabItem>
