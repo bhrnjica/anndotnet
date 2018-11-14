@@ -1,5 +1,5 @@
 ﻿//////////////////////////////////////////////////////////////////////////////////////////
-// GPdotNET - Genetic Programming Tool                                                  //
+// GPdotNET - Genetic Programming Tool on .NET Platform                                 //
 // Copyright 2006-2018 Bahrudin Hrnjica                                                 //
 //                                                                                      //
 // This code is free software under the GNU Library General Public License (LGPL)       //
