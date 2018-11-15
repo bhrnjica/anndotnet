@@ -1,4 +1,4 @@
-ANNdotNET v1.1-rc20181029 - deep learning tool on .NET platform
+ANNdotNET v1.1-rc20181115 - deep learning tool on .NET platform
 ============
 This version brings upgrade of Machine Learning Engine and set of minor bug fixes identified in the application.
 ## The following enhancements has been made in this release

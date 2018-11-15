@@ -10,12 +10,12 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Linq;
-using System.Collections.Generic;
+
 using CNTK;
 using NNetwork.Core.Common;
 using NNetwork.Core.Network.Modules;
+using System;
+using System.Collections.Generic;
 
 namespace NNetwork.Core.Network
 {
