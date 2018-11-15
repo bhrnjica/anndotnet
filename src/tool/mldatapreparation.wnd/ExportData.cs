@@ -23,7 +23,7 @@ namespace MLDataPreparation.Dll
     /// </summary>
     public static class ExportData
     {
-        public static Experiment WriteFiles (string fileName, (bool cntk, bool randomize, char delimiter, int testRows, bool precentige) options, ANNDataSet fulldata)
+        public static DataFrame WriteFiles (string fileName, (bool cntk, bool randomize, char delimiter, int testRows, bool precentige) options, ANNDataSet fulldata)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace MLDataPreparation.Dll
                 ds.RowsToValidation = options.testRows;
                 ds.IsPrecentige = options.precentige;
                 //create experiment based created dataset
-                var exp = new Experiment(ds);
+                var exp = new DataFrame(ds);
 
                 //saving processed data in to file
                 var dirPath = Path.GetDirectoryName(fileName);
@@ -64,7 +64,7 @@ namespace MLDataPreparation.Dll
                 ds.RowsToValidation = options.testRows;
                 ds.IsPrecentige = options.precentige;
                 //create experiment based created dataset
-                var exp = new Experiment(ds);
+                var exp = new DataFrame(ds);
 
                 //saving processed data in to file
                 var dirPath = Path.GetDirectoryName(fileName);
@@ -96,7 +96,7 @@ namespace MLDataPreparation.Dll
                 ds.RowsToValidation = options.testRows;
                 ds.IsPrecentige = options.precentige;
                 //create experiment based created dataset
-                var exp = new Experiment(ds);
+                var exp = new DataFrame(ds);
 
                 //saving processed data in to file
                 var dirPath = Path.GetDirectoryName(fileName);
@@ -118,7 +118,7 @@ namespace MLDataPreparation.Dll
             }
         }
 
-        public static List<string> PrepareDataSet(Experiment exp)
+        public static List<string> PrepareDataSet(DataFrame exp)
         {
             
             List<string> strData = new List<string>();

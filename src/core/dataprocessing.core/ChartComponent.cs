@@ -5,9 +5,9 @@ using System.Linq;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-namespace Visualization.Core
+namespace DataProcessing.Core
 {
-    public class Chart
+    public class ChartComponent
     {
         public static PlotModel BarPlot(string title, List<object> x, IEnumerable<double> y, string xLabel = "", string yLabel = "")
         {

@@ -34,22 +34,35 @@ namespace MLDataPreparation.Dll
            
         }
 
-        //Import file
-        private void button1_Click(object sender, EventArgs e)
+        //Import file into dataset parser
+        private void btnLoadData_Click(object sender, EventArgs e)
         {
-            var strFile = GetFileFromOpenDialog("","");
-            if (strFile == null)
-                return;
+            try
+            {
+                var strFile = GetFileFromOpenDialog("", "");
+                if (strFile == null)
+                    return;
+                this.Cursor = Cursors.WaitCursor;
+                textBox1.Text = strFile;
+                originLines = File.ReadAllLines(strFile).Where(l => !l.StartsWith("@") && !l.StartsWith("#") && !l.StartsWith("!")).ToArray();
+                var data = string.Join(Environment.NewLine, originLines.Take(1000));
+                originData = data;
+                textBox3.Text = data;
+                ProcesData();
 
-            textBox1.Text = strFile;
-            originLines = File.ReadAllLines(strFile).Where(l => !l.StartsWith("@") && !l.StartsWith("#") && !l.StartsWith("!")).ToArray();
-            var data = string.Join(Environment.NewLine, originLines.Take(1000));
-            originData = data;
-            textBox3.Text = data;
-            ProcesData();
+                if (!string.IsNullOrEmpty(data))
+                    btnImportData.Enabled = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
             
-            if (!string.IsNullOrEmpty(data))
-                btnImportData.Enabled = true;
         }
 
         public static string GetFileFromOpenDialog(string fileDescription = "All files ", string extension = "*.*")
@@ -105,7 +118,9 @@ namespace MLDataPreparation.Dll
 
             textBox3.Text = data;
         }
-        private void button2_Click(object sender, EventArgs e)
+
+        // import dataset into data frame
+        private void btnImportData_Click(object sender, EventArgs e)
         {
             try
             {
@@ -119,8 +134,9 @@ namespace MLDataPreparation.Dll
                 var colDelimiter = GetColumDelimiter();
                 //define the row
                 //string[] rows = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
-
+                this.Cursor = Cursors.WaitCursor;
                 var result = ANNDataSet.prepareData(originLines, colDelimiter, firstRowHeaderCheck.Checked, radioButton1.Checked);
+
                 Header = result.header;
                 Data = result.data;
             }
@@ -129,8 +145,50 @@ namespace MLDataPreparation.Dll
 
                 reportException(ex);
             }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
             
         }
+
+
+        //import time series and convert to data frame 
+        private void btnImportTS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(textBox3.Text))
+                {
+                    MessageBox.Show("No file is selected!");
+                    return;
+                }
+
+
+                var colDelimiter = GetColumDelimiter();
+
+                if (numCtrlNumForTest.Value < 1 && numCtrlNumForTest.Value > originData.Length)
+                {
+                    MessageBox.Show("Invalid number of time lag. Please specify the time lag between 1 and row number.");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(originData))
+                    return;
+
+                //
+                //transform the time series into data frame
+                var result = ANNDataSet.prepareTimeSeriesData(originLines, (int)numCtrlNumForTest.Value, colDelimiter, firstRowHeaderCheck.Checked);
+                Header = result.header;
+                Data = result.data;
+            }
+            catch (Exception ex)
+            {
+
+                reportException(ex);
+            }
+        }
+
 
         private void reportException(Exception ex)
         {
@@ -193,129 +251,89 @@ namespace MLDataPreparation.Dll
 
         }
 
-        //import data as time series
-        private void button4_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(textBox3.Text))
-                {
-                    MessageBox.Show("No file is selected!");
-                    return;
-                }
 
-
-                var colDelimiter = GetColumDelimiter();
-
-                if(numCtrlNumForTest.Value < 1 && numCtrlNumForTest.Value > originData.Length)
-                {
-                    MessageBox.Show("Invalid number of time lag. Please specify the time lag between 1 and row number.");
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(originData))
-                    return;
-
-                //
-                //define the row
-                //string[] tdata = originData.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
-                //transform the time series into data frame
-                var result = prepareTimeSeriesData(originLines, (int)numCtrlNumForTest.Value, colDelimiter, firstRowHeaderCheck.Checked);
-
-                ////prepare data for loading
-                //var result = ANNDataSet.prepareData(prepData, new char[] {';'}, firstRowHeaderCheck.Checked, radioButton1.Checked);
-                Header = result.header;
-                Data = result.data;
-            }
-            catch (Exception ex)
-            {
-
-                reportException(ex);
-            }
-        }
-
-        /// <summary>
-        /// Transforms the string of time series into data frame string 
-        /// </summary>
-        /// <param name="tdata"></param>
-        /// <param name="lagTime"></param>
-        /// <returns></returns>
-        private (string[] header, string[][] data) prepareTimeSeriesData(string[] tdata, int lagTime, char[] delimiters ,bool isHeader)
-        {
+        ///// <summary>
+        ///// Transforms the string of time series into data frame string 
+        ///// </summary>
+        ///// <param name="tdata"></param>
+        ///// <param name="lagTime"></param>
+        ///// <returns></returns>
+        //private (string[] header, string[][] data) prepareTimeSeriesData(string[] tdata, int lagTime, char[] delimiters ,bool isHeader)
+        //{
             
-            //split data on for feature and label datasets
-            var header = new List<string>();
-            var data = new List<string[]>();
+        //    //split data on for feature and label datasets
+        //    var header = new List<string>();
+        //    var data = new List<string[]>();
             
-            //define header if specified
-            if(isHeader)
-            {
-                //
-                var cols = tdata[0].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+        //    //define header if specified
+        //    if(isHeader)
+        //    {
+        //        //
+        //        var cols = tdata[0].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-                for (int j=0; j < cols.Length; j++)
-                {
-                    if(j+1 < cols.Length)
-                    {
-                        //add regular header
-                        header.Add(cols[j]);
-                    }
-                    else
-                    {
-                        //add lagged features header
-                        for (int i = 0; i < lagTime; i++)
-                            header.Add($"{cols[j]}-{lagTime-i}");
+        //        for (int j=0; j < cols.Length; j++)
+        //        {
+        //            if(j+1 < cols.Length)
+        //            {
+        //                //add regular header
+        //                header.Add(cols[j]);
+        //            }
+        //            else
+        //            {
+        //                //add lagged features header
+        //                for (int i = 0; i < lagTime; i++)
+        //                    header.Add($"{cols[j]}-{lagTime-i}");
 
-                        //add last column header
-                        header.Add($"{cols[j]}");
-                    }
+        //                //add last column header
+        //                header.Add($"{cols[j]}");
+        //            }
                    
-                }         
-            }
-            //
-            int l = isHeader ? 1 : 0;
-            var lagValues = new Queue<string>(); 
-            for (; l < tdata.Length; l++)
-            {
+        //        }         
+        //    }
+        //    //
+        //    int l = isHeader ? 1 : 0;
+        //    var lagValues = new Queue<string>(); 
+        //    for (; l < tdata.Length; l++)
+        //    {
                 
-                var col = tdata[l].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+        //        var col = tdata[l].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-                //fill lagged features
-                if (lagValues.Count > lagTime)
-                    lagValues.Dequeue();
-                lagValues.Enqueue(col.Last());
+        //        //fill lagged features
+        //        if (lagValues.Count > lagTime)
+        //            lagValues.Dequeue();
+        //        lagValues.Enqueue(col.Last());
 
-                //until lagged features are not defined don't add data to data-frame
-                var row = new List<string>();
-                for (int j = 0; j < col.Length && lagValues.Count > lagTime; j++)
-                {
+        //        //until lagged features are not defined don't add data to data-frame
+        //        var row = new List<string>();
+        //        for (int j = 0; j < col.Length && lagValues.Count > lagTime; j++)
+        //        {
                     
-                    if (j + 1 < col.Length)
-                    {
-                        //add regular header
-                        row.Add(col[j]);
-                    }
-                    else
-                    {
-                        //add lagged features
-                        for (int f = 0; f < lagTime; f++)
-                        {
-                            row.Add(lagValues.ElementAt(f));
-                        }
-                        //add label
-                        row.Add(col[j]);
-                    }
+        //            if (j + 1 < col.Length)
+        //            {
+        //                //add regular header
+        //                row.Add(col[j]);
+        //            }
+        //            else
+        //            {
+        //                //add lagged features
+        //                for (int f = 0; f < lagTime; f++)
+        //                {
+        //                    row.Add(lagValues.ElementAt(f));
+        //                }
+        //                //add label
+        //                row.Add(col[j]);
+        //            }
 
-                }
+        //        }
 
-                if (lagValues.Count > lagTime)
-                    data.Add(row.ToArray());
+        //        if (lagValues.Count > lagTime)
+        //            data.Add(row.ToArray());
 
-            }
+        //    }
 
-            //
-            return (header.ToArray(), data.ToArray());
+        //    //
+        //    return (header.ToArray(), data.ToArray());
 
-        }
+        //}
     }
 }

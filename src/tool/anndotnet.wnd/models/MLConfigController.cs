@@ -140,7 +140,7 @@ namespace anndotnet.wnd.Models
                 return !m_IsTrainRunning;
             }
         }
-        public Tuple<bool,bool, bool> DataSetsDefined { get; set; }
+        public Tuple<bool, bool, bool> DataSetsDefined { get; set; }
         private bool FileInUse(string path)
         {
             try
@@ -297,8 +297,8 @@ namespace anndotnet.wnd.Models
                 TrainingProgress = inittrainingProgress();
 
                 //which datasets is defined
-                DataSetsDefined = Project.GetDataSetAviability(mlConfigPath);
-
+                var tp = Project.GetDataSetAviability(mlConfigPath);
+                DataSetsDefined = new Tuple<bool, bool, bool>(tp.training, tp.validation, tp.test);
                 //initialize evaluation
                 var meta = modValues.ContainsKey("metadata") ? modValues["metadata"] : null;
                 TestData = initializeTestData(meta);
@@ -524,6 +524,8 @@ namespace anndotnet.wnd.Models
                 {
                     //LOad ML configuration file
                     var mlconfigPath = Project.GetMLConfigPath(Settings, Name);
+
+                    progressStartTraining(trainingProgress);
                     //
                     var res = await Task.Run<TrainResult>(() => Project.TrainModel(mlconfigPath, token, trainingProgress, m_device));
 
@@ -570,6 +572,20 @@ namespace anndotnet.wnd.Models
                 IsTrainRunning = false;
             }
            
+        }
+
+        private void progressStartTraining(Action<ProgressData> trainingProgress)
+        {
+            ProgressData progress = new ProgressData();
+            progress.EpochCurrent = 0;
+            progress.EpochTotal = 0;
+            progress.EvaluationFunName = "";
+            progress.MinibatchAverageEval = 0;
+            progress.MinibatchAverageLoss = 0;
+            progress.TrainEval = 0;
+            progress.ValidationEval = 0;
+            if(trainingProgress!=null)
+                trainingProgress(progress);
         }
 
         private void isModelParametersValid()
@@ -694,7 +710,10 @@ namespace anndotnet.wnd.Models
                             UpdateTrainingtGraphs(progress.EpochCurrent, progress.MinibatchAverageLoss, progress.MinibatchAverageEval, progress.TrainEval, progress.ValidationEval);
                         //set status message
                         var appCnt = anndotnet.wnd.App.Current.MainWindow.DataContext as AppController;
-                        appCnt.StatusMessage = $"Iteration:{progress.EpochCurrent} of {progress.EpochTotal} processed!";
+                        if(progress.EpochCurrent==0)
+                            appCnt.StatusMessage = $"Training process is about to start. Please wait!";
+                        else
+                            appCnt.StatusMessage = $"Iteration:{progress.EpochCurrent} of {progress.EpochTotal} processed!";
                     }
 
                 ));
@@ -829,10 +848,10 @@ namespace anndotnet.wnd.Models
                 EvaluationResult resultTe = null;
                 var resultT = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
-                if (Project.HasValidationDataSet(modelMLPath))
+                if (DataSetsDefined.Item2)
                     resultV = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
-                if (Project.HasTestDataSet(modelMLPath))
+                if (DataSetsDefined.Item2)
                     resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
                 //prepare headers

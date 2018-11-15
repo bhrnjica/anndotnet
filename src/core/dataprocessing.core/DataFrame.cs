@@ -17,7 +17,7 @@ using System.IO;
 using System.Linq;
 namespace DataProcessing.Core
 {
-    public class Experiment
+    public class DataFrame
     {
         #region Ctor and Fields
 
@@ -42,7 +42,7 @@ namespace DataProcessing.Core
         List<ColumnData> m_trainData;//columns for training 
         List<ColumnData> m_testData;//columns for testing
 
-        public Experiment()
+        public DataFrame()
         {
 
         }
@@ -51,7 +51,7 @@ namespace DataProcessing.Core
         /// Create experiment based on Dataset
         /// </summary>
         /// <param name="dataset"></param>
-        public Experiment(ANNDataSet dataset)
+        public DataFrame(ANNDataSet dataset)
         {
             //copy data
             m_strData = new string[dataset.Data.Count][];

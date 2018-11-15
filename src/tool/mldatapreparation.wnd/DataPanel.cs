@@ -685,15 +685,29 @@ namespace MLDataPreparation.Dll
         
         public void LoadData()
         {
-            ImportData dlg = new ImportData();
-            if (dlg.ShowDialog() == DialogResult.OK)
+            try
             {
-                if (dlg.Data == null)
-                    return;
-                m_strData = dlg.Data;
-                m_strHeader = dlg.Header;
-                FillDataGrid(dlg.Header, dlg.Data);
+                ImportData dlg = new ImportData();
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    if (dlg.Data == null)
+                        return;
+                    this.Cursor = Cursors.WaitCursor;
+                    m_strData = dlg.Data;
+                    m_strHeader = dlg.Header;
+                    FillDataGrid(dlg.Header, dlg.Data);
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
+            
         }
 
         public void CreateNewModel()

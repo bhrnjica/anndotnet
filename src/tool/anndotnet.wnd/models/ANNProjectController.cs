@@ -314,7 +314,7 @@ namespace anndotnet.wnd.Models
             ds.RowsToValidation = 0;
             ds.RowsToTest = 0;
             //create experiment based created dataset
-            var exp = new Experiment(ds);
+            var exp = new DataFrame(ds);
             var data = ExportData.PrepareDataSet(exp);
 
             //calculate validation and training rows

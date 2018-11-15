@@ -75,13 +75,13 @@ namespace anndotnet.core.app
             var header = history.First().Key;
             var x = header.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             
-            var model = Visualization.Core.Chart.LinePlot("Model Evaluation", "Training Data",
+            var model = DataProcessing.Core.ChartComponent.LinePlot("Model Evaluation", "Training Data",
                 data.Select(d => (double)d.Item1).ToArray(),
                 data.Select(d => (double)d.Item4).ToArray(),
                 Color.Blue, MarkerType.Circle,
                 "Iterations", x.Last());
 
-            var ss = Visualization.Core.Chart.LineSeries("Validation Data",
+            var ss = DataProcessing.Core.ChartComponent.LineSeries("Validation Data",
                 data.Select(d => (double)d.Item1).ToArray(),
                 data.Select(d => (double)d.Item5).ToArray(), 
                 Color.Orange, MarkerType.Circle);

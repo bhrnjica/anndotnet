@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportData));
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnLoadData = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
@@ -65,17 +65,17 @@
             this.textBox1.Size = new System.Drawing.Size(942, 31);
             this.textBox1.TabIndex = 0;
             // 
-            // button1
+            // btnLoadData
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(984, 44);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(116, 42);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "File ...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLoadData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoadData.Location = new System.Drawing.Point(984, 44);
+            this.btnLoadData.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLoadData.Name = "btnLoadData";
+            this.btnLoadData.Size = new System.Drawing.Size(116, 42);
+            this.btnLoadData.TabIndex = 1;
+            this.btnLoadData.Text = "File ...";
+            this.btnLoadData.UseVisualStyleBackColor = true;
+            this.btnLoadData.Click += new System.EventHandler(this.btnLoadData_Click);
             // 
             // groupBox1
             // 
@@ -250,7 +250,7 @@
             this.btnImportData.TabIndex = 5;
             this.btnImportData.Text = "Import Data";
             this.btnImportData.UseVisualStyleBackColor = true;
-            this.btnImportData.Click += new System.EventHandler(this.button2_Click);
+            this.btnImportData.Click += new System.EventHandler(this.btnImportData_Click);
             // 
             // textBox3
             // 
@@ -302,7 +302,7 @@
             this.btnImportTS.TabIndex = 15;
             this.btnImportTS.Text = "Import Time Series";
             this.btnImportTS.UseVisualStyleBackColor = true;
-            this.btnImportTS.Click += new System.EventHandler(this.button4_Click);
+            this.btnImportTS.Click += new System.EventHandler(this.btnImportTS_Click);
             // 
             // ImportData
             // 
@@ -317,7 +317,7 @@
             this.Controls.Add(this.btnImportData);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnLoadData);
             this.Controls.Add(this.textBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -337,7 +337,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLoadData;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton1;
