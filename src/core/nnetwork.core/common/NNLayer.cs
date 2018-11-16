@@ -16,6 +16,7 @@ namespace NNetwork.Core.Common
     public enum LayerType
     {
         Normalization,
+        Scale,
         Dense,
         Embedding,
         Drop,
