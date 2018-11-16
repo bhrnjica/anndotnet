@@ -80,7 +80,7 @@ namespace ANNdotNET.Core
                 {
 
                     MinibatchSize = uint.Parse(mbSizetr),
-                    MBSource = new MinibatchSourceEx(mbType, mf.StreamConfigurations.ToArray(), dataset, null, MinibatchSource.FullDataSweep, false),
+                    MBSource = new MinibatchSourceEx(mbType, mf.StreamConfigurations.ToArray(),mf.InputVariables, mf.OutputVariables, dataset, null, MinibatchSource.FullDataSweep, false),
                     Input = mf.InputVariables,
                     Ouptut = mf.OutputVariables,
                 };
@@ -287,6 +287,7 @@ namespace ANNdotNET.Core
                     //evaluates model
                     fun.Evaluate(inMap, predictedDataMap, device);
                     predicted = predictedDataMap.Values.First();
+                    
                     var pred = predicted.GetDenseData<float>(fun).Select(l => l.ToList());
                     predicted.Erase();
                     predicted.Dispose();

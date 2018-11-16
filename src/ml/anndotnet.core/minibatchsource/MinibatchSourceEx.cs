@@ -33,7 +33,7 @@ namespace ANNdotNET.Core
         private MinibatchSource defaultmb;
         private StreamReader custommb;
 
-        public MinibatchSourceEx(MinibatchType type, StreamConfiguration[] streamConfigurations, string trainFilePath, string validFilePath, ulong epochSize, bool randomizeBatch)
+        public MinibatchSourceEx(MinibatchType type, StreamConfiguration[] streamConfigurations, List<Variable> inputVar, List<Variable> outputVar, string trainFilePath, string validFilePath, ulong epochSize, bool randomizeBatch)
         {
             this.StreamConfigurations = streamConfigurations;
             this.TrainingDataFile = trainFilePath;
@@ -43,9 +43,43 @@ namespace ANNdotNET.Core
             if (Type == MinibatchType.Default)
                 // prepare the training data
                 defaultmb = MinibatchSource.TextFormatMinibatchSource(trainFilePath, StreamConfigurations, epochSize, randomizeBatch);
+            else if (Type == MinibatchType.Image)
+            {
+                var featVar = inputVar.First();
+                //
+                int image_width = featVar.Shape.Dimensions[0];
+                int image_height = featVar.Shape.Dimensions[1];
+                int num_channels = featVar.Shape.Dimensions[2];
+                //make transformation and scalling
+                var transforms = new List<CNTKDictionary>();
+                if (true)
+                {
+                    var randomSideTransform = CNTKLib.ReaderCrop("RandomSide",
+                      new Tuple<int, int>(0, 0),
+                      new Tuple<float, float>(0.8f, 1.0f),
+                      new Tuple<float, float>(0.0f, 0.0f),
+                      new Tuple<float, float>(1.0f, 1.0f),
+                      "uniRatio");
+                    transforms.Add(randomSideTransform);
+                }
+                var scaleTransform = CNTKLib.ReaderScale(image_width, image_height, num_channels);
+                transforms.Add(scaleTransform);
+
+                var labelName = streamConfigurations.Last().m_streamName;
+                var labelDimension = streamConfigurations.Last().m_dim;
+                var featureName = streamConfigurations.First().m_streamName;
+                var imagemb = CNTKLib.ImageDeserializer(trainFilePath, labelName,(uint)labelDimension, featureName, transforms);
+                var mmsConfig = new CNTK.MinibatchSourceConfig(new CNTK.DictionaryVector() { imagemb });
+
+                //
+                defaultmb = CNTKLib.CreateCompositeMinibatchSource(mmsConfig);
+            }
             else if (Type == MinibatchType.Custom)
                 custommb = new StreamReader(trainFilePath);
+            else
+                throw new Exception("Minibatchsource type is unknown!");
         }
+        
         #endregion
 
         #region Public Members
@@ -88,7 +122,7 @@ namespace ANNdotNET.Core
         /// <returns></returns>
         public UnorderedMapStreamInformationMinibatchData GetNextMinibatch(uint minibatchSizeInSamples, DeviceDescriptor device)
         {
-            if (Type == MinibatchType.Default)
+            if (Type == MinibatchType.Default || Type == MinibatchType.Image)
             {
                 var retVal = defaultmb.GetNextMinibatch(minibatchSizeInSamples, device);
                 return retVal;

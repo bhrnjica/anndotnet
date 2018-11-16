@@ -15,7 +15,7 @@ namespace anndotnet.unit
 
            //
             var dicMParameters = MLFactory.LoadMLConfiguration(strPath);
-            Assert.Equal(11, dicMParameters.Count);
+            Assert.Equal(8, dicMParameters.Count);
             
             //List of ml config keywords
             Assert.True(dicMParameters.ContainsKey("features"));
@@ -25,15 +25,9 @@ namespace anndotnet.unit
             Assert.True(dicMParameters.ContainsKey("learning"));
             Assert.True(dicMParameters.ContainsKey("training"));
 
-            Assert.True(dicMParameters.ContainsKey("trainingPath"));
-            Assert.True(dicMParameters.ContainsKey("validationPath"));
-            Assert.True(dicMParameters.ContainsKey("testPath"));
-
-            Assert.True(dicMParameters.ContainsKey("modelTempFile"));
-            Assert.True(dicMParameters.ContainsKey("modelFinalFile"));
-            Assert.True(dicMParameters.ContainsKey("modelEvalResult"));
-
-
+            Assert.True(dicMParameters.ContainsKey("configid"));
+            Assert.True(dicMParameters.ContainsKey("metadata"));
+            Assert.True(dicMParameters.ContainsKey("paths"));
         }
 
         [Fact]

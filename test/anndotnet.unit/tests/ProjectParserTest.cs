@@ -41,13 +41,13 @@ namespace anndotnet.unit
             var strValidNormalizedLine = System.IO.File.ReadAllLines(validationNormalizedPath);
             //
             List<Function> normalizedInputs = null;
-            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), trainingPath, validationPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
+            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(),f.InputVariables, f.OutputVariables, trainingPath, validationPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
             {
                 normalizedInputs = mbs1.NormalizeInput(f.InputVariables, device);
             }
 
             //normalization test for train datatset
-            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), trainingPath, validationPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
+            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(),f.InputVariables, f.OutputVariables, trainingPath, validationPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
             { 
                 var data = mbs1.GetNextMinibatch(130, device);
 
@@ -76,7 +76,7 @@ namespace anndotnet.unit
                 }
             }
 
-            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), trainingPath, validationPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
+            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(),f.InputVariables, f.OutputVariables, trainingPath, validationPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
             {
                 var data = MinibatchSourceEx.GetFullBatch(mbs1.Type,mbs1.ValidationDataFile,mbs1.StreamConfigurations,device);
 
@@ -192,7 +192,7 @@ namespace anndotnet.unit
             var inputVars = MLFactory.NormalizeInputLayer(trData, f, trainingPath, trainingPath, device);
 
             //normalization test for train dataset
-            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), trainingPath, trainingPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
+            using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(),f.InputVariables,f.OutputVariables, trainingPath, trainingPath, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
             {
                 var data = mbs1.GetNextMinibatch(10, device);
 

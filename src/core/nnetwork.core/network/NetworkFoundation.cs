@@ -43,8 +43,8 @@ namespace NNetwork.Core.Network
             var W = Weights(outDim, dataType, device, seed);
 
             //matrix product
-            var Wx = CNTKLib.Times(W, x, name + "_wx");
-
+            //var Wx = CNTKLib.Times(W, x, name + "_wx");
+            var Wx = CNTKLib.Times(W, x, 1, 0, name + "_wx");
             //layer
             var n = string.IsNullOrEmpty(name) ? "_wx_b" : name;
             var l = CNTKLib.Plus(b, Wx, n);
@@ -74,6 +74,24 @@ namespace NNetwork.Core.Network
             return b;
         }
 
+        /// <summary>
+        /// Create bias for the layer.
+        /// </summary>
+        /// <param name="nDimension">Dimension of bias</param>
+        /// <param name="dataType">Number type of data.</param>
+        /// <param name="device">Device where computing will happen.</param>
+        /// <param name="name">Name of bias.</param>
+        /// <returns></returns>
+        public Parameter Bias(NDShape shape, DataType dataType, DeviceDescriptor device)
+        {
+            //initial value
+            var initValue = 0.01;
+
+            //
+            var b = new Parameter(shape, dataType, initValue, device, "_b");
+            //
+            return b;
+        }
         /// <summary>
         /// Create Weights parameters for the layer.
         /// </summary>
@@ -119,6 +137,30 @@ namespace NNetwork.Core.Network
             //create parameter
             var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "_w" : name);
 
+            //
+            return w;
+        }
+
+        /// <summary>
+        /// Creates weights parameters for the layer
+        /// </summary>
+        /// <param name="d1">first dimension</param>
+        /// <param name="d2">second dimension</param>
+        /// <param name="d3">third dimension</param>
+        /// <param name="dataType">Numeric type of data.</param>
+        /// <param name="device">Device where computing will happen.</param>
+        /// <param name="seed">Random seed.</param>
+        /// <param name="name">Name of weights parameters.</param>
+        /// <returns></returns>
+        public Parameter Weights(NDShape shape, DataType dataType, DeviceDescriptor device, uint seed = 1, string name = "")
+        {
+            //initializer of parameter
+            var glorotI = // CNTKLib.GlorotUniformInitializer(convWScale, -1, 2, seed);
+            CNTKLib.GlorotUniformInitializer(CNTK.CNTKLib.DefaultParamInitScale,
+            CNTKLib.SentinelValueForInferParamInitRank,
+            CNTKLib.SentinelValueForInferParamInitRank, seed);
+            //create parameter
+            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "_w" : name);
             //
             return w;
         }

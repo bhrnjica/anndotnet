@@ -19,8 +19,8 @@ namespace anndotnet.unit
 
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.Dense, HDimension=5, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=1, Activation= Activation.Softmax, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=5, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=1, FParam= Activation.Softmax, Id=2, Name="out1" },
             };
             //create input and output variable
             var device = DeviceDescriptor.UseDefaultDevice();
@@ -72,8 +72,8 @@ namespace anndotnet.unit
             //LSTM Network  in(4)-LSTM(5,5)-out(3), with peepholes and stabilization
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.LSTM, HDimension=5, CDimension=5, Activation= Activation.TanH, Peephole=true, SelfStabilization=true, Id=1, Name="LSTM Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=3, Activation= Activation.None, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.LSTM, Param1=5, Param2=5, FParam= Activation.TanH, BParam2=true, BParam1=true, Id=1, Name="LSTM Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=3, FParam= Activation.None, Id=2, Name="out1" },
             };
 
             //create input and output variable
@@ -136,8 +136,8 @@ namespace anndotnet.unit
             //LSTM Network  in(4)-LSTM(5,5)-out(3), with stabilization
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.LSTM, HDimension=5, CDimension=5, Activation= Activation.TanH, Peephole=false, SelfStabilization=true, Id=1, Name="LSTM Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=3, Activation= Activation.None, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.LSTM, Param1=5, Param2=5, FParam= Activation.TanH, BParam2=false, BParam1=true, Id=1, Name="LSTM Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=3, FParam= Activation.None, Id=2, Name="out1" },
             };
 
             //create input and output variable
@@ -201,8 +201,8 @@ namespace anndotnet.unit
             //LSTM Network  in(4)-LSTM(5,5)-out(3) without peepholes and stabilization
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.LSTM, HDimension=5, CDimension=5, Activation= Activation.TanH, Id=1, Name="LSTM Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=3, Activation= Activation.None, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.LSTM, Param1=5, Param2=5, FParam= Activation.TanH, Id=1, Name="LSTM Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=3, FParam= Activation.None, Id=2, Name="out1" },
             };
 
             //create input and output variable
@@ -266,10 +266,10 @@ namespace anndotnet.unit
             //Deep Neural Network in(4) - 5-10-15-out(3)
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.Dense, HDimension=5, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=10, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=15, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=3, Activation= Activation.None, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=5, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=10, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=15, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=3, FParam= Activation.None, Id=2, Name="out1" },
             };
 
             //create input and output variable
@@ -313,8 +313,8 @@ namespace anndotnet.unit
             //FeedForward in(4)-5-out(3)
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.Dense, HDimension=5, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=3, Activation= Activation.None, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=5, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=3, FParam= Activation.None, Id=2, Name="out1" },
             };
 
             //create input and output variable
@@ -356,8 +356,8 @@ namespace anndotnet.unit
             //FeedForward in(4)-5-out(3)
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.Dense, HDimension=5, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=3, Activation= Activation.Softmax, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=5, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=3, FParam= Activation.Softmax, Id=2, Name="out1" },
             };
 
             //create input and output variable
@@ -400,8 +400,8 @@ namespace anndotnet.unit
 
             List<NNLayer> layers = new List<NNLayer>()
             {
-                new NNLayer(){ Type= LayerType.Dense, HDimension=5, Activation= Activation.TanH, Id=1, Name="Dense Layer" },
-                new NNLayer(){ Type= LayerType.Dense, HDimension=1, Activation= Activation.None, Id=2, Name="out1" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=5, FParam= Activation.TanH, Id=1, Name="Dense Layer" },
+                new NNLayer(){ Type= LayerType.Dense, Param1=1, FParam= Activation.None, Id=2, Name="out1" },
             };
             //create input and output variable
             var device = DeviceDescriptor.UseDefaultDevice();

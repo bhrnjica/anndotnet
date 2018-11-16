@@ -48,13 +48,16 @@ namespace NNetwork.Core.Common
         ReLU = 1,
         Sigmoid = 2,
         Softmax = 3,
-        TanH = 4
+        TanH = 4,
+        Max = 5,
+        Avg = 6
     }
 
     public enum MinibatchType
     {
         Default = 0,
         Custom = 1,
+        Image = 2,
     }
 
     public enum LearnerType

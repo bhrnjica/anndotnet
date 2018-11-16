@@ -600,9 +600,9 @@ namespace ANNdotNET.Lib
                 var strValue = "";
                 foreach (var l in network)
                 {
-                    var stab = l.SelfStabilization == true ? 1 : 0;
-                    var peep = l.Peephole == true ? 1 : 0;
-                    strValue += $"|Layer:{l.Type} {l.HDimension} {l.CDimension} {l.Value} {l.Activation} {stab} {peep} ";
+                    var stab = l.BParam1 == true ? 1 : 0;
+                    var peep = l.BParam2 == true ? 1 : 0;
+                    strValue += $"|Layer:{l.Type} {l.Param1} {l.Param2} {l.Param3} {l.FParam} {stab} {peep} ";
                 }
 
                 return strValue;

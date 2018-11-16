@@ -21,17 +21,19 @@ namespace NNetwork.Core.Common
         Drop,
         LSTM,
         NALU,
+        Conv1D,
+        Conv2D,
+        Polling1D,
+        Polling2D,
         CudaStackedLSTM,
         CudaStackedGRU,
-        //CudaStackedTanH,
-        //CudaStackedReLU,
         Custom,
     }
 
 
 
     /// <summary>
-    /// ANN Network model class 
+    /// Generic ANN Layer class for holding information about ANN Layer (Dense, Embedding, LSTM, Pooling, Convolution, etc...) 
     /// </summary>
     public class NNLayer
     {
@@ -44,24 +46,24 @@ namespace NNetwork.Core.Common
         public string Name { get; set; }
 
         //Output dimension for the layer (Dense, Embedding, LSTM, CudaLSTM, GRU, TanH and ReLU)
-        public int HDimension { get; set; }
+        public int Param1 { get; set; }
 
-        //LSTM Cell dimension, number of layers for StackedLSTM, GRU , TanH and ReLU
-        public int CDimension { get; set; }
+        //LSTM Cell dimension, number of layers for StackedLSTM, GRU , TanH and ReLU, Pooling and ConvLayers
+        public int Param2 { get; set; }
 
-        //Parameter used in DropLayer (as dropRate)
-        public int Value { get; set; }
+        //Parameter used in DropLayer (as dropRate), Pooling and ConvLayers
+        public int Param3 { get; set; }
 
         //Activation function (in case of LSTM this is TanH activation)
-        public Activation Activation { get; set; }
+        public Activation FParam { get; set; }
 
-        //for LSTM layer only
-        public bool SelfStabilization { get; set; }
+        //LSTM layer stabilization, Pooling and Conv layers only
+        public bool BParam1 { get; set; }
 
         //for LSTM layer only 
-        public bool Peephole { get; set; }
+        public bool BParam2 { get; set; }
 
         //is activation function may be used in the layer
-        public bool UseActivation { get; set; }
+        public bool UseFParam { get; set; }
     }
 }

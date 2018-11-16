@@ -83,6 +83,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\anndotnet.tool\model_mlconfigs\convNet\data\test_map.txt">
+      <Link>model_mlconfigs\convNet\data\test_map.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.tool\model_mlconfigs\convNet\data\train_map.txt">
+      <Link>model_mlconfigs\convNet\data\train_map.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.tool\model_mlconfigs\convNet\data\validation_map.txt">
+      <Link>model_mlconfigs\convNet\data\validation_map.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\anndotnet.tool\model_mlconfigs\iris\data\mldataset_train">
       <Link>model_mlconfigs\iris\data\mldataset_train</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -101,6 +113,10 @@
     </Content>
     <Content Include="..\anndotnet.tool\model_mlconfigs\iris.mlconfig">
       <Link>model_mlconfigs\iris.mlconfig</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.tool\model_mlconfigs\convNet.mlconfig">
+      <Link>model_mlconfigs\convNet.mlconfig</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="App.config" />

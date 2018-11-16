@@ -21,7 +21,7 @@ namespace anndotnet.unit
 
             //
             var dicMParameters = MLFactory.LoadMLConfiguration(strPath);
-            Assert.Equal(11, dicMParameters.Count);
+            Assert.Equal(8, dicMParameters.Count);
 
 
         }   

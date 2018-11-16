@@ -155,23 +155,24 @@ namespace ANNdotNET.Core
 
                 //define helper variable collection
                 var vars = InputVariables.Union(OutputVariables).ToList();
-
+               
                 //training process
                 while (true)
                 {
                     //get next mini batch data 
                     var args = miniBatchSource.GetNextMinibatch(trParams.BatchSize, device);                  
                     var isSweepEnd = args.Any(a => a.Value.sweepEnd);
+
                     //prepare the data for trainer
-                    var arguments = MinibatchSourceEx.ToMinibatchValueData(args, vars);
-                    GC.Collect();//remove this line after testing phase
+                    var arguments = MinibatchSourceEx.ToMinibatchValueData(args, vars); 
                     trainer.TrainMinibatch(arguments, isSweepEnd, device);
-                    
+
                     //make progress
                     if (isSweepEnd)
                     {
                         //check the progress of the training process
                         prData = progressTraining(trParams, trainer, network, miniBatchSource, epoch, progress, device);
+                        
                         //check if training process ends
                         if (epoch >= trParams.Epochs)
                         {
@@ -268,7 +269,7 @@ namespace ANNdotNET.Core
                 {
 
                     MinibatchSize = trParams.BatchSize,
-                    MBSource = new MinibatchSourceEx(mbs.Type, StreamConfigurations.ToArray(), mbs.TrainingDataFile, null, MinibatchSource.FullDataSweep, false),
+                    MBSource = new MinibatchSourceEx(mbs.Type, this.StreamConfigurations.ToArray(), this.InputVariables, this.OutputVariables, mbs.TrainingDataFile, null, MinibatchSource.FullDataSweep, false),
                     Ouptut = OutputVariables,
                     Input = InputVariables,
                 };
@@ -288,7 +289,7 @@ namespace ANNdotNET.Core
                 {
                     MinibatchSize = trParams.BatchSize,
                     //StrmsConfig = StreamConfigurations.ToArray(),
-                    MBSource = new MinibatchSourceEx(mbs.Type, StreamConfigurations.ToArray(), mbs.ValidationDataFile, null, MinibatchSource.FullDataSweep, false),
+                    MBSource = new MinibatchSourceEx(mbs.Type, this.StreamConfigurations.ToArray(), this.InputVariables, this.OutputVariables, mbs.ValidationDataFile, null, MinibatchSource.FullDataSweep, false),
                     Ouptut = OutputVariables,
                     Input = InputVariables,
                 };

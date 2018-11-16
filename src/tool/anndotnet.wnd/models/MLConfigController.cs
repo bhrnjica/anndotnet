@@ -593,11 +593,11 @@ namespace anndotnet.wnd.Models
             if (Network[0].Type == LayerType.Custom)
                 return;
             //the last layer in the network should be output
-            if (Network.Last().HDimension != OutLayer.First().Dimension)
+            if (Network.Last().Param1 != OutLayer.First().Dimension)
                 throw new Exception("The output dimension of the last layer in the network must be same as label dimension!");
-            if(Network.Where(x=>x.HDimension<=0 && (x.Type!= LayerType.Normalization && x.Type != LayerType.Drop)).Count() > 0)
+            if(Network.Where(x=>x.Param1<=0 && (x.Type!= LayerType.Normalization && x.Type != LayerType.Drop)).Count() > 0)
                 throw new Exception("Layer cannot be defined with zero output dimension.!");
-            if (Network.Where(x => x.CDimension <= 0 && (x.Type== LayerType.LSTM || x.Name.StartsWith("CudaStacked"))).Count() > 0)
+            if (Network.Where(x => x.Param2 <= 0 && (x.Type== LayerType.LSTM || x.Name.StartsWith("CudaStacked"))).Count() > 0)
                 throw new Exception("Layer cannot be defined with zero output dimension.!");
         }
 

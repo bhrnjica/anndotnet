@@ -21,6 +21,9 @@ namespace anndotnet.core.app
 
         static void Main(string[] args)
         {
+
+            runConvNetExample();
+
             var rnd = new Random(1);
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
@@ -65,6 +68,15 @@ namespace anndotnet.core.app
             //*****end of program*****
             Console.WriteLine("Press any key to continue!");
             Console.ReadKey();
+
+        }
+
+        private static void runConvNetExample()
+        {
+            //cat&dag dataset location C:\sc\Datasets\cat-dog\train
+            //train mlconfig 
+            var mlConfigFile1 = $"model_mlconfigs\\convNet.mlconfig";
+            var result = MachineLearning.Train(mlConfigFile1, trainingProgress, new CancellationToken(), null);
 
         }
 
@@ -222,7 +234,6 @@ namespace anndotnet.core.app
             Console.WriteLine($"Epoch={progress.EpochCurrent} of {progress.EpochTotal};\t {progress.EvaluationFunName} for " +
                 $"(Minibatch Data set = {progress.MinibatchAverageEval},Training Dataset = {progress.TrainEval}, Validation dataset = {progress.ValidationEval}");
         }
-
 
         static void TrainExamples()
         {

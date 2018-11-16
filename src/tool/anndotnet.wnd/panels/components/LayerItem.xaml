@@ -26,22 +26,22 @@
         </Border>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <Label x:Name="lblHdim" Content="Layer dimension :" Width="120" HorizontalAlignment="Right"  VerticalAlignment="Center"/>
-            <TextBox x:Name="txtHdim" Text="{Binding HDimension}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <TextBox x:Name="txtHdim" Text="{Binding Param1}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
         </StackPanel >
         <StackPanel Grid.Row="2" Orientation="Horizontal" >
             <Label x:Name="lblCdim" Content="Cell dimension :" Width="120"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtCdim" Text="{Binding CDimension}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <TextBox x:Name="txtCdim" Text="{Binding Param2}" Margin="7" Width="50" PreviewTextInput="TextBox_PreviewTextInput"/>
         </StackPanel >
 
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Label x:Name="lblDrop" Content="Drop rate :" Width="120" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtDrop" Text="{Binding Value}" Width="50" Margin="7" VerticalAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" />
+            <TextBox x:Name="txtDrop" Text="{Binding Param3}" Width="50" Margin="7" VerticalAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" />
             <Label x:Name="lblPerc" Content="%"  VerticalAlignment="Center"/>
         </StackPanel >
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" >
             <Label x:Name="lblAct" Content="Activation :" Width="70" IsEnabled="{Binding UseActivation}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <ComboBox x:Name="cmbAct" Width="115" Text="{Binding Activation}" Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" IsEnabled="{Binding UseActivation}"  VerticalAlignment="Center"  HorizontalAlignment="Right">
+            <ComboBox x:Name="cmbAct" Width="115" Text="{Binding FParam}" Style="{StaticResource {x:Static ToolBar.ComboBoxStyleKey}}" IsEnabled="{Binding UseFParam}"  VerticalAlignment="Center"  HorizontalAlignment="Right">
                 <ComboBoxItem>None</ComboBoxItem>
                 <ComboBoxItem>Softmax</ComboBoxItem>
                 <ComboBoxItem>TanH</ComboBoxItem>
@@ -49,8 +49,8 @@
             </ComboBox>
         </StackPanel >
         <StackPanel Grid.Row="2"  VerticalAlignment="Center" Grid.Column="1" Orientation="Horizontal" Margin="5,9,0,9" Height="14" >
-            <CheckBox Content="Self-stabilization " IsChecked="{Binding SelfStabilization}" x:Name="isChecked1"/>
-            <CheckBox Content="Peepholes" IsChecked="{Binding Peephole}" x:Name="isChecked2"/>
+            <CheckBox Content="Self-stabilization " IsChecked="{Binding BParam1}" x:Name="isChecked1"/>
+            <CheckBox Content="Peepholes" IsChecked="{Binding BParam2}" x:Name="isChecked2"/>
         </StackPanel >
 
     </Grid>

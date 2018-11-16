@@ -178,7 +178,7 @@ namespace ANNdotNET.Core
                 Function nnModel = CreateNetworkModel(dicMParameters["network"], networkInput, f.OutputVariables, customModel, device);
 
                 //create minibatch spurce
-                var mbs = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), strTrainPath, strValidPath, MinibatchSource.InfinitelyRepeat, trData.RandomizeBatch);
+                var mbs = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), f.InputVariables, f.OutputVariables, strTrainPath, strValidPath, MinibatchSource.InfinitelyRepeat, trData.RandomizeBatch);
 
                 //return ml parameters
                 return (f, lrData, trData, nnModel, mbs);
@@ -298,9 +298,9 @@ namespace ANNdotNET.Core
         public static List<Variable> NormalizeInputLayer(TrainingParameters trData, MLFactory f, string strTrainFile, string strValidFile, DeviceDescriptor device)
         {
             var networkInput = new List<Variable>();
-            if (trData.Normalization != null)
+            if (trData.Normalization != null && trData.Normalization.Length > 0 && !(trData.Normalization.First().Equals("0")))
             {
-                using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), strTrainFile, strValidFile, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
+                using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), f.InputVariables, f.OutputVariables, strTrainFile, strValidFile, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
                 {
                     //select variables which are marked for the normalization. Train Data contains this information
                     var vars = f.InputVariables.Where(x => trData.Normalization.Contains(x.Name)).ToList();
@@ -564,13 +564,13 @@ namespace ANNdotNET.Core
                     var l = new NNLayer();
                     l.Type = (LayerType)Enum.Parse(typeof(LayerType), values[0], true);
                     l.Name = $"{values[0]} Layer";
-                    l.HDimension = int.Parse(values[1].Trim(' '));
-                    l.CDimension = int.Parse(values[2].Trim(' '));
-                    l.Value = int.Parse(values[3].Trim(' '));
-                    l.Activation = (Activation)Enum.Parse(typeof(Activation), values[4], true);
-                    l.SelfStabilization = values[5] == "1" ? true : false;
-                    l.Peephole = values[6] == "1" ? true : false;
-                    l.UseActivation = l.Type != LayerType.Embedding;
+                    l.Param1 = int.Parse(values[1].Trim(' '));
+                    l.Param2 = int.Parse(values[2].Trim(' '));
+                    l.Param3 = int.Parse(values[3].Trim(' '));
+                    l.FParam = (Activation)Enum.Parse(typeof(Activation), values[4], true);
+                    l.BParam1 = values[5] == "1" ? true : false;
+                    l.BParam2 = values[6] == "1" ? true : false;
+                    l.UseFParam = l.Type != LayerType.Embedding;
                     layers.Add(l);
                 }
 
@@ -621,9 +621,14 @@ namespace ANNdotNET.Core
 
 
             //Create network
-            var net = inputLayer;
-            var ff = new FeedForwaredNN(device, type);
+            // only for test purpose
+#warning Remove this line this is test of ConvLayer
+            var scalar_factor = CNTK.Constant.Scalar<float>((float)(1.0 / 255.0), device);
+            var net  = (Variable)CNTK.CNTKLib.ElementTimes(scalar_factor, inputLayer);
 
+            //var net = inputLayer;
+            var ff = new FeedForwaredNN(device, type);
+            //var net = inputLayer;
             //set last layer name to label name
             layers.Last().Name = outpuVar.Name;
 
@@ -635,36 +640,69 @@ namespace ANNdotNET.Core
             {
                 if (layer.Type == LayerType.Dense)
                 {
-                    net = ff.Dense(net, layer.HDimension, layer.Activation, layer.Name);
+                    net = ff.Dense(net, layer.Param1, layer.FParam, layer.Name);
                 }
                 else if (layer.Type == LayerType.Drop)
                 {
-                    net = CNTKLib.Dropout(net, layer.Value / 100.0f);
+                    net = CNTKLib.Dropout(net, layer.Param3 / 100.0f);
                 }
                 else if (layer.Type == LayerType.Embedding)
                 {
-                    net = Embedding.Create(net, layer.HDimension, type, device, 1, layer.Name);
+                    net = Embedding.Create(net, layer.Param1, type, device, 1, layer.Name);
                 }
                 else if (layer.Type == LayerType.LSTM)
                 {
                     var returnSequence = true;
                     if (layers.IndexOf(lastLSTM) == layers.IndexOf(layer))
                         returnSequence = false;
-                    net = RNN.RecurrenceLSTM(net, layer.HDimension, layer.CDimension, type, device, returnSequence, layer.Activation,
-                        layer.Peephole, layer.SelfStabilization, 1);
+                    net = RNN.RecurrenceLSTM(net, layer.Param1, layer.Param2, type, device, returnSequence, layer.FParam,
+                        layer.BParam2, layer.BParam1, 1);
                 }
                 else if (layer.Type == LayerType.NALU)
                 {
-                    var nalu =  new NALU(net, layer.HDimension, type, device, 1, layer.Name);
+                    var nalu = new NALU(net, layer.Param1, type, device, 1, layer.Name);
                     net = nalu.H;
+                }
+                else if (layer.Type == LayerType.Conv1D)
+                {
+                    var cn = new Convolution();
+                    net = cn.Conv1D(net, layer.Param1, layer.Param2, type, device,
+                        layer.BParam1, layer.BParam2, layer.Name, 1);
+                }
+                else if (layer.Type == LayerType.Conv2D)
+                {
+                    var cn = new Convolution();
+                    net = cn.Conv2D(net, layer.Param1, new int[] { layer.Param2, layer.Param3 }, type, device,
+                        layer.BParam1/*padding*/, layer.BParam2/*bias*/, layer.Name, 1);
+                }
+                else if (layer.Type == LayerType.Polling1D)
+                {
+                    var cn = new Convolution();
+                    var pType = PoolingType.Max;
+                    if (layer.FParam == Activation.Avg)
+                        pType = PoolingType.Average;
+
+                    //
+                    net = cn.Pooling1D(net, layer.Param1, type, pType, device, layer.Name, 1);
+                }
+                else if (layer.Type == LayerType.Polling2D)
+                {
+                    var cn = new Convolution();
+                    var pType = PoolingType.Max;
+                    if (layer.FParam ==  Activation.Avg)
+                        pType = PoolingType.Average;
+
+                    //
+                    net = cn.Pooling2D(net, new int[] { layer.Param1, layer.Param2 }, layer.Param3, 
+                        type, pType, device, layer.Name, 1);
                 }
                 else if (layer.Type == LayerType.CudaStackedLSTM)
                 {
-                    net = RNN.RecurreceCudaStackedLSTM(net, layer.HDimension, layer.CDimension, layer.Peephole, device);
+                    net = RNN.RecurreceCudaStackedLSTM(net, layer.Param1, layer.Param2, layer.BParam2, device);
                 }
                 else if (layer.Type == LayerType.CudaStackedGRU)
                 {
-                    net = RNN.RecurreceCudaStackedGRU(net, layer.HDimension, layer.CDimension, layer.Peephole, device);
+                    net = RNN.RecurreceCudaStackedGRU(net, layer.Param1, layer.Param2, layer.BParam2, device);
                 }
                 
             }
@@ -675,7 +713,6 @@ namespace ANNdotNET.Core
 
             return net;
         }
-
 
         /// <summary>
         /// Creates variables for features and labels based on variable definition from the config file.
@@ -846,9 +883,20 @@ namespace ANNdotNET.Core
                 var fVar = str.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries);
                 if (fVar.Length != 3)
                     throw new Exception("One of variables were not formatted properly!");
-
+                
+                //check for dynamic axes
                 var axis = labelWithDynamicAxes ? new List<Axis>() { Axis.DefaultBatchAxis() } : null;
-                var shape = new int[] { int.Parse(fVar[1]) };
+                int[] shape = null;
+
+                //multidimensional input variable
+                if (fVar[1].Contains(","))
+                {
+                    shape = fVar[1].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x=>int.Parse(x)).ToArray();
+                }
+                else//1D variable
+                    shape = new int[] { int.Parse(fVar[1]) };
+
+                //create variable
                 var v = Variable.InputVariable(shape, type, fVar[0], axis, fVar[2] == "1", false);
                 lst.Add(v);
             }

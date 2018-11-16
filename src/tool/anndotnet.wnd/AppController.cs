@@ -613,21 +613,21 @@ namespace anndotnet.wnd
                 
                 //create layer
                 var itm = new NNLayer();
-                itm.UseActivation = true;
-                itm.Activation = Activation.None;
+                itm.UseFParam = true;
+                itm.FParam = Activation.None;
                 if (layer == "Normalization Layer")
                     itm.Type = LayerType.Normalization;
                 else if (layer == "Dense Layer")
                     itm.Type = LayerType.Dense;
                 else if (layer == "LSTM Layer")
                 {
-                    itm.Activation = Activation.TanH;
+                    itm.FParam = Activation.TanH;
                     itm.Type = LayerType.LSTM;
                 }
                 else if (layer == "Embedding Layer")
                 {
                     itm.Type = LayerType.Embedding;
-                    itm.UseActivation = false;
+                    itm.UseFParam = false;
                 }
                 else if (layer == "NALU Layer")
                     itm.Type = LayerType.NALU;
@@ -755,21 +755,21 @@ namespace anndotnet.wnd
 
                 //create layer
                 var itm = new NNLayer();
-                itm.UseActivation = true;
-                itm.Activation = Activation.None;
+                itm.UseFParam = true;
+                itm.FParam = Activation.None;
                 if (layer == "Normalization Layer")
                     itm.Type = LayerType.Normalization;
                 else if (layer == "Dense Layer")
                     itm.Type = LayerType.Dense;
                 else if (layer == "LSTM Layer")
                 {
-                    itm.Activation = Activation.TanH;
+                    itm.FParam = Activation.TanH;
                     itm.Type = LayerType.LSTM;
                 }
                 else if (layer == "Embedding Layer")
                 {
                     itm.Type = LayerType.Embedding;
-                    itm.UseActivation = false;
+                    itm.UseFParam = false;
                 }
                 else if (layer == "NALU Layer")
                     itm.Type = LayerType.NALU;
