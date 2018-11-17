@@ -570,7 +570,7 @@ namespace ANNdotNET.Core
                     l.FParam = (Activation)Enum.Parse(typeof(Activation), values[4], true);
                     l.BParam1 = values[5] == "1" ? true : false;
                     l.BParam2 = values[6] == "1" ? true : false;
-                    l.UseFParam = l.Type != LayerType.Embedding;
+                    l.UseFParam = (l.Type != LayerType.Embedding && l.Type != LayerType.Scale);
                     layers.Add(l);
                 }
 
@@ -621,12 +621,7 @@ namespace ANNdotNET.Core
 
 
             //Create network
-            // only for test purpose
-#warning Remove this line this is test of ConvLayer
-            var scalar_factor = CNTK.Constant.Scalar<float>((float)(1.0 / 255.0), device);
-            var net  = (Variable)CNTK.CNTKLib.ElementTimes(scalar_factor, inputLayer);
-
-            //var net = inputLayer;
+            var net = inputLayer;
             var ff = new FeedForwaredNN(device, type);
             //var net = inputLayer;
             //set last layer name to label name
@@ -645,6 +640,10 @@ namespace ANNdotNET.Core
                 else if (layer.Type == LayerType.Drop)
                 {
                     net = CNTKLib.Dropout(net, layer.Param3 / 100.0f);
+                }
+                else if (layer.Type == LayerType.Scale)
+                {
+                    net = ScalingLayer.Scale(net, layer.Param1, layer.Param2, device, layer.Name);
                 }
                 else if (layer.Type == LayerType.Embedding)
                 {

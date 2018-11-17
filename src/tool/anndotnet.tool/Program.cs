@@ -23,7 +23,8 @@ namespace anndotnet.core.app
         {
 
             runConvNetExample();
-
+            Console.ReadKey();
+            return;
             var rnd = new Random(1);
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
