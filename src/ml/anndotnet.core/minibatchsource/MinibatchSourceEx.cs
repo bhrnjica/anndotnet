@@ -269,7 +269,7 @@ namespace ANNdotNET.Core
                 if (v == null)
                     throw new Exception("Stream is invalid!");
 
-                arguments.Add(v, mbd.Value.data.DeepClone());
+                arguments.Add(v, mbd.Value.data.DeepClone(true));
             }
             return arguments;
         }
