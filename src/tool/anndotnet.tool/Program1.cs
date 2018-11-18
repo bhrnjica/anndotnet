@@ -46,8 +46,6 @@ namespace anndotnet.core.app
             //evaluate model and export the result of testing
             MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(),"./model_mlconfigs/iris_result.csv" ).Wait();
 
-
-
             //******run all configurations in the solution******
             //string strLocation1 = "C:\\sc\\github\\anndotnet\\src\\tool\\";
             //for (int i = 0; i < 10; i++)
@@ -80,18 +78,13 @@ namespace anndotnet.core.app
                 }
 
             }
-            Func<DateTime, int> weekProjector =
-    d => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-         d,
-         CalendarWeekRule.FirstFourDayWeek,
-         DayOfWeek.Sunday);
+            Func<DateTime, int> weekProjector = d => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(d, CalendarWeekRule.FirstFourDayWeek,DayOfWeek.Sunday);
             //daily data
             var weeklyData = data.GroupBy(x => new {
                 year = DateTime.Parse(x[0].ToString()).Year,
                 week = weekProjector(DateTime.Parse(x[0].ToString()))
             }).Select(x => new { at1 = x.Key.week, at2 = x.Key.year, at3 = x.Average(r => float.Parse(r.ElementAt(1).ToString())) }).ToList();
-
-
+            
             System.IO.File.WriteAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\weeklyTimeserieslevel-1978-2017v.1.2.txt",
                 weeklyData.Select(x => string.Join(";", x)));
 

@@ -159,8 +159,6 @@ namespace anndotnet.core.app
             }).Select(x => new { at1 = x.Key.week, at2 = x.Key.year, at3 = x.Average(r => float.Parse(r.ElementAt(1).ToString())) }).ToList();
         }
 
-       
-
         private static void runAllml_configurations(string root)
         {
             runExample("Iris Flower Identification",
