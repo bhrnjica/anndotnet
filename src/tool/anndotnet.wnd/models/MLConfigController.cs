@@ -574,6 +574,17 @@ namespace anndotnet.wnd.Models
            
         }
 
+        /// <summary>
+        /// Generates GraphViz string from mlconfig object
+        /// </summary>
+        /// <returns></returns>
+        internal string GenerateNetworkGraph()
+        {
+            var configPath = Project.GetMLConfigPath(Settings, Name);
+            var retVal = Project.GenerateNetworkGraph(configPath);
+            return retVal;
+        }
+
         private void progressStartTraining(Action<ProgressData> trainingProgress)
         {
             ProgressData progress = new ProgressData();

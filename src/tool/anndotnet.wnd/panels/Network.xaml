@@ -54,8 +54,10 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="250"/>
-                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -74,8 +76,8 @@
                 <Button IsEnabled="{Binding IsnotTrainRunning}" Content="Add" Style="{StaticResource Windows10Button}" Margin="2" Grid.Column="2" Grid.Row="1" Command="cmd:AppCommands.AddLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedValue}"/>
                 <Button IsEnabled="{Binding IsnotTrainRunning}" Content="Remove"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="3" Grid.Row="1" Command="cmd:AppCommands.RemoveLayerCommand" CommandParameter="{Binding ElementName=networkLayers, Path=SelectedItem}"/>
                 <Button IsEnabled="{Binding IsnotTrainRunning}" Content="Insert"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="4" Grid.Row="1" Command="cmd:AppCommands.InsertLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedItem}"/>
-
-                <ListBox Name="networkLayers" ItemsSource="{Binding Network}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
+                <Button  Content="Graph"  Style="{StaticResource Windows10Button}"  Margin="2,3,2,2" Grid.Column="5" Grid.Row="1" Command="cmd:AppCommands.ShowNetGraphCommand"  />
+                <ListBox Name="networkLayers" ItemsSource="{Binding Network}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5" Margin="0,0,10,0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <panels:LayerItem Height="Auto"/>

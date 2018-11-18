@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -41,7 +42,7 @@ namespace anndotnet.wnd
 
         public AppController()
         {
-            //app model creation
+            //app mlConfig creation
             m_appModel = new AppModel();
 
             //register commands
@@ -91,7 +92,7 @@ namespace anndotnet.wnd
         }
 
         /// <summary>
-        /// Main application model
+        /// Main application mlConfig
         /// </summary>
         private AppModel m_appModel;
         public AppModel AppModel
@@ -143,10 +144,10 @@ namespace anndotnet.wnd
             set
             {
                 m_StatusMessage = value;
-               RaisePropertyChangedEvent("StatusMessage");
+                RaisePropertyChangedEvent("StatusMessage");
             }
         }
-      
+
         /// <summary>
         /// Status message appear on Status bar
         /// </summary>
@@ -218,7 +219,7 @@ namespace anndotnet.wnd
                 ReportException(ex);
                 //throw;
             }
-           
+
         }
         /// <summary>
         /// creates new project
@@ -247,7 +248,7 @@ namespace anndotnet.wnd
             }
             else
             {
-                //deactivation of previous model
+                //deactivation of previous mlConfig
                 ActiveViewModel.IsEditing = false;
             }
 
@@ -262,7 +263,7 @@ namespace anndotnet.wnd
         {
             if (isRunning)
             {
-               // Application.Current.Resources["ANNdotNET.CustomColorBrush"] = new SolidColorBrush(Colors.Green);
+                // Application.Current.Resources["ANNdotNET.CustomColorBrush"] = new SolidColorBrush(Colors.Green);
                 Application.Current.Resources["RibbonThemeColorBrush"] = new SolidColorBrush(Colors.Green);
                 Application.Current.Resources["ANNdotNET.HighlightColor"] = Colors.Green;
                 Application.Current.Resources["ANNdotNET.InactiveForeground"] = Colors.Green;
@@ -292,7 +293,7 @@ namespace anndotnet.wnd
         {
             try
             {
-               var prj = AppModel.Project[1] as ANNProjectController;
+                var prj = AppModel.Project[1] as ANNProjectController;
                 prj.Models.Remove(mlconfigController);
                 mlconfigController.Delete();
 
@@ -303,7 +304,7 @@ namespace anndotnet.wnd
                 if (ReportException != null)
                     ReportException(ex);
             }
-           
+
         }
 
         public void TrainingCompleated(TrainResult result)
@@ -328,7 +329,7 @@ namespace anndotnet.wnd
                     () =>
                     {
                         if (AppCommands.EvaluateModelCommand != null)
-                            AppCommands.EvaluateModelCommand.Execute(null,null);
+                            AppCommands.EvaluateModelCommand.Execute(null, null);
                         //
                         IsRunChecked = false;
                         SetRunnigColor(false);
@@ -336,7 +337,7 @@ namespace anndotnet.wnd
                     }
 
                 ));
-                
+
 
             }
             catch (Exception ex)
@@ -359,7 +360,7 @@ namespace anndotnet.wnd
 
                     () =>
                     {
-                        if(isCompleted)
+                        if (isCompleted)
                         {
                             //
                             SetRunnigColor(false);
@@ -371,7 +372,7 @@ namespace anndotnet.wnd
                             SetRunnigColor(true);
                             StatusMessage = $"Evaluation process has been started. Please wait....";
                         }
-                        
+
                     }
 
                 ));
@@ -471,6 +472,10 @@ namespace anndotnet.wnd
 
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
 
+            binding = new CommandBinding(AppCommands.ShowNetGraphCommand, onShowNetGraph, onCanExecShowNetGraph);
+
+            CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
+
             binding = new CommandBinding(AppCommands.LoadDataCommand, onLoadData, onCanExecLoadData);
 
             CommandManager.RegisterClassCommandBinding(typeof(FrameworkElement), binding);
@@ -509,7 +514,7 @@ namespace anndotnet.wnd
             {
                 ReportException(ex);
             }
-            
+
         }
 
         private void onCanExecCreateMLConfig(object sender, CanExecuteRoutedEventArgs e)
@@ -521,7 +526,7 @@ namespace anndotnet.wnd
                 e.CanExecute = false;
                 return;
             }
-            e.CanExecute = !(prj.DataSet==null || prj.DataSet.Data==null);
+            e.CanExecute = !(prj.DataSet == null || prj.DataSet.Data == null);
 
         }
 
@@ -550,8 +555,8 @@ namespace anndotnet.wnd
             {
                 ReportException(ex);
             }
-            
-           
+
+
         }
 
         private void onCanExecLoadData(object sender, CanExecuteRoutedEventArgs e)
@@ -564,7 +569,7 @@ namespace anndotnet.wnd
                 e.CanExecute = false;
                 return;
             }
-              
+
             var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
 
             if (ctrl == null)
@@ -573,7 +578,7 @@ namespace anndotnet.wnd
                 return;
             }
 
-           // var expCtrl = (DataPanel)ctrl.Child;
+            // var expCtrl = (DataPanel)ctrl.Child;
             if (ctrl.Child is DataPanel)
                 e.CanExecute = false;
 
@@ -643,8 +648,8 @@ namespace anndotnet.wnd
                 //normalization layer must be on the first position
                 if (itm.Type == LayerType.Normalization)
                 {
-                    if(model.Network.Where(x=>x.Type== LayerType.Normalization).Count() == 0)
-                        model.Network.Insert(0,itm);
+                    if (model.Network.Where(x => x.Type == LayerType.Normalization).Count() == 0)
+                        model.Network.Insert(0, itm);
                     else
                     {
                         MessageBox.Show("Only one normalization layer is allowed.");
@@ -659,7 +664,7 @@ namespace anndotnet.wnd
                     }
                     var lastLSTM = model.Network.Where(x => x.Type == LayerType.LSTM).Last();
                     var index = model.Network.IndexOf(lastLSTM);
-                    model.Network.Insert(index+1,itm);
+                    model.Network.Insert(index + 1, itm);
                 }
                 else if (itm.Type == LayerType.LSTM)
                 {
@@ -692,6 +697,52 @@ namespace anndotnet.wnd
                 ReportException(ex);
             }
         }
+        private void onCanExecShowNetGraph(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.Handled = true;
+            e.CanExecute = true;
+        }
+        private void onShowNetGraph(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                var mlConfig = ActiveViewModel as MLConfigController;
+                //check if network configuration is Custom,
+                if (mlConfig == null || mlConfig.Network == null || mlConfig.Network.Count==0 || mlConfig.Network.Where(x => x.Type == LayerType.Custom).Count() > 0)
+                {
+                    MessageBox.Show("Empty network.");
+                    return;
+                }
+
+                //generate graph and shows it
+                var dotString = mlConfig.GenerateNetworkGraph();
+                // Save it to a temp folder 
+                string tempDotPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".dot";
+                string tempImagePath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".png";
+                File.WriteAllText(tempDotPath, dotString);
+                //execute the proces
+                using (Process graphVizprocess = new Process())
+                {
+                    graphVizprocess.StartInfo.FileName = "dot.exe";
+                    graphVizprocess.StartInfo.Arguments = "-Tpng " + tempDotPath + " -o " + tempImagePath;
+                    graphVizprocess.Start();
+                    graphVizprocess.WaitForExit();
+                }
+
+                //call defaul image viewwer and shows the image
+                using (Process imgView = new Process())
+                {
+                    imgView.StartInfo.UseShellExecute = true;
+                    imgView.StartInfo.FileName = tempImagePath;
+                    imgView.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                ReportException(ex);
+            }
+        }
+
 
         private void onCanExecRemoveLayer(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -865,9 +916,9 @@ namespace anndotnet.wnd
         /// <param name="e"></param>
         public void onTreeItemClicked(object sender, ExecutedRoutedEventArgs e)
         {
-            //var model = e.Parameter as BaseModel;
-            //if (model.IsSelected && !(model is StartModel))
-            //    model.IsEditing = true;
+            //var mlConfig = e.Parameter as BaseModel;
+            //if (mlConfig.IsSelected && !(mlConfig is StartModel))
+            //    mlConfig.IsEditing = true;
             AppStatus = "Ready";
             StatusMessage = "No application message.";
         }

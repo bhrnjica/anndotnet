@@ -53,7 +53,7 @@ namespace NNetwork.Core.Network.Modules
 
             var W_hat = Weights(inputDim,outputDim, dataType,device, seed, "w_hat");
             var M_hat = Weights(inputDim, outputDim, dataType, device, seed, "m_hat");
-            var G = Weights(inputDim, outputDim, dataType, device, seed, "g_");
+            var G = Weights(inputDim, outputDim, dataType, device, seed, "g");
             
             //first construct NAC
             var W = CNTKLib.ElementTimes(CNTKLib.Tanh(W_hat), CNTKLib.Sigmoid(M_hat));

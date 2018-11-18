@@ -41,7 +41,7 @@ namespace NNetwork.Core.Network.Modules
         {
             var f = new NetworkFoundation();
             //weights
-            var W = f.Weights(embeddingDim, dataType, device, seed, "_e");
+            var W = f.Weights(embeddingDim, dataType, device, seed, "e");
 
             //matrix product
             var Wx = CNTKLib.Times(W, x, name);

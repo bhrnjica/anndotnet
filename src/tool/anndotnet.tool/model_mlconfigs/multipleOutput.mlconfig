@@ -1,25 +1,17 @@
 !ML Configuration file for Multiple output data set
 !this is typical multi output regression problem
 
-features:|predictors 3 0 0
-labels:|output1 1 0 0 |output2 1 0 0
+features:|predictors 3 0
+labels:|output1 1 0 |output2 1 0
 
 ! network
-network:|Type:FeedForward |HLayers:1 |HDimensions:20 |HActivation:tanh |OActivation:none |HLSTM:0 |LSTMCell:0 |EmbeddingDim:0 |DropRate:0  
+network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 5 0 0 ReLU 0 0 |Layer:Dense 3 0 0 Softmax 0 0 
 
-learning:|Type:AdamLearner |LRate:0.001 |Momentum:1 |Loss:SquaredError |Eval:RMSError  
+!learning parameters
+learning:|Type:SGDLearner |LRate:0.01 |Momentum:1 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
 
-!training process and minibatch
+!training parameters
+training:|Type:Default |BatchSize:100 |Epochs:1000 |Normalization:NumFeatures |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:50 |ContinueTraining:0 |TrainedModel:models\model_at_983of1000_epochs_TimeSpan_636756746075743766 
 
-training: |Type: default |BatchSize:125 |Epochs:100 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |ProgressFrequency:1
-
-!evaluation process
-trainingPath:../../../../data/multipleOutput/mo_training.txt
-validationPath:../../../../data/multipleOutput/mo_validation.txt
-testPath:../../../../data/multipleOutput/mo_validation.txt
-
-!post evaluation process
-modelTempFile:../../../../modelsTemp/mul_out_model_temp
-modelFinalFile:../../../../modelsFinal/mul_out_model 
-!File path for storing model evaluation result of Actual and Predicted values of specified test dataset
-modelEvalResult:../../../../modelsFinal/mul_out_model_result.csv 
+!various paths needed in order to train, evaluate, export model
+paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test:data\mldataset_valid |TempModels:temp_models |Models:models |Result:FFModel_result.csv |Logs:log 
