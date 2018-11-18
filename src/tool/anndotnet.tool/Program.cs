@@ -12,6 +12,7 @@ using OxyPlot;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NNetwork.Core.Network;
 using System.IO;
 using System.Diagnostics;
 
@@ -24,7 +25,9 @@ namespace anndotnet.core.app
         static void Main(string[] args)
         {
             graphConvNetExample();
+
             //runConvNetExample();
+            //cntkModelToGraphviz();
             Console.ReadKey();
             return;
 
@@ -157,6 +160,50 @@ namespace anndotnet.core.app
             return task;
         }
 
+        private static void cntkModelToGraphviz()
+        {
+            var mlconfigPath = $"C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.tool\\model_mlconfigs\\iris.mlconfig";
+
+            //generate graph and shows it
+            var dotString = MLFactory.GenerateNetworkGraph(mlconfigPath);
+            // Save it to a temp folder 
+            string tempDotPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".dot";
+            string tempImagePath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".png";
+            File.WriteAllText(tempDotPath, dotString);
+            //execute the process
+            using (Process graphVizprocess = new Process())
+            {
+                graphVizprocess.StartInfo.FileName = "dot.exe";
+                graphVizprocess.StartInfo.Arguments = "-Tpng " + tempDotPath + " -o " + tempImagePath;
+                graphVizprocess.Start();
+                graphVizprocess.WaitForExit();
+
+            }
+            //call defaul image viewwer and shows the image
+            using (Process imgView = new Process())
+            {
+                imgView.StartInfo.UseShellExecute = true;
+                imgView.StartInfo.FileName = tempImagePath;
+                imgView.Start();
+            }
+        }
+        private static void cntkModelToGraphviz1()
+        {
+            var net = new FeedForwaredNN(DeviceDescriptor.UseDefaultDevice(), DataType.Float);
+
+            //define input and output variable and connecting to the stream configuration
+            var feature = Variable.InputVariable(new NDShape(1, 4), DataType.Float, "features");
+            var label = Variable.InputVariable(new NDShape(1, 3), DataType.Float, "flower");
+            //firs hidden layer
+            var model = net.Dense(feature, 5, Activation.ReLU, "hidden");
+            model = net.Dense(model, 3, Activation.Softmax, "flower");
+
+            NetToGraph fg = new NetToGraph();
+
+            var dot = fg.ToGraph(model);
+            // Save it to a file
+            File.WriteAllText("myFile.dot", dot);
+        }
         private static void transformDailyLevelVeanaLake()
         {
             var cnt = System.IO.File.ReadAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\dailylevel-1978-2017.txt");
