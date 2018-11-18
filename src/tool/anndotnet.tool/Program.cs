@@ -116,18 +116,18 @@ namespace anndotnet.core.app
         {
             var cnt = System.IO.File.ReadAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\dailylevel-1978-2017.txt");
             var data = new List<List<object>>();
-            var date = new DateTime(1978,1,1);
+            var date = new DateTime(1978, 1, 1);
             foreach (var line in cnt)
             {
-                
-                var col = line.Split(new char[] {'\t' },StringSplitOptions.RemoveEmptyEntries);
-                foreach(var c in col)
+
+                var col = line.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var c in col)
                 {
                     var row = new List<object>();
                     row.Add(date);
                     row.Add(float.Parse(c));
                     data.Add(row);
-                    date =date.AddDays(1);
+                    date = date.AddDays(1);
                 }
 
             }
@@ -137,8 +137,12 @@ namespace anndotnet.core.app
          CalendarWeekRule.FirstFourDayWeek,
          DayOfWeek.Sunday);
             //daily data
-            var weeklyData = data.GroupBy(x => new { year= DateTime.Parse(x[0].ToString()).Year,
-                week = weekProjector(DateTime.Parse(x[0].ToString()))}).Select(x=> new {at1=x.Key.week,at2=x.Key.year,at3=x.Average(r=>float.Parse(r.ElementAt(1).ToString())) }).ToList();
+            var weeklyData = data.GroupBy(x => new
+            {
+                year = DateTime.Parse(x[0].ToString()).Year,
+                week = weekProjector(DateTime.Parse(x[0].ToString()))
+            }).Select(x => new { at1 = x.Key.week, at2 = x.Key.year, at3 = x.Average(r => float.Parse(r.ElementAt(1).ToString())) }).ToList();
+        }
 
        
 
