@@ -181,6 +181,17 @@ namespace anndotnet.wnd.commands
             }
         }
 
+        private static readonly RoutedUICommand m_ShowNetGraphCommand =
+            new RoutedUICommand("Shows the graph of the network.", "ShowNetGraphCommand", typeof(AppCommands));
+
+        public static RoutedCommand ShowNetGraphCommand
+        {
+            get
+            {
+                return m_ShowNetGraphCommand;
+            }
+        }
+
         private static readonly RoutedUICommand m_RenameConfigCommand =
            new RoutedUICommand("Rename MLConfig item.", "RenameConfigCommand", typeof(AppCommands));
         public static RoutedCommand RenameConfigCommand

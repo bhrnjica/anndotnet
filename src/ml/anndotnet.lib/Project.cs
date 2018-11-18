@@ -704,6 +704,20 @@ namespace ANNdotNET.Lib
             return true;
         }
 
+        public static string GenerateNetworkGraph(string configPath)
+        {
+            try
+            {
+                return MLFactory.GenerateNetworkGraph(configPath);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+          
+        }
+
         /// <summary>
         /// Returns full paths of the mlconfig components specified by its name in string format ready to be store in file
         /// </summary>

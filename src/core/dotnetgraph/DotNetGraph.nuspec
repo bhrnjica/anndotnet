@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>VFRZ.DotNetGraph</id>
+    <version>1.0.0.0</version>
+    <title>DotNetGraph</title>
+    <authors>VFRZ</authors>
+    <owners>VFRZ</owners>
+    <licenseUrl>https://github.com/vfrz/DotNetGraph/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/vfrz/DotNetGraph</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Create DOT diagram / graph using C#/.Net</description>
+    <releaseNotes>First upload.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>DOT Graphviz</tags>
+  </metadata>
+  <files>
+    <file src="bin\Debug\netstandard2.0\DotNetGraph.dll" target="" />
+  </files>
+</package>
