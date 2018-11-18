@@ -12,6 +12,8 @@ using OxyPlot;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NNetwork.Core.Network;
+using System.IO;
 
 namespace anndotnet.core.app
 {
@@ -21,9 +23,12 @@ namespace anndotnet.core.app
 
         static void Main(string[] args)
         {
+            cntkModelToGraphviz();
 
+            return;
 
-            //Iris flower recognition
+            var root = "";
+;           //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile3 = $"{root}anndotnet.tool\\model_mlconfigs\\iris.mlconfig";
 
@@ -34,10 +39,10 @@ namespace anndotnet.core.app
             //var result = MachineLearning.Train(mlConfigFile1, trainingProgress, token2, null);
 
             //once the mode is trained you can write performance analysis of the model
-            MachineLearning.PrintPerformance(mlConfigFile1);
+            MachineLearning.PrintPerformance(mlConfigFile3);
 
             //SHow training history
-            showTrainingHistory(mlConfigFile1);
+            showTrainingHistory(mlConfigFile3);
 
             //evaluate model and export the result of testing
             //MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(),"./model_mlconfigs/iris_result.csv" ).Wait();
@@ -112,6 +117,23 @@ namespace anndotnet.core.app
             return task;
         }
 
+        private static void cntkModelToGraphviz()
+        {
+            var net = new FeedForwaredNN(DeviceDescriptor.UseDefaultDevice(), DataType.Float);
+
+            //define input and output variable and connecting to the stream configuration
+            var feature = Variable.InputVariable(new NDShape(1, 4), DataType.Float, "features");
+            var label = Variable.InputVariable(new NDShape(1, 3), DataType.Float, "flower");
+            //firs hidden layer
+            var model = net.Dense(feature, 5, Activation.ReLU, "hidden");
+            model = net.Dense(model, 3, Activation.Softmax, "flower");
+
+            NetToGraph fg = new NetToGraph();
+
+            var dot = fg.ToGraph(model);
+            // Save it to a file
+            File.WriteAllText("myFile.dot", dot);
+        }
         private static void transformDailyLevelVeanaLake()
         {
             var cnt = System.IO.File.ReadAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\dailylevel-1978-2017.txt");
@@ -143,9 +165,6 @@ namespace anndotnet.core.app
                 week = weekProjector(DateTime.Parse(x[0].ToString()))
             }).Select(x => new { at1 = x.Key.week, at2 = x.Key.year, at3 = x.Average(r => float.Parse(r.ElementAt(1).ToString())) }).ToList();
         }
-
-       
-
         private static void runAllml_configurations(string root)
         {
             runExample("Iris Flower Identification",
