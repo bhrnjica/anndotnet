@@ -17,6 +17,7 @@ namespace anndotnet.core.app
         static void Main(string[] args)
         {
             cntkModelToGraphviz();
+
             return;
 
             //Iris flower recognition
@@ -79,7 +80,7 @@ namespace anndotnet.core.app
             var feature = Variable.InputVariable(new NDShape(1, 4), DataType.Float, "features");
             var label = Variable.InputVariable(new NDShape(1, 3), DataType.Float, "flower");
             //firs hidden layer
-            var model = net.Dense(feature, 5, Activation.ReLU, "hiden");
+            var model = net.Dense(feature, 5, Activation.ReLU, "hidden");
             model = net.Dense(model, 3, Activation.Softmax, "flower");
 
 
