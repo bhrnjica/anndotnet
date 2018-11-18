@@ -600,97 +600,6 @@ namespace anndotnet.wnd
                 model.SelectedIndex = -1;
                 onInsertLayer(sender, e);
                 return;
-                //
-                if (e.Parameter == null)
-                {
-                    MessageBox.Show("Please select Layer from combo box first!", "ANNdotNET");
-                    return;
-                }
-
-                
-                var layer = ((ComboBoxItem)e.Parameter).Content as string;
-                //check if network configuration is Custom,
-                if (model.Network.Where(x => x.Type == LayerType.Custom).Count() > 0)
-                {
-                    MessageBox.Show("Custom configuration is not allow to be edited.", "ANNdotNET");
-                    return;
-                }
-                
-                //create layer
-                var itm = new NNLayer();
-                itm.UseFParam = true;
-                itm.FParam = Activation.None;
-                if (layer == "Normalization Layer")
-                    itm.Type = LayerType.Normalization;
-                else if (layer == "Dense Layer")
-                    itm.Type = LayerType.Dense;
-                else if (layer == "LSTM Layer")
-                {
-                    itm.FParam = Activation.TanH;
-                    itm.Type = LayerType.LSTM;
-                }
-                else if (layer == "Embedding Layer")
-                {
-                    itm.Type = LayerType.Embedding;
-                    itm.UseFParam = false;
-                }
-                else if (layer == "NALU Layer")
-                    itm.Type = LayerType.NALU;
-                else if (layer == "Drop Layer")
-                    itm.Type = LayerType.Drop;
-                else if (layer == "CudaStackedLSTM Layer")
-                    itm.Type = LayerType.CudaStackedLSTM;
-                else if (layer == "CudaStackedGRU Layer")
-                    itm.Type = LayerType.CudaStackedGRU;
-                else
-                    throw new Exception("Unsupported Layer!");
-                itm.Name = layer;
-                //normalization layer must be on the first position
-                if (itm.Type == LayerType.Normalization)
-                {
-                    if (model.Network.Where(x => x.Type == LayerType.Normalization).Count() == 0)
-                        model.Network.Insert(0, itm);
-                    else
-                    {
-                        MessageBox.Show("Only one normalization layer is allowed.");
-                    }
-                }
-                else if (itm.Type == LayerType.LSTM && model.Network.Any(x=>x.Type == LayerType.LSTM))
-                {
-                    if(model.Network.Any(x=>x.Name.StartsWith("CudaStacked")))
-                    {
-                        MessageBox.Show("CudaStacked like layers cannot be mixed with pure LSTM or GRU layers.");
-                        return;
-                    }
-                    var lastLSTM = model.Network.Where(x => x.Type == LayerType.LSTM).Last();
-                    var index = model.Network.IndexOf(lastLSTM);
-                    model.Network.Insert(index + 1, itm);
-                }
-                else if (itm.Type == LayerType.LSTM)
-                {
-                    if (model.Network.Any(x => x.Name.StartsWith("CudaStacked")))
-                    {
-                        MessageBox.Show("CudaStacked like layers cannot be mixed with pure LSTM or GRU layers.");
-                        return;
-                    }
-                    model.Network.Add(itm);
-                }
-                else if(layer.StartsWith("CudaStacked"))
-                {
-                    if (model.Network.Any(x => x.Name.StartsWith("LSTM")) || model.Network.Any(x => x.Name.StartsWith("GRU")))
-                    {
-                        MessageBox.Show("CudaStacked like layers cannot be mixed with pure LSTM or GRU layers.");
-                        return;
-                    }
-                    if (model.Network.Any(x => x.Name.StartsWith("CudaStacked")))
-                    {
-                        MessageBox.Show($"Only one 'CudaStacked*' based layer can be in the network.");
-                        return;
-                    }
-                    model.Network.Add(itm);
-                }
-                else
-                    model.Network.Add(itm);
             }
             catch (Exception ex)
             {
@@ -808,27 +717,37 @@ namespace anndotnet.wnd
                 var itm = new NNLayer();
                 itm.UseFParam = true;
                 itm.FParam = Activation.None;
-                if (layer == "Normalization Layer")
+                if (layer == "Normalization")
                     itm.Type = LayerType.Normalization;
-                else if (layer == "Dense Layer")
+                else if (layer == "Dense")
                     itm.Type = LayerType.Dense;
-                else if (layer == "LSTM Layer")
+                else if (layer == "Scale")
+                    itm.Type = LayerType.Scale;
+                else if (layer == "Conv1D")
+                    itm.Type = LayerType.Conv1D;
+                else if (layer == "Conv2D")
+                    itm.Type = LayerType.Conv2D;
+                else if (layer == "Polling1D")
+                    itm.Type = LayerType.Polling1D;
+                else if (layer == "Polling2D")
+                    itm.Type = LayerType.Polling2D;
+                else if (layer == "LSTM")
                 {
                     itm.FParam = Activation.TanH;
                     itm.Type = LayerType.LSTM;
                 }
-                else if (layer == "Embedding Layer")
+                else if (layer == "Embedding")
                 {
                     itm.Type = LayerType.Embedding;
                     itm.UseFParam = false;
                 }
-                else if (layer == "NALU Layer")
+                else if (layer == "NALU")
                     itm.Type = LayerType.NALU;
-                else if (layer == "Drop Layer")
+                else if (layer == "DropOut")
                     itm.Type = LayerType.Drop;
-                else if (layer == "CudaStackedLSTM Layer")
+                else if (layer == "CudaStackedLSTM")
                     itm.Type = LayerType.CudaStackedLSTM;
-                else if (layer == "CudaStackedGRU Layer")
+                else if (layer == "CudaStackedGRU")
                     itm.Type = LayerType.CudaStackedGRU;
                 else
                     throw new Exception("Unsupported Layer!");
@@ -843,8 +762,22 @@ namespace anndotnet.wnd
                         MessageBox.Show("Only one normalization layer is allowed.");
                     }
                 }
+                //SCale layer must be on the first 
+                if (itm.Type == LayerType.Scale)
+                {
+                    itm.Param1 = 1;
+                    itm.Param2 = 255;
+                    if (model.Network.Where(x => x.Type == LayerType.Scale).Count() == 0)
+                        model.Network.Insert(0, itm);
+                    else
+                    {
+                        MessageBox.Show("Only one Scale layer is allowed.");
+                    }
+                }
                 else if (itm.Type == LayerType.LSTM && model.Network.Any(x => x.Type == LayerType.LSTM))
                 {
+                    itm.Param1 = 5;
+                    itm.Param2 = 5;
                     if (model.Network.Any(x => x.Name.StartsWith("CudaStacked")))
                     {
                         MessageBox.Show("CudaStacked like layers cannot be mixed with pure LSTM or GRU layers.");
@@ -856,6 +789,8 @@ namespace anndotnet.wnd
                 }
                 else if (itm.Type == LayerType.LSTM)
                 {
+                    itm.Param1 = 5;
+                    itm.Param2 = 5;
                     if (model.Network.Any(x => x.Name.StartsWith("CudaStacked")))
                     {
                         MessageBox.Show("CudaStacked like layers cannot be mixed with pure LSTM or GRU layers.");
@@ -868,6 +803,8 @@ namespace anndotnet.wnd
                 }
                 else if (layer.StartsWith("CudaStacked"))
                 {
+                    itm.Param1 = 1;
+                    itm.Param2 = 5;
                     if (model.Network.Any(x => x.Name.StartsWith("LSTM")) || model.Network.Any(x => x.Name.StartsWith("GRU")))
                     {
                         MessageBox.Show("CudaStacked like layers cannot be mixed with pure LSTM or GRU layers.");
@@ -886,6 +823,9 @@ namespace anndotnet.wnd
                 }
                 else
                 {
+                    itm.Param1 = 5;
+                    itm.Param2 = 5;
+                    
                     if (model.SelectedIndex < 0)
                         model.Network.Add(itm);
                     else

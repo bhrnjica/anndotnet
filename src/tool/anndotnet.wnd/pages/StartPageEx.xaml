@@ -43,17 +43,17 @@
         <Image Grid.Column="4" Grid.Row="2" Source="/anndotnet.wnd;component/images/hyperlink_32.png"/>
         <Image Grid.Column="4" Grid.Row="3" Source="/anndotnet.wnd;component/images/hyperlink_32.png"/>
         <Image Grid.Column="4" Grid.Row="4" Source="/anndotnet.wnd;component/images/hyperlink_32.png"/>
-        <Label Grid.Column="5" Grid.Row="2" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2" >
+        <Label Grid.Column="5" Grid.Row="2"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2" >
             <Hyperlink NavigateUri="https://github.com/bhrnjica/anndotnet" RequestNavigate="Hyperlink_RequestNavigate">
                 ANNdotNET GitHub
             </Hyperlink>
         </Label>
-        <Label Grid.Column="5" Grid.Row="3" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2"  >
+        <Label Grid.Column="5" Grid.Row="3"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2"  >
             <Hyperlink NavigateUri="https://bhrnjica.net/bhrnjica/anndotnet" RequestNavigate="Hyperlink_RequestNavigate">
                 ANNdotNET Blog
             </Hyperlink>
         </Label>
-        <Label Grid.Column="5" Grid.Row="4" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2"  >
+        <Label Grid.Column="5" Grid.Row="4"   FontSize="13" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2"  >
             <Hyperlink NavigateUri="https://github.com/bhrnjica/anndotnet/wiki" RequestNavigate="Hyperlink_RequestNavigate">
                 ANNdotNET Project Page
             </Hyperlink>
@@ -64,48 +64,48 @@
         <Label Content="Binary Classification" Grid.Column="2" Grid.Row="7" FontSize="14" Foreground="DarkViolet"  FontWeight="Bold"/>
         <Label Content="Multi-class Classification" Grid.Column="3" Grid.Row="7" FontSize="14" Foreground="DarkViolet" Grid.ColumnSpan="3"  FontWeight="Bold"/>
         <Label Content="Time Series" Grid.Column="6" Grid.Row="7" FontSize="14" Foreground="DarkViolet" Grid.ColumnSpan="2"   FontWeight="Bold"/>
-        <Label  Grid.Column="1" Grid.Row="9" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="1" Grid.Row="9" FontSize="13" FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\Concrete\ConcreteSlumpProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 Concrete Slump Test
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="1" Grid.Row="10" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="1" Grid.Row="10"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\Bike\BikeSharingProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Bike Sharing"/>
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="2" Grid.Row="9" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="2" Grid.Row="9"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\BreastC\BreastCancerProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Breast Cancer Wisconis"/>
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="2" Grid.Row="10" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="2" Grid.Row="10"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\Titanic\TitanicProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Titanic"/>
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="2" Grid.Row="11" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="2" Grid.Row="11"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\Mushroom\MushroomProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Mushroom"/>
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="3" Grid.Row="9" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="3"    >
+        <Label  Grid.Column="3" Grid.Row="9"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="3"    >
             <Hyperlink NavigateUri="Resources\Iris\IrisProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Iris Flower Identification"/>
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="3" Grid.Row="10" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="3" >
+        <Label  Grid.Column="3" Grid.Row="10"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="3" >
             <Hyperlink NavigateUri="Resources\Glass\GlassIdentificationProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Glass Identification"/>
             </Hyperlink>
         </Label>
-        <Label  Grid.Column="6" Grid.Row="9" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="6" Grid.Row="9"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\AirQ\AirQuality.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="Air Quality"/>
             </Hyperlink>
         </Label>
         <Label Content="Image Classification" Grid.Column="6" Grid.Row="10" FontSize="14" FontWeight="Bold" Foreground="DarkViolet" Grid.ColumnSpan="2" />
-        <Label  Grid.Column="6" Grid.Row="11" FontWeight="Normal" Foreground="Blue"  >
+        <Label  Grid.Column="6" Grid.Row="11"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\MNIST\MNIST-Project.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="MNIST"/>
             </Hyperlink>

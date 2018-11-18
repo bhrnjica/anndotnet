@@ -44,10 +44,36 @@ namespace anndotnet.wnd.panels
                     txtCdim.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked1.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked2.Visibility = System.Windows.Visibility.Collapsed;
+                    //third row
+                    lblDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    txtDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Visible;
+                    lblDesc.Content = "Description: The layer normalizes the values of input data by z-score calculation.";
+
+                }
+                else if (nn.Name.StartsWith("Scale"))
+                {
+                    //visibility
+                    lblHdim.Content = "Numerator: ";
+                    lblCdim.Content = "Denominator: ";
+                    lblHdim.Visibility = System.Windows.Visibility.Visible;
+                    txtHdim.Visibility = System.Windows.Visibility.Visible;
+                    lblAct.Visibility = System.Windows.Visibility.Collapsed;
+                    cmbAct.Visibility = System.Windows.Visibility.Collapsed;
+                    //second row
+                    lblCdim.Visibility = System.Windows.Visibility.Visible;
+                    txtCdim.Visibility = System.Windows.Visibility.Visible;
+                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked2.Visibility = System.Windows.Visibility.Collapsed;
                     //last row
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Visible;
+                    lblDesc.Content = "Description: Multiplication of the fraction (Num./Denom.) and input data.";
                 }
                 else if (nn.Name.StartsWith("Drop"))
                 {
@@ -65,6 +91,9 @@ namespace anndotnet.wnd.panels
                     lblDrop.Visibility = System.Windows.Visibility.Visible;
                     txtDrop.Visibility = System.Windows.Visibility.Visible;
                     lblPerc.Visibility = System.Windows.Visibility.Visible;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Visible;
+                    lblDesc.Content = "Description: Drop value is in percentage. Only integer value is allowed.";
                 }
                 else if (nn.Name.StartsWith("Embedding") || nn.Name.StartsWith("NALU"))
                 {
@@ -82,6 +111,9 @@ namespace anndotnet.wnd.panels
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
                 }
                 else if (nn.Name.StartsWith("Dense"))
                 {
@@ -99,6 +131,9 @@ namespace anndotnet.wnd.panels
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
                 }
                 else if (nn.Name.StartsWith("LSTM") || nn.Name.StartsWith("GRU"))
                 {
@@ -118,6 +153,101 @@ namespace anndotnet.wnd.panels
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
+                }
+                else if (nn.Name.StartsWith("Conv1D"))
+                {
+                    lblHdim.Content = "Layer dimension: ";
+                    lblCdim.Content = "Layer count: ";
+                    isChecked2.Content = "Is bidirectional";
+                    //first row
+                    lblHdim.Visibility = System.Windows.Visibility.Visible;
+                    txtHdim.Visibility = System.Windows.Visibility.Visible;
+                    lblAct.Visibility = System.Windows.Visibility.Collapsed;
+                    cmbAct.Visibility = System.Windows.Visibility.Collapsed;
+                    //second row
+                    lblCdim.Visibility = System.Windows.Visibility.Visible;
+                    txtCdim.Visibility = System.Windows.Visibility.Visible;
+                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked2.Visibility = System.Windows.Visibility.Visible;
+                    //last row
+                    lblDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    txtDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
+                }
+                else if (nn.Name.StartsWith("Polling1D"))
+                {
+                    lblHdim.Content = "Layer dimension: ";
+                    lblCdim.Content = "Layer count: ";
+                    isChecked2.Content = "Is bidirectional";
+                    //first row
+                    lblHdim.Visibility = System.Windows.Visibility.Visible;
+                    txtHdim.Visibility = System.Windows.Visibility.Visible;
+                    lblAct.Visibility = System.Windows.Visibility.Collapsed;
+                    cmbAct.Visibility = System.Windows.Visibility.Collapsed;
+                    //second row
+                    lblCdim.Visibility = System.Windows.Visibility.Visible;
+                    txtCdim.Visibility = System.Windows.Visibility.Visible;
+                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked2.Visibility = System.Windows.Visibility.Visible;
+                    //last row
+                    lblDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    txtDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
+                }
+                else if (nn.Name.StartsWith("Conv2D"))
+                {
+                    lblHdim.Content = "Layer dimension: ";
+                    lblCdim.Content = "Layer count: ";
+                    isChecked2.Content = "Is bidirectional";
+                    //first row
+                    lblHdim.Visibility = System.Windows.Visibility.Visible;
+                    txtHdim.Visibility = System.Windows.Visibility.Visible;
+                    lblAct.Visibility = System.Windows.Visibility.Collapsed;
+                    cmbAct.Visibility = System.Windows.Visibility.Collapsed;
+                    //second row
+                    lblCdim.Visibility = System.Windows.Visibility.Visible;
+                    txtCdim.Visibility = System.Windows.Visibility.Visible;
+                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked2.Visibility = System.Windows.Visibility.Visible;
+                    //last row
+                    lblDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    txtDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
+                }
+                else if (nn.Name.StartsWith("Polling2D"))
+                {
+                    lblHdim.Content = "Layer dimension: ";
+                    lblCdim.Content = "Layer count: ";
+                    isChecked2.Content = "Is bidirectional";
+                    //first row
+                    lblHdim.Visibility = System.Windows.Visibility.Visible;
+                    txtHdim.Visibility = System.Windows.Visibility.Visible;
+                    lblAct.Visibility = System.Windows.Visibility.Collapsed;
+                    cmbAct.Visibility = System.Windows.Visibility.Collapsed;
+                    //second row
+                    lblCdim.Visibility = System.Windows.Visibility.Visible;
+                    txtCdim.Visibility = System.Windows.Visibility.Visible;
+                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked2.Visibility = System.Windows.Visibility.Visible;
+                    //last row
+                    lblDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    txtDrop.Visibility = System.Windows.Visibility.Collapsed;
+                    lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
                 }
                 else if (nn.Name.StartsWith("CudaStacked"))
                 {
@@ -138,6 +268,9 @@ namespace anndotnet.wnd.panels
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
                 }
                 else
                 {
@@ -157,6 +290,9 @@ namespace anndotnet.wnd.panels
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+                    //description row
+                    lblDesc.Visibility = System.Windows.Visibility.Collapsed;
+                    lblDesc.Content = "Description:.";
                 }
 
             }

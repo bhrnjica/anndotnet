@@ -9,8 +9,8 @@
                     xmlns:cnv="clr-namespace:anndotnet.wnd.converters"
                     
                     WindowStartupLocation="CenterScreen"
-                    ResizeMode="CanResizeWithGrip" Focusable="True" Width="990" Height="614" 
-                   MinWidth="1100" MinHeight="760" FontFamily="Segoe UI" FontSize="12" AllowDrop="True"
+                    ResizeMode="CanResizeWithGrip" Focusable="True" Width="1200" Height="614" 
+                   MinWidth="800" MinHeight="760" FontFamily="Segoe UI" FontSize="12" AllowDrop="True"
                     DataContext="{StaticResource mainViewModel}"  
                      Icon="Images/anndotnet.ico" Title="{Binding ActiveViewModel.TitleWindow}"
                      Background="{DynamicResource ANNdotNET.CustomColorBrush}">
