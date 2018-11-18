@@ -16,6 +16,7 @@ using System.Text;
 using System.Linq;
 using CNTK;
 using DotNetGraph;
+using System.Globalization;
 
 namespace ANNdotNET.Core
 {
@@ -134,13 +135,13 @@ namespace ANNdotNET.Core
                         switch (input.DataType)
                         {
                             case DataType.Float:
-                                label1 = value.GetDenseData<float>(input)[0][0].ToString();
+                                label1 = value.GetDenseData<float>(input)[0][0].ToString("N4",CultureInfo.InvariantCulture);
                                 break;
                             case DataType.Double:
-                                label1 = value.GetDenseData<double>(input)[0][0].ToString();
+                                label1 = value.GetDenseData<double>(input)[0][0].ToString("N4", CultureInfo.InvariantCulture);
                                 break;
                             case DataType.Float16:
-                                label1 = value.GetDenseData<float16>(input)[0][0].ToString();
+                                label1 = (value.GetDenseData<float16>(input)[0][0]).ToString();
                                 break;
                             default:
                                 break;
