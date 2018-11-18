@@ -57,6 +57,8 @@
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Row="1" Grid.Column="1" x:Name="cmbLayers" Style="{StaticResource ComboBoxFlatStyle}">
@@ -74,7 +76,7 @@
                 <Button IsEnabled="{Binding IsnotTrainRunning}" Content="Add" Style="{StaticResource Windows10Button}" Margin="2" Grid.Column="2" Grid.Row="1" Command="cmd:AppCommands.AddLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedValue}"/>
                 <Button IsEnabled="{Binding IsnotTrainRunning}" Content="Remove"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="3" Grid.Row="1" Command="cmd:AppCommands.RemoveLayerCommand" CommandParameter="{Binding ElementName=networkLayers, Path=SelectedItem}"/>
                 <Button IsEnabled="{Binding IsnotTrainRunning}" Content="Insert"  Style="{StaticResource Windows10Button}"  Margin="2" Grid.Column="4" Grid.Row="1" Command="cmd:AppCommands.InsertLayerCommand" CommandParameter="{Binding ElementName=cmbLayers, Path=SelectedItem}"/>
-
+                <Button  Content="Net Graph"  Style="{StaticResource Windows10Button}"  Margin="2,3,2,2" Grid.Column="5" Grid.Row="1" Command="cmd:AppCommands.ShowNetGraphCommand"  />
                 <ListBox Name="networkLayers" ItemsSource="{Binding Network}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4">
                     <ListBox.ItemTemplate>
                         <DataTemplate>

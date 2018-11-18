@@ -229,7 +229,7 @@ namespace ANNdotNET.Core
         /// <param name="customModel"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        private static Function CreateNetworkModel(string strNetwork, List<Variable> inputLayer, List<Variable> outputVars, CreateCustomModel customModel, DeviceDescriptor device)
+        public static Function CreateNetworkModel(string strNetwork, List<Variable> inputLayer, List<Variable> outputVars, CreateCustomModel customModel, DeviceDescriptor device)
         {
             Function nnModel = null;
             //for custom implementation should use this string format
@@ -584,8 +584,56 @@ namespace ANNdotNET.Core
         }
 
         /// <summary>
+        /// Generates GraphViz string graph from mlconifg file
+        /// </summary>
+        /// <param name="configPath"></param>
+        /// <returns></returns>
+        public static string GenerateNetworkGraph(string configPath)
+        {
+            try
+            {
+                //LOad ML configuration file
+                var dicMParameters = MLFactory.LoadMLConfiguration(configPath);
+
+                var fi = new FileInfo(configPath);
+                var folderPath = MLFactory.GetMLConfigFolder(fi.FullName);
+                //add path of model folder
+                dicMParameters.Add("root", folderPath);
+                var f = MLFactory.CreateMLFactory(dicMParameters);
+                var model = MLFactory.CreateNetworkModel(dicMParameters["network"], f.InputVariables, f.OutputVariables, null, DeviceDescriptor.UseDefaultDevice());
+
+                return GenerateNetworkGraph(model);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Generates GraphViz string graph from CNTK Function object
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static string GenerateNetworkGraph(Function model)
+        {
+            try
+            {
+                NetToGraph fg = new NetToGraph();
+                var dotStr = fg.ToGraph(model);
+                return dotStr;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Create cntk model function by providing parameters. The method is able for create:
-        ///     - feedforward  with one hidden layer and any number of neurons
+        ///     - feed-forward  with one hidden layer and any number of neurons
         ///     - deep neural network with any number of hidden layers and any number of neurons. Each hidden number has the same number of neurons
         ///     - LSTM NN with any number of hidden layers of LSTM , and any number of LSTM Cells in each layer. Also at the top of the network you can define
         ///             one dense layer and one dropout layer.

@@ -21,21 +21,9 @@ namespace anndotnet.core.app
 
         static void Main(string[] args)
         {
-            var rnd = new Random(1);
-            Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
-            string root = "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\bin\\x64\\Debug";
 
-            //transformDailyLevelVeanaLake();
-            //return;
-
-            //regression 
-            var mlConfigFile1 = $"{root}\\Resources\\Concrete\\ConcreteSlumpProject\\FFNModel.mlconfig";
-            
-            //binary classification
-            var mlConfigFile2 = $"{root}\\Resources\\Titanic\\TitanicProject\\DNNModel.mlconfig";
-            
-            //Multiclass classification
+            //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile3 = $"{root}anndotnet.tool\\model_mlconfigs\\iris.mlconfig";
 
@@ -152,11 +140,7 @@ namespace anndotnet.core.app
             var weeklyData = data.GroupBy(x => new { year= DateTime.Parse(x[0].ToString()).Year,
                 week = weekProjector(DateTime.Parse(x[0].ToString()))}).Select(x=> new {at1=x.Key.week,at2=x.Key.year,at3=x.Average(r=>float.Parse(r.ElementAt(1).ToString())) }).ToList();
 
-
-            System.IO.File.WriteAllLines("C:\\sc\\vs\\Vrana\\VranaANN\\rawDataSets\\weeklyTimeserieslevel-1978-2017v.1.2.txt",
-                weeklyData.Select(x => string.Join(";", x)));
-
-        }
+       
 
         private static void runAllml_configurations(string root)
         {

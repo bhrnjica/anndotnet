@@ -194,7 +194,7 @@ namespace NNetwork.Core.Network.Modules
         {
             //create linear layer
             var xw_b = Layer(x, cellDim, dataType, device, seed++);
-            var u = Weights(cellDim, dataType, device, seed++,"_u");
+            var u = Weights(cellDim, dataType, device, seed++,"u");
             //
             var gate = xw_b + (u * hPrev);
             return gate;
@@ -218,7 +218,7 @@ namespace NNetwork.Core.Network.Modules
             double initValue = 0.99537863;
 
             //create param with initial value
-            var param = new Parameter(new NDShape(), f.DataType, initValue, device, "_stabilize");
+            var param = new Parameter(new NDShape(), f.DataType, initValue, device, "w");
 
             //make exp of product scalar and parameter
             var expValue = CNTKLib.Exp(CNTKLib.ElementTimes(f, param));
@@ -231,7 +231,7 @@ namespace NNetwork.Core.Network.Modules
             var beta = CNTKLib.ElementTimes(fInv, log);
 
             //multiplication of the variable layer with constant scalar beta
-            var finalValue = CNTKLib.ElementTimes(beta, x);
+            var finalValue = CNTKLib.ElementTimes(beta, x, "stabilize");
 
             return finalValue;
         }
@@ -253,9 +253,9 @@ namespace NNetwork.Core.Network.Modules
             //create shape which for bias should be 1xn
             NDShape shape = new int[] { cstate.Shape[0] };
 
-            var bf = new Parameter(shape, dataType, initValue, device, "_peep");
+            var bf = new Parameter(shape, dataType, initValue, device, "w");
 
-            var peep = CNTKLib.ElementTimes(bf, cstate);
+            var peep = CNTKLib.ElementTimes(bf, cstate, "peep");
             return peep;
         }
 

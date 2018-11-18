@@ -43,10 +43,10 @@ namespace NNetwork.Core.Network
             var W = Weights(outDim, dataType, device, seed);
 
             //matrix product
-            var Wx = CNTKLib.Times(W, x, name + "_wx");
+            var Wx = CNTKLib.Times(W, x, name + "wx");
 
             //layer
-            var n = string.IsNullOrEmpty(name) ? "_wx_b" : name;
+            var n = string.IsNullOrEmpty(name) ? "wx_b" : name;
             var l = CNTKLib.Plus(b, Wx, n);
 
             return l;
@@ -69,7 +69,7 @@ namespace NNetwork.Core.Network
             //create shape which for bias should be 1xn
             NDShape shape = new int[] { nDimension };
 
-            var b = new Parameter(shape, dataType, initValue, device, "_b");
+            var b = new Parameter(shape, dataType, initValue, device, "b");
             //
             return b;
         }
@@ -92,7 +92,7 @@ namespace NNetwork.Core.Network
             NDShape shape = new int[] { outputDim, NDShape.InferredDimension };
 
             //create parameter
-            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "_w" : name);
+            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "w" : name);
 
             //
             return w;
@@ -117,7 +117,7 @@ namespace NNetwork.Core.Network
             NDShape shape = new int[] { outputDim, inputDim };
 
             //create parameter
-            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "_w" : name);
+            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "w" : name);
 
             //
             return w;
