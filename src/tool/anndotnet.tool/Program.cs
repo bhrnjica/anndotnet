@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NNetwork.Core.Network;
 using System.IO;
+using System.Diagnostics;
 
 namespace anndotnet.core.app
 {
@@ -118,6 +119,33 @@ namespace anndotnet.core.app
         }
 
         private static void cntkModelToGraphviz()
+        {
+            var mlconfigPath = $"C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.tool\\model_mlconfigs\\iris.mlconfig";
+
+            //generate graph and shows it
+            var dotString = MLFactory.GenerateNetworkGraph(mlconfigPath);
+            // Save it to a temp folder 
+            string tempDotPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".dot";
+            string tempImagePath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".png";
+            File.WriteAllText(tempDotPath, dotString);
+            //execute the process
+            using (Process graphVizprocess = new Process())
+            {
+                graphVizprocess.StartInfo.FileName = "dot.exe";
+                graphVizprocess.StartInfo.Arguments = "-Tpng " + tempDotPath + " -o " + tempImagePath;
+                graphVizprocess.Start();
+                graphVizprocess.WaitForExit();
+
+            }
+            //call defaul image viewwer and shows the image
+            using (Process imgView = new Process())
+            {
+                imgView.StartInfo.UseShellExecute = true;
+                imgView.StartInfo.FileName = tempImagePath;
+                imgView.Start();
+            }
+        }
+        private static void cntkModelToGraphviz1()
         {
             var net = new FeedForwaredNN(DeviceDescriptor.UseDefaultDevice(), DataType.Float);
 
