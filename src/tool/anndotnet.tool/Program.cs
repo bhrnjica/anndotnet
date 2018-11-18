@@ -12,6 +12,8 @@ using OxyPlot;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
 
 namespace anndotnet.core.app
 {
@@ -21,14 +23,15 @@ namespace anndotnet.core.app
 
         static void Main(string[] args)
         {
-
-            runConvNetExample();
+            graphConvNetExample();
+            //runConvNetExample();
             Console.ReadKey();
             return;
+
             var rnd = new Random(1);
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
-
+            var root = "C:\\sc\\github\\anndotnet\\src\\tool";
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile3 = $"{root}anndotnet.tool\\model_mlconfigs\\iris.mlconfig";
@@ -40,10 +43,10 @@ namespace anndotnet.core.app
             //var result = MachineLearning.Train(mlConfigFile1, trainingProgress, token2, null);
 
             //once the mode is trained you can write performance analysis of the model
-            MachineLearning.PrintPerformance(mlConfigFile1);
+            MachineLearning.PrintPerformance(mlConfigFile3);
 
             //SHow training history
-            showTrainingHistory(mlConfigFile1);
+            showTrainingHistory(mlConfigFile3);
 
             //evaluate model and export the result of testing
             //MLExport.ExportToCSV(mlConfigFile2, DeviceDescriptor.UseDefaultDevice(),"./model_mlconfigs/iris_result.csv" ).Wait();
@@ -71,6 +74,33 @@ namespace anndotnet.core.app
 
         }
 
+        private static void graphConvNetExample()
+        {
+            var mlconfigPath = $"model_mlconfigs\\convNet.mlconfig";
+
+            //generate graph and shows it
+            var dotString = MLFactory.GenerateNetworkGraph(mlconfigPath);
+            // Save it to a temp folder 
+            string tempDotPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".dot";
+            string tempImagePath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".png";
+            File.WriteAllText(tempDotPath, dotString);
+            //execute the process
+            using (Process graphVizprocess = new Process())
+            {
+                graphVizprocess.StartInfo.FileName = "dot.exe";
+                graphVizprocess.StartInfo.Arguments = "-Tpng " + tempDotPath + " -o " + tempImagePath;
+                graphVizprocess.Start();
+                graphVizprocess.WaitForExit();
+
+            }
+            //call defaul image viewwer and shows the image
+            using (Process imgView = new Process())
+            {
+                imgView.StartInfo.UseShellExecute = true;
+                imgView.StartInfo.FileName = tempImagePath;
+                imgView.Start();
+            }
+        }
         private static void showTrainingHistory(string mlConfigFile3)
         {
             var history = MachineLearning.ShowTrainingHistory(mlConfigFile3);

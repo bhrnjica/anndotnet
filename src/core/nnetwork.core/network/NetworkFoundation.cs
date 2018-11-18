@@ -88,7 +88,7 @@ namespace NNetwork.Core.Network
             var initValue = 0.01;
 
             //
-            var b = new Parameter(shape, dataType, initValue, device, "_b");
+            var b = new Parameter(shape, dataType, initValue, device, "b");
             //
             return b;
         }
@@ -160,7 +160,7 @@ namespace NNetwork.Core.Network
             CNTKLib.SentinelValueForInferParamInitRank,
             CNTKLib.SentinelValueForInferParamInitRank, seed);
             //create parameter
-            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "_w" : name);
+            var w = new Parameter(shape, dataType, glorotI, device, name == "" ? "w" : name);
             //
             return w;
         }
