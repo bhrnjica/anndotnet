@@ -45,7 +45,7 @@
                 <ComboBoxItem>None</ComboBoxItem>
                 <ComboBoxItem>Softmax</ComboBoxItem>
                 <ComboBoxItem>TanH</ComboBoxItem>
-                <ComboBoxItem>ReLu</ComboBoxItem>
+                <ComboBoxItem>ReLU</ComboBoxItem>
             </ComboBox>
         </StackPanel >
         <StackPanel Grid.Row="2"  VerticalAlignment="Center" Grid.Column="1" Orientation="Horizontal" Margin="5,9,0,9" Height="14" >

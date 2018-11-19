@@ -16,24 +16,59 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="85"/>
-            <RowDefinition Height="446*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="500"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Header="Input Layer" HorizontalAlignment="Left" Height="186" Margin="5,0.5,0,0" VerticalAlignment="Top" Width="340" Grid.Row="1">
-            <ScrollViewer HorizontalScrollBarVisibility="auto" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding InLayer}">
+        <StackPanel Orientation="Vertical" Grid.Row="1">
+            <GroupBox  Header="Defined Data Sets" Margin="0,5,0,0" >
+                <StackPanel >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="1 - Training: " Margin="2" />
+                        <TextBlock Text="{Binding DataSetsDefined.Item1}" Foreground="{Binding DataSetsDefined.Item1, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="2 - Validation: " Margin="2" />
+                        <TextBlock Text="{Binding DataSetsDefined.Item2}"  Foreground="{Binding DataSetsDefined.Item2, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="3 - Test: " Margin="2" />
+                        <TextBlock Text="{Binding DataSetsDefined.Item3}"  Foreground="{Binding DataSetsDefined.Item3, Converter={StaticResource BoolToColorConverter}}"  Margin="2" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Input Layer(s)" MaxHeight="190" Margin="0,5,0,0" >
+                <ScrollViewer HorizontalScrollBarVisibility="auto" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding InLayer}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,2,0,0" Background="AliceBlue">
+                                    <TextBlock Text="{Binding Id}" Width="auto"/>
+                                    <TextBlock Text="-" />
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="       " HorizontalAlignment="Left" Width="10"/>
+                                    <TextBlock Text="{Binding Representation}"/>
+                                    <TextBlock Text=" : " HorizontalAlignment="Left" />
+                                    <TextBlock Text="{Binding Dimension}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </GroupBox>
+            <GroupBox Header="Output Layer"  MaxHeight="81" Margin="0,5,0,0">
+                <ItemsControl ItemsSource="{Binding OutLayer}" >
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="0,2,0,0" Background="AliceBlue">
-                                <TextBlock Text="{Binding Id}" Width="auto"/>
+                                <TextBlock Text="{Binding Id}" Width="10"/>
                                 <TextBlock Text="-" />
                                 <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="       " HorizontalAlignment="Left" Width="10"/>
+                                <TextBlock Text="       " HorizontalAlignment="Left" Width="20"/>
                                 <TextBlock Text="{Binding Representation}"/>
                                 <TextBlock Text=" : " HorizontalAlignment="Left" />
                                 <TextBlock Text="{Binding Dimension}" />
@@ -41,10 +76,69 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </ScrollViewer>
-        </GroupBox>
+            </GroupBox>
+            <GroupBox Header="Learning parameters" MaxHeight="158" Margin="0,5,0,0" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Grid.Column="2" x:Name="cmbLearners" IsHitTestVisible="{Binding IsnotTrainRunning}"  IsEnabled="{Binding IsnotTrainRunning}" Style="{StaticResource ComboBoxFlatStyle}" Text="{Binding LearningParameters.LearnerType}" Grid.Row="1" Grid.ColumnSpan="3" >
+                        <ComboBoxItem>SGDLearner</ComboBoxItem>
+                        <ComboBoxItem>MomentumSGDLearner</ComboBoxItem>
+                        <ComboBoxItem>FSAdaGradLearner</ComboBoxItem>
+                        <ComboBoxItem>AdaGradLearner</ComboBoxItem>
+                        <ComboBoxItem>AdamLearner</ComboBoxItem>
+                    </ComboBox>
+                    <Label Content="Learner: " Grid.Row="1" Grid.ColumnSpan="2"  HorizontalAlignment="Right"/>
+                    <Label Content="Rate: " Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
+                    <Label Content="Momentum: "  HorizontalAlignment="Right"  Grid.Row="2" Grid.Column="3" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LearnerParametersToVisibility}}"/>
+
+                    <Label Content="L1: " Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Right" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
+                    <Label Content="L2: " Grid.Row="3" Grid.Column="3"  HorizontalAlignment="Right" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
+                    <TextBox Grid.Column="2" Grid.Row="2"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.LearningRate}" Margin="0,2" PreviewTextInput="TextBox_PreviewTextInput"/>
+                    <TextBox Grid.Column="4" Grid.Row="2"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.Momentum}" Margin="0,2" PreviewTextInput="TextBox_PreviewTextInput" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LearnerParametersToVisibility}}"/>
+                    <TextBox Grid.Column="2" Grid.Row="3"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.L1Regularizer}" Margin="0,2"  PreviewTextInput="TextBox_PreviewTextInput" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
+                    <TextBox Grid.Column="4" Grid.Row="3"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.L2Regularizer}" Margin="0,2"  PreviewTextInput="TextBox_PreviewTextInput" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
+
+                    <ComboBox IsHitTestVisible="{Binding IsnotTrainRunning}"  IsEnabled="{Binding IsnotTrainRunning}" Grid.Column="2" Style="{StaticResource ComboBoxFlatStyle}" VerticalAlignment="Top"  Text="{Binding LearningParameters.LossFunction}" Grid.Row="5" 
+                              Grid.ColumnSpan="3" >
+                        <ComboBoxItem>SquaredError</ComboBoxItem>
+                        <!--<ComboBoxItem>ClassificationError</ComboBoxItem>-->
+                        <ComboBoxItem>BinaryCrossEntropy</ComboBoxItem>
+                        <ComboBoxItem>CrossEntropyWithSoftmax</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock Text="Loss: "   HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="5" Grid.Column="1" />
+                    <TextBlock Text="Evaluation: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" />
+                    <ComboBox Grid.Column="2"  IsHitTestVisible="{Binding IsnotTrainRunning}" IsEnabled="{Binding IsnotTrainRunning}" Style="{StaticResource ComboBoxFlatStyle}" VerticalAlignment="Center" Text="{Binding LearningParameters.EvaluationFunction}"
+                              Grid.Row="6"  Grid.ColumnSpan="3"  >
+                        <ComboBoxItem>SquaredError</ComboBoxItem>
+                        <ComboBoxItem>ClassificationError</ComboBoxItem>
+                        <ComboBoxItem>ClassificationAccuracy</ComboBoxItem>
+                        <ComboBoxItem>RMSError</ComboBoxItem>
+                        <ComboBoxItem>MSError</ComboBoxItem>
+                    </ComboBox>
+
+
+                </Grid>
+            </GroupBox>
+        </StackPanel>
         <GroupBox Header="NNetwork Designer" HorizontalAlignment="Left"  VerticalAlignment="Stretch" 
-                  Width="490" Grid.Column="1" Grid.RowSpan="2">
+                  Width="490" Grid.Column="1" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5"/>
@@ -81,98 +175,6 @@
                 </ListBox>
 
             </Grid>
-        </GroupBox>
-        <GroupBox Header="Output Layer"  HorizontalAlignment="Left" Height="81" Margin="5,191.5,0,0" VerticalAlignment="Top" Width="340" Grid.Row="1" >
-            <ItemsControl ItemsSource="{Binding OutLayer}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0" Background="AliceBlue">
-                            <TextBlock Text="{Binding Id}" Width="10"/>
-                            <TextBlock Text="-" />
-                            <TextBlock Text="{Binding Name}" />
-                            <TextBlock Text="       " HorizontalAlignment="Left" Width="20"/>
-                            <TextBlock Text="{Binding Representation}"/>
-                            <TextBlock Text=" : " HorizontalAlignment="Left" />
-                            <TextBlock Text="{Binding Dimension}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </GroupBox>
-        <GroupBox Header="Learning parameters" HorizontalAlignment="Left" Height="158" Margin="5,277.5,0,0" VerticalAlignment="Top" Width="340" Grid.Row="1" >
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="5"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="5"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <ComboBox Grid.Column="2" x:Name="cmbLearners" IsHitTestVisible="{Binding IsnotTrainRunning}"  IsEnabled="{Binding IsnotTrainRunning}" Style="{StaticResource ComboBoxFlatStyle}" Text="{Binding LearningParameters.LearnerType}" Grid.Row="1" Grid.ColumnSpan="3" >
-                    <ComboBoxItem>SGDLearner</ComboBoxItem>
-                    <ComboBoxItem>MomentumSGDLearner</ComboBoxItem>
-                    <ComboBoxItem>FSAdaGradLearner</ComboBoxItem>
-                    <ComboBoxItem>AdaGradLearner</ComboBoxItem>
-                    <ComboBoxItem>AdamLearner</ComboBoxItem>
-                </ComboBox>
-                <Label Content="Learner: " Grid.Row="1" Grid.ColumnSpan="2"  HorizontalAlignment="Right"/>
-                <Label Content="Rate: " Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"/>
-                <Label Content="Momentum: "  HorizontalAlignment="Right"  Grid.Row="2" Grid.Column="3" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LearnerParametersToVisibility}}"/>
-
-                <Label Content="L1: " Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Right" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
-                <Label Content="L2: " Grid.Row="3" Grid.Column="3"  HorizontalAlignment="Right" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
-                <TextBox Grid.Column="2" Grid.Row="2"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.LearningRate}" Margin="0,2" PreviewTextInput="TextBox_PreviewTextInput"/>
-                <TextBox Grid.Column="4" Grid.Row="2"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.Momentum}" Margin="0,2" PreviewTextInput="TextBox_PreviewTextInput" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LearnerParametersToVisibility}}"/>
-                <TextBox Grid.Column="2" Grid.Row="3"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.L1Regularizer}" Margin="0,2"  PreviewTextInput="TextBox_PreviewTextInput" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
-                <TextBox Grid.Column="4" Grid.Row="3"  IsReadOnly="{Binding IsTrainRunning}" Text="{Binding LearningParameters.L2Regularizer}" Margin="0,2"  PreviewTextInput="TextBox_PreviewTextInput" Visibility="{Binding ElementName=cmbLearners, Path=Text,Converter={StaticResource LPToRegularizersToVisibility}}"/>
-
-                <ComboBox IsHitTestVisible="{Binding IsnotTrainRunning}"  IsEnabled="{Binding IsnotTrainRunning}" Grid.Column="2" Style="{StaticResource ComboBoxFlatStyle}" VerticalAlignment="Top"  Text="{Binding LearningParameters.LossFunction}" Grid.Row="5" 
-                          Grid.ColumnSpan="3" >
-                    <ComboBoxItem>SquaredError</ComboBoxItem>
-                    <!--<ComboBoxItem>ClassificationError</ComboBoxItem>-->
-                    <ComboBoxItem>BinaryCrossEntropy</ComboBoxItem>
-                    <ComboBoxItem>CrossEntropyWithSoftmax</ComboBoxItem>
-                </ComboBox>
-                <TextBlock Text="Loss: "   HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="5" Grid.Column="1" />
-                <TextBlock Text="Evaluation: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" />
-                <ComboBox Grid.Column="2"  IsHitTestVisible="{Binding IsnotTrainRunning}" IsEnabled="{Binding IsnotTrainRunning}" Style="{StaticResource ComboBoxFlatStyle}" VerticalAlignment="Center" Text="{Binding LearningParameters.EvaluationFunction}"
-                          Grid.Row="6"  Grid.ColumnSpan="3"  >
-                    <ComboBoxItem>SquaredError</ComboBoxItem>
-                    <ComboBoxItem>ClassificationError</ComboBoxItem>
-                    <ComboBoxItem>ClassificationAccuracy</ComboBoxItem>
-                    <ComboBoxItem>RMSError</ComboBoxItem>
-                    <ComboBoxItem>MSError</ComboBoxItem>
-                </ComboBox>
-
-
-            </Grid>
-        </GroupBox>
-        <GroupBox  Header="Defined Data Sets">
-            <StackPanel >
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="1 - Training: " Margin="2" />
-                    <TextBlock Text="{Binding DataSetsDefined.Item1}" Foreground="{Binding DataSetsDefined.Item1, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="2 - Validation: " Margin="2" />
-                    <TextBlock Text="{Binding DataSetsDefined.Item2}"  Foreground="{Binding DataSetsDefined.Item2, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="3 - Test: " Margin="2" />
-                    <TextBlock Text="{Binding DataSetsDefined.Item3}"  Foreground="{Binding DataSetsDefined.Item3, Converter={StaticResource BoolToColorConverter}}"  Margin="2" />
-                </StackPanel>
-            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>
