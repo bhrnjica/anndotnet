@@ -18,7 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace MLDataPreparation.Dll
+namespace DataProcessing.Wnd
 {
     /// <summary>
     /// WInForm User controls to perfume import Raw Dataset into ANNdotNET 

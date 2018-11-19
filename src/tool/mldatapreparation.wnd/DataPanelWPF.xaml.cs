@@ -1,77 +1,76 @@
-﻿//////////////////////////////////////////////////////////////////////////////////////////
-// GPdotNET - Genetic Programming Tool                                                  //
-// Copyright 2006-2017 Bahrudin Hrnjica                                                 //
-//                                                                                      //
-// This code is free software under the GNU Library General Public License (LGPL)       //
-// See license section of  https://github.com/bhrnjica/gpdotnet/blob/master/license.md  //
-//                                                                                      //
-// Bahrudin Hrnjica                                                                     //
-// bhrnjica@hotmail.com                                                                 //
-// Bihac,Bosnia and Herzegovina                                                         //
-// http://bhrnjica.wordpress.com                                                        //
-//////////////////////////////////////////////////////////////////////////////////////////
-using DataProcessing.Core;
+﻿using DataProcessing.Core;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using forms = System.Windows.Forms;
 
 namespace DataProcessing.Wnd
 {
+  
 
     /// <summary>
-    /// Main panel for loading and defining experimental dataA
+    /// Interaction logic for DataPanelWPF.xaml
     /// </summary>
-    public partial class DataPanel : UserControl
+    public partial class DataPanelWPF : UserControl
     {
-
-        #region Ctor and Fields
         //listview items
-        private ListViewItem li;
+        private forms.ListViewItem li;
         private int X = 0;
         private int Y = 0;
         private int subItemSelected = 0;
-        private System.Windows.Forms.ComboBox cmbBox1 = new System.Windows.Forms.ComboBox();
-        private System.Windows.Forms.ComboBox cmbBox2 = new System.Windows.Forms.ComboBox();
-        private System.Windows.Forms.ComboBox cmbBox3 = new System.Windows.Forms.ComboBox();
+        private forms.ComboBox cmbBox1 = new forms.ComboBox();
+        private forms.ComboBox cmbBox2 = new forms.ComboBox();
+        private forms.ComboBox cmbBox3 = new forms.ComboBox();
 
         private string[][] m_strData; //loaded string of data
         private string[] m_strHeader; //loaded string of data
         public Action<bool> UpdateModel { get; set; }
         public Action<bool> CreateModel { get; set; }
-        
 
-        public DataPanel()
+        public DataPanelWPF()
         {
             InitializeComponent();
-          
+
+            this.listView1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+
             //first row combobox
             cmbBox1.Items.Add(ColumnType.Numeric.Description());
             cmbBox1.Items.Add(ColumnType.Category.Description());
             cmbBox1.Items.Add(ColumnType.None.Description());
-          
+            cmbBox1.DropDownClosed += CmbBox1_DropDownClosed;
             cmbBox1.Size = new System.Drawing.Size(0, 0);
             cmbBox1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Controls.AddRange(new System.Windows.Forms.Control[] { this.cmbBox1 });
             cmbBox1.SelectedIndexChanged += new System.EventHandler(this.CmbSelected);
             cmbBox1.LostFocus += new System.EventHandler(this.CmbFocusOver);
             cmbBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CmbKeyPress);
-            cmbBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbBox1.DropDownStyle = forms.ComboBoxStyle.DropDownList;
             cmbBox1.Hide();
 
             //second row combobox
             cmbBox2.Items.Add(VariableType.None.Description());
             cmbBox2.Items.Add(VariableType.Feature.Description());
             cmbBox2.Items.Add(VariableType.Label.Description());
-
+            cmbBox2.DropDownClosed += CmbBox1_DropDownClosed;
             cmbBox2.Size = new System.Drawing.Size(0, 0);
             cmbBox2.Location = new System.Drawing.Point(0, 0);
             this.listView1.Controls.AddRange(new System.Windows.Forms.Control[] { this.cmbBox2 });
             cmbBox2.SelectedIndexChanged += new System.EventHandler(this.CmbSelected);
             cmbBox2.LostFocus += new System.EventHandler(this.CmbFocusOver);
             cmbBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CmbKeyPress);
-            cmbBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbBox2.DropDownStyle = forms.ComboBoxStyle.DropDownList;
             cmbBox2.Hide();
 
 
@@ -83,7 +82,7 @@ namespace DataProcessing.Wnd
             cmbBox3.Items.Add(MissingValue.Min.Description());
             cmbBox3.Items.Add(MissingValue.Mode.Description());
             cmbBox3.Items.Add(MissingValue.Random.Description());
-            
+            cmbBox3.DropDownClosed += CmbBox1_DropDownClosed;
 
             cmbBox3.Size = new System.Drawing.Size(0, 0);
             cmbBox3.Location = new System.Drawing.Point(0, 0);
@@ -91,16 +90,29 @@ namespace DataProcessing.Wnd
             cmbBox3.SelectedIndexChanged += new System.EventHandler(this.CmbSelected);
             cmbBox3.LostFocus += new System.EventHandler(this.CmbFocusOver);
             cmbBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CmbKeyPress);
-            cmbBox3.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbBox3.DropDownStyle = forms.ComboBoxStyle.DropDownList;
             cmbBox3.Hide();
         }
 
-       
+        private void CmbBox1_DropDownClosed(object sender, EventArgs e)
+        {
+            var cd = sender as forms.ComboBox;
+            if (cd != null)
+                cd.Hide();
+        }
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            e.Handled = !Regex.IsMatch(e.Text, @"^[0-9]*(?:\.[0-9]*)?$");
+        }
+
+
         //implementation Header control 
         #region Cell ComboBox Events
-        private void CmbKeyPress(object sender, KeyPressEventArgs e)
+        private void CmbKeyPress(object sender, forms.KeyPressEventArgs e)
         {
-            var combo = sender as ComboBox;
+            var combo = sender as forms.ComboBox;
 
             if (e.KeyChar == 13 || e.KeyChar == 27)
             {
@@ -110,26 +122,26 @@ namespace DataProcessing.Wnd
 
         private void CmbFocusOver(object sender, EventArgs e)
         {
-            var combo = sender as ComboBox;
+            var combo = sender as forms.ComboBox;
             combo.Hide();
         }
 
         private void CmbSelected(object sender, EventArgs e)
         {
-            var combo = sender as ComboBox;
+            var combo = sender as forms.ComboBox;
 
             int sel = combo.SelectedIndex;
             if (sel >= 0)
             {
                 string itemSel = combo.Items[sel].ToString();
                 li.SubItems[subItemSelected].Text = itemSel;
-                var cols =  ParseHeader();
-                setSummary(m_strData,cols.ToList());
+                var cols = ParseHeader();
+                setSummary(m_strData, cols.ToList());
             }
         }
         #endregion
 
-        #endregion
+
 
         #region Private Methods
         /// <summary>
@@ -159,32 +171,31 @@ namespace DataProcessing.Wnd
             //setDefaultColumns(header, numCol);
 
             //insert data
-            setData(data);
+            setData(data.Select(x => x.ToList()).ToList());
 
             //set summary
             setSummary(m_strData, cols);
         }
 
        
-
         /// <summary>
         /// Handling double mouse click for changing MetaData info of the loaded data columns
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ListView1_MouseDoubleClick(object sender, forms.MouseEventArgs e)
         {
-            ListViewHitTestInfo info = listView1.HitTest(X, Y);
+            forms.ListViewHitTestInfo info = listView1.HitTest(X, Y);
             var row = info.Item.Index;
             var col = info.Item.SubItems.IndexOf(info.SubItem);
             var colType = listView1.Items[3].SubItems[col];
             li = info.Item;
             subItemSelected = col;
             //only first and second Row process the mouse input 
-            if (li == null || row > 3|| row < 1 || col < 1)
+            if (li == null || row > 3 || row < 1 || col < 1)
                 return;
 
-            ComboBox combo = null;
+            forms.ComboBox combo = null;
             if (row == 1)
                 combo = cmbBox1;
             else if (row == 2)
@@ -197,7 +208,7 @@ namespace DataProcessing.Wnd
                 combo = cmbBox1;
 
             var subItm = li.SubItems[col];
-            if(combo!=null)
+            if (combo != null)
             {
                 combo.Bounds = subItm.Bounds;
                 combo.Show();
@@ -205,12 +216,12 @@ namespace DataProcessing.Wnd
                 combo.SelectAll();
                 combo.Focus();
             }
-            
-        }
-        
-        private void listView1_MouseDown(object sender, MouseEventArgs e)
-        {
 
+        }
+
+        private void ListView1_MouseDown(object sender, forms.MouseEventArgs e)
+        {
+            
             X = e.X;
             Y = e.Y;
 
@@ -221,7 +232,7 @@ namespace DataProcessing.Wnd
         /// Fill ListView with proper columns
         /// </summary>
         /// <param name="cols"></param>
-        private void setColumn(List<MetaColumn> cols )
+        private void setColumn(List<MetaColumn> cols)
         {
             //clear the list first
             listView1.Clear();
@@ -231,27 +242,27 @@ namespace DataProcessing.Wnd
             int numCol = cols.Count;
             //int numRow = 5;
 
-            ColumnHeader colHeader = null;
-            colHeader = new ColumnHeader();
+            forms.ColumnHeader colHeader = null;
+            colHeader = new forms.ColumnHeader();
             colHeader.Text = " ";
             colHeader.Width = 200;
             listView1.Columns.Add(colHeader);
             //
             for (int i = 0; i < numCol; i++)
             {
-                colHeader = new ColumnHeader();
+                colHeader = new forms.ColumnHeader();
                 colHeader.Text = cols[i].Name;
                 colHeader.Width = 200;
-                colHeader.TextAlign = HorizontalAlignment.Center;
+                colHeader.TextAlign = forms.HorizontalAlignment.Center;
 
                 listView1.Columns.Add(colHeader);
             }
             //first row is going to represent column names
-            ListViewItem LVI = listView1.Items.Add("Column name:");
+            forms.ListViewItem LVI = listView1.Items.Add("Column name:");
             for (int i = 0; i < numCol; i++)
             {
                 LVI.SubItems.Add(cols[i].Name);
-                LVI.BackColor = SystemColors.MenuHighlight;
+                LVI.BackColor = System.Drawing.SystemColors.MenuHighlight;
 
             }
 
@@ -261,7 +272,7 @@ namespace DataProcessing.Wnd
             {
                 //LVI.SubItems.Add("numeric");
                 LVI.SubItems.Add(cols[i].Type);
-                LVI.BackColor = SystemColors.GradientActiveCaption;
+                LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
 
             //second row is going to represent is the column input, output or ignored column
@@ -269,7 +280,7 @@ namespace DataProcessing.Wnd
             for (int i = 0; i < numCol; i++)
             {
                 LVI.SubItems.Add(cols[i].Param);
-                LVI.BackColor = SystemColors.GradientActiveCaption;
+                LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
 
             //forth row is going to represent missing values action
@@ -278,19 +289,20 @@ namespace DataProcessing.Wnd
             {
                 //LVI.SubItems.Add("Ignore");
                 LVI.SubItems.Add(cols[i].MissingValue);
-                LVI.BackColor = SystemColors.GradientActiveCaption;
+                LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
         }
 
         private List<MetaColumn> parseData(string[][] data, string[] header)
         {
+
             var cols = new List<MetaColumn>();
             var columnData = data.toColumnVector<string>();
-            //in case no hedader is provided
+            //in case no header is provided
             if (header == null)
             {
                 header = Enumerable.Range(1, data[0].Length).Select(x => $"Column{x}").ToArray();
-                m_strHeader= header;
+                m_strHeader = header;
             }
 
             //
@@ -299,21 +311,21 @@ namespace DataProcessing.Wnd
                 var mc = new MetaColumn();
                 mc.Id = i;
                 mc.Index = i;
-               
+
                 mc.Name = header[i];
 
-                //determine how meny diferent values volumn has
+                //determine how many different values column has
                 var classes = columnData[i].Distinct().Count();
                 var count = data.Length;
 
                 //type
-                if(classes < 5)
+                if (classes < 5)
                     mc.Type = ColumnType.Category.ToString();
                 else
                     mc.Type = ColumnType.Numeric.ToString();
 
                 //encoding 
-                if(mc.Type == ColumnType.Category.ToString())
+                if (mc.Type == ColumnType.Category.ToString())
                     mc.Encoding = CategoryEncoding.OneHot.ToString();
                 else
                     mc.Encoding = CategoryEncoding.None.ToString();
@@ -324,7 +336,7 @@ namespace DataProcessing.Wnd
                 mc.Scale = Scaling.None.ToString();
 
                 //The last column is label by default
-                if(i+1 == header.Length)
+                if (i + 1 == header.Length)
                     mc.Param = VariableType.Label.ToString();
                 else
                     mc.Param = VariableType.Feature.ToString();
@@ -343,7 +355,7 @@ namespace DataProcessing.Wnd
         private void setDefaultColumns(string[] header, int numCol)
         {
             var cols = new List<MetaColumn>();
-            for(int i=0; i<numCol; i++)
+            for (int i = 0; i < numCol; i++)
             {
                 var mc = new MetaColumn();
                 mc.Encoding = CategoryEncoding.None.ToString();
@@ -379,15 +391,15 @@ namespace DataProcessing.Wnd
                 }
             }
             ///
-            ColumnHeader colHeader = null;
-            colHeader = new ColumnHeader();
+            forms.ColumnHeader colHeader = null;
+            colHeader = new forms.ColumnHeader();
             colHeader.Text = " ";
             colHeader.Width = 150;
             listView1.Columns.Add(colHeader);
             //
             for (int i = 0; i < numCol; i++)
             {
-                colHeader = new ColumnHeader();
+                colHeader = new forms.ColumnHeader();
 
                 if (header == null)
                 {
@@ -406,7 +418,7 @@ namespace DataProcessing.Wnd
                 listView1.Columns.Add(colHeader);
             }
             //first row is going to represent column names
-            ListViewItem LVI = listView1.Items.Add(MetaData.Name.Description());
+            forms.ListViewItem LVI = listView1.Items.Add(MetaData.Name.Description());
             for (int i = 0; i < numCol; i++)
             {
                 if (header == null)
@@ -429,7 +441,7 @@ namespace DataProcessing.Wnd
             for (int i = 0; i < numCol; i++)
             {
                 LVI.SubItems.Add(ColumnType.Numeric.Description());
-                LVI.BackColor = SystemColors.GradientActiveCaption;
+                LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
 
             //fourth row is going to represent is the column input, output or ignored column
@@ -441,7 +453,7 @@ namespace DataProcessing.Wnd
                 else
                     LVI.SubItems.Add(VariableType.Feature.Description());
 
-                LVI.BackColor = SystemColors.GradientActiveCaption;
+                LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
 
             //sixth row is going to represent missing values action
@@ -450,16 +462,18 @@ namespace DataProcessing.Wnd
             {
                 LVI.SubItems.Add(MissingValue.Ignore.Description());
 
-                LVI.BackColor = SystemColors.GradientActiveCaption;
+                LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             }
         }
-        
-        
-        private void setData(string[][] data)
+
+
+        private void setData(List<List<string>> data)
         {
-            int numCol = data[0].Length;
-            int numRow = data.Length>10?10: data.Length;
-            ListViewItem LVI = null;
+            if (data == null)
+                return;
+            int numCol = data[0].Count;
+            int numRow = data.Count > 10 ? 10 : data.Count;
+            forms.ListViewItem LVI = null;
             //insert data
             for (int j = 0; j < numRow; j++)
             {
@@ -469,8 +483,8 @@ namespace DataProcessing.Wnd
                 {
                     if (ColumnData.m_missingSymbols.Contains(data[j][i]))
                     {
-                        System.Windows.Forms.ListViewItem.ListViewSubItem itm = new ListViewItem.ListViewSubItem();
-                        itm.ForeColor = Color.Red;
+                        System.Windows.Forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                        itm.ForeColor = System.Drawing.Color.Red;
                         itm.Text = data[j][i];
                         LVI.SubItems.Add(itm);
                     }
@@ -480,16 +494,17 @@ namespace DataProcessing.Wnd
                 }
 
             }
-            m_strData = data;
+            m_strData = data.Select(x => x.ToArray()).ToArray();
             return;
         }
 
         private void setSummary(string[][] data, List<MetaColumn> cols)
         {
-
+            if (data == null)
+                return;
             int numCol = data[0].Length;
             int numRow = data.Length;
-            ListViewItem LVI = null;
+            forms.ListViewItem LVI = null;
             var toColumnData = data.toColumnVector<string>();
 
             if (listView1.Items.Count <= 14)
@@ -500,7 +515,7 @@ namespace DataProcessing.Wnd
             //LVI.BackColor = SystemColors.GradientActiveCaption;
             for (int i = 0; i < numCol; i++)
             {
-                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new ListViewItem.ListViewSubItem();
+                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
                 //
                 itm.Text = "...";
                 //
@@ -519,15 +534,15 @@ namespace DataProcessing.Wnd
                 LVI = listView1.Items[15];
 
             LVI.UseItemStyleForSubItems = false;
-            LVI.BackColor = SystemColors.GradientActiveCaption;
+            LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             for (int i = 0; i < numCol; i++)
             {
-                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new ListViewItem.ListViewSubItem();
-                itm.BackColor = SystemColors.GradientActiveCaption;
+                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                itm.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
                 itm.Text = toColumnData[i].Count().ToString();
                 //
                 if (LVI.SubItems.Count > i + 1)
-                    LVI.SubItems[i+1] = itm;
+                    LVI.SubItems[i + 1] = itm;
                 else
                     LVI.SubItems.Add(itm);
             }
@@ -539,18 +554,18 @@ namespace DataProcessing.Wnd
             else
                 LVI = listView1.Items[16];
             LVI.UseItemStyleForSubItems = false;
-            LVI.BackColor = SystemColors.GradientActiveCaption;
+            LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             for (int i = 0; i < numCol; i++)
             {
-                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new ListViewItem.ListViewSubItem();
-                itm.BackColor = SystemColors.GradientActiveCaption;
-                if(cols.Count > 0 && cols[i].Type.StartsWith("Numeric",StringComparison.InvariantCulture))
+                forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                itm.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+                if (cols.Count > 0 && cols[i].Type.StartsWith("Numeric", StringComparison.InvariantCulture))
                     itm.Text = "n/a";
                 else
                     itm.Text = toColumnData[i].Distinct().Count().ToString();
                 //
                 if (LVI.SubItems.Count > i + 1)
-                    LVI.SubItems[i+1] = itm;
+                    LVI.SubItems[i + 1] = itm;
                 else
                     LVI.SubItems.Add(itm);
             }
@@ -573,14 +588,14 @@ namespace DataProcessing.Wnd
 
             for (int i = 1; i < firstRow.SubItems.Count; i++)
             {
-                int colIndex = i-1;
+                int colIndex = i - 1;
                 string colName = firstRow.SubItems[i].Text;
                 string colType = secondRow.SubItems[i].Text;
                 string variableType = thirdRow.SubItems[i].Text;
                 string missingValue = forthRow.SubItems[i].Text;
-                
 
-                var col = new MetaColumn() {Id=colIndex, Index = colIndex, Name = colName, Type = colType, Param = variableType, MissingValue = missingValue};
+
+                var col = new MetaColumn() { Id = colIndex, Index = colIndex, Name = colName, Type = colType, Param = variableType, MissingValue = missingValue };
                 if (!col.IsIngored || !omitIgnored)
                     lst.Add(col);
             }
@@ -593,12 +608,13 @@ namespace DataProcessing.Wnd
         /// </summary>
         /// <param name="omitIgnored"></param>
         /// <returns></returns>
-        private string[][] ParseData(MetaColumn[] metaCols)
+        private List<List<string>> ParseData(MetaColumn[] metaCols)
         {
             if (metaCols == null)
                 return null;
+            var data = new List<List<string>>();
+            //string[][] data = new string[this.m_strData.Length][];
 
-            string[][] data = new string[this.m_strData.Length][];
             for (int k = 0; k < this.m_strData.Length; k++)
             {
                 var i = k;
@@ -606,11 +622,12 @@ namespace DataProcessing.Wnd
 
                 //calculate number of columns
                 int col = row.Length;
-                data[k] = new string[col];
+                var rowData = new List<string>();
                 for (int j = 0; j < metaCols.Length; j++)
                 {
-                    data[k][j] = row[metaCols[j].Index];
+                    rowData.Add(row[metaCols[j].Index]);
                 }
+                data.Add(rowData);
             }
 
 
@@ -631,7 +648,7 @@ namespace DataProcessing.Wnd
 
         public void SetDataSet(ANNDataSet dataSet)
         {
-            if(dataSet==null || dataSet.MetaData==null)
+            if (dataSet == null || dataSet.Data == null || dataSet.MetaData == null)
             {
                 ResetExperimentalPanel();
                 return;
@@ -640,14 +657,16 @@ namespace DataProcessing.Wnd
             m_strHeader = dataSet.MetaData.Select(x => x.Name).ToArray();
             setColumn(dataSet.MetaData.ToList());
             //Data
-            setData(dataSet.Data);
+            setData(dataSet.Data.Select(x=>x.ToList()).ToList());
             //summary
             setSummary(m_strData, dataSet.MetaData.ToList());
-            
+
             //set 
-            numCtrlNumForTest.Value = dataSet.TestRows;
-            numberRadio.Checked = !dataSet.IsPrecentige;
-            presentigeRadio.Checked = dataSet.IsPrecentige;
+            txtValidationCount.Text = dataSet.TestRows.ToString();
+            //txtValidationCount.Text = dataSet.RowsToValidation.ToString();
+            //txtTestCount.Text = dataSet.RowsToTest.ToString();
+            radionNumber.IsChecked = !dataSet.IsPrecentige;
+            radionPercentige.IsChecked = dataSet.IsPrecentige;
         }
 
         public ANNDataSet GetDataSet(bool omitIgnored = false)
@@ -658,13 +677,18 @@ namespace DataProcessing.Wnd
                 //
                 data1.MetaData = ParseHeader(omitIgnored);
 
-                data1.TestRows = (int)numCtrlNumForTest.Value;
-                data1.IsPrecentige = !numberRadio.Checked;
+                data1.TestRows = int.Parse(txtValidationCount.Text);
+                //data1.RowsToValidation = int.Parse(txtValidationCount.Text);
+                //data1.RowsToTest = int.Parse(txtTestCount.Text);
+
+                data1.IsPrecentige = radionPercentige.IsChecked.Value;
 
                 var strData = ParseData(data1.MetaData);
-                data1.RandomizeData = randomoizeDataSet.Checked;
+                data1.RandomizeData = checkRandomizeDataset.IsChecked.Value;
                 //
-                data1.Data = strData;
+                var sss = strData.Select(x => x.ToArray()).ToArray();
+                data1.Data = sss;
+                //data1.Data = strData;
                 return data1;
             }
             catch (Exception)
@@ -673,30 +697,32 @@ namespace DataProcessing.Wnd
             }
         }
 
-        public void ShowOptionPanel()
-        {
-            this.tableLayoutPanel1.RowStyles.Clear();
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-        }
-        public void HideOptionPanel()
-        {
-            this.tableLayoutPanel1.RowStyles.Clear();
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
-        }
 
         public void LoadData()
         {
-            ImportData dlg = new ImportData();
-            if (dlg.ShowDialog() == DialogResult.OK)
+            try
             {
-                if (dlg.Data == null)
-                    return;
-                m_strData = dlg.Data;
-                m_strHeader = dlg.Header;
-                FillDataGrid(dlg.Header, dlg.Data);
+                ImportData dlg = new ImportData();
+                if (dlg.ShowDialog() == forms.DialogResult.OK)
+                {
+                    if (dlg.Data == null)
+                        return;
+                   // this.Cursor = Cursors.WaitCursor;
+                    m_strData = dlg.Data;
+                    m_strHeader = dlg.Header;
+                    FillDataGrid(dlg.Header, dlg.Data);
+                }
             }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                //this.Cursor = Cursors.Arrow;
+            }
+
         }
 
         public void CreateNewModel()
@@ -711,8 +737,8 @@ namespace DataProcessing.Wnd
                 }
                 if (CreateModel != null)
                 {
-                    CreateModel(randomoizeDataSet.Checked);
-                    randomoizeDataSet.Checked = false;
+                    CreateModel(checkRandomizeDataset.IsChecked.Value);
+                    checkRandomizeDataset.IsChecked = false;
                 }
 
             }
@@ -723,9 +749,5 @@ namespace DataProcessing.Wnd
         }
 
         #endregion
-
     }
-
-
-
 }

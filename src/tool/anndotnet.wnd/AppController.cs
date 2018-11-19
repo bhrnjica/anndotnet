@@ -25,7 +25,7 @@ using anndotnet.wnd.commands;
 using anndotnet.wnd.Models;
 using anndotnet.wnd.Mvvm;
 using ANNdotNET.Lib;
-using MLDataPreparation.Dll;
+using DataProcessing.Wnd;
 using NNetwork.Core.Common;
 
 namespace anndotnet.wnd

@@ -10,13 +10,14 @@
 // Bihac, Bosnia and Herzegovina                                                        //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using anndotnet.wnd.Models;
+
 using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
-
+using anndotnet.wnd.Models;
+using DataProcessing.Wnd;
 namespace anndotnet.wnd.Pages
 {
     /// <summary>
@@ -53,7 +54,7 @@ namespace anndotnet.wnd.Pages
 
                     var model = e.OldValue as ANNProjectController;
                     model.DataSet = project.GetDataSet();
-                    project.Dispose();
+                    //project.Dispose();
                     richText = null;
                 }
                 //for project show previously stored state

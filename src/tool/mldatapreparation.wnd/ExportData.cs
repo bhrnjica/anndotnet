@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace MLDataPreparation.Dll
+namespace DataProcessing.Wnd
 {
     /// <summary>
     /// Class implements export ANNdotNET Model configuration to Excel. The class exporta Training and Validation datasets to excel-

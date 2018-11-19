@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using ANNdotNET.Lib;
 using DataProcessing.Core;
+using DataProcessing.Wnd;
 using DocumentFormat.OpenXml.Presentation;
 using MLDataPreparation.Dll;
 using System;
