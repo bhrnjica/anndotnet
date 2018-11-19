@@ -657,14 +657,14 @@ namespace DataProcessing.Wnd
             m_strHeader = dataSet.MetaData.Select(x => x.Name).ToArray();
             setColumn(dataSet.MetaData.ToList());
             //Data
-            setData(dataSet.Data.Select(x=>x.ToList()).ToList());
+            setData(dataSet.Data);
             //summary
             setSummary(m_strData, dataSet.MetaData.ToList());
 
             //set 
-            txtValidationCount.Text = dataSet.TestRows.ToString();
-            //txtValidationCount.Text = dataSet.RowsToValidation.ToString();
-            //txtTestCount.Text = dataSet.RowsToTest.ToString();
+            //txtValidationCount.Text = dataSet.TestRows.ToString();
+            txtValidationCount.Text = dataSet.RowsToValidation.ToString();
+            txtTestCount.Text = dataSet.RowsToTest.ToString();
             radionNumber.IsChecked = !dataSet.IsPrecentige;
             radionPercentige.IsChecked = dataSet.IsPrecentige;
         }
@@ -677,18 +677,16 @@ namespace DataProcessing.Wnd
                 //
                 data1.MetaData = ParseHeader(omitIgnored);
 
-                data1.TestRows = int.Parse(txtValidationCount.Text);
-                //data1.RowsToValidation = int.Parse(txtValidationCount.Text);
-                //data1.RowsToTest = int.Parse(txtTestCount.Text);
+                //data1.TestRows = int.Parse(txtValidationCount.Text);
+                data1.RowsToValidation = int.Parse(txtValidationCount.Text);
+                data1.RowsToTest = int.Parse(txtTestCount.Text);
 
                 data1.IsPrecentige = radionPercentige.IsChecked.Value;
 
                 var strData = ParseData(data1.MetaData);
                 data1.RandomizeData = checkRandomizeDataset.IsChecked.Value;
                 //
-                var sss = strData.Select(x => x.ToArray()).ToArray();
-                data1.Data = sss;
-                //data1.Data = strData;
+                data1.Data = strData;
                 return data1;
             }
             catch (Exception)
