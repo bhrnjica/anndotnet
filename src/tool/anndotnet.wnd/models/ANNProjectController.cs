@@ -13,7 +13,6 @@
 using ANNdotNET.Lib;
 using DataProcessing.Core;
 using DocumentFormat.OpenXml.Presentation;
-using MLDataPreparation.Dll;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -191,7 +190,7 @@ namespace anndotnet.wnd.Models
         internal void Save( )
         {
             //access Data Pane in order to update data
-            DataPanel expCtrl = getDataPanel();
+            DataPanelWPF expCtrl = getDataPanel();
             if (expCtrl == null)
                 return;
             RichTextBox rtfCtrl = getRichCtrl();
@@ -335,7 +334,7 @@ namespace anndotnet.wnd.Models
             return ctrl;
         }
 
-        private DataPanel getDataPanel()
+        private DataPanelWPF getDataPanel()
         {
             var cntCtrl = anndotnet.wnd.App.Current.MainWindow as MainWindow;
             var tab = FindVisualChild<TabControl>(cntCtrl.content);
@@ -345,10 +344,10 @@ namespace anndotnet.wnd.Models
             if (tbItm == null)
                 return null;
 
-            var ctrl = FindVisualChild<WindowsFormsHost>(tbItm.Content as Grid);
+            var ctrl = FindVisualChild<DataPanelWPF>(tbItm.Content as Grid);
 
-            var expCtrl = (DataPanel)ctrl.Child;
-            return expCtrl;
+            //var expCtrl = (DataPanel)ctrl.Child;
+            return ctrl;
         }
 
         /// <summary>
