@@ -1,4 +1,4 @@
-﻿namespace MLDataPreparation.Dll
+﻿namespace DataProcessing.Wnd
 {
     partial class DataPanel
     {

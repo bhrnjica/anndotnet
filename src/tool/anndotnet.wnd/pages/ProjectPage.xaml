@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:forms="clr-namespace:MLDataPreparation.Dll;assembly=dataprocessing.wnd"
+      xmlns:wnd="clr-namespace:DataProcessing.Wnd;assembly=dataprocessing.wnd"
       xmlns:cnv="clr-namespace:anndotnet.wnd.converters"
       mc:Ignorable="d" d:DesignWidth="494" d:DesignHeight="227" Background="{DynamicResource ANNdotNET.CustomColorBrush}"
 	>
@@ -22,14 +22,22 @@
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}" x:Name="projectTab">
-            <TabItem Header="Raw Data" x:Name="rawDataTab">
+            <TabItem Header="Raw Data WPF" x:Name="rawDataTab">
                 <Grid>
                     <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
-                    <WindowsFormsHost  x:Name="hostWF" >
-                        <forms:DataPanel AutoScaleMode="Font"  x:Name="project"  />
-                    </WindowsFormsHost>
+                    <wnd:DataPanelWPF x:Name="project"/>
                 </Grid>
             </TabItem>
+            <!--<TabItem Header="Raw Data" x:Name="rawDataTab">
+                <Grid>
+                    -->
+            <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
+            <!--
+                    <WindowsFormsHost  x:Name="hostWF" >
+                        <wnd:DataPanel AutoScaleMode="Font"  x:Name="project"  />
+                    </WindowsFormsHost>
+                </Grid>
+            </TabItem>-->
             <TabItem Header="Project Info" x:Name="prjInfoPage" >
                 <RichTextBox  x:Name="richText" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
                     <RichTextBox.Resources>

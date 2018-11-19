@@ -13,6 +13,7 @@
 using ANNdotNET.Core;
 using ANNdotNET.Lib;
 using DataProcessing.Core;
+using DataProcessing.Wnd;
 using DocumentFormat.OpenXml.Presentation;
 using MLDataPreparation.Dll;
 using NNetwork.Core.Common;
