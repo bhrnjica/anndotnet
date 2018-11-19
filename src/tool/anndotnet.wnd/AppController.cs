@@ -536,27 +536,22 @@ namespace anndotnet.wnd
             {
                 //prepare control to load data
                 var cntCtrl = e.Parameter as DependencyObject;
-                var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
-                if (!(ctrl.Child is DataPanel))
-                    return;
-                var expCtrl = (DataPanel)ctrl.Child;
-                if (expCtrl == null)
+                var ctrl = FindChild<DataPanelWPF>(cntCtrl, "project");
+                //
+                if (ctrl == null)
                     return;
 
-                expCtrl.LoadData();
-                //setup project 
-                //
+                ctrl.LoadData();
+                //setup project
                 var prj = ActiveViewModel as ANNProjectController;
                 if (prj == null)
                     throw new Exception("Active project is null.");
-                prj.DataSet = expCtrl.GetDataSet();
+                prj.DataSet = ctrl.GetDataSet();
             }
             catch (Exception ex)
             {
                 ReportException(ex);
             }
-
-
         }
 
         private void onCanExecLoadData(object sender, CanExecuteRoutedEventArgs e)
@@ -570,7 +565,7 @@ namespace anndotnet.wnd
                 return;
             }
 
-            var ctrl = FindChild<WindowsFormsHost>(cntCtrl, "hostWF");
+            var ctrl = FindChild<DataPanelWPF>(cntCtrl, "project");
 
             if (ctrl == null)
             {
@@ -579,7 +574,7 @@ namespace anndotnet.wnd
             }
 
             // var expCtrl = (DataPanel)ctrl.Child;
-            if (ctrl.Child is DataPanel)
+            if (ctrl is DataPanelWPF)
                 e.CanExecute = false;
 
             e.CanExecute = true;

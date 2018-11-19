@@ -34,7 +34,7 @@
             <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
             <!--
                     <WindowsFormsHost  x:Name="hostWF" >
-                        <wnd:DataPanel AutoScaleMode="Font"  x:Name="project"  />
+                        <forms:DataPanel AutoScaleMode="Font"  x:Name="project"  />
                     </WindowsFormsHost>
                 </Grid>
             </TabItem>-->
