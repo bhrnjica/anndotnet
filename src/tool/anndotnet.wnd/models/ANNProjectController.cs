@@ -28,7 +28,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Forms.Integration;
 using System.Windows.Threading;
-
+using NNetwork.Core.Common;
 namespace anndotnet.wnd.Models
 {
     public enum ProjectType
@@ -223,8 +223,7 @@ namespace anndotnet.wnd.Models
         {
             try
             {
-                
-                MainWindow.SetCursor(true);
+
                 //access Data Pane in order to update data
                 DataPanelWPF expCtrl = getDataPanel();
                 if (expCtrl == null)

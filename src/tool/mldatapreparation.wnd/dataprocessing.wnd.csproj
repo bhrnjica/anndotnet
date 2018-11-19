@@ -86,12 +86,6 @@
       <DependentUpon>DataPanelWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExportData.cs" />
-    <None Include="DataPanel.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="DataPanel.Designer.cs">
-      <DependentUpon>DataPanel.cs</DependentUpon>
-    </None>
     <Compile Include="ImportData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,9 +93,6 @@
       <DependentUpon>ImportData.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="DataPanel.resx">
-      <DependentUpon>DataPanel.cs</DependentUpon>
-    </None>
     <EmbeddedResource Include="ImportData.resx">
       <DependentUpon>ImportData.cs</DependentUpon>
     </EmbeddedResource>

@@ -538,7 +538,7 @@ namespace anndotnet.wnd
                 var cntCtrl = e.Parameter as DependencyObject;
                 var ctrl = FindChild<DataPanelWPF>(cntCtrl, "project");
                 //
-                if(ctrl==null)
+                if (ctrl == null)
                     return;
 
                 ctrl.LoadData();
@@ -552,8 +552,6 @@ namespace anndotnet.wnd
             {
                 ReportException(ex);
             }
-
-
         }
 
         private void onCanExecLoadData(object sender, CanExecuteRoutedEventArgs e)
