@@ -604,7 +604,7 @@ namespace anndotnet.wnd.Models
             if (Network[0].Type == LayerType.Custom)
                 return;
             //the last layer in the network should be output
-            if (Network.Last().Param1 != OutLayer.First().Dimension)
+            if (Network.Last().Param1.ToString() != OutLayer.First().Dimension)
                 throw new Exception("The output dimension of the last layer in the network must be same as label dimension!");
             if(Network.Where(x=>x.Param1<=0 && (x.Type!= LayerType.Normalization && x.Type != LayerType.Drop)).Count() > 0)
                 throw new Exception("Layer cannot be defined with zero output dimension.!");
@@ -782,7 +782,7 @@ namespace anndotnet.wnd.Models
             itm.Name = fet[0];
             //
             itm.Representation = /* itm.Name == "NumFeatures" ?*/ "Dimension:";// : "One-Hot-Vector:";
-            itm.Dimension = int.Parse(fet[1]);
+            itm.Dimension = fet[1];
 
             return itm;
         }
@@ -794,8 +794,8 @@ namespace anndotnet.wnd.Models
             for (int i = 0; features.Length > i; i++)
             {
                 var layer = ParseLayer(features[i]);
-                if (layer.Dimension < 2)
-                    layer.Representation = "Dimension";
+                //if (layer.Dimension < 2)
+                layer.Representation = "Dimension";
                 layer.Id = i + 1;
                 outLayer.Add(layer);
             }

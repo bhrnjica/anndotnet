@@ -299,7 +299,7 @@ namespace DataProcessing.Wnd
             var cols = new List<MetaColumn>();
             var columnData = data.toColumnVector<string>();
             //in case no header is provided
-            if (header == null)
+            if (header == null|| header.Length==0)
             {
                 header = Enumerable.Range(1, data[0].Length).Select(x => $"Column{x}").ToArray();
                 m_strHeader = header;

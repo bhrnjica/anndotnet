@@ -50,8 +50,9 @@
             </ComboBox>
         </StackPanel >
         <StackPanel Grid.Row="2"  VerticalAlignment="Center" Grid.Column="1" Orientation="Horizontal" Margin="5,9,0,9" Height="14" >
-            <CheckBox Content="Self-stabilization " IsChecked="{Binding BParam1}" x:Name="isChecked1"/>
-            <CheckBox Content="Peepholes" IsChecked="{Binding BParam2}" x:Name="isChecked2"/>
+            <CheckBox Content="Self-stabilization " IsChecked="{Binding BParam1}" x:Name="isChecked1" BorderThickness="1"/>
+            <Label>   </Label>
+            <CheckBox Content="Peepholes" IsChecked="{Binding BParam2}" x:Name="isChecked2" BorderThickness="1"/>
         </StackPanel >
         <Label Content="Description: " x:Name="lblDesc" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="3" />
 

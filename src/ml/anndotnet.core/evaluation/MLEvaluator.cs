@@ -42,6 +42,9 @@ namespace ANNdotNET.Core
             {
                 //define eval result
                 var er = new EvaluationResult();
+                er.OutputClasses = new List<string>();
+                er.Actual = new List<float>();
+                er.Predicted = new List<float>();
                 er.Header = new List<string>();
 
                 //Load ML configuration file
@@ -60,8 +63,8 @@ namespace ANNdotNET.Core
                     return er;
                 //
                 var dataset = MLFactory.GetDataPath(dicMParameters, dsType);
-                if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset))
-                    throw new Exception($"No {dsType.ToString()} data set to evaluate model.");
+                if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset) || dataset == " ")
+                    return er;
 
                 //get output classes in case the ml problem is classification
                 var strCls = dicMParameters.ContainsKey("metadata") ? dicMParameters["metadata"] : "";
@@ -190,7 +193,7 @@ namespace ANNdotNET.Core
                         var d = mdDataEx.Where(x => x.Key.Name.Equals(vv.Name)).FirstOrDefault();
                         //
                         var fv = MLValue.GetValues(d.Key, d.Value);
-                        if (vv.Shape.Dimensions.Last() == 1)
+                        if (vv.Shape.Dimensions.First() == 1)
                         {
                             var value = fv.Select(l => new List<float>() { l.First() }).ToList();
                             if (featDic.ContainsKey(d.Key.Name))
@@ -484,7 +487,7 @@ namespace ANNdotNET.Core
                 int columnSpan = 0;
                 foreach (var var in model.Arguments)
                 {
-                    var dim = var.Shape.Dimensions.Last();
+                    var dim = var.Shape.Dimensions.First();
                     Value values = Value.CreateBatch<float>(var.Shape, vector.Skip(columnSpan).Take(dim), device);
                     inputMap.Add(var, values);
 

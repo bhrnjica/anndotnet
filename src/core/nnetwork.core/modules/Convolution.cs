@@ -36,7 +36,7 @@ namespace NNetwork.Core.Network.Modules
 
         public Function Conv1D(Variable input, int numChannels, int filter, DataType dType, DeviceDescriptor device, bool usePadding, bool useBias, string name = "", uint seed = 1)
         {
-            var convolution_map_size = new int[] { filter, CNTK.NDShape.InferredDimension, numChannels };
+            var convolution_map_size = new int[] { numChannels, NDShape.InferredDimension, filter };
             var rtrn = Conv(convolution_map_size, input, dType, device, usePadding, useBias, name, seed);
             return rtrn;
         }
@@ -103,8 +103,8 @@ namespace NNetwork.Core.Network.Modules
             if (useBias)
             {
                 var intArray = convMapSize.Length == 4 ? 
-                    new int[] { 1, 1, CNTK.NDShape.InferredDimension } : 
-                    new int[] { 1, CNTK.NDShape.InferredDimension };
+                    new int[] { 1, 1, NDShape.InferredDimension } : 
+                    new int[] { 1, };
 
                 var bShape = NDShape.CreateNDShape(intArray);
 

@@ -17,7 +17,7 @@ namespace anndotnet.wnd.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Dimension { get; set; }
+        public string Dimension { get; set; }
 
         public string Representation { get; set; }
 

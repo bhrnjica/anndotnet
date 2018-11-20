@@ -70,7 +70,7 @@ namespace ANNdotNET.Lib.Ext
             var H_DIMS = 11;
             var CELL_DIMS = 3;
             var DROPRATRE = 0.2f;
-            var outDim = label.Shape.Dimensions.Last();
+            var outDim = label.Shape.Dimensions.First();
 
             //embedding layer and dimensionality reduction 
             var yearEmb = Embedding.Create(yearVar, yearVar.Shape.Dimensions[0] - 1, DataType.Float, device, 1, yearVar.Name+"_emb"); 

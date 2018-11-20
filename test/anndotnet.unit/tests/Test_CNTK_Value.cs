@@ -56,7 +56,7 @@ namespace anndotnet.unit
 
             GC.Collect();
             Assert.True(value.IsValid);
-            Assert.Equal(3, value.Shape.Dimensions.Last());
+            Assert.Equal(3, value.Shape.Dimensions.First());
            
         }
     }

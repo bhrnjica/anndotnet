@@ -760,7 +760,7 @@ namespace anndotnet.wnd
                     }
                 }
                 //SCale layer must be on the first 
-                if (itm.Type == LayerType.Scale)
+                else if (itm.Type == LayerType.Scale)
                 {
                     itm.Param1 = 1;
                     itm.Param2 = 255;

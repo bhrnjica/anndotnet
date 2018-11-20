@@ -109,11 +109,11 @@ namespace NNetwork.Core.Metrics
         /// <returns></returns>
         public static Function Variance(Variable input, string name = null)
         {
-            var mean = CNTKLib.ReduceMean(input, new Axis(input.Shape.Dimensions.Last() - 1));
+            var mean = CNTKLib.ReduceMean(input, new Axis(input.Shape.Dimensions.First() - 1));
             var remainder = CNTKLib.Minus(input, mean);
             var squared = CNTKLib.Square(remainder);
             //the last dimension indicate the number of samples
-            var n = new Constant(new NDShape(0), DataType.Float, input.Shape.Dimensions.Last() - 1);
+            var n = new Constant(new NDShape(0), DataType.Float, input.Shape.Dimensions.First() - 1);
             var elm = CNTKLib.ElementDivide(squared, n);
             var sum = CNTKLib.ReduceSum(elm, new Axis(2));
 
@@ -130,11 +130,11 @@ namespace NNetwork.Core.Metrics
         /// <returns></returns>
         public static Function Std(Variable input, string name = null)
         {
-            var mean = CNTKLib.ReduceMean(input, new Axis(input.Shape.Dimensions.Last() - 1));
+            var mean = CNTKLib.ReduceMean(input, new Axis(input.Shape.Dimensions.First() - 1));
             var remainder = CNTKLib.Minus(input, mean);
             var squared = CNTKLib.Square(remainder);
             //the last dimension indicate the number of samples
-            var n = new Constant(new NDShape(0), DataType.Float, input.Shape.Dimensions.Last() - 1);
+            var n = new Constant(new NDShape(0), DataType.Float, input.Shape.Dimensions.First() - 1);
             var elm = CNTKLib.ElementDivide(squared, n);
             var sum = CNTKLib.ReduceSum(elm, new Axis(2));
             var stdVal = CNTKLib.Sqrt(sum);
@@ -162,7 +162,7 @@ namespace NNetwork.Core.Metrics
             var sum = CNTKLib.ReduceSum(eltime1, Axis.AllAxes());
 
             //the last dimension indicate the number of samples
-            var n = new Constant(new NDShape(0), DataType.Float, target.Shape.Dimensions.Last() - 1.0);
+            var n = new Constant(new NDShape(0), DataType.Float, target.Shape.Dimensions.First() - 1.0);
 
             var fun =  CNTKLib.ElementDivide(sum, n);
 

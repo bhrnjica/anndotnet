@@ -93,7 +93,7 @@ namespace NNetwork.Core.Network
             }
             
             var net = new NetworkFoundation();
-            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+            var weights = net.Weights(input.Shape.Dimensions.First(), DataType.Float, device);
                                  
             var cudaStackedLSTM =  CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "lstm");
 
@@ -109,7 +109,7 @@ namespace NNetwork.Core.Network
             }
 
             var net = new NetworkFoundation();
-            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+            var weights = net.Weights(input.Shape.Dimensions.First(), DataType.Float, device);
 
             var cudaStackedLSTM = CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "gru");
 
@@ -125,7 +125,7 @@ namespace NNetwork.Core.Network
             }
 
             var net = new NetworkFoundation();
-            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+            var weights = net.Weights(input.Shape.Dimensions.First(), DataType.Float, device);
 
             var cudaStackedLSTM = CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "rnnTanh");
 
@@ -141,7 +141,7 @@ namespace NNetwork.Core.Network
             }
 
             var net = new NetworkFoundation();
-            var weights = net.Weights(input.Shape.Dimensions.Last(), DataType.Float, device);
+            var weights = net.Weights(input.Shape.Dimensions.First(), DataType.Float, device);
 
             var cudaStackedLSTM = CNTKLib.OptimizedRNNStack(input, weights, (uint)outputDim, (uint)numLayers, isBidirectional, "rnnReLU");
 

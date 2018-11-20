@@ -32,7 +32,13 @@ namespace anndotnet.wnd.panels
            if(this.DataContext != null)
             {
                 var nn = this.DataContext as NNetwork.Core.Common.NNLayer;
-                if(nn.Name.StartsWith("Normalization"))
+                lblAct.Content = "Activation: ";
+                cmbAct.Items.Clear();
+                cmbAct.Items.Add("None");
+                cmbAct.Items.Add("ReLU");
+                cmbAct.Items.Add("TanH");
+                cmbAct.Items.Add("Softmax");
+                if (nn.Name.StartsWith("Normalization"))
                 {
                     //visibility
                     lblHdim.Visibility = System.Windows.Visibility.Collapsed;
@@ -159,9 +165,10 @@ namespace anndotnet.wnd.panels
                 }
                 else if (nn.Name.StartsWith("Conv1D"))
                 {
-                    lblHdim.Content = "Layer dimension: ";
-                    lblCdim.Content = "Layer count: ";
-                    isChecked2.Content = "Is bidirectional";
+                    lblHdim.Content = "Kernel Size: ";
+                    lblCdim.Content = "Filters: ";
+                    isChecked1.Content = "Padding";
+                    isChecked2.Content = "Bias";
                     //first row
                     lblHdim.Visibility = System.Windows.Visibility.Visible;
                     txtHdim.Visibility = System.Windows.Visibility.Visible;
@@ -170,7 +177,7 @@ namespace anndotnet.wnd.panels
                     //second row
                     lblCdim.Visibility = System.Windows.Visibility.Visible;
                     txtCdim.Visibility = System.Windows.Visibility.Visible;
-                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked1.Visibility = System.Windows.Visibility.Visible;
                     isChecked2.Visibility = System.Windows.Visibility.Visible;
                     //last row
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
@@ -182,19 +189,23 @@ namespace anndotnet.wnd.panels
                 }
                 else if (nn.Name.StartsWith("Polling1D"))
                 {
-                    lblHdim.Content = "Layer dimension: ";
-                    lblCdim.Content = "Layer count: ";
-                    isChecked2.Content = "Is bidirectional";
+                    lblHdim.Content = "Size X: ";
+                    lblCdim.Content = "Size Y: ";
+                    lblAct.Content = "Type:";
+                    cmbAct.Items.Clear();
+                    cmbAct.Items.Add("Max");
+                    cmbAct.Items.Add("Avg");
+
                     //first row
                     lblHdim.Visibility = System.Windows.Visibility.Visible;
                     txtHdim.Visibility = System.Windows.Visibility.Visible;
-                    lblAct.Visibility = System.Windows.Visibility.Collapsed;
-                    cmbAct.Visibility = System.Windows.Visibility.Collapsed;
+                    lblAct.Visibility = System.Windows.Visibility.Visible;
+                    cmbAct.Visibility = System.Windows.Visibility.Visible;
                     //second row
-                    lblCdim.Visibility = System.Windows.Visibility.Visible;
-                    txtCdim.Visibility = System.Windows.Visibility.Visible;
+                    lblCdim.Visibility = System.Windows.Visibility.Collapsed;
+                    txtCdim.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked1.Visibility = System.Windows.Visibility.Collapsed;
-                    isChecked2.Visibility = System.Windows.Visibility.Visible;
+                    isChecked2.Visibility = System.Windows.Visibility.Collapsed;
                     //last row
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
@@ -205,9 +216,10 @@ namespace anndotnet.wnd.panels
                 }
                 else if (nn.Name.StartsWith("Conv2D"))
                 {
-                    lblHdim.Content = "Layer dimension: ";
-                    lblCdim.Content = "Layer count: ";
-                    isChecked2.Content = "Is bidirectional";
+                    lblHdim.Content = "Output Channels: ";
+                    lblCdim.Content = "Number of Filters: ";
+                    isChecked1.Content = "Use padding:";
+                    isChecked2.Content = "Use Bias";
                     //first row
                     lblHdim.Visibility = System.Windows.Visibility.Visible;
                     txtHdim.Visibility = System.Windows.Visibility.Visible;
@@ -230,7 +242,11 @@ namespace anndotnet.wnd.panels
                 {
                     lblHdim.Content = "Layer dimension: ";
                     lblCdim.Content = "Layer count: ";
-                    isChecked2.Content = "Is bidirectional";
+                    //
+                    lblAct.Content = "Polling Type:";
+                    cmbAct.Items.Clear();
+                    cmbAct.Items.Add("Max");
+                    cmbAct.Items.Add("Avg");
                     //first row
                     lblHdim.Visibility = System.Windows.Visibility.Visible;
                     txtHdim.Visibility = System.Windows.Visibility.Visible;
@@ -240,7 +256,7 @@ namespace anndotnet.wnd.panels
                     lblCdim.Visibility = System.Windows.Visibility.Visible;
                     txtCdim.Visibility = System.Windows.Visibility.Visible;
                     isChecked1.Visibility = System.Windows.Visibility.Collapsed;
-                    isChecked2.Visibility = System.Windows.Visibility.Visible;
+                    isChecked2.Visibility = System.Windows.Visibility.Collapsed;
                     //last row
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;

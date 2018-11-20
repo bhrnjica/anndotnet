@@ -653,7 +653,7 @@ namespace ANNdotNET.Core
                     //since mixing sparse and dense data is not supported
                     if (v.IsSparse)
                     {
-                        var v1 = Embedding.Create(v, v.Shape.Dimensions.Last(), type, device, 1, v.Name+"_sp_emb");
+                        var v1 = Embedding.Create(v, v.Shape.Dimensions.First(), type, device, 1, v.Name+"_sp_emb");
                         vv.Add(v1);
                     }
                     else
@@ -755,7 +755,7 @@ namespace ANNdotNET.Core
             }
 
             //check if last layer is compatible with the output
-            if (net.Shape.Dimensions.Last() != outpuVar.Shape.Dimensions.Last())
+            if (net.Shape.Dimensions.First() != outpuVar.Shape.Dimensions.First())
                 ff.CreateOutputLayer(net, outpuVar, Activation.None);
 
             return net;
@@ -936,9 +936,9 @@ namespace ANNdotNET.Core
                 int[] shape = null;
 
                 //multidimensional input variable
-                if (fVar[1].Contains(","))
+                if (fVar[1].Contains(m_ValueSpearator[0].ToString()))
                 {
-                    shape = fVar[1].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x=>int.Parse(x)).ToArray();
+                    shape = fVar[1].Split(m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries).Select(x=>int.Parse(x)).ToArray();
                 }
                 else//1D variable
                     shape = new int[] { int.Parse(fVar[1]) };
@@ -963,12 +963,12 @@ namespace ANNdotNET.Core
             //
             foreach (var var in lstFeaturesVars)
             {
-                var sc = new StreamConfiguration(var.Name, var.Shape.Dimensions.Last(), var.IsSparse, "", false);
+                var sc = new StreamConfiguration(var.Name, var.Shape.Dimensions.First(), var.IsSparse, "", false);
                 retVal.Add(sc);
             }
             foreach (var var in lstLabelVars)
             {
-                var sc = new StreamConfiguration(var.Name, var.Shape.Dimensions.Last(), var.IsSparse, "", false);
+                var sc = new StreamConfiguration(var.Name, var.Shape.Dimensions.First(), var.IsSparse, "", false);
                 retVal.Add(sc);
             }
 

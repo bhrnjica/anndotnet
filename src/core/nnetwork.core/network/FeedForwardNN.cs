@@ -107,7 +107,7 @@ namespace NNetwork.Core.Network
             var outputs = new List<Function>();
             foreach (var zi in outputVars)
             {
-                var outputDim = zi.Shape.Dimensions.Last();
+                var outputDim = zi.Shape.Dimensions.First();
                 var outputName = zi.Name;
                 //
                 var z = Dense(inputVar, outputDim, actOutput, outputName);
@@ -130,7 +130,7 @@ namespace NNetwork.Core.Network
         public Function CreateOutputLayer(Variable inputVar, Variable outputVar, Activation activation)
         {
             //creation of the output layer(s)
-            var outputDim = outputVar.Shape.Dimensions.Last();
+            var outputDim = outputVar.Shape.Dimensions.First();
             var outputName = outputVar.Name;
             //
             var z = Dense(inputVar, outputDim, activation, outputName);
