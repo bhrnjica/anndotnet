@@ -930,7 +930,9 @@ namespace ANNdotNET.Core
                 var fVar = str.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries);
                 if (fVar.Length != 3)
                     throw new Exception("One of variables were not formatted properly!");
-                
+
+                //Input varible can be defined on two ways, as vector(array) with dimension n, or as 1d matrix as (1,n)
+                //in 1D convolution layer input varibale required to be defined like this. 
                 //check for dynamic axes
                 var axis = labelWithDynamicAxes ? new List<Axis>() { Axis.DefaultBatchAxis() } : null;
                 int[] shape = null;
@@ -939,6 +941,8 @@ namespace ANNdotNET.Core
                 if (fVar[1].Contains(m_ValueSpearator[0].ToString()))
                 {
                     shape = fVar[1].Split(m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries).Select(x=>int.Parse(x)).ToArray();
+                    //in C# order to row /colum matrix is oposite to python and C++, so the shape must be reordered
+                    shape = shape.Reverse().ToArray();
                 }
                 else//1D variable
                     shape = new int[] { int.Parse(fVar[1]) };
