@@ -68,14 +68,18 @@ namespace ANNdotNET.Core
             var vec = data.GetDenseData<float>(var).ToList();
             foreach (var el in vec)
             {
-                var v = el.Select(x => x).ToList();
-                retVal.Add(v);
+                //
+                var n = var.Shape.Dimensions.First();
+                for (int i = 0; i < el.Count; i += n)
+                {
+                    var rows = el.Skip(i).Take(n).ToList();
+                    retVal.Add(rows);
+                }
             }
-
             //
             return retVal;
         }
-
+        
         // <summary>
         /// Exports result into csv file format
         /// </summary>
