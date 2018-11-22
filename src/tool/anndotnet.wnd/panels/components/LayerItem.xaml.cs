@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -31,6 +32,10 @@ namespace anndotnet.wnd.panels
         {
            if(this.DataContext != null)
             {
+                secontRow.Height = GridLength.Auto;
+                thirdRow.Height = GridLength.Auto;
+                fortdRow.Height = GridLength.Auto;
+                fiftRow.Height = GridLength.Auto;
                 var nn = this.DataContext as NNetwork.Core.Common.NNLayer;
                 lblAct.Content = "Activation: ";
                 cmbAct.Items.Clear();
@@ -41,20 +46,25 @@ namespace anndotnet.wnd.panels
                 if (nn.Name.StartsWith("Normalization"))
                 {
                     //visibility
+                    secontRow.Height = new System.Windows.GridLength(0);
                     lblHdim.Visibility = System.Windows.Visibility.Collapsed;
                     txtHdim.Visibility = System.Windows.Visibility.Collapsed;
                     lblAct.Visibility = System.Windows.Visibility.Collapsed;
                     cmbAct.Visibility = System.Windows.Visibility.Collapsed;
                     //second row
+                    thirdRow.Height =  new System.Windows.GridLength(0);
                     lblCdim.Visibility = System.Windows.Visibility.Collapsed;
                     txtCdim.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked1.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked2.Visibility = System.Windows.Visibility.Collapsed;
                     //third row
+                    fortdRow.Height = new System.Windows.GridLength(0);
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
+
                     //description row
+                    fiftRow.Height = GridLength.Auto;
                     lblDesc.Visibility = System.Windows.Visibility.Visible;
                     lblDesc.Content = "Description: The layer normalizes the values of input data by z-score calculation.";
 
@@ -74,6 +84,7 @@ namespace anndotnet.wnd.panels
                     isChecked1.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked2.Visibility = System.Windows.Visibility.Collapsed;
                     //last row
+                    fortdRow.Height = new System.Windows.GridLength(0);
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;
                     txtDrop.Visibility = System.Windows.Visibility.Collapsed;
                     lblPerc.Visibility = System.Windows.Visibility.Collapsed;
@@ -84,11 +95,13 @@ namespace anndotnet.wnd.panels
                 else if (nn.Name.StartsWith("Drop"))
                 {
                     //visibility
+                    secontRow.Height = new System.Windows.GridLength(0);
                     lblHdim.Visibility = System.Windows.Visibility.Collapsed;
                     txtHdim.Visibility = System.Windows.Visibility.Collapsed;
                     lblAct.Visibility = System.Windows.Visibility.Collapsed;
                     cmbAct.Visibility = System.Windows.Visibility.Collapsed;
                     //second row
+                    thirdRow.Height = new System.Windows.GridLength(0);
                     lblCdim.Visibility = System.Windows.Visibility.Collapsed;
                     txtCdim.Visibility = System.Windows.Visibility.Collapsed;
                     isChecked1.Visibility = System.Windows.Visibility.Collapsed;

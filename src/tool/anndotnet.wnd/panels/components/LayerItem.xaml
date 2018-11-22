@@ -5,22 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cnv="clr-namespace:anndotnet.wnd.converters"
              xmlns:local="clr-namespace:anndotnet.wnd.panels"
-             mc:Ignorable="d" d:DesignWidth="550" Background="LightSteelBlue"  BorderThickness="1" BorderBrush="Black">
+             mc:Ignorable="d" d:DesignWidth="450" Background="LightSteelBlue"  BorderThickness="1" BorderBrush="Black">
     <UserControl.Resources>
         <!--<cnv:BoolToGridRowHeightConverter x:Key="BoolToGridRowHeightConverter" />-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180"/>
-            <ColumnDefinition Width="225"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="27" />
-            <RowDefinition  Height="auto"/>
-            <RowDefinition  Height="auto"/>
-            <RowDefinition  Height="auto"/>
-            <RowDefinition  Height="27"/>
+            <RowDefinition x:Name="firstRow"  Height="27" />
+            <RowDefinition x:Name="secontRow"  Height="auto"/>
+            <RowDefinition x:Name="thirdRow" Height="auto"/>
+            <RowDefinition x:Name="fortdRow" Height="auto"/>
+            <RowDefinition x:Name="fiftRow" Height="auto"/>
         </Grid.RowDefinitions>
         <Border BorderThickness="1"  Grid.ColumnSpan="3" Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">
             <Label Content="{Binding Name}" VerticalAlignment="Center" />
@@ -54,7 +54,7 @@
             <Label>   </Label>
             <CheckBox Content="Peepholes" IsChecked="{Binding BParam2}" x:Name="isChecked2" BorderThickness="1"/>
         </StackPanel >
-        <Label Content="Description: " x:Name="lblDesc" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="3" />
+        <Label Content="Description: The layer normalizes the values of input data by z-score calculation." x:Name="lblDesc" HorizontalAlignment="Left" Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="3" />
 
     </Grid>
 </UserControl>

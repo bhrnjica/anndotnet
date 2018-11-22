@@ -28,32 +28,32 @@
             <GroupBox  Header="Defined Data Sets" Margin="0,5,0,0" >
                 <StackPanel >
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="1 - Training: " Margin="2" />
+                        <TextBlock Text="1) Training: " Margin="2" />
                         <TextBlock Text="{Binding DataSetsDefined.Item1}" Foreground="{Binding DataSetsDefined.Item1, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="2 - Validation: " Margin="2" />
+                        <TextBlock Text="2) Validation: " Margin="2" />
                         <TextBlock Text="{Binding DataSetsDefined.Item2}"  Foreground="{Binding DataSetsDefined.Item2, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="3 - Test: " Margin="2" />
+                        <TextBlock Text="3) Test: " Margin="2" />
                         <TextBlock Text="{Binding DataSetsDefined.Item3}"  Foreground="{Binding DataSetsDefined.Item3, Converter={StaticResource BoolToColorConverter}}"  Margin="2" />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Input Layer(s)" MaxHeight="190" Margin="0,5,0,0" >
+            <GroupBox Header="Input Layer" MaxHeight="190" Margin="0,5,0,0" >
                 <ScrollViewer HorizontalScrollBarVisibility="auto" VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding InLayer}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0" Background="AliceBlue">
                                     <TextBlock Text="{Binding Id}" Width="auto"/>
-                                    <TextBlock Text="-" />
-                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text=") " />
+                                    <TextBlock Text="{Binding Name}" FontWeight="Medium" />
                                     <TextBlock Text="       " HorizontalAlignment="Left" Width="10"/>
-                                    <TextBlock Text="{Binding Representation}"/>
-                                    <TextBlock Text=" : " HorizontalAlignment="Left" />
+                                    <TextBlock Text="(shape: "/>
                                     <TextBlock Text="{Binding Dimension}" />
+                                    <TextBlock Text=" )" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -66,12 +66,12 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="0,2,0,0" Background="AliceBlue">
                                 <TextBlock Text="{Binding Id}" Width="10"/>
-                                <TextBlock Text="-" />
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="       " HorizontalAlignment="Left" Width="20"/>
-                                <TextBlock Text="{Binding Representation}"/>
-                                <TextBlock Text=" : " HorizontalAlignment="Left" />
+                                <TextBlock Text=") " />
+                                <TextBlock Text="{Binding Name}" FontWeight="Medium" />
+                                <TextBlock Text="       " HorizontalAlignment="Left" Width="10"/>
+                                <TextBlock Text="(shape: "/>
                                 <TextBlock Text="{Binding Dimension}" />
+                                <TextBlock Text=" )" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -138,7 +138,7 @@
             </GroupBox>
         </StackPanel>
         <GroupBox Header="NNetwork Designer" HorizontalAlignment="Left"  VerticalAlignment="Stretch" 
-                  Width="490" Grid.Column="1" Grid.Row="1">
+                  Width="550" Grid.Column="1" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5"/>

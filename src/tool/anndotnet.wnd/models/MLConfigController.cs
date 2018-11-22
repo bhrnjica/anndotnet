@@ -781,8 +781,8 @@ namespace anndotnet.wnd.Models
             var itm = new IOLayer();
             itm.Name = fet[0];
             //
-            itm.Representation = /* itm.Name == "NumFeatures" ?*/ "Dimension:";// : "One-Hot-Vector:";
-            itm.Dimension = fet[1];
+            itm.Representation ="Shape";
+            itm.Dimension =$"[{fet[1]}]";
 
             return itm;
         }
@@ -794,8 +794,8 @@ namespace anndotnet.wnd.Models
             for (int i = 0; features.Length > i; i++)
             {
                 var layer = ParseLayer(features[i]);
-                //if (layer.Dimension < 2)
-                layer.Representation = "Dimension";
+                //
+                layer.Representation = "Shape";
                 layer.Id = i + 1;
                 outLayer.Add(layer);
             }

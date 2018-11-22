@@ -385,11 +385,11 @@ namespace ANNdotNET.Lib
                 //first create features and labels based on data descriptor
                 var numDim = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Numeric).Count();
                 if (numDim > 0)
-                    strFeatures += $"{ProjectSettings.m_NumFeaturesGroupName} {numDim} 0\t";
+                    strFeatures += $"{ProjectSettings.m_NumFeaturesGroupName} 1;{numDim} 0\t";
                 //create category features
                 foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Category))
                 {
-                    strFeatures += $"|{c.Name} {c.Classes.Length} 0\t";
+                    strFeatures += $"|{c.Name} 1;{c.Classes.Length} 0\t";
                 }
                 //create label
                 var strLabel = $"labels:";
