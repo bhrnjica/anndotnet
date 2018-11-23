@@ -631,25 +631,45 @@ namespace anndotnet.wnd
                 string tempDotPath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".dot";
                 string tempImagePath = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".png";
                 File.WriteAllText(tempDotPath, dotString);
-                //execute the proces
-                using (Process graphVizprocess = new Process())
+
+                try
                 {
-                    graphVizprocess.StartInfo.FileName = "dot.exe";
-                    graphVizprocess.StartInfo.Arguments = "-Tpng " + tempDotPath + " -o " + tempImagePath;
-                    graphVizprocess.Start();
-                    graphVizprocess.WaitForExit();
+                    //execute the proces
+                    using (Process graphVizprocess = new Process())
+                    {
+                        graphVizprocess.StartInfo.FileName = "dot.exe";
+                        graphVizprocess.StartInfo.Arguments = "-Tpng " + tempDotPath + " -o " + tempImagePath;
+                        graphVizprocess.Start();
+                        graphVizprocess.WaitForExit();
+                    }
+
+                }
+                catch (Exception)
+                {
+                    var exx = new Exception("Seems Graphviz is not installed and registered in system variable.");
+                    throw exx;
                 }
 
-                //call defaul image viewwer and shows the image
-                using (Process imgView = new Process())
+                try
                 {
-                    imgView.StartInfo.UseShellExecute = true;
-                    imgView.StartInfo.FileName = tempImagePath;
-                    imgView.Start();
+                    System.Diagnostics.Process.Start(tempImagePath);
                 }
+                catch (Exception)
+                {
+                    ProcessStartInfo Info = new ProcessStartInfo()
+                    {
+                        FileName = "mspaint.exe",
+                        //WindowStyle = ProcessWindowStyle.Maximized,
+                        Arguments = tempImagePath
+                    };
+                    Process.Start(Info);
+                }
+
+
             }
             catch (Exception ex)
             {
+                
                 ReportException(ex);
             }
         }
