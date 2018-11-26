@@ -11,7 +11,7 @@ namespace anndotnet.unit
         [Fact]
         public void loadMLConfigFile_Test01()
         {
-            var strPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\ml_config_file_test.txt";
+            var strPath = "..\\..\\..\\..\\data\\ml_config_file_test.txt";
 
            //
             var dicMParameters = MLFactory.LoadMLConfiguration(strPath);
