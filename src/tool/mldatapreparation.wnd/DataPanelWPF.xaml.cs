@@ -684,6 +684,8 @@ namespace DataProcessing.Wnd
                 data1.IsPrecentige = radionPercentige.IsChecked.Value;
 
                 var strData = ParseData(data1.MetaData);
+                if (strData==null)
+                    return null;
                 data1.RandomizeData = checkRandomizeDataset.IsChecked.Value;
                 //
                 data1.Data = strData;

@@ -267,7 +267,8 @@ namespace anndotnet.wnd.Models
 
                 //create file of raw data
                 var dataFile = Path.Combine(Settings.ProjectFolder, Name, rawDataName);
-                await Task<bool>.Run(() => writeRawData(dataFile, DataSet.Data)); 
+                if (DataSet != null)
+                    await Task<bool>.Run(() => writeRawData(dataFile, DataSet.Data)); 
 
                 //update project file with information about raw dataset
                 generateProjectFile(prjPath1, rawDataName);
@@ -467,8 +468,9 @@ namespace anndotnet.wnd.Models
         private void generateProjectFile(string projectPath, string rawDataName)
         {
             var ps = Settings.PrecentigeSplit ? 1 : 0;
+            var strMeta = DataSet == null ? "" : toColumnToString(DataSet.MetaData);
             //var rd = Settings.RandomizeData ? 1 : 0;
-            var dataStr = $"data:|RawData:{rawDataName} " + toColumnToString(DataSet.MetaData);
+            var dataStr = $"data:|RawData:{rawDataName} " + strMeta;
             var models = string.Join(";", Models.Select(x => x.Name));
             var strProject = $"project:|Name:{Name} |Type:{Type}  |ValidationSetCount:{Settings.ValidationSetCount}  |TestSetCount:{Settings.TestSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:ProjectInfo.rtf";
             var strParser = "parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0";
@@ -483,7 +485,7 @@ namespace anndotnet.wnd.Models
 
         private void setCategoryEncoding(ANNDataSet dataSet)
         {
-            if (dataSet.MetaData == null)
+            if (dataSet==null || dataSet.MetaData == null)
                 return;
 
             foreach(var col in dataSet.MetaData)

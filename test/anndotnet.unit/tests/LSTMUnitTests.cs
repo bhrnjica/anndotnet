@@ -61,11 +61,11 @@ namespace anndotnet.unit
             Assert.Equal(wParams00.Count, wParams02.Count);
 
             //structure of parameters test
-            Assert.Equal(wParams00.Where(p => p.Name.Contains("_b")).Count(), wParams01.Where(p => p.Name.Contains("_b")).Count());
-            Assert.Equal(wParams00.Where(p => p.Name.Contains("_w")).Count(), wParams01.Where(p => p.Name.Contains("_w")).Count());
-            Assert.Equal(wParams00.Where(p => p.Name.Contains("_u")).Count(), wParams01.Where(p => p.Name.Contains("_u")).Count());
-            Assert.Equal(wParams00.Where(p => p.Name.Contains("peep")).Count(), wParams01.Where(p => p.Name.Contains("peep")).Count());
-            Assert.Equal(wParams00.Where(p => p.Name.Contains("stabilize")).Count(), wParams01.Where(p => p.Name.Contains("stabilize")).Count());
+            Assert.Equal(wParams00.Where(p => p.Name.Contains("b")).Count(), wParams01.Where(p => p.Name.Contains("b")).Count());
+            Assert.Equal(wParams00.Where(p => p.Name.Contains("w")).Count(), wParams01.Where(p => p.Name.Contains("w")).Count());
+            Assert.Equal(wParams00.Where(p => p.Name.Contains("u")).Count(), wParams01.Where(p => p.Name.Contains("u")).Count());
+            Assert.Equal(wParams00.Where(p => p.Name.Contains("pe")).Count(), wParams01.Where(p => p.Name.Contains("pe")).Count());
+            Assert.Equal(wParams00.Where(p => p.Name.Contains("st")).Count(), wParams01.Where(p => p.Name.Contains("st")).Count());
 
 
             //check structure of parameters with originaly developed lstm
@@ -142,15 +142,15 @@ namespace anndotnet.unit
             var inp = lstm1.Inputs.Where(l => l.Uid.StartsWith("Input")).ToList();
 
             //bias params
-            var bs = ft.Where(p => p.Name.Contains("_b")).ToList();
+            var bs = ft.Where(p => p.Name.Contains("b")).ToList();
             var totalBs = bs.Sum(v => v.Shape.TotalSize);
             Assert.Equal(12, totalBs);
             //weights
-            var ws = ft.Where(p => p.Name.Contains("_w")).ToList();
+            var ws = ft.Where(p => p.Name.Contains("w")).ToList();
             var totalWs = ws.Sum(v => v.Shape.TotalSize);
             Assert.Equal(24, totalWs);
             //update
-            var us = ft.Where(p => p.Name.Contains("_u")).ToList();
+            var us = ft.Where(p => p.Name.Contains("u")).ToList();
             var totalUs = us.Sum(v => v.Shape.TotalSize);
             Assert.Equal(36, totalUs);
             
@@ -214,24 +214,24 @@ namespace anndotnet.unit
             var inp = lstm1.Inputs.Where(l => l.Uid.StartsWith("Input")).ToList();
 
             //bias params
-            var bs = ft.Where(p=>p.Name.Contains("_b")).ToList();
+            var bs = ft.Where(p=>p.Name.Contains("b")).ToList();
             var totalBs = bs.Sum(v => v.Shape.TotalSize);
             Assert.Equal(12, totalBs);
             //weights
-            var ws = ft.Where(p => p.Name.Contains("_w")).ToList();
+            var ws = ft.Where(p => p.Name.Contains("w")).ToList();
             var totalWs = ws.Sum(v => v.Shape.TotalSize);
             Assert.Equal(24, totalWs);
             //update
-            var us = ft.Where(p => p.Name.Contains("_u")).ToList();
+            var us = ft.Where(p => p.Name.Contains("u")).ToList();
             var totalUs = us.Sum(v => v.Shape.TotalSize);
             Assert.Equal(36, totalUs);
             //peephole
-            var ph = ft.Where(p => p.Name.Contains("_peep")).ToList();
+            var ph = ft.Where(p => p.Name.Contains("pe")).ToList();
             var totalPh = ph.Sum(v => v.Shape.TotalSize);
             Assert.Equal(9, totalPh);
            
             //stabilize
-            var st = ft.Where(p => p.Name.Contains("_stabilize")).ToList();
+            var st = ft.Where(p => p.Name.Contains("st")).ToList();
             var totalst = st.Sum(v => v.Shape.TotalSize);
             Assert.Equal(6, totalst);
 
@@ -334,7 +334,7 @@ namespace anndotnet.unit
         var inp = lstmCell.H.Inputs.Where(l => l.Uid.StartsWith("Input")).ToList();
 
         //bias params
-        var bs = ft.Where(p => p.Name.Contains("_b")).ToList();
+        var bs = ft.Where(p => p.Name.Contains("b")).ToList();
         var pa = new Parameter(bs[0]);
         pa.SetValue(new NDArrayView(pa.Shape, new float[] { 0.16f, 0.17f, 0.18f }, device));
         var pa1 = new Parameter(bs[1]);
@@ -345,7 +345,7 @@ namespace anndotnet.unit
         pa3.SetValue(new NDArrayView(pa3.Shape, new float[] { 0.16f, 0.17f, 0.18f }, device));
             
         //set value to weights parameters
-        var ws = ft.Where(p => p.Name.Contains("_w")).ToList();
+        var ws = ft.Where(p => p.Name.Contains("w")).ToList();
         var ws0 = new Parameter(ws[0]);
         var ws1 = new Parameter(ws[1]);
         var ws2 = new Parameter(ws[2]);
@@ -356,7 +356,7 @@ namespace anndotnet.unit
         (ws3).SetValue(new NDArrayView(ws3.Shape, new float[] { 0.01f, 0.03f, 0.05f, 0.02f, 0.04f, 0.06f }, device));
             
         //set value to update parameters
-        var us = ft.Where(p => p.Name.Contains("_u")).ToList();
+        var us = ft.Where(p => p.Name.Contains("u")).ToList();
         var us0 = new Parameter(us[0]);
         var us1 = new Parameter(us[1]);
         var us2 = new Parameter(us[2]);
@@ -456,7 +456,7 @@ namespace anndotnet.unit
             var inp = ht.Inputs.Where(l => l.Uid.StartsWith("Input")).ToList();
 
             //bias params
-            var bs = ft.Where(p => p.Name.Contains("_b")).ToList();
+            var bs = ft.Where(p => p.Name.Contains("b")).ToList();
             var pa = new Parameter(bs[0]);
             pa.SetValue(new NDArrayView(pa.Shape, new float[] { 0.16f, 0.17f, 0.18f }, device));
             var pa1 = new Parameter(bs[1]);
@@ -467,7 +467,7 @@ namespace anndotnet.unit
             pa3.SetValue(new NDArrayView(pa3.Shape, new float[] { 0.16f, 0.17f, 0.18f }, device));
 
             //set value to weights parameters
-            var ws = ft.Where(p => p.Name.Contains("_w")).ToList();
+            var ws = ft.Where(p => p.Name.Contains("w")).ToList();
             var ws0 = new Parameter(ws[0]);
             var ws1 = new Parameter(ws[1]);
             var ws2 = new Parameter(ws[2]);
@@ -478,7 +478,7 @@ namespace anndotnet.unit
             (ws3).SetValue(new NDArrayView(ws3.Shape, new float[] { 0.01f, 0.03f, 0.05f, 0.02f, 0.04f, 0.06f }, device));
 
             //set value to update parameters
-            var us = ft.Where(p => p.Name.Contains("_u")).ToList();
+            var us = ft.Where(p => p.Name.Contains("u")).ToList();
             var us0 = new Parameter(us[0]);
             var us1 = new Parameter(us[1]);
             var us2 = new Parameter(us[2]);

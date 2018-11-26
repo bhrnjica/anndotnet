@@ -32,14 +32,14 @@ namespace anndotnet.unit
             //Structure of the network  parameters
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(2, w.Count);//2 = 1 in hidden and 1 in out layer
 
             // total weights 1x5 + 4*5 = 25
             Assert.Equal(25, w.Sum(p => p.Shape.TotalSize));
 
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(2, b.Count);//2 = 1 in hidden and 1 in out layer
 
             //1x5 + 1x1 = 6
@@ -88,32 +88,32 @@ namespace anndotnet.unit
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
 
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(5, w.Count);//4 in lstm and  1 in hidden layer
 
             // total weights 3x5 + 4*5x4
             Assert.Equal(95, w.Sum(p => p.Shape.TotalSize));
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(5, b.Count);//4 in lstm and  1 in output
             //4*1*5 in lstm and  3 in output layer
             Assert.Equal(23, b.Sum(p => p.Shape.TotalSize));
 
             //4*5*4
-            var u = nnparams.Where(p => p.Name.Equals("_u")).ToList();
+            var u = nnparams.Where(p => p.Name.Equals("u")).ToList();
             Assert.Equal(4, u.Count);//4 in lstm 
             //4*5*5 in lstm 
             Assert.Equal(100, u.Sum(p => p.Shape.TotalSize));
 
             //peephole only in LSTM. 
-            var peep = nnparams.Where(p => p.Name.Equals("_peep")).ToList();
+            var peep = nnparams.Where(p => p.Name.Equals("pe")).ToList();
             //Peep connection in 3 gates ft, it and ot
             Assert.Equal(3, peep.Count);
             //3*5
             Assert.Equal(15, peep.Sum(p => p.Shape.TotalSize));
 
             //stabilization on all gates: ft, it and ot. when using peepholes 3 extra.
-            var stab = nnparams.Where(p => p.Name.Equals("_stabilize")).ToList();
+            var stab = nnparams.Where(p => p.Name.Equals("st")).ToList();
             //for peephole lstm count is 3+3
             Assert.Equal(6, stab.Count);
             //6x1
@@ -152,32 +152,32 @@ namespace anndotnet.unit
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
 
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(5, w.Count);//4 in lstm and  1 in hidden layer
 
             // total weights 3x5 + 4*5x4
             Assert.Equal(95, w.Sum(p => p.Shape.TotalSize));
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(5, b.Count);//4 in lstm and  1 in output
             //4*1*5 in lstm and  3 in output layer
             Assert.Equal(23, b.Sum(p => p.Shape.TotalSize));
 
             //4*5*4
-            var u = nnparams.Where(p => p.Name.Equals("_u")).ToList();
+            var u = nnparams.Where(p => p.Name.Equals("u")).ToList();
             Assert.Equal(4, u.Count);//4 in lstm 
             //4*5*5 in lstm 
             Assert.Equal(100, u.Sum(p => p.Shape.TotalSize));
 
             //peephole only in LSTM. 
-            var peep = nnparams.Where(p => p.Name.Equals("_peep")).ToList();
+            var peep = nnparams.Where(p => p.Name.Equals("pe")).ToList();
             //Peep connection in 3 gates ft, it and ot
             Assert.Empty(peep);
             //3*5
             Assert.Equal(0, peep.Sum(p => p.Shape.TotalSize));
 
             //stabilization on all gates: ft, it and ot. when using peepholes 3 extra.
-            var stab = nnparams.Where(p => p.Name.Equals("_stabilize")).ToList();
+            var stab = nnparams.Where(p => p.Name.Equals("st")).ToList();
             //for non peephole lstm count is 3
             Assert.Equal(3,stab.Count);
             //1x3
@@ -217,32 +217,32 @@ namespace anndotnet.unit
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
 
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(5, w.Count);//4 in lstm and  1 in hidden layer
 
             // total weights 3x5 + 4*5x4
             Assert.Equal(95, w.Sum(p => p.Shape.TotalSize));
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(5, b.Count);//4 in lstm and  1 in output
             //4*1*5 in lstm and  3 in output layer
             Assert.Equal(23, b.Sum(p => p.Shape.TotalSize));
 
             //4*5*4
-            var u = nnparams.Where(p => p.Name.Equals("_u")).ToList();
+            var u = nnparams.Where(p => p.Name.Equals("u")).ToList();
             Assert.Equal(4, u.Count);//4 in lstm 
             //4*5*5 in lstm 
             Assert.Equal(100, u.Sum(p => p.Shape.TotalSize));
 
             //peephole only in LSTM. 
-            var peep = nnparams.Where(p => p.Name.Equals("_peep")).ToList();
+            var peep = nnparams.Where(p => p.Name.Equals("peep")).ToList();
             //Peep connection in 3 gates ft, it and ot
             Assert.Empty(peep);
             //3*5
             Assert.Equal(0, peep.Sum(p => p.Shape.TotalSize));
 
             //stabilization on all gates: ft, it and ot. when using peepholes 3 extra.
-            var stab = nnparams.Where(p => p.Name.Equals("_stabilize")).ToList();
+            var stab = nnparams.Where(p => p.Name.Equals("stabilize")).ToList();
             //for non peephole lstm count is 3
             Assert.Empty(stab);
             //outDim*6
@@ -284,12 +284,12 @@ namespace anndotnet.unit
             //Structure of the network  parameters
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(4, w.Count);//3. One for each hidden layer 
             // total weights 4x5 + 5x10 + 10x15 + 15x3 = 265
             Assert.Equal(265, w.Sum(p => p.Shape.TotalSize));
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(4, b.Count);//4 (3 for hidden and 1 for output layer)
             // 5x1 + 4x1 + 15x1 + 10x1 +
             Assert.Equal(33, b.Sum(p => p.Shape.TotalSize));
@@ -328,12 +328,12 @@ namespace anndotnet.unit
             //Structure of the network  parameters
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(2, w.Count);//1 for one hidden layer 
             // total weights 4x5 + 3x5
             Assert.Equal(35, w.Sum(p => p.Shape.TotalSize));
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(2, b.Count);//2 (1 for hidden and 1 for output layer)
             //5x1 + 3x1
             Assert.Equal(8, b.Sum(p => p.Shape.TotalSize));
@@ -371,12 +371,12 @@ namespace anndotnet.unit
             //Structure of the network  parameters
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(2, w.Count);//1 for one hidden layer 
             // total weights 4x5 + 3x5
             Assert.Equal(35, w.Sum(p => p.Shape.TotalSize));
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(2, b.Count);//2 (1 for hidden and 1 for output layer)
             //5x1 + 3x1
             Assert.Equal(8, b.Sum(p => p.Shape.TotalSize));
@@ -413,14 +413,14 @@ namespace anndotnet.unit
             //Structure of the network  parameters
             var nnparams = nnModel.Inputs.Where(p => p.Uid.StartsWith("Parameter")).ToList();
             //weights
-            var w = nnparams.Where(p => p.Name.Equals("_w")).ToList();
+            var w = nnparams.Where(p => p.Name.Equals("w")).ToList();
             Assert.Equal(2, w.Count);//2 = 1 in hidden and 1 in out layer
 
             // total weights 1x5 + 4*5 = 25
             Assert.Equal(25, w.Sum(p => p.Shape.TotalSize));
 
             //total biases
-            var b = nnparams.Where(p => p.Name.Equals("_b")).ToList();
+            var b = nnparams.Where(p => p.Name.Equals("b")).ToList();
             Assert.Equal(2, b.Count);//2 = 1 in hidden and 1 in out layer
 
             //1x5 + 1x1 = 6
