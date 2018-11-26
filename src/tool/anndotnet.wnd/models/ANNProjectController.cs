@@ -249,11 +249,15 @@ namespace anndotnet.wnd.Models
                     Settings.ProjectFolder = fi.Directory.FullName + "\\" + Name;
                     Settings.ProjectFile = fi.Name;
                 }
-                //update setting info
-                Settings.PrecentigeSplit = DataSet.IsPrecentige;
-                //Settings.RandomizeData = DataSet.RandomizeData;
-                Settings.ValidationSetCount = DataSet.RowsToValidation;
-                Settings.TestSetCount = DataSet.RowsToTest;
+                if(DataSet!=null)
+                {
+                    //update setting info
+                    Settings.PrecentigeSplit = DataSet.IsPrecentige;
+                    //Settings.RandomizeData = DataSet.RandomizeData;
+                    Settings.ValidationSetCount = DataSet.RowsToValidation;
+                    Settings.TestSetCount = DataSet.RowsToTest;
+                }
+                
 
                 //load project information from file
                 var prjPath1 = Path.Combine(Settings.ProjectFolder, Settings.ProjectFile);
