@@ -286,6 +286,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="images\imgClass48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\AirQ\AirQuality.ann">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

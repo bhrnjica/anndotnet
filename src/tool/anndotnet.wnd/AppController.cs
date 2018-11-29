@@ -26,6 +26,7 @@ using anndotnet.wnd.commands;
 using anndotnet.wnd.Models;
 using anndotnet.wnd.Mvvm;
 using anndotnet.wnd.Panels;
+using ANNdotNET.Core;
 using ANNdotNET.Lib;
 using DataProcessing.Wnd;
 using NNetwork.Core.Common;
@@ -173,7 +174,7 @@ namespace anndotnet.wnd
         /// and folder where other files will be created. No other  file location should exists. 
         /// </summary>
         /// <returns>currently created experiment</returns>
-        public async Task<ANNProjectController> NewProject()
+        public async Task<ANNProjectController> NewProject(ProjectType pType)
         {
             try
             {
@@ -181,8 +182,8 @@ namespace anndotnet.wnd
                 if (string.IsNullOrEmpty(filePath))
                     return null;
                 var prj = new ANNProjectController(ActiveModelChanged);
-                Project.NewProjectFile(Path.GetFileNameWithoutExtension(filePath), filePath);
-                await prj.Initproject(filePath);
+                Project.NewProjectFile(Path.GetFileNameWithoutExtension(filePath), filePath, pType);
+                await prj.Initproject(filePath, pType);
                 return prj;
             }
             catch (Exception)
@@ -1081,7 +1082,7 @@ namespace anndotnet.wnd
                 var fi = new FileInfo(filePath);
                 p.Settings.ProjectFolder = fi.Directory.FullName;
                 p.Settings.ProjectFile = fi.Name;
-                Project.NewProjectFile(Path.GetFileNameWithoutExtension(p.Settings.ProjectFile),filePath);
+                Project.NewProjectFile(Path.GetFileNameWithoutExtension(p.Settings.ProjectFile),filePath, p.Settings.ProjectType);
                 await p.Save();
 
             }
@@ -1165,8 +1166,12 @@ namespace anndotnet.wnd
             {
                 if (AppModel.Project.Count > 1)
                     throw new Exception("Existing project must be closed!");
+                var pType = ProjectType.Default;
 
-                var prj = await NewProject();
+                if (e.Parameter != null && e.Parameter.ToString() == "Img")
+                    pType = ProjectType.ImageClassification;
+
+                var prj = await NewProject(pType);
                 if (prj == null)
                     return;
                 AppModel.Project.Add(prj);

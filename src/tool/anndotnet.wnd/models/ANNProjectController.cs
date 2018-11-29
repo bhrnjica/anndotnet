@@ -110,7 +110,7 @@ namespace anndotnet.wnd.Models
         public new string IconUri { get => "Images/experiment.png"; }
 
         //initialize project controllers with project information
-        internal async Task<bool> Initproject(string projectPath)
+        internal async Task<bool> Initproject(string projectPath, ProjectType pType= ProjectType.Default)
         {
             try
             {

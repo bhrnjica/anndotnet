@@ -35,16 +35,33 @@
             <Fluent:RibbonTabItem Header="{Binding AppModel.AppName}" Foreground="BlueViolet" FontWeight="Bold" FontSize="14" >
 
                 <Fluent:RibbonGroupBox Name="Standard" Header="Project" FontWeight="Normal" FontSize="12">
-                    <Fluent:Button Header="New" Width="50" SizeDefinition="Large"
+                    <Fluent:DropDownButton Header="New" Width="50" SizeDefinition="Large"
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="N"
+                        LargeIcon="{StaticResource Newproject}">
+
+                        <Fluent:Button Header="New" Width="50" SizeDefinition="Large"
                         Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
                         Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="N"
                         LargeIcon="{StaticResource Newproject}" Command="cmd:AppCommands.NewCommand">
-                        <Fluent:Button.ToolTip>
-                            <Fluent:ScreenTip Title="New ANNdotNET project (Alt+N)" Width ="250"
+                            <Fluent:Button.ToolTip>
+                                <Fluent:ScreenTip Title="New default ANNdotNET project (Alt+N)" Width ="250"
                             Image="{StaticResource Newproject}" 
-                            Text="Use this command to create new ANNdotNET project and start building deep learning  models."/>
-                        </Fluent:Button.ToolTip>
-                    </Fluent:Button>
+                            Text="Use this command to create new default ANNdotNET project and start building deep learning  models."/>
+                            </Fluent:Button.ToolTip>
+                        </Fluent:Button>
+                        <Fluent:Button Header="  Image Classifier  " Width="70" SizeDefinition="Large"
+                        Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
+                        Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="NC"
+                        LargeIcon="{StaticResource NewImgClass}" Command="cmd:AppCommands.NewCommand" CommandParameter="Img">
+                            <Fluent:Button.ToolTip>
+                                <Fluent:ScreenTip Title="New Image Classifier project (Alt+N)" Width ="250"
+                            Image="{StaticResource NewImgClass}" 
+                            Text="Use this command to create new  Image Classifier  ANNdotNET project and start building deep learning  models."/>
+                            </Fluent:Button.ToolTip>
+                        </Fluent:Button>
+                    </Fluent:DropDownButton>
+                    
                     <Fluent:Button Header="Open"  Width="50"  SizeDefinition="Large"  
                         Fluent:KeyTip.AutoPlacement="False" Fluent:KeyTip.HorizontalAlignment="Center"
                         Fluent:KeyTip.VerticalAlignment="Top" Fluent:KeyTip.Keys="O"

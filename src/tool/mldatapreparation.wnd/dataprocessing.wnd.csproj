@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{392B33D2-3B1C-4A37-935B-A38431DD4596}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>dataprocessing.wnd</RootNamespace>
+    <RootNamespace>DataProcessing.Wnd</RootNamespace>
     <AssemblyName>dataprocessing.wnd</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -86,6 +86,9 @@
       <DependentUpon>DataPanelWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExportData.cs" />
+    <Compile Include="ImageClassificator.xaml.cs">
+      <DependentUpon>ImageClassificator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImportData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +134,10 @@
     <Page Include="DataPanelWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ImageClassificator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

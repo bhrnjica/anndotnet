@@ -593,10 +593,10 @@ namespace ANNdotNET.Lib
         /// </summary>
         /// <param name="projectName"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> EmptyProject(string projectName)
+        public static Dictionary<string, string> EmptyProject(string projectName, ProjectType pType)
         {
             var dic = new Dictionary<string, string>();
-            dic.Add("project", $"|Name:{projectName} |ValidationSetCount:0 |TestSetCount:0 |PrecentigeSplit:0 |RandomizeData:0 |MLConfigs:  |Info:");
+            dic.Add("project", $"|Name:{projectName} |Type:{pType} |ValidationSetCount:0 |TestSetCount:0 |PrecentigeSplit:0 |RandomizeData:0 |MLConfigs:  |Info:");
             dic.Add("data", $"|RawData: ");
             dic.Add("parser", $"parser:|RowSeparator:rn | ColumnSeparator:, ; |Header:0 |SkipLines:0");
             return dic;
@@ -608,9 +608,9 @@ namespace ANNdotNET.Lib
         /// <param name="projectName"></param>
         /// <param name="projectPath"></param>
         /// <returns></returns>
-        public static bool NewProjectFile(string projectName, string projectPath)
+        public static bool NewProjectFile(string projectName, string projectPath, ProjectType pType= ProjectType.Default)
         {
-            Dictionary<string, string> dic = EmptyProject(projectName);
+            Dictionary<string, string> dic = EmptyProject(projectName,pType);
             MLFactory.SaveMLConfiguration(projectPath, dic);
             var path = Path.GetDirectoryName(projectPath) + $"\\{Path.GetFileNameWithoutExtension(projectName)}";
             System.IO.Directory.CreateDirectory(path);

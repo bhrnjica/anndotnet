@@ -70,12 +70,25 @@ namespace anndotnet.wnd.Pages
                             project.SetDataSet(prjCont.DataSet);
 
                         //hide raw dataset when the project is no raw data set
-                        if (prjCont.Settings.ProjectType != ProjectType.Default)
+                        if (prjCont.Settings.ProjectType == ProjectType.Default)
                         {
-                            rawDataTab.Visibility = Visibility.Collapsed;
+                            rawDataTab.Visibility = Visibility.Visible;
+                            imgDataTab.Visibility = Visibility.Collapsed;
                             prjCont.SelectedPage = 1;
                         }
-                           
+                        else if (prjCont.Settings.ProjectType == ProjectType.ImageClassification)
+                        {
+                            rawDataTab.Visibility = Visibility.Collapsed;
+                            imgDataTab.Visibility = Visibility.Visible;
+                            prjCont.SelectedPage = 1;
+                        }
+                        else
+                        {
+                            rawDataTab.Visibility = Visibility.Collapsed;
+                            imgDataTab.Visibility = Visibility.Collapsed;
+                            prjCont.SelectedPage = 1;
+                        }
+
 
                         prjCont.LoadRichText(this.richText);
                     }

@@ -10,7 +10,7 @@
     <UserControl.Resources>
        
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="0,0,-8,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
@@ -22,22 +22,16 @@
             <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedPage}" x:Name="projectTab">
-            <TabItem Header="Raw Data WPF" x:Name="rawDataTab">
+            <TabItem Header="Raw Data" x:Name="rawDataTab">
                 <Grid>
-                    <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
                     <wnd:DataPanelWPF x:Name="project"/>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="Raw Data" x:Name="rawDataTab">
+            <TabItem Header="Image Preparation" x:Name="imgDataTab">
                 <Grid>
-                    -->
-            <!--<ctrl:ExperimentCtrl Grid.Row="2"/>-->
-            <!--
-                    <WindowsFormsHost  x:Name="hostWF" >
-                        <forms:DataPanel AutoScaleMode="Font"  x:Name="project"  />
-                    </WindowsFormsHost>
+                    <wnd:ImageClassificator x:Name="iclassificator"/>
                 </Grid>
-            </TabItem>-->
+            </TabItem>
             <TabItem Header="Project Info" x:Name="prjInfoPage" >
                 <RichTextBox  x:Name="richText" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
                     <RichTextBox.Resources>

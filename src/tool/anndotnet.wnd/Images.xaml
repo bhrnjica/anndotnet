@@ -5,6 +5,7 @@
     <BitmapImage x:Key="Close" UriSource="images\closegp48.png" />
     <BitmapImage x:Key="Exit" UriSource="images\exit48.png" />
     <BitmapImage x:Key="Newproject" UriSource="images\newgp48.png" />
+    <BitmapImage x:Key="NewImgClass" UriSource="images\imgClass48.png" />
     <BitmapImage x:Key="Open" UriSource="images\opengp48.png" />
     <BitmapImage x:Key="Save" UriSource="images\savegp48.png" />
 
