@@ -74,7 +74,7 @@ namespace anndotnet.wnd.Pages
                         {
                             rawDataTab.Visibility = Visibility.Visible;
                             imgDataTab.Visibility = Visibility.Collapsed;
-                            prjCont.SelectedPage = 1;
+                            prjCont.SelectedPage = 0;
                         }
                         else if (prjCont.Settings.ProjectType == ProjectType.ImageClassification)
                         {
@@ -86,7 +86,7 @@ namespace anndotnet.wnd.Pages
                         {
                             rawDataTab.Visibility = Visibility.Collapsed;
                             imgDataTab.Visibility = Visibility.Collapsed;
-                            prjCont.SelectedPage = 1;
+                            prjCont.SelectedPage = 2;
                         }
 
 
