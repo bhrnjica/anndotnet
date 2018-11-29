@@ -286,6 +286,21 @@ namespace ANNdotNET.Lib
             return MLEvaluator.TestModel(mlconfigPath, vector, device);
         }
 
+        /// <summary>
+        /// Evaluate mlconfig stored in mlconfigPath for input row stored in vector array
+        /// </summary>
+        /// <param name="mlconfigPath"></param>
+        /// <param name="vector"></param>
+        /// <param name="pdevice"></param>
+        /// <returns></returns>
+        public static List<int> Predict(string mlconfigPath, string[] imagePaths, ProcessDevice pdevice)
+        {
+            //device definition
+            DeviceDescriptor device = MLFactory.GetDevice(pdevice);
+
+            return MLEvaluator.TestModel(mlconfigPath, imagePaths, device);
+        }
+
         public static async Task<EvaluationResult> EvaluateMLConfig(string mlconfigPath, DataSetType dsType, EvaluationType evType, ProcessDevice pdevice)
         {
             //device definition
@@ -762,6 +777,13 @@ namespace ANNdotNET.Lib
                 settings.TestSetCount = 0;
             else
                 settings.TestSetCount = int.Parse(tsCount);
+
+            //check which type the project is
+            var strType = Project.GetParameterValue(dataValues, "Type");
+            if (string.IsNullOrEmpty(strType))
+                settings.ProjectType = ProjectType.Default;
+            else
+                settings.ProjectType = (ProjectType)Enum.Parse(typeof(ProjectType), strType, true);
 
             //is percentage used when split data sets
             var isPrecentige = MLFactory.GetParameterValue(dataValues, "PrecentigeSplit");

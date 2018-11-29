@@ -778,7 +778,7 @@ namespace ANNdotNET.Core
                 //i/O vars
                 m_Inputs = createVariables(strFeatures, type, false);
                 m_Outputs = createVariables(strLabels, type, labelWithDynamicAxes).ToList();
-                m_StreamConfig = createStreamConfiguration(m_Inputs.ToList(), m_Outputs);
+                m_StreamConfig = CreateStreamConfiguration(m_Inputs.ToList(), m_Outputs);
                 return true;
             }
             catch (Exception)
@@ -961,7 +961,7 @@ namespace ANNdotNET.Core
         /// <param name="lstFeaturesVars"></param>
         /// <param name="lstLabelVars"></param>
         /// <returns></returns>
-        private static List<StreamConfiguration> createStreamConfiguration(List<Variable> lstFeaturesVars, List<Variable> lstLabelVars)
+        public static List<StreamConfiguration> CreateStreamConfiguration(List<Variable> lstFeaturesVars, List<Variable> lstLabelVars)
         {
             var retVal = new List<StreamConfiguration>();
             //

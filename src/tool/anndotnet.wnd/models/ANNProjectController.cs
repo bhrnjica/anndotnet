@@ -30,12 +30,7 @@ using System.Windows.Forms.Integration;
 using System.Windows.Threading;
 namespace anndotnet.wnd.Models
 {
-    public enum ProjectType
-    {
-        Default,
-        ImageClassification,
-        NoRawData,
-    }
+    
 
     public class ANNProjectController : BaseModel
     {
@@ -135,12 +130,7 @@ namespace anndotnet.wnd.Models
                 //
                 Name = Project.GetParameterValue(dicData["project"], "Name");
 
-                //check which type the project is
-                var strType = Project.GetParameterValue(dicData["project"], "Type");
-                if (string.IsNullOrEmpty(strType))
-                    Type = ProjectType.Default;
-                else
-                    Type = (ProjectType)Enum.Parse(typeof(ProjectType), strType, true);
+                
 
                 var prData = dicData["data"].Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 var dataPath = Project.GetParameterValue(prData, "RawData");
@@ -476,7 +466,7 @@ namespace anndotnet.wnd.Models
             //var rd = Settings.RandomizeData ? 1 : 0;
             var dataStr = $"data:|RawData:{rawDataName} " + strMeta;
             var models = string.Join(";", Models.Select(x => x.Name));
-            var strProject = $"project:|Name:{Name} |Type:{Type}  |ValidationSetCount:{Settings.ValidationSetCount}  |TestSetCount:{Settings.TestSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:ProjectInfo.rtf";
+            var strProject = $"project:|Name:{Name} |Type:{Settings.ProjectType}  |ValidationSetCount:{Settings.ValidationSetCount}  |TestSetCount:{Settings.TestSetCount} |PrecentigeSplit:{ps} |MLConfigs:{models} |Info:ProjectInfo.rtf";
             var strParser = "parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0";
             
             //construct diction 

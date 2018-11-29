@@ -15,6 +15,7 @@ using System.Text;
 
 namespace ANNdotNET.Core
 {
+     
     /// <summary>
     /// Class implements one column of Raw Data set.
     /// </summary>
@@ -33,6 +34,13 @@ namespace ANNdotNET.Core
         public string[] Classes { get; set; }
     }
 
+    public enum ProjectType
+    {
+        Default,
+        ImageClassification,
+        NoRawData,
+    }
+
     //Data type only numric and category
     public enum MLDataType
     {
@@ -42,6 +50,8 @@ namespace ANNdotNET.Core
         Numeric, // column will be parsed as numeric float
         [Description("Category")]
         Category, //column will be parsed as One-Ho Vector
+        [Description("Image")]
+        Image, //column will be parsed as One-Ho Vector
     }
 
     //Kind of data (none, features, label)

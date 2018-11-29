@@ -97,6 +97,21 @@ namespace anndotnet.wnd.Panels
                           
                             index++;
                         }
+                        foreach (var c in testData.Where(x => x.Kind != DataKind.Label && x.Type == MLDataType.Image))
+                        {
+                            //
+                            if (c.Type == MLDataType.Image)
+                            {
+                                var dgc = new DataGridTextColumn();
+                                dgc.Header = c.Name;
+
+                                dataGrid.Columns.Add(dgc);
+
+                                Binding b = new Binding($"[{index}]");
+                                dgc.Binding = b;
+                            }
+                            index++;
+                        }
 
                         //get output row and set result column to label name
                         var name = testData.Where(x => x.Kind == DataKind.Label).FirstOrDefault().Name;
@@ -298,6 +313,7 @@ namespace anndotnet.wnd.Panels
                 for (int i = 0; i < m_TestData.Count; i++)
                 {
                     var vector = new List<float>();
+                    var imagePaths = new List<string>();
                     for (int j = 0; j < m_TestData[0].Count; j++)
                     {
                         //check if the value valid
@@ -323,20 +339,40 @@ namespace anndotnet.wnd.Panels
                         {
                             if (m_TestData[i][j].Contains(","))
                                 throw new Exception("Decimal separator should be point.");
-                            var vald = double.Parse(m_TestData[i][j], CultureInfo.InvariantCulture);
-                            vector.Add((float)vald);
+                            if(model.Settings.ProjectType== ProjectType.Default)
+                            {
+                                var vald = double.Parse(m_TestData[i][j], CultureInfo.InvariantCulture);
+                                vector.Add((float)vald);
+                            }
+                            else if(model.Settings.ProjectType == ProjectType.ImageClassification)
+                            {
+                                imagePaths.Add(m_TestData[i][j]);
+                            }
+                            
                         }
                     }
                     //
-                    var val = Project.Predict(strModelToEvaluatePath, vector.ToArray(), pd);
+                    object result =null;
+                    if (model.Settings.ProjectType == ProjectType.Default)
+                        result = Project.Predict(strModelToEvaluatePath, vector.ToArray(), pd);
+                    else if (model.Settings.ProjectType == ProjectType.ImageClassification)
+                    {
+                        var res = Project.Predict(strModelToEvaluatePath, imagePaths.ToArray(), pd);
+                        if (res != null && res.Count() > 0)
+                            result = res.First();
+                    }
+                        
+                    else
+                        return;
+
                     var labelCol = testMetaData.Where(x => x.Kind == DataKind.Label).FirstOrDefault();
                     if (labelCol.Type == MLDataType.Category)
                     {
-                        var ind = int.Parse(val.ToString());
+                        var ind = int.Parse(result.ToString());
                         listResult.Items.Add(labelCol.Classes[ind]);
                     }
                     else
-                        listResult.Items.Add(  val);
+                        listResult.Items.Add(result);
                 }
             }
             catch (Exception ex)

@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
 using anndotnet.wnd.Models;
+using ANNdotNET.Core;
 using DataProcessing.Wnd;
 namespace anndotnet.wnd.Pages
 {
@@ -69,7 +70,7 @@ namespace anndotnet.wnd.Pages
                             project.SetDataSet(prjCont.DataSet);
 
                         //hide raw dataset when the project is no raw data set
-                        if (prjCont.Type != ProjectType.Default)
+                        if (prjCont.Settings.ProjectType != ProjectType.Default)
                         {
                             rawDataTab.Visibility = Visibility.Collapsed;
                             prjCont.SelectedPage = 1;

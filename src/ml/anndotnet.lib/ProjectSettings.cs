@@ -32,6 +32,7 @@ namespace ANNdotNET.Lib
         /// Amount of raw data set to buld Validation dataset
         /// </summary>
         public int ValidationSetCount { get; set; }
+        public ProjectType ProjectType { get;  set; }
 
         /// <summary>
         /// Amount of raw data set to buld test dataset

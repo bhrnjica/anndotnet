@@ -51,9 +51,9 @@
                                     <TextBlock Text=") " />
                                     <TextBlock Text="{Binding Name}" FontWeight="Medium" />
                                     <TextBlock Text="       " HorizontalAlignment="Left" Width="10"/>
-                                    <TextBlock Text="(shape: "/>
+                                    <TextBlock Text="(shape:["/>
                                     <TextBlock Text="{Binding Dimension}" />
-                                    <TextBlock Text=" )" />
+                                    <TextBlock Text=" ])" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -69,9 +69,9 @@
                                 <TextBlock Text=") " />
                                 <TextBlock Text="{Binding Name}" FontWeight="Medium" />
                                 <TextBlock Text="       " HorizontalAlignment="Left" Width="10"/>
-                                <TextBlock Text="(shape: "/>
+                                <TextBlock Text="(shape:["/>
                                 <TextBlock Text="{Binding Dimension}" />
-                                <TextBlock Text=" )" />
+                                <TextBlock Text=" ])" />
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

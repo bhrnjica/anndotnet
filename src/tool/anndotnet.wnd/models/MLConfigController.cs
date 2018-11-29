@@ -782,7 +782,7 @@ namespace anndotnet.wnd.Models
             itm.Name = fet[0];
             //
             itm.Representation ="Shape";
-            itm.Dimension =$"[{fet[1]}]";
+            itm.Dimension =$"{fet[1]}";
 
             return itm;
         }
