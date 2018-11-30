@@ -12,12 +12,15 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Threading;
 using anndotnet.wnd.Models;
 using ANNdotNET.Core;
+using DataProcessing.Core;
 using DataProcessing.Wnd;
 namespace anndotnet.wnd.Pages
 {
@@ -47,15 +50,32 @@ namespace anndotnet.wnd.Pages
         {
             try
             {
+
                 //For old experiment page save the state
                 if (e.OldValue != null)
                 {
+                    var prjCont = e.OldValue as ANNProjectController;
                     //set wait cursor 
                     MainWindow.SetCursor(true);
+                    
+                    //hide raw dataset when the project is no raw data set
+                    if (prjCont.Settings.ProjectType == ProjectType.Default)
+                    {
+                        prjCont.DataSet = this.project.GetDataSet();
+                        //project.Dispose();
+                    }
+                    else if (prjCont.Settings.ProjectType == ProjectType.ImageClassification)
+                    {
+                        //
+                        prjCont.DataSet = iclassificator.GetDataSet();
+                        //project.Dispose();
+                    }
+                    else
+                    {
+                        
+                    }
 
-                    var model = e.OldValue as ANNProjectController;
-                    model.DataSet = project.GetDataSet();
-                    //project.Dispose();
+                    //
                     richText = null;
                 }
                 //for project show previously stored state
@@ -65,21 +85,24 @@ namespace anndotnet.wnd.Pages
                     var prjCont = e.NewValue as ANNProjectController;
                     if (prjCont != null)
                     {
-                        project.ResetExperimentalPanel();
-                        if (prjCont.DataSet != null)
-                            project.SetDataSet(prjCont.DataSet);
-
+                        
                         //hide raw dataset when the project is no raw data set
                         if (prjCont.Settings.ProjectType == ProjectType.Default)
                         {
+                            project.ResetExperimentalPanel();
+                            if (prjCont.DataSet != null)
+                                project.SetDataSet(prjCont.DataSet);
+
                             rawDataTab.Visibility = Visibility.Visible;
                             imgDataTab.Visibility = Visibility.Collapsed;
                             prjCont.SelectedPage = 0;
                         }
                         else if (prjCont.Settings.ProjectType == ProjectType.ImageClassification)
                         {
+                            var imgClassMode = iclassificator.LoadDataSet(prjCont.DataSet);
                             rawDataTab.Visibility = Visibility.Collapsed;
                             imgDataTab.Visibility = Visibility.Visible;
+                            iclassificator.DataContext = imgClassMode;
                             prjCont.SelectedPage = 1;
                         }
                         else
@@ -114,6 +137,32 @@ namespace anndotnet.wnd.Pages
 
                 ));
             }
+            
+        }
+       
+        private ImageClassificatorModel loadDataToModel(ANNDataSet dataSet)
+        {
+            var model = new ImageClassificatorModel();
+            if (dataSet != null && dataSet.Data.Count > 0)
+            {
+                //
+                var row = dataSet.Data.First();
+                model.Channels = int.Parse(row[3]);
+                model.Height = int.Parse(row[4]);
+                model.Width = int.Parse(row[5]);
+                foreach (var r in dataSet.Data)
+                {
+                    var itm = new ImageLabelItem();
+                    itm.Label = r[0];
+                    itm.Folder = r[1];
+                    itm.Query = r[2];
+                    model.Labels.Add(itm);
+                }
+                return model;
+            }
+            else
+                return null;
+
             
         }
 

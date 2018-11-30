@@ -32,8 +32,8 @@ namespace DataProcessing.Wnd
         private void folderButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.ShowDialog();
-            txtCdim.Text = dialog.SelectedPath;
+            if(dialog.ShowDialog()== System.Windows.Forms.DialogResult.OK)
+                txtCdim.Text = dialog.SelectedPath;
         }
     }
 }

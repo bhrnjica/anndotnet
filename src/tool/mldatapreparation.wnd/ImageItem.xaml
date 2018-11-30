@@ -20,23 +20,23 @@
             <RowDefinition x:Name="thirdRow" Height="auto"/>
         </Grid.RowDefinitions>
         <Border BorderThickness="1"  Grid.ColumnSpan="2" Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}">
-            <Label Content="{Binding Name}" VerticalAlignment="Center" />
+            <Label Content=" " VerticalAlignment="Center" />
         </Border>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <Label x:Name="lblHdim"  Width="80"  Content="Label:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
             <Label Width="2"/>
-            <TextBox x:Name="txtHdim" Text="{Binding Param1}" VerticalAlignment="Center" Width="200"/>
+            <TextBox x:Name="txtHdim" Text="{Binding Label}" VerticalAlignment="Center" Width="200"/>
         </StackPanel >
         <StackPanel Grid.Row="2" Orientation="Horizontal" >
             <Label x:Name="lblCdim" Content="Image Folder:" Width="80"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
             <Label Width="2"/>
-            <TextBox x:Name="txtCdim" Text="{Binding Param2}" VerticalAlignment="Center" Width="200" />
+            <TextBox x:Name="txtCdim" Text="{Binding Folder}" VerticalAlignment="Center" Width="200" />
             <Button x:Name="folderButton" Content="..." Width="20" Height="20" Click="folderButton_Click"/>
         </StackPanel >
 
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
             <Label x:Name="lblDrop" Content="Query:"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtDrop" Text="{Binding Param3}" Width="100" VerticalAlignment="Center">
+            <TextBox x:Name="txtDrop" Text="{Binding Query}" Width="100" VerticalAlignment="Center">
                 <TextBox.ToolTip>
                     In case more than one label of images exist in the same folder, use this specific word which is part of the image name to diferentiate images.
                 </TextBox.ToolTip>

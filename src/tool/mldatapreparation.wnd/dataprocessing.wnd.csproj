@@ -89,6 +89,7 @@
     <Compile Include="ImageClassificator.xaml.cs">
       <DependentUpon>ImageClassificator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageClassificatorModel.cs" />
     <Compile Include="ImportData.cs">
       <SubType>Form</SubType>
     </Compile>

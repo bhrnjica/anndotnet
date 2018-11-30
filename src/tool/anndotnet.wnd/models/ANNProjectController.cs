@@ -10,6 +10,7 @@
 // Bihac, Bosnia and Herzegovina                                                        //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using anndotnet.wnd.Pages;
 using ANNdotNET.Core;
 using ANNdotNET.Lib;
 using DataProcessing.Core;
@@ -105,7 +106,6 @@ namespace anndotnet.wnd.Models
         }
  
         public ANNDataSet DataSet { get; internal set; }
-        public ProjectType Type { get; set; }
 
         public new string IconUri { get => "Images/experiment.png"; }
 
@@ -213,12 +213,18 @@ namespace anndotnet.wnd.Models
             try
             {
 
-                //access Data Pane in order to update data
-                DataPanelWPF expCtrl = getDataPanel();
-                if (expCtrl == null)
-                    return false;
-                RichTextBox rtfCtrl = getRichCtrl();
+                ////access Data Pane in order to update data
+                //DataPanelWPF expCtrl = getDataPanel();
+                //if (expCtrl == null)
+                //    return false;
+                ////
+                //DataSet = expCtrl.GetDataSet();
+                //setCategoryEncoding(DataSet);
 
+                DataSet = getDataSet(Settings.ProjectType);
+
+                //save ritch 
+                RichTextBox rtfCtrl = getRichCtrl();
                 //get rich text to save content
                 if (rtfCtrl != null)
                 {
@@ -228,8 +234,6 @@ namespace anndotnet.wnd.Models
 
 
                 //
-                DataSet = expCtrl.GetDataSet();
-                setCategoryEncoding(DataSet);
                 if (Settings == null)
                 {
                     var prjPath = promptToSaveFile();
@@ -278,6 +282,7 @@ namespace anndotnet.wnd.Models
             
         }
 
+       
         internal async Task<bool> CreateMLConfig(MLConfigController mlconfig)
         {
             //save project with new created mlconfig
@@ -382,7 +387,7 @@ namespace anndotnet.wnd.Models
             var tab = FindVisualChild<TabControl>(cntCtrl.content);
             if (tab == null)
                 return null;
-            var tbItm = tab.Items[1] as TabItem;
+            var tbItm = tab.Items[tab.Items.Count-1] as TabItem;
             if (tbItm == null)
                 return null;
 
@@ -405,6 +410,46 @@ namespace anndotnet.wnd.Models
             //var expCtrl = (DataPanel)ctrl.Child;
             return ctrl;
         }
+
+        private ANNDataSet getDataSet(ProjectType projectType)
+        {
+            var ds = new ANNDataSet();
+            var cntCtrl = anndotnet.wnd.App.Current.MainWindow as MainWindow;
+            var tab = FindVisualChild<TabControl>(cntCtrl.content);
+            if (tab == null)
+                return null;
+
+            //
+            if (projectType== ProjectType.Default)
+            {
+                var tbItm = tab.Items[0] as TabItem;
+                if (tbItm == null)
+                    return null;
+
+                var expCtrl = FindVisualChild<DataPanelWPF>(tbItm.Content as Grid);
+                if (expCtrl == null)
+                    return null;
+                ds = expCtrl.GetDataSet();              
+            }
+            else
+            {
+                var tbItm = tab.Items[1] as TabItem;
+                if (tbItm == null)
+                    return null;
+
+                var ctrl = FindVisualChild<ImageClassificator>(tbItm.Content as Grid);
+               
+               //
+                if (ctrl == null)
+                    return null;
+                //
+                ds = ctrl.GetDataSet();
+            }
+
+            setCategoryEncoding(ds);
+            return ds;
+        }
+
 
         /// <summary>
         /// load comtent from info project file and load into rich control
