@@ -212,18 +212,10 @@ namespace anndotnet.wnd.Models
         {
             try
             {
-
-                ////access Data Pane in order to update data
-                //DataPanelWPF expCtrl = getDataPanel();
-                //if (expCtrl == null)
-                //    return false;
-                ////
-                //DataSet = expCtrl.GetDataSet();
-                //setCategoryEncoding(DataSet);
-
+                //get dataset from the data panel
                 DataSet = getDataSet(Settings.ProjectType);
 
-                //save ritch 
+                //save rich 
                 RichTextBox rtfCtrl = getRichCtrl();
                 //get rich text to save content
                 if (rtfCtrl != null)
@@ -243,6 +235,7 @@ namespace anndotnet.wnd.Models
                     Settings.ProjectFolder = fi.Directory.FullName + "\\" + Name;
                     Settings.ProjectFile = fi.Name;
                 }
+                //
                 if(DataSet!=null)
                 {
                     //update setting info
@@ -294,9 +287,7 @@ namespace anndotnet.wnd.Models
             //Define ml data file paths
             var strModelFolder = Project.GetMLConfigFolder(Settings, modelName);
             var strModelDataFolder = Project.GetMLConfigDataFolder(Settings, modelName);
-            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
-            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
-            var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
+            
 
             //check if model folder exists
             if (!Directory.Exists(strModelFolder))
@@ -306,49 +297,11 @@ namespace anndotnet.wnd.Models
                 Directory.CreateDirectory(strModelDataFolder);
 
             //ToDo: optimizes code for huge dataset
-            //get dataset based on options 
-            var ds = DataSet.GetDataSet(DataSet.RandomizeData);
-            //we want whole data set later the data will be split
-            ds.RowsToValidation = 0;
-            ds.RowsToTest = 0;
-            //create experiment based created dataset
-            var exp = new DataFrame(ds);
-            var data = ExportData.PrepareDataSet(exp);
-
-            //calculate validation and training rows
-            int validCount = DataSet.IsPrecentige ? (int)(DataSet.RowsToValidation * data.Count / 100.0) : DataSet.RowsToValidation;
-            //in case of empty validation data set skip file creation
-            if (validCount == 0)
-                strPathValid = "";
-
-            //calculate testing rows
-            int testCount = DataSet.IsPrecentige ? (int)(DataSet.RowsToTest * data.Count / 100.0) : DataSet.RowsToValidation;
-            //in case of empty validation data set skip file creation
-            if (testCount == 0)
-                strPathTest = "";
-
-            //create training ml ready dataset file
-            int trainCount = data.Count - validCount - testCount;
-            //check if the training count number valid
-            if (trainCount <= 0)
+            if(Settings.ProjectType== ProjectType.Default)
             {
-                throw new Exception("Train dataset is empty. Split data set on correct parts.");
+                createDefaultDataSets(DataSet, modelName);
             }
-            File.WriteAllLines(strPathTrain, data.Take(trainCount).ToList());
-
-            //in case of empty validation data set skip file creation
-            if (validCount > 0)
-            {
-                var d = data.Skip(trainCount).Take(validCount).ToList();
-                File.WriteAllLines(strPathValid, d);
-            }
-            //in case of empty validation data set skip file creation
-            if (testCount > 0)
-            {
-                var d = data.Skip(trainCount + validCount).Take(testCount).ToList();
-                File.WriteAllLines(strPathTest, d);
-            }
-
+            
             //model name and settings 
             mlconfig.Name = modelName;
             mlconfig.Settings = Settings;
@@ -379,6 +332,58 @@ namespace anndotnet.wnd.Models
 
             //save project with new created mlconfig
             return await Save();
+        }
+
+        private DataFrame createDefaultDataSets(ANNDataSet dataSet, string modelName)
+        {
+            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
+            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
+            var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
+
+            //get dataset based on options 
+            var ds = dataSet.GetDataSet(dataSet.RandomizeData);
+            //we want whole data set later the data will be split
+            ds.RowsToValidation = 0;
+            ds.RowsToTest = 0;
+            //create experiment based created dataset
+            var exp = new DataFrame(ds);
+            var data = ExportData.PrepareDataSet(exp);
+
+            //calculate validation and training rows
+            int validCount = dataSet.IsPrecentige ? (int)(dataSet.RowsToValidation * data.Count / 100.0) : dataSet.RowsToValidation;
+            //in case of empty validation data set skip file creation
+            if (validCount == 0)
+                strPathValid = "";
+
+            //calculate testing rows
+            int testCount = dataSet.IsPrecentige ? (int)(dataSet.RowsToTest * data.Count / 100.0) : dataSet.RowsToValidation;
+            //in case of empty validation data set skip file creation
+            if (testCount == 0)
+                strPathTest = "";
+
+            //create training ml ready dataset file
+            int trainCount = data.Count - validCount - testCount;
+            //check if the training count number valid
+            if (trainCount <= 0)
+            {
+                throw new Exception("Train dataset is empty. Split data set on correct parts.");
+            }
+            File.WriteAllLines(strPathTrain, data.Take(trainCount).ToList());
+
+            //in case of empty validation data set skip file creation
+            if (validCount > 0)
+            {
+                var d = data.Skip(trainCount).Take(validCount).ToList();
+                File.WriteAllLines(strPathValid, d);
+            }
+            //in case of empty validation data set skip file creation
+            if (testCount > 0)
+            {
+                var d = data.Skip(trainCount + validCount).Take(testCount).ToList();
+                File.WriteAllLines(strPathTest, d);
+            }
+
+            return exp;
         }
 
         private RichTextBox getRichCtrl()
