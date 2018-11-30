@@ -7,15 +7,53 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="2"/>
             <RowDefinition Height="23"/>
             <RowDefinition Height="83"/>
         </Grid.RowDefinitions>
-        
-        <CheckBox x:Name="checkRandomizeDataset" Content="Randomize data set then split" HorizontalAlignment="Left" Margin="10,6,0,0" Grid.Row="2" VerticalAlignment="Top" Height="15" Width="177"/>
-        <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Grid.Row="3" VerticalAlignment="Top" HorizontalAlignment="Left" Height="73" Width="616"   >
+        <Button Margin="1" Content="Add" Style="{StaticResource Windows10Button}" Grid.Row="1" Grid.Column="1" Height="Auto" Click="Button_Click_Add"/>
+        <Button Margin="1" Content="Remove"  Style="{StaticResource Windows10Button}" Grid.Row="1" Grid.Column="2" Height="Auto"  Click="Button_Click_Remove"/>
+        <ListBox Name="imageLabelList" ItemsSource="{Binding Network}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:ImageItem Height="Auto"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <GroupBox Grid.Row="2" Grid.Column="5" Header="Image transformation">
+        <StackPanel Margin="0,5,0,0" Grid.Row="2" Grid.Column="5" Orientation="Vertical" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" >
+                <Label x:Name="lblHdim"  Width="100"  Content="Width:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                <Label Width="2"/>
+                    <TextBox x:Name="txtHdim2" Text="{Binding ImWidth}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
+            </StackPanel >
+            <StackPanel Orientation="Horizontal" >
+                <Label x:Name="lblHdim1"  Width="100"  Content="Height:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                <Label Width="2"/>
+                    <TextBox x:Name="txtHdim12" Text="{Binding ImHeight}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
+            </StackPanel >
+            <StackPanel Orientation="Horizontal" >
+                <Label x:Name="lblHdim3"  Width="100"  Content="Channels:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                <Label Width="2"/>
+                    <TextBox x:Name="txtHdim13" Text="{Binding ImChannels}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
+            </StackPanel >
+        </StackPanel>
+        </GroupBox>
+        <CheckBox x:Name="checkRandomizeDataset" Content="Randomize data set then split" HorizontalAlignment="Left" Margin="3,6,0,0" Grid.Row="4" VerticalAlignment="Top" Height="15" Width="177" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <StackPanel Orientation="Horizontal" Margin="3,0,0,0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Left" Height="73" Width="616" Grid.Column="1" Grid.ColumnSpan="5"   >
             <GroupBox Header="Validation data set" HorizontalAlignment="Left" Margin="0,5,0,0" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,0">
                     <Label Content="Select last " HorizontalAlignment="Left"  VerticalAlignment="Top"/>
@@ -26,7 +64,7 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Validation data set" HorizontalAlignment="Left" Margin="20,5,0,0"  >
+            <GroupBox Header="Test data set" HorizontalAlignment="Left" Margin="20,5,0,0"  >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,0">
                     <Label Content="Select last " HorizontalAlignment="Left"  VerticalAlignment="Top"/>
                     <TextBox x:Name="txtTestCount" Text="0" Width="50" PreviewTextInput="TextBox_PreviewTextInput" TextAlignment="Right" VerticalAlignment="Center" />
