@@ -103,7 +103,7 @@ namespace NNetwork.Core.Network.Modules
             {
                 //rectified dimensions by adding linear layer
                 var so = !useStabilizer? ct : Stabilizer(ct, device);
-                var wx_b = Weights(ht_1.Shape[0], dataType, device, seed++);
+                var wx_b = Weights(ht_1.Shape[0], dataType, device, seed++,"co");
                 h = wx_b * so;
             }
             else
@@ -218,7 +218,7 @@ namespace NNetwork.Core.Network.Modules
             double initValue = 0.99537863;
 
             //create param with initial value
-            var param = new Parameter(new NDShape(), f.DataType, initValue, device, "w");
+            var param = new Parameter(new NDShape(), f.DataType, initValue, device, "st");
 
             //make exp of product scalar and parameter
             var expValue = CNTKLib.Exp(CNTKLib.ElementTimes(f, param));
@@ -253,7 +253,7 @@ namespace NNetwork.Core.Network.Modules
             //create shape which for bias should be 1xn
             NDShape shape = new int[] { cstate.Shape[0] };
 
-            var bf = new Parameter(shape, dataType, initValue, device, "w");
+            var bf = new Parameter(shape, dataType, initValue, device, "pe");
 
             var peep = CNTKLib.ElementTimes(bf, cstate, "peep");
             return peep;

@@ -27,7 +27,7 @@ namespace anndotnet.wnd.Models
         {
             get
             {
-                return "ANNdotNET v1.1-rc20181123";
+                return "ANNdotNET v1.1";
             }
         }
 

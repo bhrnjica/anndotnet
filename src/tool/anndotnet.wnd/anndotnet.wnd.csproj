@@ -423,7 +423,9 @@
     <None Include="..\..\..\Release.md">
       <Link>Release.md</Link>
     </None>
-    <None Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history" />
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="anndotnet.ico" />
     <Content Include="images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

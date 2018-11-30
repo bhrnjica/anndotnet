@@ -676,7 +676,7 @@ namespace DataProcessing.Wnd
                 var data1 = new ANNDataSet();
                 //
                 data1.MetaData = ParseHeader(omitIgnored);
-
+                
                 data1.TestRows = int.Parse(txtValidationCount.Text);
                 //data1.RowsToValidation = int.Parse(txtValidationCount.Text);
                 //data1.RowsToTest = int.Parse(txtTestCount.Text);
@@ -684,6 +684,8 @@ namespace DataProcessing.Wnd
                 data1.IsPrecentige = radionPercentige.IsChecked.Value;
 
                 var strData = ParseData(data1.MetaData);
+                if (strData==null)
+                    return null;
                 data1.RandomizeData = checkRandomizeDataset.IsChecked.Value;
                 //
                 var sss = strData.Select(x => x.ToArray()).ToArray();
