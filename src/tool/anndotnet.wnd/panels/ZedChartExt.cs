@@ -39,13 +39,13 @@ namespace anndotnet.wnd.panels
         {
             this.GraphPane.IsFontsScaled = false;
 
-            this.GraphPane.XAxis.Title.FontSpec.Size = 25f;
+            this.GraphPane.XAxis.Title.FontSpec.Size = 20f;
             this.GraphPane.XAxis.Title.FontSpec.Family = "Segoe UI";
-            this.GraphPane.YAxis.Title.FontSpec.Size = 25f;
+            this.GraphPane.YAxis.Title.FontSpec.Size = 20f;
             this.GraphPane.XAxis.Title.FontSpec.Family = "Segoe UI";
-            this.GraphPane.Y2Axis.Title.FontSpec.Size = 25f;
+            this.GraphPane.Y2Axis.Title.FontSpec.Size = 20f;
             this.GraphPane.Y2Axis.Title.FontSpec.Family = "Segoe UI";
-            this.GraphPane.Legend.FontSpec.Size = 25f;
+            this.GraphPane.Legend.FontSpec.Size = 20f;
             this.GraphPane.Legend.FontSpec.Family = "Segoe UI";
         }
     }

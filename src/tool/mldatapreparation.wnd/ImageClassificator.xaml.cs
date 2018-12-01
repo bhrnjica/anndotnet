@@ -32,7 +32,7 @@ namespace DataProcessing.Wnd
 
         private void ImageClassificator_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(DataContext!=null)
+            if(DataContext!=null && (DataContext is ImageClassificatorModel))
                 imageLabelList.ItemsSource = ((ImageClassificatorModel)DataContext).Labels;
         }
 
