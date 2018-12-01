@@ -21,7 +21,7 @@
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="2"/>
-            <RowDefinition Height="23"/>
+            <RowDefinition Height="3"/>
             <RowDefinition Height="83"/>
         </Grid.RowDefinitions>
         <Button Margin="1" Content="Add" Style="{StaticResource Windows10Button}" Grid.Row="1" Grid.Column="1" Height="Auto" Click="Button_Click_Add"/>
@@ -52,7 +52,7 @@
             </StackPanel >
         </StackPanel>
         </GroupBox>
-        <CheckBox x:Name="checkRandomizeDataset" Content="Randomize data set then split" HorizontalAlignment="Left" Margin="3,6,0,0" Grid.Row="4" VerticalAlignment="Top" Height="15" Width="177" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <CheckBox Visibility="Collapsed" x:Name="checkRandomizeDataset" Content="Randomize data set then split" HorizontalAlignment="Left" Margin="3,6,0,0" Grid.Row="4" VerticalAlignment="Top" Height="15" Width="177" Grid.Column="1" Grid.ColumnSpan="3"/>
         <StackPanel Orientation="Horizontal" Margin="3,0,0,0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Left" Height="73" Width="616" Grid.Column="1" Grid.ColumnSpan="5"   >
             <GroupBox Header="Validation data set" HorizontalAlignment="Left" Margin="0,5,0,0" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,0">

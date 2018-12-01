@@ -1011,7 +1011,13 @@ namespace anndotnet.wnd
         }
         private void onCanExecExport(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = ActiveViewModel is MLConfigController;
+            if(ActiveViewModel is MLConfigController)
+            {
+                var ml = ActiveViewModel as MLConfigController;
+                e.CanExecute = ml.Settings.ProjectType == ProjectType.Default;
+            }
+            else
+                e.CanExecute = false;
             e.Handled = true;
         }
 

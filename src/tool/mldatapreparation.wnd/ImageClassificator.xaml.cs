@@ -40,7 +40,10 @@ namespace DataProcessing.Wnd
         {
             var model = this.DataContext as ImageClassificatorModel;
             if (model == null || model.Labels == null)
-                return;
+            {
+                model = new ImageClassificatorModel();
+                this.DataContext = model;
+            }
 
             model.Labels.Add(new ImageLabelItem());
         }
