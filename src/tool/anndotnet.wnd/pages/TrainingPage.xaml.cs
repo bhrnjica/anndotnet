@@ -44,7 +44,11 @@ namespace anndotnet.wnd.Pages
 
         private async void onEvaluate(object sender, ExecutedRoutedEventArgs e)
         {
-            if(this.trainingTab.SelectedIndex == 2)
+            var mlCOnfig = this.DataContext as MLConfigController;
+            var canEval = true;
+            if (mlCOnfig != null && mlCOnfig.IsTrainRunning)
+                canEval = false;
+            if (this.trainingTab.SelectedIndex == 2 && canEval)
                 await evaluation.EvaluateModel();
         }
          private void TrainingTab_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
