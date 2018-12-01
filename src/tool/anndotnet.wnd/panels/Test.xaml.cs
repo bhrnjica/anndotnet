@@ -244,6 +244,17 @@ namespace anndotnet.wnd.Panels
         {
             try
             {
+                var mlConf = this.DataContext as MLConfigController;
+                if(mlConf == null)
+                {
+                    MessageBox.Show("No model to test.");
+                    return;
+                }
+                if(mlConf != null && mlConf.Settings.ProjectType!= ProjectType.Default)
+                {
+                    MessageBox.Show("Test from file is supported only for Default project type.");
+                    return;
+                }
                 //prepare control to load data
                 ImportData dlg = new ImportData();
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)

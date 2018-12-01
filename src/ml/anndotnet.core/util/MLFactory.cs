@@ -719,7 +719,7 @@ namespace ANNdotNET.Core
                 else if (layer.Type == LayerType.Conv2D)
                 {
                     var cn = new Convolution();
-                    net = cn.Conv2D(net, layer.Param1, new int[] { layer.Param2, layer.Param3 }, type, device,
+                    net = cn.Conv2D(net, layer.Param1, new int[] { layer.Param2, layer.Param2 }, type, device,
                         layer.BParam1/*padding*/, layer.BParam2/*bias*/, layer.Name, 1);
                 }
                 else if (layer.Type == LayerType.Polling1D)
@@ -740,7 +740,7 @@ namespace ANNdotNET.Core
                         pType = PoolingType.Average;
 
                     //
-                    net = cn.Pooling2D(net, new int[] { layer.Param1, layer.Param2 }, layer.Param3, 
+                    net = cn.Pooling2D(net, new int[] { layer.Param1, layer.Param1 }, layer.Param2, 
                         type, pType, device, layer.Name, 1);
                 }
                 else if (layer.Type == LayerType.CudaStackedLSTM)

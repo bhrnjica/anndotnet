@@ -32,6 +32,9 @@ namespace ANNdotNET.Core
         public MissingValue MissingValue { get; set; }
 
         public string[] Classes { get; set; }
+
+        //for image and other non default dataset column
+        public string Shape { get; set; }
     }
 
     public enum ProjectType

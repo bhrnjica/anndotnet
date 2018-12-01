@@ -50,18 +50,16 @@ namespace ANNdotNET.Core
                 int image_width = featVar.Shape.Dimensions[0];
                 int image_height = featVar.Shape.Dimensions[1];
                 int num_channels = featVar.Shape.Dimensions[2];
-                //make transformation and scalling
+
+                //make transformation and scaling
                 var transforms = new List<CNTKDictionary>();
-                if (true)
-                {
-                    var randomSideTransform = CNTKLib.ReaderCrop("RandomSide",
+                var randomSideTransform = CNTKLib.ReaderCrop("RandomSide",
                       new Tuple<int, int>(0, 0),
                       new Tuple<float, float>(0.8f, 1.0f),
                       new Tuple<float, float>(0.0f, 0.0f),
                       new Tuple<float, float>(1.0f, 1.0f),
                       "uniRatio");
-                    transforms.Add(randomSideTransform);
-                }
+                transforms.Add(randomSideTransform);
                 var scaleTransform = CNTKLib.ReaderScale(image_width, image_height, num_channels);
                 transforms.Add(scaleTransform);
 

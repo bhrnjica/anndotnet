@@ -70,7 +70,7 @@ namespace DataProcessing.Wnd
                     ANNDataSet ds = new ANNDataSet();
                     ds.MetaData = new MetaColumn[]
                     {
-                    new MetaColumn(){ Id=0, Index=0, Name="Image", Type="Category", MissingValue="None", Param=VariableType.Feature.ToString(),  },
+                    new MetaColumn(){ Id=0, Index=0, Name="Image", Type="Image", MissingValue="None", Param=VariableType.Feature.ToString(),  },
                     new MetaColumn(){ Id=0, Index=0, Name="Label", Type="Category", MissingValue="None", Param=VariableType.Label.ToString(),  }
                     };
                     ds.Data = new List<List<string>>();

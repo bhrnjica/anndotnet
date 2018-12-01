@@ -144,7 +144,7 @@ namespace ANNdotNET.Lib
             strLine += " |TestSetCount:" + Settings.TestSetCount.ToString();
 
             //PrecentigeSplit
-            strLine += " |PrecentigeSplit:" + Settings.PrecentigeSplit.ToString();
+            strLine += " |PrecentigeSplit:" + Settings.PercentigeSplit.ToString();
 
             //mlconfig
             var mds = string.Join(";", MLConfig);
@@ -295,10 +295,19 @@ namespace ANNdotNET.Lib
         /// <returns></returns>
         public static List<int> Predict(string mlconfigPath, string[] imagePaths, ProcessDevice pdevice)
         {
-            //device definition
-            DeviceDescriptor device = MLFactory.GetDevice(pdevice);
+            try
+            {
+                //device definition
+                DeviceDescriptor device = MLFactory.GetDevice(pdevice);
 
-            return MLEvaluator.TestModel(mlconfigPath, imagePaths, device);
+                return MLEvaluator.TestModel(mlconfigPath, imagePaths, device);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public static async Task<EvaluationResult> EvaluateMLConfig(string mlconfigPath, DataSetType dsType, EvaluationType evType, ProcessDevice pdevice)
@@ -401,6 +410,12 @@ namespace ANNdotNET.Lib
                 var numDim = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Numeric).Count();
                 if (numDim > 0)
                     strFeatures += $"{ProjectSettings.m_NumFeaturesGroupName} 1;{numDim} 0\t";
+
+                //create features for image
+                var imgCol = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Image).FirstOrDefault();
+                if (imgCol != null)
+                    strFeatures += $"|{imgCol.Name} {imgCol.Shape} 0\t";
+
                 //create category features
                 foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Category))
                 {
@@ -441,9 +456,10 @@ namespace ANNdotNET.Lib
                 strMlCOnfig.Add(strLabel);
 
                 //empty network 
+                var mbType = project.Settings.ProjectType== ProjectType.ImageClassification? MinibatchType.Image : MinibatchType.Default;
                 strMlCOnfig.Add("network:|Layer:Dense 1 0 0 None 0 0");
                 strMlCOnfig.Add("learning:|Type:SGDLearner |LRate:0.01 |Momentum:1 |Loss:SquaredError |Eval:SquaredError");
-                strMlCOnfig.Add("training:|Type:default |BatchSize:50 |Epochs:100 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |ProgressFrequency:100  |ContinueTraining:0 |TrainedModel: ");
+                strMlCOnfig.Add($"training:|Type:{mbType} |BatchSize:50 |Epochs:100 |Normalization:0 |RandomizeBatch:0 |SaveWhileTraining:1 |ProgressFrequency:100  |ContinueTraining:0 |TrainedModel: ");
                 var strDicts = GetDefaultMLConfigPaths(project.Settings, mlconfigName);
 
                 //add paths for ml config
@@ -788,9 +804,9 @@ namespace ANNdotNET.Lib
             //is percentage used when split data sets
             var isPrecentige = MLFactory.GetParameterValue(dataValues, "PrecentigeSplit");
             if (string.IsNullOrEmpty(isPrecentige))
-                settings.PrecentigeSplit = false;
+                settings.PercentigeSplit = false;
             else
-                settings.PrecentigeSplit = isPrecentige == "1" ? true : false;
+                settings.PercentigeSplit = isPrecentige == "1" ? true : false;
             return settings;
         }
 

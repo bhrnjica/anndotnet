@@ -241,7 +241,7 @@ namespace anndotnet.wnd.panels
                     //second row
                     lblCdim.Visibility = System.Windows.Visibility.Visible;
                     txtCdim.Visibility = System.Windows.Visibility.Visible;
-                    isChecked1.Visibility = System.Windows.Visibility.Collapsed;
+                    isChecked1.Visibility = System.Windows.Visibility.Visible;
                     isChecked2.Visibility = System.Windows.Visibility.Visible;
                     //last row
                     lblDrop.Visibility = System.Windows.Visibility.Collapsed;

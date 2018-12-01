@@ -148,7 +148,7 @@ namespace anndotnet.wnd.Models
                 var ds = new ANNDataSet();
                 ds.InitMetaColumn(prData.Where(x => x.StartsWith("Column")).OrderBy(x => x));             
                 ds.Data = result.data;
-                ds.IsPrecentige = Settings.PrecentigeSplit;
+                ds.IsPrecentige = Settings.PercentigeSplit;
                 ds.RowsToValidation = Settings.ValidationSetCount;
                 ds.RowsToTest = Settings.TestSetCount;
                 DataSet = ds;
@@ -239,7 +239,7 @@ namespace anndotnet.wnd.Models
                 if(DataSet!=null)
                 {
                     //update setting info
-                    Settings.PrecentigeSplit = DataSet.IsPrecentige;
+                    Settings.PercentigeSplit = DataSet.IsPrecentige;
                     //Settings.RandomizeData = DataSet.RandomizeData;
                     Settings.ValidationSetCount = DataSet.RowsToValidation;
                     Settings.TestSetCount = DataSet.RowsToTest;
@@ -296,12 +296,6 @@ namespace anndotnet.wnd.Models
             if (!Directory.Exists(strModelDataFolder))
                 Directory.CreateDirectory(strModelDataFolder);
 
-            //ToDo: optimizes code for huge dataset
-            if(Settings.ProjectType== ProjectType.Default)
-            {
-                createDefaultDataSets(DataSet, modelName);
-            }
-            
             //model name and settings 
             mlconfig.Name = modelName;
             mlconfig.Settings = Settings;
@@ -311,15 +305,20 @@ namespace anndotnet.wnd.Models
             var proj = new Project();
             proj.Load(strPPath);
 
-            //enumerate all column and setup column information needed for mlconfig creation
-            foreach (var c in proj.Descriptor.Columns.Where(x => x.Type == MLDataType.Category && x.Kind != DataKind.None))
+            //ToDo: optimizes code for huge dataset
+            if (Settings.ProjectType== ProjectType.Default)
             {
-                var cc = exp.GetColumns().Where(x => x.Name == c.Name && x.ColumnDataType == ColumnType.Category).FirstOrDefault();
-                if (cc == null)
-                    throw new Exception("Column not found!");
-
-                c.Classes = cc.Statistics.Categories.ToArray();
+                createDefaultDataSets(DataSet, modelName, proj.Descriptor);
             }
+            else if (Settings.ProjectType == ProjectType.ImageClassification)
+            {
+                createImgClassificationDataSets(DataSet, modelName, proj.Descriptor);
+            }
+            else
+            {
+                ;
+            }
+
 
             //create mlconfig file
             Project.NewMLConfigFile(proj, modelName);
@@ -334,7 +333,130 @@ namespace anndotnet.wnd.Models
             return await Save();
         }
 
-        private DataFrame createDefaultDataSets(ANNDataSet dataSet, string modelName)
+        /// <summary>
+        /// Parses the information from the Raw Data and created mlready data sets for image classification project
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="modelName"></param>
+        /// <param name="descriptor"></param>
+        private void createImgClassificationDataSets(ANNDataSet dataSet, string modelName, DataDescriptor descriptor)
+        {
+            //define daata paths
+            var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
+            var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
+            var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
+
+            //
+            var data = DataSet.Data;
+           
+            //retrieve image information form files
+            var trainingData = new List<string>();
+            var validationData = new List<string>();
+            var testData = new List<string>();
+            int dataCount=0;
+            //
+            int cahannel= int.Parse(data[0][3]);
+            int height = int.Parse(data[0][4]);
+            int width = int.Parse(data[0][5]);
+
+            //first count how many images we are handling
+            for (int i=0; i < data.Count; i++)
+            {
+                //ith label
+                var label = data[i][0];
+                var folder = data[i][1];
+                var query = data[i][2];
+                var images = Directory.GetFiles(folder, query, SearchOption.TopDirectoryOnly);
+                if (images.Length == 0)
+                    throw new Exception($"No images have been found for '{label}' label. Folder path must not be empty.");
+
+                dataCount += images.Length;
+            }
+
+            //create data sets
+            var classesList = new List<string>();
+            for (int i = 0; i < data.Count; i++)
+            {
+                //i-th label
+                var label = data[i][0];
+                //add class into list 
+                classesList.Add(label);
+                string lblIndex = i.ToString();
+                //
+                var folder = data[i][1];
+                var query = data[i][2];
+                var images = Directory.GetFiles(folder, query, SearchOption.TopDirectoryOnly);
+                //check for images in the path
+                if (images.Length == 0)
+                    throw new Exception($"No images have been found for '{label}' label. Folder path must not be empty.");
+
+                //construct the rows of map files
+                var strValue = images.Select(x => $"{x}\t{lblIndex}");
+               
+                //calculate amount of rows to put into train, valid and test data set
+                var validCount = strValue.Count()*dataSet.RowsToValidation / 100.0f;
+                var testCount = strValue.Count() * dataSet.RowsToTest / 100.0f;
+                var trainCount = strValue.Count() - (int)validCount - (int)testCount;
+                
+                //add to train set
+                trainingData.AddRange(strValue.Take(trainCount));
+
+                //add to valid set
+                if(validCount > 0)
+                    validationData.AddRange(strValue.Skip(trainCount).Take((int)validCount));
+                //add to test set
+                if(testCount>0)
+                    testData.AddRange(strValue.Skip((int)trainCount+ (int)validCount).Take((int)testCount));
+            }
+
+            //define metadata needed for MLConfiguration creation
+            //Label columm classes definition
+            descriptor.Columns.Last().Classes = classesList.ToArray();
+            //image shape definition
+            descriptor.Columns.First().Shape=$"{cahannel};{height};{width}";
+
+
+            //check if the training count number valid
+            if (trainingData.Count() <= 0)
+            {
+                throw new Exception("Train dataset is empty. Split data set on correct parts.");
+            }
+            File.WriteAllLines(strPathTrain, trainingData);
+
+            //in case of empty validation data set skip file creation
+            if (validationData.Count() > 0)
+            {
+                File.WriteAllLines(strPathValid, validationData);
+            }
+            //in case of empty validation data set skip file creation
+            if (testData.Count() > 0)
+            {
+                File.WriteAllLines(strPathTest, testData);
+            }
+
+        }
+
+        private string createHotVector(int index, int count)
+        {
+            var hotVector = "";
+            for(int i=0; i< count; i++)
+            {
+                if (i == index)
+                    hotVector += "1 ";
+                else
+                    hotVector += "0 ";
+            }
+
+            return hotVector;
+        }
+
+        /// <summary>
+        /// Parses the information from the Raw Data and created mlready data sets for default project
+        /// </summary>
+        /// <param name="dataSet"></param>
+        /// <param name="modelName"></param>
+        /// <param name="dataDesc"></param>
+        private void createDefaultDataSets(ANNDataSet dataSet, string modelName, DataDescriptor dataDesc)
         {
             var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
             var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
@@ -383,7 +505,16 @@ namespace anndotnet.wnd.Models
                 File.WriteAllLines(strPathTest, d);
             }
 
-            return exp;
+
+            //enumerate all column and setup column information needed for mlconfig creation
+            foreach (var c in dataDesc.Columns.Where(x => x.Type == MLDataType.Category && x.Kind != DataKind.None))
+            {
+                var cc = exp.GetColumns().Where(x => x.Name == c.Name && x.ColumnDataType == ColumnType.Category).FirstOrDefault();
+                if (cc == null)
+                    throw new Exception("Column not found!");
+
+                c.Classes = cc.Statistics.Categories.ToArray();
+            }
         }
 
         private RichTextBox getRichCtrl()
@@ -511,7 +642,7 @@ namespace anndotnet.wnd.Models
         /// <param name="rawDataName">Raw data file path</param>
         private void generateProjectFile(string projectPath, string rawDataName)
         {
-            var ps = Settings.PrecentigeSplit ? 1 : 0;
+            var ps = Settings.PercentigeSplit ? 1 : 0;
             var strMeta = DataSet == null ? "" : toColumnToString(DataSet.MetaData);
             //var rd = Settings.RandomizeData ? 1 : 0;
             var dataStr = $"data:|RawData:{rawDataName} " + strMeta;

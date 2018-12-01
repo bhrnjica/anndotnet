@@ -542,7 +542,7 @@ namespace ANNdotNET.Core
                 var labels = model.Outputs.ToList();
                 var stremsConfig = MLFactory.CreateStreamConfiguration(features, labels);
                 var mapFile = "testMapFile";
-                File.WriteAllLines(mapFile, imagePaths.Select(x=>$"{x}\t0 0"));
+                File.WriteAllLines(mapFile, imagePaths.Select(x=>$"{x}\t0"));
 
                 var testMB = new MinibatchSourceEx(MinibatchType.Image, stremsConfig.ToArray(),features,labels,mapFile,null,30,false);
 
@@ -557,7 +557,7 @@ namespace ANNdotNET.Core
                     var nextMB = testMB.GetNextMinibatch((uint)mbSize, device);
                     //prepare data for trainer
                     var inputMap = new Dictionary<Variable, Value>();
-                    inputMap.Add(features.First(), nextMB.Where(x => x.Key.m_name.Equals("features")).Select(x => x.Value.data).FirstOrDefault());
+                    inputMap.Add(features.First(), nextMB.Where(x => x.Key.m_name.Equals(features.First().Name)).Select(x => x.Value.data).FirstOrDefault());
                     
 
                     var outputMap = new Dictionary<Variable, Value>();

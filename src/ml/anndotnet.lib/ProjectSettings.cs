@@ -43,7 +43,7 @@ namespace ANNdotNET.Lib
         /// Validation dataset can be defined as percentage of all instances 
         /// of raw dataset or number of instances for validation 
         /// </summary>
-        public bool PrecentigeSplit { get; set; }
+        public bool PercentigeSplit { get; set; }
 
         /// <summary>
         /// The file name of the project.
