@@ -198,11 +198,16 @@ namespace ANNdotNET.Core
             visitedNodes.Add(id);
         }
 
-        private DotNode createVertex(Variable node)
+        private DotNode createVertex(Function fun)
         {
-            var n = new DotNode(node.Uid);
-            
-            if(node.IsInput)
+            var n = new DotNode(fun.Uid);
+            Variable node = null;
+            if (fun.Outputs.Count == 1)
+                node = fun;
+            else
+                node = fun.Outputs.Last();
+
+            if (node.IsInput)
             {
                 n.Style = DotNodeStyle.Filled;
                 n.Shape = DotNodeShape.Egg;
