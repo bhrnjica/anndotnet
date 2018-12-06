@@ -282,7 +282,7 @@ namespace ANNdotNET.Core
             string bestModelPath = m_bestModelPath;
             double validEval = 0;
 
-            //in case validation data set is empty don't perform testminibatch
+            //in case validation data set is empty don't perform test-minibatch
             if (!string.IsNullOrEmpty(mbs.ValidationDataFile))
             {
                 var evParams = new EvaluationParameters()

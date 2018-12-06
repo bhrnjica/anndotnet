@@ -23,17 +23,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="24"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="28"/>
             <RowDefinition Height="5"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="28"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="35"/>
             <RowDefinition/>
             <RowDefinition Height="10"/>
@@ -108,6 +108,11 @@
         <Label  Grid.Column="6" Grid.Row="11"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
             <Hyperlink NavigateUri="Resources\MNIST\MNIST-Project.ann" RequestNavigate="Hyperlink_RequestOpenExample">
                 <Run Text="MNIST"/>
+            </Hyperlink>
+        </Label>
+        <Label  Grid.Column="6" Grid.Row="12"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
+            <Hyperlink NavigateUri="Resources\CatDog\CatDog.ann" RequestNavigate="Hyperlink_RequestOpenExample">
+                <Run Text="Cat and Dog"/>
             </Hyperlink>
         </Label>
         <ListView x:Name="listView" Grid.Column="1"  Grid.Row="14" Grid.ColumnSpan="7" Background="Transparent" FontSize="12" FontWeight="Normal" Foreground="DarkViolet">

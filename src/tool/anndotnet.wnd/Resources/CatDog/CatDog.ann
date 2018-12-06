@@ -1,0 +1,3 @@
+project:|Name:CatDog |Type:ImageClassification  |ValidationSetCount:20  |TestSetCount:0 |PrecentigeSplit:1 |MLConfigs:convNet; |Info:ProjectInfo.rtf
+data:|RawData:convNet_data.txt |Column01:Image;Image;Feature;None; |Column02:Label;Category;Label;None; 
+parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0

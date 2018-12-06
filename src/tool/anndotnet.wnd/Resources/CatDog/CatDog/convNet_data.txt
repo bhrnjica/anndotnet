@@ -1,0 +1,2 @@
+Cat;C:\sc\Datasets\cat-dog\train;*cat*;3;98;98
+Dog;C:\sc\Datasets\cat-dog\train;*Dog*;3;98;98
