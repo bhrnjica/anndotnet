@@ -59,6 +59,9 @@
   <PropertyGroup>
     <ApplicationIcon>anndotnet.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>anndotnet.wnd.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.93.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\ClosedXML.0.93.1\lib\net46\ClosedXML.dll</HintPath>

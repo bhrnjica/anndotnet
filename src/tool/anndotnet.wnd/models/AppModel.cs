@@ -10,7 +10,9 @@
 // Bihac, Bosnia and Herzegovina                                                        //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace anndotnet.wnd.Models
 {
@@ -27,7 +29,8 @@ namespace anndotnet.wnd.Models
         {
             get
             {
-                return "ANNdotNET vNext";
+                var v = Assembly.GetExecutingAssembly().GetName().Version;
+                return $"ANNdotNET v.{v.Major}.{v.Minor}-rc{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}";
             }
         }
 
