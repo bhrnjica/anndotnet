@@ -30,7 +30,7 @@ namespace anndotnet.wnd.Models
             get
             {
                 var v = Assembly.GetExecutingAssembly().GetName().Version;
-                return $"ANNdotNET v.{v.Major}.{v.Minor}-rc{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}";
+                return $"ANNdotNET v.{v.Major}.{v.Minor}-rc{DateTime.Now.Year}{DateTime.Now.Month.ToString("D2")}{DateTime.Now.Day.ToString("D2")}";
             }
         }
 
