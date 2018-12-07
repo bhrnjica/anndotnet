@@ -32,7 +32,7 @@
                        CanQuickAccessLocationChanging="False" 
                        CanMinimize="False" Background="{DynamicResource ANNdotNET.CustomColorBrush}" >
             <!--Tabs-->
-            <Fluent:RibbonTabItem Header="{Binding AppModel.AppName}" Foreground="BlueViolet" FontWeight="Bold" FontSize="14" >
+            <Fluent:RibbonTabItem Header="{Binding AppModel.AppFullName}" Foreground="BlueViolet" FontWeight="Bold" FontSize="14" >
 
                 <Fluent:RibbonGroupBox Name="Standard" Header="Project" FontWeight="Normal" FontSize="12">
                     <Fluent:DropDownButton Header="New" Width="50" SizeDefinition="Large"

@@ -131,15 +131,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="forms\BinEvalWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="forms\MClassEvalWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Images.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AboutANNdotNET.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutANNdotNET.designer.cs">
-      <DependentUpon>AboutANNdotNET.cs</DependentUpon>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -156,17 +165,11 @@
     <Compile Include="converters\BoolToGridRowHeightConverter.cs" />
     <Compile Include="converters\IMultiConverter.cs" />
     <Compile Include="converters\IsEditingConverter.cs" />
-    <Compile Include="forms\BModelEvaluation.cs">
-      <SubType>Form</SubType>
+    <Compile Include="forms\BinEvalWnd.xaml.cs">
+      <DependentUpon>BinEvalWnd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="forms\BModelEvaluation.Designer.cs">
-      <DependentUpon>BModelEvaluation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="forms\MModelEvaluation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\MModelEvaluation.Designer.cs">
-      <DependentUpon>MModelEvaluation.cs</DependentUpon>
+    <Compile Include="forms\MClassEvalWnd.xaml.cs">
+      <DependentUpon>MClassEvalWnd.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -486,15 +489,6 @@
     <Content Include="Resources\Titanic\TitanicProject\TitanicProject_rawdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="AboutANNdotNET.resx">
-      <DependentUpon>AboutANNdotNET.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\BModelEvaluation.resx">
-      <DependentUpon>BModelEvaluation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\MModelEvaluation.resx">
-      <DependentUpon>MModelEvaluation.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

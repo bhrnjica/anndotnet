@@ -10,7 +10,6 @@
 // Bihac, Bosnia and Herzegovina                                                        //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using ANNdotNet.Wnd.Dialogs;
 using ANNdotNET.Core;
 using GPdotNet.MathStuff;
 using System;
@@ -67,11 +66,12 @@ namespace anndotnet.wnd.panels
             var modelPerf = (ModelPerformance)this.DataContext;
             var ret = ((ModelPerformance)this.DataContext).PerformanceData;
 
-            BModelEvaluation dlg = new BModelEvaluation();
-            dlg.Text = $"Model performance for {modelPerf.DatSetName}.";
+            //BModelEvaluation dlg = new BModelEvaluation();
+            BinEvalWnd dlg = new BinEvalWnd();
+            dlg.Title = $"Model performance for {modelPerf.DatSetName}.";
             var cl = ret["Classes"].Select(x => x.ToString()).ToArray();
             dlg.loadClasses(cl);
-            dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray(),null,null);
+            dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray());
 
             dlg.ShowDialog();
         }
@@ -84,12 +84,12 @@ namespace anndotnet.wnd.panels
             var modelPerf = (ModelPerformance)this.DataContext;
             var ret = ((ModelPerformance)this.DataContext).PerformanceData;
 
-            MModelEvaluation dlg = new MModelEvaluation();
-            dlg.Text = $"Confusion matrix for {modelPerf.DatSetName}";
+            //MModelEvaluation dlg = new MModelEvaluation();
+            MClassEvalWnd dlg = new MClassEvalWnd();
+            dlg.Title = $"Confusion matrix for {modelPerf.DatSetName}";
             var cl = ret["Classes"].Select(x => x.ToString()).ToArray();
             dlg.loadClasses(cl);
-            dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray(),
-                  null,null);
+            dlg.loadData(ret["obs_train"].Select(x => (double)x).ToArray(), ret["prd_train"].Select(x => (double)x).ToArray());
 
             dlg.ShowDialog();
         }

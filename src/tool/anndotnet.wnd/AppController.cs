@@ -890,7 +890,8 @@ namespace anndotnet.wnd
 
         private void onAbout(object sender, ExecutedRoutedEventArgs e)
         {
-            AboutANNdotNET dlg = new AboutANNdotNET();
+            //AboutANNdotNET dlg = new AboutANNdotNET();
+            About dlg = new About();
             dlg.Show();
             //MessageBox.Show("ANNdotNET vNext, Bahrudin Hrnjica, 2006-2018");
         }

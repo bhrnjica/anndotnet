@@ -1,0 +1,64 @@
+﻿<Window x:Class="anndotnet.wnd.MClassEvalWnd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Multi-class model evaluation" Height="400" Width="700">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="50"/>
+
+
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="300*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="10"/>
+
+        </Grid.RowDefinitions>
+        <!--Accuracy-->
+        <Label Grid.Row="3" Grid.Column="1" Content="Overall Accuracy: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txOAccuracy" Grid.Row="3" Grid.Column="2"  VerticalAlignment="Center" FontWeight="Bold"/>
+        <Label Grid.Row="4" Grid.Column="1" Content="Average Accuracy: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txAAccuracy" Grid.Row="4" Grid.Column="2"  VerticalAlignment="Center" FontWeight="Bold"/>
+            
+        <!--Precision-->
+        <Label Grid.Row="3" Grid.Column="3" Content="Micro-average Precision: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txMiPrecision" Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" FontWeight="Bold"/>
+        <Label Grid.Row="4" Grid.Column="3" Content="Macro-average Precision: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txMaPrecision" Grid.Row="4" Grid.Column="4" VerticalAlignment="Center" FontWeight="Bold"/>
+        <!--Recall-->
+        <Label Grid.Row="3" Grid.Column="5" Content="Micro-average Recall: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txMiRecall" Grid.Row="3" Grid.Column="6" VerticalAlignment="Center" FontWeight="Bold"/>
+        <Label Grid.Row="4" Grid.Column="5" Content="Macro-average Recall: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txMaRecall" Grid.Row="4" Grid.Column="6" VerticalAlignment="Center" FontWeight="Bold"/>
+
+
+        <!--Heidke Skill Score-->
+        <Label Grid.Row="5" Grid.Column="3" Content="HSS: "/>
+        <TextBlock  x:Name="txHSS" Grid.Row="5" Grid.Column="4" VerticalAlignment="Center" FontWeight="Bold"/>
+
+        <!--Pierce Skill Score-->
+        <Label Grid.Row="5" Grid.Column="5" Content="PSS: " HorizontalAlignment="Right"/>
+        <TextBlock x:Name="txPSS" Grid.Row="5" Grid.Column="6" VerticalAlignment="Center" FontWeight="Bold"/>
+
+        <!--confusion matrix-->
+        <WindowsFormsHost  x:Name="hostWF" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="7">
+            <forms:ListView x:Name="listView1" Font="Segoe UI" View="Details" FullRowSelect="False" HeaderStyle="None" MultiSelect="False"  />
+        </WindowsFormsHost>
+
+    </Grid>
+</Window>
