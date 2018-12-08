@@ -165,10 +165,6 @@
     <Compile Include="converters\BoolToGridRowHeightConverter.cs" />
     <Compile Include="converters\IMultiConverter.cs" />
     <Compile Include="converters\IsEditingConverter.cs" />
-    <Compile Include="Form1.cs" />
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="forms\BinEvalWnd.xaml.cs">
       <DependentUpon>BinEvalWnd.xaml</DependentUpon>
     </Compile>
@@ -493,9 +489,6 @@
     <Content Include="Resources\Titanic\TitanicProject\TitanicProject_rawdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
