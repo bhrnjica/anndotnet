@@ -34,7 +34,6 @@ namespace anndotnet.wnd
 
         public BinEvalWnd()
         {
-            this.DataContext = Performance;
             InitializeComponent();
             this.Loaded += BinEvalWnd_Loaded;
         }

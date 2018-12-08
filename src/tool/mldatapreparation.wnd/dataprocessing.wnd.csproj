@@ -90,19 +90,10 @@
       <DependentUpon>ImageClassificator.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageClassificatorModel.cs" />
-    <Compile Include="ImportData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ImportData.designer.cs">
-      <DependentUpon>ImportData.cs</DependentUpon>
-    </Compile>
     <Compile Include="ImageItem.xaml.cs">
       <DependentUpon>ImageItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ImportData.resx">
-      <DependentUpon>ImportData.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

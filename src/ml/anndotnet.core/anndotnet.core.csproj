@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="util\NetToGraphOld.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="util\NetToGraphOld.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CNTK.GPU" Version="2.6.0" />
   </ItemGroup>
 

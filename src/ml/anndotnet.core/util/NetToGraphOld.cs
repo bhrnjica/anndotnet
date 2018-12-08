@@ -20,11 +20,7 @@ using System.Globalization;
 
 namespace ANNdotNET.Core
 {
-    public enum CntkType
-    {
-        Function,
-        Variable
-    }
+     
     public class NetToGraph
     {
         
@@ -87,7 +83,7 @@ namespace ANNdotNET.Core
         {
             string id = node.Uid;
 
-            var currentVertex = createOutputNode(node);
+            var currentVertex = LazyCreateNode(node);
 
             foreach (var input in node.RootFunction.Inputs)
             {
@@ -106,11 +102,63 @@ namespace ANNdotNET.Core
                 DotNode vertex = null;
                 if (!input.IsOutput)
                 {
-                    vertex = createNonOutputNode(input);
+                    var name = input.Kind.ToString();
+                    if (!string.IsNullOrEmpty(input.Name))
+                    {
+                        if (name.Equals("Parameter"))
+                            name = input.Name;
+                        else
+                            name += "\n" + input.Name;
+                    }
+                    name += "\n" + ShapeDescription(input);
+
+                    vertex = createVertex(input);
+                    
+                    if (input.IsInput || input.IsPlaceholder)
+                    {
+                        vertex.Label = name;
+                        // 
+                        vertex.FixedSize = true;
+                        vertex.Height = 1f;
+                        vertex.Width = 1.3f;
+                        vertex.PenWidth = 4;
+                    }
+                    else if (string.IsNullOrEmpty(input.Name) && input.IsConstant && (input.Shape.Dimensions.Count == 0 || input.Shape.Dimensions[0] == 1))
+                    {
+                        string label1 = "";
+                        var contView = new Constant(input).Value();
+                        var value = new Value(contView);
+                        switch (input.DataType)
+                        {
+                            case DataType.Float:
+                                label1 = value.GetDenseData<float>(input)[0][0].ToString("N4",CultureInfo.InvariantCulture);
+                                break;
+                            case DataType.Double:
+                                label1 = value.GetDenseData<double>(input)[0][0].ToString("N4", CultureInfo.InvariantCulture);
+                                break;
+                            case DataType.Float16:
+                                label1 = (value.GetDenseData<float16>(input)[0][0]).ToString();
+                                break;
+                            default:
+                                break;
+                        }
+
+                        vertex.Label = label1;
+                        // 
+                        vertex.Height = 0.6f;
+                        vertex.Width = 1f;
+                    }
+                    else
+                    {
+                        vertex.Label = name;
+                       //  
+                        vertex.Height = 0.6f;
+                        vertex.Width = 1f;
+                    }
                 }
                 else 
                 {
-                    vertex = createOutputNode(input.Owner);
+                    vertex = LazyCreateNode(input.Owner);
                 }
 
                 string label = string.IsNullOrEmpty(input.Name) ? input.Uid : input.Name;
@@ -144,64 +192,6 @@ namespace ANNdotNET.Core
             }
             //mark current node as visited
             visitedNodes.Add(id);
-        }
-
-        private DotNode createNonOutputNode(Variable input)
-        {
-            DotNode vertex;
-            var name = input.Kind.ToString();
-            if (!string.IsNullOrEmpty(input.Name))
-            {
-                if (name.Equals("Parameter"))
-                    name = input.Name;
-                else
-                    name += "\n" + input.Name;
-            }
-            name += "\n" + ShapeDescription(input);
-
-            vertex = createVertex(input);
-
-            if (input.IsInput || input.IsPlaceholder)
-            {
-                vertex.Label = name;
-                // 
-                vertex.FixedSize = true;
-                vertex.Height = 1f;
-                vertex.Width = 1.3f;
-                vertex.PenWidth = 4;
-            }
-            else if (string.IsNullOrEmpty(input.Name) && input.IsConstant && (input.Shape.Dimensions.Count == 0 || input.Shape.Dimensions[0] == 1))
-            {
-                string label1 = "";
-                var contView = new Constant(input).Value();
-                var value = new Value(contView);
-                switch (input.DataType)
-                {
-                    case DataType.Float:
-                        label1 = value.GetDenseData<float>(input)[0][0].ToString("N4", CultureInfo.InvariantCulture);
-                        break;
-                    case DataType.Double:
-                        label1 = value.GetDenseData<double>(input)[0][0].ToString("N4", CultureInfo.InvariantCulture);
-                        break;
-                    case DataType.Float16:
-                        label1 = (value.GetDenseData<float16>(input)[0][0]).ToString();
-                        break;
-                    default:
-                        break;
-                }
-
-                vertex.Label = label1;
-                vertex.Height = 0.6f;
-                vertex.Width = 1f;
-            }
-            else
-            {
-                vertex.Label = name;
-                vertex.Height = 0.6f;
-                vertex.Width = 1f;
-            }
-
-            return vertex;
         }
 
         private DotNode createVertex(Function fun)
@@ -246,7 +236,7 @@ namespace ANNdotNET.Core
             return n;
         }
 
-        DotNode createOutputNode(Function node)
+        DotNode LazyCreateNode(Function node)
         {
             var primitiveOperationsMap = PrimitiveOperationsMap();
             DotNode vertex= null;
