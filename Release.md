@@ -1,3 +1,55 @@
+ANNdotNET v1.2 - deep learning tool on .NET platform
+============
+This version brings several important updates and new features:
+
+## The following enhancements and new features has been made in this release
+
+- ### Image classification module
+  - ``Image Classification`` project - This is huge step forward to this version. With IC project, the user can completely implements image classification with minimal steps without leaving GUI module.#39
+  - ``ANNdotNET Feed`` - brings ability to share interesting ``annproject``'s to all community. Once the interesting project is added to ANNdotNET Feed it can be viewed by all uses that have installed ANNdotNET v1.2+ version.#33 
+- ### Raw Data Handling Module
+  - ``Time Series Generator`` - previously time series could be loaded in ``Data Import`` dialog only with one column data without header. Now, more than one column with header can be imported, and only the last one will be generated as time series, while the rest columns will remain as are.#34 #35
+  - Split Raw Data Set to: ``train``, ``validation`` and ``test`` sets. Up to now the user could split raw data set on train and validation sets only.#22   
+  - Export to Excel with all three data sets.#23
+  - Optimization data loading and handling with huge data set.#21
+- ### Neural Network Designer improvements
+
+  - Add new Layer types: Convolution, Pooling, etc. #18
+  - ``Inser`` button Insert Layer in the network at specific position.#36
+
+### Bug Fixes
+- Some WinForms Dialogs has been converted into WPF based windows in order to fix WInForm DPI issue on scalled monitors. #42
+- Minor code improvements and bug fixes
+
+
+
+ANNdotNET v1.1 - deep learning tool on .NET platform
+============
+This version brings upgrade of Machine Learning Engine and set of minor bug fixes identified in the application.
+
+## The following enhancements has been made in this release
+- Visualization of network configuration using Graphviz tool #32 
+- The ANNdotNET MLEngine now relies on CNTK 2.6. #28 
+- Information about data sets has been added to Network Page #30 
+- Chart controls on Training and Evaluation pages are simplified and improved visibility. #29 
+- Refresh button has been removed and added automatic model evaluation. #31 
+- Wiki pages are updated with the latest version.#40
+
+## Bug Fixes
+- Test Tab Page had bug which add new rows whenever the user press Evaluate button.   
+- Minor bug fixes and code improvements.#38
+ANNdotNET v1.1-rc20181115 - deep learning tool on .NET platform
+============
+This version brings upgrade of Machine Learning Engine and set of minor bug fixes identified in the application.
+## The following enhancements has been made in this release
+- The ANNdotNET MLEngine now relies on CNTK 2.6. 
+- Information about datasets has been added to Network Page
+- Chart controls on Training and Evaluation pages are simplified and improved visibility.
+- Refresh button has been removed and added automatic model evaluation.
+
+## Bug Fixes
+- Test Tab Page had bug which add new rows whenever the user press Evaluate button. 
+-  
 ANNdotNET v1.1-rc20181115 - deep learning tool on .NET platform
 ============
 This version brings upgrade of Machine Learning Engine and set of minor bug fixes identified in the application.
