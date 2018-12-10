@@ -147,7 +147,7 @@ namespace DataProcessing.Wnd
                         var itm = new ImageLabelItem();
                         itm.Label = r[0];
                         itm.Folder = r[1];
-                        itm.Query = r[2];
+                        itm.Query = r[2]=="n/a"?"":r[2];
                         model.Labels.Add(itm);
                     }
                     return model;
