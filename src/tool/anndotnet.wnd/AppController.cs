@@ -745,10 +745,10 @@ namespace anndotnet.wnd
                     itm.Type = LayerType.Conv1D;
                 else if (layer == "Conv2D")
                     itm.Type = LayerType.Conv2D;
-                else if (layer == "Polling1D")
-                    itm.Type = LayerType.Polling1D;
-                else if (layer == "Polling2D")
-                    itm.Type = LayerType.Polling2D;
+                else if (layer == "Pooling1D")
+                    itm.Type = LayerType.Pooling1D;
+                else if (layer == "Pooling2D")
+                    itm.Type = LayerType.Pooling2D;
                 else if (layer == "LSTM")
                 {
                     itm.FParam = Activation.TanH;

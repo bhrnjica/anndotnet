@@ -366,8 +366,14 @@ namespace anndotnet.wnd.Models
                 var label = data[i][0];
                 var folder = data[i][1];
                 var query = data[i][2];
-                var images = Directory.GetFiles(folder, query, SearchOption.TopDirectoryOnly);
-                if (images.Length == 0)
+                string[] images = null;
+
+                if(string.IsNullOrEmpty(query)|| query==" ")
+                    images = Directory.GetFiles(folder);
+                else
+                    images = Directory.GetFiles(folder, query, SearchOption.TopDirectoryOnly);
+                //
+                if (images==null || images.Length == 0)
                     throw new Exception($"No images have been found for '{label}' label. Folder path must not be empty.");
 
                 dataCount += images.Length;
@@ -385,9 +391,14 @@ namespace anndotnet.wnd.Models
                 //
                 var folder = data[i][1];
                 var query = data[i][2];
-                var images = Directory.GetFiles(folder, query, SearchOption.TopDirectoryOnly);
-                //check for images in the path
-                if (images.Length == 0)
+                string[] images = null;
+
+                if (string.IsNullOrEmpty(query) || query == " ")
+                    images = Directory.GetFiles(folder);
+                else
+                    images = Directory.GetFiles(folder, query, SearchOption.TopDirectoryOnly);
+                //
+                if (images == null || images.Length == 0)
                     throw new Exception($"No images have been found for '{label}' label. Folder path must not be empty.");
 
                 //construct the rows of map files

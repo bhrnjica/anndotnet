@@ -200,7 +200,7 @@ namespace anndotnet.wnd.panels
                     lblDesc.Visibility = System.Windows.Visibility.Collapsed;
                     lblDesc.Content = "Description:.";
                 }
-                else if (nn.Name.StartsWith("Polling1D"))
+                else if (nn.Name.StartsWith("Pooling1D"))
                 {
                     lblHdim.Content = "Size X: ";
                     lblCdim.Content = "Size Y: ";
@@ -251,12 +251,12 @@ namespace anndotnet.wnd.panels
                     lblDesc.Visibility = System.Windows.Visibility.Collapsed;
                     lblDesc.Content = "Description:.";
                 }
-                else if (nn.Name.StartsWith("Polling2D"))
+                else if (nn.Name.StartsWith("Pooling2D"))
                 {
                     lblHdim.Content = "Layer dimension: ";
                     lblCdim.Content = "Layer count: ";
                     //
-                    lblAct.Content = "Polling Type:";
+                    lblAct.Content = "Pooling Type:";
                     cmbAct.Items.Clear();
                     cmbAct.Items.Add("Max");
                     cmbAct.Items.Add("Avg");

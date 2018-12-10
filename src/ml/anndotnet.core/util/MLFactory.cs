@@ -722,7 +722,7 @@ namespace ANNdotNET.Core
                     net = cn.Conv2D(net, layer.Param1, new int[] { layer.Param2, layer.Param2 }, type, device,
                         layer.BParam1/*padding*/, layer.BParam2/*bias*/, layer.Name, 1);
                 }
-                else if (layer.Type == LayerType.Polling1D)
+                else if (layer.Type == LayerType.Pooling1D)
                 {
                     var cn = new Convolution();
                     var pType = PoolingType.Max;
@@ -732,7 +732,7 @@ namespace ANNdotNET.Core
                     //
                     net = cn.Pooling1D(net, layer.Param1, type, pType, device, layer.Name, 1);
                 }
-                else if (layer.Type == LayerType.Polling2D)
+                else if (layer.Type == LayerType.Pooling2D)
                 {
                     var cn = new Convolution();
                     var pType = PoolingType.Max;

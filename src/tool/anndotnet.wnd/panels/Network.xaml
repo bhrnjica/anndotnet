@@ -164,8 +164,8 @@
                     <ComboBoxItem Content="DropOut"/>
                     <ComboBoxItem Content="Conv1D"/>
                     <ComboBoxItem Content="Conv2D"/>
-                    <ComboBoxItem Content="Polling1D"/>
-                    <ComboBoxItem Content="Polling2D"/>
+                    <ComboBoxItem Content="Pooling1D"/>
+                    <ComboBoxItem Content="Pooling2D"/>
                     <ComboBoxItem Content="CudaStackedLSTM"/>
                     <ComboBoxItem Content="CudaStackedGRU"/>
                 </ComboBox>
