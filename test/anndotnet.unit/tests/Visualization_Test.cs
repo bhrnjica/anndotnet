@@ -19,6 +19,7 @@ namespace anndotnet.unit
         public void export_to_csv_regression_test01()
         {
             DeviceDescriptor device = DeviceDescriptor.UseDefaultDevice();
+            //var strPath = "C:\\sc\\Datasets\\ResNet18_ImageNet_CNTK.model";
             var strPath = "C:\\sc\\github\\anndotnet\\src\\tool\\anndotnet.wnd\\Resources\\Iris\\IrisProject\\FFModel\\models\\model_at_983of1000_epochs_TimeSpan_636729018198856673";
             vizualizeModel(strPath);
             //
