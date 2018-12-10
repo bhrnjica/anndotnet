@@ -17,11 +17,15 @@ using System.Windows.Input;
 
 namespace DataProcessing.Wnd
 {
+
+
+    
     /// <summary>
     /// Interaction logic for ItemItem.xaml
     /// </summary>
     public partial class ImageItem : UserControl
     {
+        static string m_lastVisitedFolder;
         public ImageItem()
         {
             InitializeComponent();
@@ -32,8 +36,21 @@ namespace DataProcessing.Wnd
         private void folderButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            if(dialog.ShowDialog()== System.Windows.Forms.DialogResult.OK)
-                txtCdim.Text = dialog.SelectedPath;
+            dialog.SelectedPath = m_lastVisitedFolder;
+            if (dialog.ShowDialog()== System.Windows.Forms.DialogResult.OK)
+            {
+                var lbl = this.DataContext as ImageLabelItem;
+                //txtCdim.Text = dialog.SelectedPath;
+                if(lbl!=null)
+                {
+                    lbl.Folder = dialog.SelectedPath;
+                    txtCdim.Text = dialog.SelectedPath;
+                }
+                    
+                m_lastVisitedFolder = dialog.SelectedPath;
+            }
+               
         }
+
     }
 }
