@@ -58,15 +58,15 @@ namespace anndotnet.wnd.Models
         {
             get
             {
-                string desc = @"ANNdotNET - deep learning tool on .NET platform.
-                                ANNdotNET uses the folowing third party open source libraries:
-
-                                - CNTK - Microsoft Congnitive Toolkit, with MIT License,
-                                - Fluent.ibbon - WPF Ribbon control like in Office , with MIT License
-                                - ZedGraph - charting control, with lgpl2.1 license,
-                                - ClosedXML - reading and writing Excel files, with MIT license,
-                                - Excel-DNA - Excel add-ins using .NET, with MIT license.
-                                ";
+                string desc = @"ANNdotNET - deep learning tool on .NET platform." + Environment.NewLine+
+                                "ANNdotNET uses the following third party open source libraries:" + Environment.NewLine +
+                                " " + Environment.NewLine+
+                                "- CNTK - Microsoft Cognitive Toolkit, with MIT License," + Environment.NewLine +
+                                "- Fluent.ibbon - WPF Ribbon control like in Office , with MIT License" + Environment.NewLine +
+                                "- ZedGraph - charting control, with lgpl2.1 license," + Environment.NewLine +
+                                "- ClosedXML - reading and writing Excel files, with MIT license," + Environment.NewLine +
+                                "- Excel-DNA - Excel add-ins using .NET, with MIT license." + Environment.NewLine
+                                ;
                 return desc;
             }
         }

@@ -129,6 +129,7 @@ namespace ANNdotNET.Core
                 //only final network outputs are drawn
                 if (node.Uid==rootNode.Uid)
                 {
+
                     var finalVertex =createVertex(output);
                     finalVertex.Label = output.Name + "\n" + ShapeDescription(output);
                     finalVertex.Shape = DotNodeShape.Egg;
@@ -204,15 +205,10 @@ namespace ANNdotNET.Core
             return vertex;
         }
 
-        private DotNode createVertex(Function fun)
+        private DotNode createVertex(Variable node)
         {
-            var n = new DotNode(fun.Uid);
-            Variable node = null;
-            if (fun.Outputs.Count == 1)
-                node = fun;
-            else
-                node = fun.Outputs.Last();
-
+            var n = new DotNode(node.Uid);
+            
             if (node.IsInput)
             {
                 n.Style = DotNodeStyle.Filled;
@@ -272,7 +268,10 @@ namespace ANNdotNET.Core
             else
             {
                 string functionName = string.IsNullOrEmpty(node.Name) ? "" : "\n" + node.Name + "()";
-                vertex = createVertex(node);
+                if(node.Outputs.Count <= 1)
+                    vertex = createVertex(node);
+                else
+                    vertex = createVertex(node.Outputs.Last());
 
                 //
                 vertex.Label = node.OpName + functionName;
