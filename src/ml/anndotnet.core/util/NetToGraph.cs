@@ -271,7 +271,18 @@ namespace ANNdotNET.Core
                 if(node.Outputs.Count <= 1)
                     vertex = createVertex(node);
                 else
+                {
+                    for(int j = 0; j < node.Outputs.Count()-1; j++)
+                    {
+                        var o = node.Outputs[j];
+                        funStack.Push((Function)o);
+                        typeStack.Push(CntkType.Function);
+                       
+                    }
+                    //proceeed with last one
                     vertex = createVertex(node.Outputs.Last());
+                }
+                    
 
                 //
                 vertex.Label = node.OpName + functionName;
