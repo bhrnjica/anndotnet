@@ -588,17 +588,32 @@ namespace anndotnet.wnd.Models
         private void progressStartTraining(Action<ProgressData> trainingProgress)
         {
             ProgressData progress = new ProgressData();
-            progress.EpochCurrent = 0;
-            progress.EpochTotal = 0;
-            progress.EvaluationFunName = "";
-            progress.MinibatchAverageEval = 0;
-            progress.MinibatchAverageLoss = 0;
-            progress.TrainEval = 0;
-            progress.ValidationEval = 0;
-            if(trainingProgress!=null)
+            if(TrainingProgress.MBLossValue.Count>0)
+            {
+                progress.EpochCurrent = (int)TrainingProgress.MBLossValue.Last().X;
+                progress.EpochTotal = 0;
+                progress.EvaluationFunName = "";
+                progress.MinibatchAverageEval = TrainingProgress.MBEvaluationValue.Last().Y;
+                progress.MinibatchAverageLoss = TrainingProgress.MBLossValue.Last().Y;
+                progress.TrainEval = TrainingProgress.TrainEvalValue.Last().Y;
+                progress.ValidationEval = TrainingProgress.ValidationEvalValue.Last().Y;
+            }
+            else
+            {
+                progress.EpochCurrent = 0;
+                progress.EpochTotal = 0;
+                progress.EvaluationFunName = "";
+                progress.MinibatchAverageEval = 0;
+                progress.MinibatchAverageLoss = 0;
+                progress.TrainEval = 0;
+                progress.ValidationEval = 0;
+            }
+            
+            if (trainingProgress!=null)
                 trainingProgress(progress);
         }
 
+        
         private void isModelParametersValid()
         {
             if (Network[0].Type == LayerType.Custom)
