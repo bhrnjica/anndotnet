@@ -113,6 +113,8 @@
   <Import Project="..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" />
   <Import Project="..\..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets" Condition="Exists('..\..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.xll"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.xll"
+copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.dna" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.dna"
+copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64-packed.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64-packed.xll"</PostBuildEvent>
   </PropertyGroup>
 </Project>
