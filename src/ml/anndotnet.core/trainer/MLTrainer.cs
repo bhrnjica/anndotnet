@@ -717,7 +717,7 @@ namespace ANNdotNET.Core
             {
                 //
                 var llr = new List<Learner>();
-                var msgd = Learner.MomentumSGDLearner(network.Parameters(), lr, mm, true, addParam);
+                var msgd = CNTKLib.MomentumSGDLearner(new ParameterVector(network.Parameters().ToList()), lr, mm, true, addParam);
                 llr.Add(msgd);
                 return llr;
             }
@@ -726,7 +726,7 @@ namespace ANNdotNET.Core
             {
                 //
                 var llr = new List<Learner>();
-                var msgd = Learner.SGDLearner(network.Parameters(), lr, addParam);
+                var msgd = CNTKLib.SGDLearner(new ParameterVector(network.Parameters().ToList()), lr, addParam);
                 llr.Add(msgd);
                 return llr;
             }
