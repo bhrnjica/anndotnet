@@ -5,8 +5,8 @@
 configid:unique-mlconfig-identification
 
 !features and labels
-!image tensor[numChanell, height, width]
-features:|features 3;98;98 0
+!image tensor[numChanell, height, width; augmentation]
+features:|features 3;98;98;1 0
 labels:|labels 2 0
 
 metadata:|Column01:Image;Image;Feature;None;|Column02:Label;Category;Label;None;dog;cat

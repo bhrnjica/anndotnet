@@ -321,7 +321,7 @@ namespace anndotnet.wnd.Models
 
 
             //create mlconfig file
-            Project.NewMLConfigFile(proj, modelName);
+            Project.NewMLConfigFile(proj, modelName, DataSet);
 
             //initialize model
             mlconfig.Init();

@@ -400,7 +400,7 @@ namespace ANNdotNET.Lib
         /// <param name="project"></param>
         /// <param name="mlconfigName"></param>
         /// <returns></returns>
-        public static bool NewMLConfigFile(Project project, string mlconfigName)
+        public static bool NewMLConfigFile(Project project, string mlconfigName, ANNDataSet ds)
         {
             try
             {
@@ -410,11 +410,15 @@ namespace ANNdotNET.Lib
                 var numDim = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Numeric).Count();
                 if (numDim > 0)
                     strFeatures += $"{ProjectSettings.m_NumFeaturesGroupName} 1;{numDim} 0\t";
-
+                              
                 //create features for image
                 var imgCol = project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Image).FirstOrDefault();
                 if (imgCol != null)
-                    strFeatures += $"|{imgCol.Name} {imgCol.Shape} 0\t";
+                {
+                    var shape = imgCol.Shape + ";" + ds.Data.First().Last();
+                    strFeatures += $"|{imgCol.Name} {shape} 0\t";
+                }
+                   
 
                 //create category features
                 foreach (var c in project.Descriptor.Columns.Where(x => x.Kind == DataKind.Feature && x.Type == MLDataType.Category))

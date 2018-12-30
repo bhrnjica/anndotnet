@@ -55,7 +55,7 @@
                 </StackPanel >
                 <StackPanel Orientation="Horizontal" >
                     <Label Width="2"/>
-                    <CheckBox Content="Use Image Data Augmentation"/>
+                    <CheckBox Content="Use Image Data Augmentation" IsChecked="{Binding IsAugmentation}"/>
                 </StackPanel >
                 
                                

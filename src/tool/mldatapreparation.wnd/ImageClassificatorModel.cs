@@ -21,6 +21,20 @@ namespace DataProcessing.Wnd
         public int Height { get; set; }
         public int DataAugmentation { get; set; }
         
+        public bool IsAugmentation
+        {
+            get
+            {
+                return DataAugmentation == 1;
+            }
+            set
+            {
+                if (value)
+                    DataAugmentation = 1;
+                else
+                    DataAugmentation = 0;
+            }
+        }
         public ObservableCollection<ImageLabelItem> Labels { get; set; }
         
         public ImageClassificatorModel()
