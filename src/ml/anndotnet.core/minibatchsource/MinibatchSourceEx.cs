@@ -33,7 +33,8 @@ namespace ANNdotNET.Core
         private MinibatchSource defaultmb;
         private StreamReader custommb;
 
-        public MinibatchSourceEx(MinibatchType type, StreamConfiguration[] streamConfigurations, List<Variable> inputVar, List<Variable> outputVar, string trainFilePath, string validFilePath, ulong epochSize, bool randomizeBatch)
+        public MinibatchSourceEx(MinibatchType type, StreamConfiguration[] streamConfigurations, List<Variable> inputVar, List<Variable> outputVar,
+            string trainFilePath, string validFilePath, ulong epochSize, bool randomizeBatch, int useImgAugm)
         {
             this.StreamConfigurations = streamConfigurations;
             this.TrainingDataFile = trainFilePath;
@@ -59,9 +60,13 @@ namespace ANNdotNET.Core
                       new Tuple<float, float>(0.0f, 0.0f),
                       new Tuple<float, float>(1.0f, 1.0f),
                       "uniRatio");
-                transforms.Add(randomSideTransform);
+                if(useImgAugm == 1)
+                    transforms.Add(randomSideTransform);
+
+                //scaling image comes at the end of image transformation
                 var scaleTransform = CNTKLib.ReaderScale(image_width, image_height, num_channels);
                 transforms.Add(scaleTransform);
+
 
                 var labelName = streamConfigurations.Last().m_streamName;
                 var labelDimension = streamConfigurations.Last().m_dim;

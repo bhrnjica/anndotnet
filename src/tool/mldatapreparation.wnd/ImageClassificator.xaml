@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DataProcessing.Wnd"
              mc:Ignorable="d" FontFamily="Segoe UI" FontSize="12"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="580" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -13,7 +13,7 @@
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -33,25 +33,35 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <GroupBox Grid.Row="2" Grid.Column="5" Header="Image transformation">
-        <StackPanel Margin="0,5,0,0" Grid.Row="2" Grid.Column="5" Orientation="Vertical" VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" >
-                <Label x:Name="lblHdim"  Width="100"  Content="Width:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
-                <Label Width="2"/>
+        <GroupBox Grid.Row="2" Grid.Column="5" Header="Image transformation" VerticalAlignment="Top">
+            <StackPanel Margin="0,5,0,0" Grid.Row="2" Grid.Column="5" Orientation="Vertical" VerticalAlignment="Top">
+                <StackPanel Orientation="Horizontal" >
+                    <Label x:Name="lblHdim"  Width="100"  Content="Width:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                    <Label Width="2"/>
                     <TextBox x:Name="txtHdim2" Text="{Binding Width}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
-            </StackPanel >
-            <StackPanel Orientation="Horizontal" >
-                <Label x:Name="lblHdim1"  Width="100"  Content="Height:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
-                <Label Width="2"/>
+                </StackPanel >
+                <StackPanel Orientation="Horizontal" >
+                    <Label x:Name="lblHdim1"  Width="100"  Content="Height:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                    <Label Width="2"/>
                     <TextBox x:Name="txtHdim12" Text="{Binding Height}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
-            </StackPanel >
-            <StackPanel Orientation="Horizontal" >
+                </StackPanel >
+                <StackPanel Orientation="Horizontal" >
                     <Label x:Name="lblHdim3"  Width="100"  Content="Channels:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
-                <Label Width="2"/>
-                    <TextBox x:Name="txtHdim13" Text="{Binding Channels}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
-            </StackPanel >
-        </StackPanel>
+                    <Label Width="2"/>
+                    <TextBox x:Name="txtHdim13" Text="{Binding Channels,FallbackValue=3, TargetNullValue=3}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
+                </StackPanel >
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="2"/>
+                </StackPanel >
+                <StackPanel Orientation="Horizontal" >
+                    <Label Width="2"/>
+                    <CheckBox Content="Use Image Data Augmentation"/>
+                </StackPanel >
+                
+                               
+            </StackPanel>
         </GroupBox>
+
         <CheckBox Visibility="Collapsed" x:Name="checkRandomizeDataset" Content="Randomize data set then split" HorizontalAlignment="Left" Margin="3,6,0,0" Grid.Row="4" VerticalAlignment="Top" Height="15" Width="177" Grid.Column="1" Grid.ColumnSpan="3"/>
         <StackPanel Orientation="Horizontal" Margin="3,0,0,0" Grid.Row="5" VerticalAlignment="Top" HorizontalAlignment="Left" Height="73" Width="616" Grid.Column="1" Grid.ColumnSpan="5"   >
             <GroupBox Header="Validation data set" HorizontalAlignment="Left" Margin="0,5,0,0" >
@@ -75,6 +85,6 @@
                 </StackPanel>
             </GroupBox>
         </StackPanel>
-
+       
     </Grid>
 </UserControl>

@@ -65,6 +65,18 @@ namespace ANNdotNET.Core
             }
         }
 
+        int m_ImageAugmentation;
+        public int ImageAugmentation
+        {
+            get
+            {
+                return m_ImageAugmentation;
+            }
+            set
+            {
+                m_ImageAugmentation = value;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -178,7 +190,7 @@ namespace ANNdotNET.Core
                 Function nnModel = CreateNetworkModel(dicMParameters["network"], networkInput, f.OutputVariables, customModel, device);
 
                 //create minibatch spurce
-                var mbs = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), f.InputVariables, f.OutputVariables, strTrainPath, strValidPath, MinibatchSource.InfinitelyRepeat, trData.RandomizeBatch);
+                var mbs = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), f.InputVariables, f.OutputVariables, strTrainPath, strValidPath, MinibatchSource.InfinitelyRepeat, trData.RandomizeBatch, f.ImageAugmentation);
 
                 //return ml parameters
                 return (f, lrData, trData, nnModel, mbs);
@@ -300,7 +312,7 @@ namespace ANNdotNET.Core
             var networkInput = new List<Variable>();
             if (trData.Normalization != null && trData.Normalization.Length > 0 && !(trData.Normalization.First().Equals("0")))
             {
-                using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), f.InputVariables, f.OutputVariables, strTrainFile, strValidFile, MinibatchSource.FullDataSweep, trData.RandomizeBatch))
+                using (var mbs1 = new MinibatchSourceEx(trData.Type, f.StreamConfigurations.ToArray(), f.InputVariables, f.OutputVariables, strTrainFile, strValidFile, MinibatchSource.FullDataSweep, trData.RandomizeBatch, 0))
                 {
                     //select variables which are marked for the normalization. Train Data contains this information
                     var vars = f.InputVariables.Where(x => trData.Normalization.Contains(x.Name)).ToList();
@@ -941,8 +953,13 @@ namespace ANNdotNET.Core
                 if (fVar[1].Contains(m_ValueSpearator[0].ToString()))
                 {
                     shape = fVar[1].Split(m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries).Select(x=>int.Parse(x)).ToArray();
-                    //in C# order to row /colum matrix is oposite to python and C++, so the shape must be reordered
-                    shape = shape.Reverse().ToArray();
+
+                    //the lst value is about Image Augmentation
+                    ImageAugmentation = shape.Last();
+
+                    //in C# order to row /colum matrix is opposite to python and C++, so the shape must be reordered
+                    //The last three are image dimensions
+                    shape = shape.Reverse().Skip(1).ToArray();
                 }
                 else//1D variable
                     shape = new int[] { int.Parse(fVar[1]) };

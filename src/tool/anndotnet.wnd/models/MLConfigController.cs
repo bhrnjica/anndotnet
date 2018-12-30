@@ -797,7 +797,8 @@ namespace anndotnet.wnd.Models
             itm.Name = fet[0];
             //
             itm.Representation ="Shape";
-            itm.Dimension =$"{fet[1]}";
+            var inDim = fet[1].Split(MLFactory.m_ValueSpearator).Take(3).ToList();
+            itm.Dimension =$"{string.Join(";",inDim)}";
 
             return itm;
         }

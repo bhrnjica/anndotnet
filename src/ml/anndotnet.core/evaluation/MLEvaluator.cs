@@ -83,7 +83,7 @@ namespace ANNdotNET.Core
                 {
 
                     MinibatchSize = uint.Parse(mbSizetr),
-                    MBSource = new MinibatchSourceEx(mbType, mf.StreamConfigurations.ToArray(),mf.InputVariables, mf.OutputVariables, dataset, null, MinibatchSource.FullDataSweep, false),
+                    MBSource = new MinibatchSourceEx(mbType, mf.StreamConfigurations.ToArray(),mf.InputVariables, mf.OutputVariables, dataset, null, MinibatchSource.FullDataSweep, false,0),
                     Input = mf.InputVariables,
                     Ouptut = mf.OutputVariables,
                 };
@@ -544,7 +544,7 @@ namespace ANNdotNET.Core
                 var mapFile = "testMapFile";
                 File.WriteAllLines(mapFile, imagePaths.Select(x=>$"{x}\t0"));
 
-                var testMB = new MinibatchSourceEx(MinibatchType.Image, stremsConfig.ToArray(),features,labels,mapFile,null,30,false);
+                var testMB = new MinibatchSourceEx(MinibatchType.Image, stremsConfig.ToArray(),features,labels,mapFile,null,30,false, 0);
 
                //
                 var retVal = new List<int>();

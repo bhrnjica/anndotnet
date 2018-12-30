@@ -15,9 +15,12 @@ namespace DataProcessing.Wnd
     }
     public class ImageClassificatorModel
     {
+        //Scale image params
         public int Channels { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public int DataAugmentation { get; set; }
+        
         public ObservableCollection<ImageLabelItem> Labels { get; set; }
         
         public ImageClassificatorModel()

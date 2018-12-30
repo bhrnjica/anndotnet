@@ -33,7 +33,11 @@ namespace DataProcessing.Wnd
         private void ImageClassificator_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if(DataContext!=null && (DataContext is ImageClassificatorModel))
+            {
                 imageLabelList.ItemsSource = ((ImageClassificatorModel)DataContext).Labels;
+                
+            }
+                
         }
 
         private void Button_Click_Add(object sender, RoutedEventArgs e)
@@ -79,7 +83,10 @@ namespace DataProcessing.Wnd
                     ds.Data = new List<List<string>>();
                     foreach (var l in Model.Labels)
                     {
-                        var strRow = new List<string>() { l.Label, l.Folder, l.Query, Model.Channels.ToString(), Model.Height.ToString(), Model.Width.ToString() };
+                        var strRow = new List<string>() { l.Label, l.Folder, l.Query, Model.Channels.ToString(),
+                            Model.Height.ToString(), Model.Width.ToString(),Model.DataAugmentation.ToString()
+
+                        };
                         ds.Data.Add(strRow);
                     }
 
@@ -142,6 +149,11 @@ namespace DataProcessing.Wnd
                     model.Channels = int.Parse(row[3]);
                     model.Height = int.Parse(row[4]);
                     model.Width = int.Parse(row[5]);
+
+                    model.DataAugmentation = int.Parse(row[6]);
+
+
+                    //extract each image label
                     foreach (var r in dataSet.Data)
                     {
                         var itm = new ImageLabelItem();

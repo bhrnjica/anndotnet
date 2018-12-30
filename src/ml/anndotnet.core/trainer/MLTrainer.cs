@@ -269,7 +269,7 @@ namespace ANNdotNET.Core
                 {
 
                     MinibatchSize = trParams.BatchSize,
-                    MBSource = new MinibatchSourceEx(mbs.Type, this.StreamConfigurations.ToArray(), this.InputVariables, this.OutputVariables, mbs.TrainingDataFile, null, MinibatchSource.FullDataSweep, false),
+                    MBSource = new MinibatchSourceEx(mbs.Type, this.StreamConfigurations.ToArray(), this.InputVariables, this.OutputVariables, mbs.TrainingDataFile, null, MinibatchSource.FullDataSweep, false, 0),
                     Ouptut = OutputVariables,
                     Input = InputVariables,
                 };
@@ -289,7 +289,7 @@ namespace ANNdotNET.Core
                 {
                     MinibatchSize = trParams.BatchSize,
                     //StrmsConfig = StreamConfigurations.ToArray(),
-                    MBSource = new MinibatchSourceEx(mbs.Type, this.StreamConfigurations.ToArray(), this.InputVariables, this.OutputVariables, mbs.ValidationDataFile, null, MinibatchSource.FullDataSweep, false),
+                    MBSource = new MinibatchSourceEx(mbs.Type, this.StreamConfigurations.ToArray(), this.InputVariables, this.OutputVariables, mbs.ValidationDataFile, null, MinibatchSource.FullDataSweep, false, 0),
                     Ouptut = OutputVariables,
                     Input = InputVariables,
                 };
