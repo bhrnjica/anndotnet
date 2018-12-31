@@ -455,6 +455,18 @@
     <Content Include="Resources\CatDog\ProjectInfo.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\log\model_unique-mlconfig-identification.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\models\model_at_217of300_epochs_TimeSpan_636818507285194648">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\model_unique-mlconfig-identification.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\model_unique-mlconfig-identification.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="anndotnet.ico" />
     <Content Include="images\refresdata.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -737,10 +749,7 @@
       <Name>dataprocessing.wnd</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\CatDog\CatDog\convNet\log\" />
-    <Folder Include="Resources\CatDog\CatDog\convNet\models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
