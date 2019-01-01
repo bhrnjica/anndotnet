@@ -26,7 +26,7 @@ namespace anndotnet.wnd.Pages
     /// </summary>
     public partial class StartPageEx
     {
-        private string m_defaultBranch = "anndotnet-vNext";
+        private string m_defaultBranch = "Development";
         //private string m_defaultBranch = "master";
         public Action<Exception> ReportException { get; internal set; }
 
@@ -155,19 +155,16 @@ namespace anndotnet.wnd.Pages
                     System.IO.Directory.CreateDirectory(exampleDir);
                 }
 
-                //download the files
-                var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue("anndotnet"));
-                var cont = await client.Repository.Content.GetAllContentsByRef("bhrnjica", "anndotnet", example.Path, m_defaultBranch);
-                //
-                //downloadAndSave(client, cont, fullPathFolder);
-                var zipFile = cont.Where(x => x.Name.Contains($".zip")).FirstOrDefault();
-                if(string.IsNullOrEmpty(zipFile.Path))
+                
+                var zipFile = "";
+                if(string.IsNullOrEmpty(example.Name))
                 {
                     MessageBox.Show("File not found.","ANNDotNET");
                     return;
                 }
-                var remoteUrl = $"https://github.com/bhrnjica/anndotnet/raw/{m_defaultBranch}/{zipFile.Path}";
-                var fullPath = exampleDir + zipFile.Name;
+                //var remoteUrl = $"https://github.com/bhrnjica/anndotnet/raw/{m_defaultBranch}/{example.Name}";
+                var remoteUrl = $"https://raw.githubusercontent.com/bhrnjica/anndotnet/{m_defaultBranch}/Examples/{example.Name}";
+                var fullPath = exampleDir + example.Name;
                 //
                 var fi = new System.IO.FileInfo(fullPath);
                 if(!fi.Exists)
@@ -212,7 +209,8 @@ namespace anndotnet.wnd.Pages
             {
                 wb.DownloadProgressChanged += downloadProgressChanged;
                 await wb.DownloadFileTaskAsync(new Uri(serverPath), localPath);
-            }        
+            }
+
         }
 
         private static void downloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
