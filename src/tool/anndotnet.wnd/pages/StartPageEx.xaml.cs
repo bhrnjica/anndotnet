@@ -26,7 +26,7 @@ namespace anndotnet.wnd.Pages
     /// </summary>
     public partial class StartPageEx
     {
-        private string m_defaultBranch = "Development";
+        private string m_defaultBranch = "master";
         //private string m_defaultBranch = "master";
         public Action<Exception> ReportException { get; internal set; }
 
