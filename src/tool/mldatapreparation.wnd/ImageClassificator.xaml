@@ -80,7 +80,7 @@
                     <TextBox x:Name="txtTestCount" Text="0" Width="50" PreviewTextInput="TextBox_PreviewTextInput" TextAlignment="Right" VerticalAlignment="Center" />
                     <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="0,10,0,0">
                         <RadioButton Content="# for validation. (0-n/2 rows)" Visibility="Collapsed"  GroupName="test" IsChecked="{Binding IsChecked, ElementName=radionNumber}" IsEnabled="false"/>
-                        <RadioButton Content="% for validation. (0-50%)"  GroupName="test"  IsChecked="{Binding IsChecked, ElementName=radionPercentige}" IsEnabled="False"/>
+                        <RadioButton Content="% for testing. (0-20%)"  GroupName="test"  IsChecked="{Binding IsChecked, ElementName=radionPercentige}" IsEnabled="False"/>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
