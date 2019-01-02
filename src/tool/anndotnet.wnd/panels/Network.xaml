@@ -137,7 +137,7 @@
                 </Grid>
             </GroupBox>
         </StackPanel>
-        <GroupBox Header="NNetwork Designer" HorizontalAlignment="Left"  VerticalAlignment="Stretch" 
+        <GroupBox Header="Visual Network Designer" HorizontalAlignment="Left"  VerticalAlignment="Stretch" 
                   Width="550" Grid.Column="1" Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>

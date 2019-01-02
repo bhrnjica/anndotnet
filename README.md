@@ -22,14 +22,14 @@ In pre-calculated projects the user can find how to use various neural network c
  in terms of change its network configuration, learning and training parameters, as well as create new ml configurations.
 
 
-![ANNdotNET Logo](./docs/images/anndotnet_startwnd.jpg)
+![ANNdotNET Logo](./docs/images/anndotnet_startwnd.png)
 
 
-In order to handle with machine learning configuration file (*mlconfig*), ANNdotNET provides **neural network designer** (NNDesigner) capable of creating neural networks of any
- configurations and any combination of layers. The NNDesigner is based on layer concept, where user can easily add, delete or modify nn layers as simply as manipulating with the list view items.
+In order to handle with machine learning configuration file (*mlconfig*), ANNdotNET provides **visual network designer** (VN Designer) capable of creating neural networks of any
+ configurations and any combination of layers. The VN Designer is based on layer concept, where user can easily add, delete or modify nn layers as simply as manipulating with the list view items.
 
 
-![ANNetwork Designer](./docs/images/annetwork_designer.jpg)     
+![ANNetwork Designer](./docs/images/annetwork_designer.png)     
 
 
 # Software Requirements
@@ -40,7 +40,7 @@ ANNdotNET is x64 Windows desktop application running on .NET Framework 4.7.2. an
 * [Visual C++ 2017 version 15.4 v14.11 toolset](https://aka.ms/vs/15/release/vc_redist.x64.exe)
 * [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) 
 
-Note: The application is tested on clean *Windows Pro 10 1709 build*. Probably the application will run on Windows 8 and Windows 7 as well, but those systems are not tested.
+Note: The application is tested on clean *Windows Pro 10 1709 build*. Probably the application will run on Windows 8 and Windows 7 as well, once the user installs the prerequisites.
 
 # How to run application
 In order to run the application there are two possibilities:
@@ -63,10 +63,15 @@ In order to run the application there are two possibilities:
 4. Once the application is run, select one of many pre-calculated projects
     placed on Start Page.
 
-The following image shows Iris Flower Identification project opened in ANNdotNET
-GUI Tool
+The following image shows Bike SHaring project opened in ANNdotNET
+GUI Tool. More precisely the image shows Data preparation modul. 
 
-![](./docs/images/58dff84cb0ae27a3172d28ec7d695e68.jpg)
+![](./docs/images/anndotnet_data_preparation1.png)
+
+Since version 1.2, ANNdotNET support creating Image Classification, so the following image shows Cat and
+ Dog image classification project created by using ANNdotNET v1.2+.
+
+![](./docs/images/anndotnet_data_preparation2.png)
 
 ## How to install ANNdotNET Excel AddIn 
 
