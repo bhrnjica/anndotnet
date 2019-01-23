@@ -1,1 +1,0 @@
-Example of using ANNdotNET in prediction Vrana Lake level.
