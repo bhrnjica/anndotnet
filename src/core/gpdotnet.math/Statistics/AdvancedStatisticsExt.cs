@@ -21,7 +21,7 @@ namespace GPdotNet.MathStuff
     /// Implement extension methods for statistics calculation between two data sets X and Y eg. sum of square error, pearson coeff,... 
     /// 
     /// </summary>
-    public static class AdvancedStatistics
+    public static partial class AdvancedStatistics
     {
         /// <summary>
         /// Calculate Classification Accuracy

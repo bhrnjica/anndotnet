@@ -7,7 +7,7 @@
 //                                                                                      //
 // Bahrudin Hrnjica                                                                     //
 // bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
+// Bihac, Bosnia and Herzegovina                                                          //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ namespace NNetwork.Core.Network.Modules
     public class ScalingLayer// : NetworkFoundation
     {
         /// <summary>
-        /// Create embedding layer
+        /// Create scaling layer
         /// </summary>
         /// <param name="input"></param>
         /// <param name="embeddingDim"></param>
