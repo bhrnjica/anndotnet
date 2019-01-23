@@ -959,7 +959,10 @@ namespace ANNdotNET.Core
 
                     //in C# order to row /colum matrix is opposite to python and C++, so the shape must be reordered
                     //The last three are image dimensions
-                    shape = shape.Reverse().Skip(1).ToArray();
+                    if(shape.Count() > 2)
+                        shape = shape.Reverse().Skip(1).ToArray();
+                    else//we should not skip anithing in case no imageclassification 
+                        shape = shape.Reverse().ToArray();
                 }
                 else//1D variable
                     shape = new int[] { int.Parse(fVar[1]) };
