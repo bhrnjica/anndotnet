@@ -1015,7 +1015,7 @@ namespace anndotnet.wnd
             if(ActiveViewModel is MLConfigController)
             {
                 var ml = ActiveViewModel as MLConfigController;
-                e.CanExecute = ml.Settings.ProjectType == ProjectType.Default;
+                e.CanExecute = ml != null;//.Settings.ProjectType == ProjectType.Default;
             }
             else
                 e.CanExecute = false;
@@ -1036,6 +1036,11 @@ namespace anndotnet.wnd
 
                 if (e.Parameter.ToString() == "Excel")
                 {
+                    if(mlConfigC.Settings.ProjectType!= ProjectType.Default)
+                    {
+                        MessageBox.Show("This mlconfig type is not supported for Excel export.");
+                        return;
+                    }
                     var filepath = promptToSaveFile("Microsoft Excel files", " *.xlsx");
                     if (!string.IsNullOrEmpty(filepath))
                         await mlConfigC.ExportToExcel(filepath);

@@ -1,7 +1,7 @@
 !ML Configuration file for Iris famous dataset
 !this is typical classification problem
 
-!********mlconfigig*******
+!********mlconfigid*******
 configid:unique-mlconfig-identification
 
 !features and labels

@@ -23,21 +23,51 @@ namespace GPdotNet.MathStuff
     /// </summary>
     public static partial class AdvancedStatistics
     {
+        public static double AE(double[][] obsData, double[][] preData)
+        {
+            checkDataSets(obsData, preData);
+
+            //calculate sum of the square residuals
+            List<double> ssr = new List<double>();
+            for (int i = 0; i < obsData[0].Length; i++)
+                ssr.Add(0);
+
+            for (int i = 0; i < obsData.Length; i++)
+            {
+                for(int j=0; j< obsData[0].Length;j++)
+                {
+                    var r = Abs(obsData[i][j] - preData[i][j]);
+                    ssr[j] += r;
+                }
+                
+            }
+            return ssr.Average();
+        }
+
         public static double SE(double[][] obsData, double[][] preData)
+        {
+            var ssr = SEEx(obsData, preData);
+
+            return ssr.Average();
+        }
+
+        private static List<double> SEEx(double[][] obsData, double[][] preData)
         {
             checkDataSets(obsData, preData);
             //calculate sum of the square residuals
-            double ssr = 0;
+            List<double> ssr = new List<double>();
+            for (int j = 0; j < obsData[0].Length; j++)
+                ssr.Add(0);
             for (int i = 0; i < obsData.Length; i++)
             {
                 for (int j = 0; j < obsData[i].Length; j++)
                 {
                     var r = (obsData[i][j] - preData[i][j]);
-                    ssr += r * r;
+                    ssr[j] += r * r;
                 }
 
             }
-
+            //
             return ssr;
         }
 
@@ -65,35 +95,54 @@ namespace GPdotNet.MathStuff
 
             return Math.Sqrt(SE(obsData, preData) / (double)rCount);
         }
-
-        public static double[] MeanOf(double[][] mcolData)
+        public static double NSE(this double[][] obsData, double[][] preData)
         {
-            if (mcolData == null || mcolData.Length < 2)
-                throw new Exception("'coldData' cannot be null or empty!");
-            if (mcolData[0].Length < 1)
-                throw new Exception("'coldData' cannot be null or empty!");
+            checkDataSets(obsData, preData);
 
-            //calculate summ of the values
-            List<double> sum = new List<double>();
-            for (int j = 0; j < mcolData[0].Length; j++)
-                sum.Add(0);
+            var se = SEEx(obsData, preData);
 
-            ///
-            for (int i = 0; i < mcolData.Length; i++)
+            //calculate the mean
+            var mean = MeanOf(obsData);
+            //calculate sum of square 
+            List<double> ose = new List<double>();
+            for (int j = 0; j < obsData[0].Length; j++)
+                ose.Add(0);
+
+
+            for (int i = 0; i < obsData.Length; i++)
             {
-                for (int j = 0; j < mcolData[i].Length; j++)
+                for(int j=0; j< obsData[i].Length; j++)
                 {
-                    sum[j] += mcolData[i][j];
+                    var res = (obsData[i][j] - mean[j]);
+
+                    ose[j] += res * res;
                 }
+                
             }
 
+            //calculate NSE
+            var nse = new List<double>();
+            for (int j = 0; j < obsData[0].Length; j++)
+                nse.Add(1.0 - se[j] / ose[j]);
 
-            //calculate mean
-            for (int j = 0; j < mcolData[0].Length; j++)
-                sum[j] = sum[j] / (double)mcolData[0].Length;
-
-            return sum.ToArray();
+            return nse.Average();
         }
+
+        public static double PBIAS(double[][] obsData, double[][] preData)
+        {
+            checkDataSets(obsData, preData);
+            var ae = AE(obsData, preData);
+            List<double> pbiases = new List<double>();
+
+            for(int i=0; i<obsData[0].Length; i++)
+            {
+                pbiases.Add(ae / obsData[i].Sum());
+            }
+            
+
+            return pbiases.Average();
+        }
+
 
         public static double R(double[][] obsData, double[][] preData)
         {
@@ -134,6 +183,44 @@ namespace GPdotNet.MathStuff
 
             return corr.Average();
         }
+
+        public static double R2(double[][] obsData, double[][] preData)
+        {
+            checkDataSets(obsData, preData);
+
+            var r = R(obsData, preData);
+            return r * r;
+        }
+
+        public static double[] MeanOf(double[][] mcolData)
+        {
+            if (mcolData == null || mcolData.Length < 2)
+                throw new Exception("'coldData' cannot be null or empty!");
+            if (mcolData[0].Length < 1)
+                throw new Exception("'coldData' cannot be null or empty!");
+
+            //calculate summ of the values
+            List<double> sum = new List<double>();
+            for (int j = 0; j < mcolData[0].Length; j++)
+                sum.Add(0);
+
+            ///
+            for (int i = 0; i < mcolData.Length; i++)
+            {
+                for (int j = 0; j < mcolData[i].Length; j++)
+                {
+                    sum[j] += mcolData[i][j];
+                }
+            }
+
+
+            //calculate mean
+            for (int j = 0; j < mcolData[0].Length; j++)
+                sum[j] = sum[j] / (double)mcolData[0].Length;
+
+            return sum.ToArray();
+        }
+
 
         private static void checkDataSets(double[][] obsData, double[][] preData)
         {

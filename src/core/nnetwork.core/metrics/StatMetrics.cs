@@ -21,7 +21,27 @@ namespace NNetwork.Core.Metrics
     /// </summary>
     public static class StatMetrics
     {
-     
+        /// <summary>
+        /// Weighted Squared error
+        /// </summary>
+        /// <param name="prediction"></param>
+        /// <param name="actual"></param>
+        /// <param name="weights"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Function WeightedSE(Variable prediction, Variable actual, Constant weights, string name = null)
+        {
+
+            var remainder = CNTKLib.Minus(actual, prediction);
+            var squared = CNTKLib.Square(remainder);
+            var ret = CNTKLib.ElementTimes(squared, weights);
+
+            var sum = CNTKLib.ReduceSum(ret, Axis.AllAxes());
+
+
+            return sum;
+        }
+
         /// <summary>
         /// Calculate Correlation coefficient of two sets
         /// </summary>

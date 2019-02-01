@@ -160,11 +160,13 @@ namespace ANNdotNET.Core
                 while (true)
                 {
                     //get next mini batch data 
-                    var args = miniBatchSource.GetNextMinibatch(trParams.BatchSize, device);                  
-                    var isSweepEnd = args.Any(a => a.Value.sweepEnd);
-
-                    //prepare the data for trainer
-                    var arguments = MinibatchSourceEx.ToMinibatchValueData(args, vars); 
+                    //var args = miniBatchSource.GetNextMinibatch(trParams.BatchSize, device);                  
+                    //var isSweepEnd = args.Any(a => a.Value.sweepEnd);
+                    ////prepare the data for trainer
+                    //var arguments = MinibatchSourceEx.ToMinibatchValueData(args, vars); 
+                    //
+                    var isSweepEnd = false;
+                    var arguments = miniBatchSource.GetNextMinibatch(trParams.BatchSize, ref isSweepEnd,vars, device);
                     trainer.TrainMinibatch(arguments, isSweepEnd, device);
 
                     //make progress
@@ -277,6 +279,20 @@ namespace ANNdotNET.Core
                 var result = MLEvaluator.EvaluateFunction(trainer.Model(), evParams, device);
                 trainEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result.actual, result.predicted, device);
 
+                ////if output has more than one dimension and when the output is not categorical but numeric with more than one value 
+                ////for now only custom mini-batch source is supported this kind of variable
+                //if(OutputVariables.First().Shape.Dimensions.Last() > 1 && evParams.MBSource.Type== MinibatchType.Custom)
+                //{
+                //    var result1 = MLEvaluator.EvaluateFunctionEx(trainer.Model(), evParams, device);
+                //    trainEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result1.actual, result1.predicted, device);
+                //}
+                //else
+                //{
+                //    var result = MLEvaluator.EvaluateFunction(trainer.Model(), evParams, device);
+                //    trainEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result.actual, result.predicted, device);
+                //}
+
+
             }
 
             string bestModelPath = m_bestModelPath;
@@ -296,6 +312,19 @@ namespace ANNdotNET.Core
                 //
                 var result = MLEvaluator.EvaluateFunction(trainer.Model(), evParams, device);
                 validEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result.actual, result.predicted, device);
+
+                ////if output has more than one dimension and when the output is not categorical but numeric with more than one value 
+                ////for now only custom mini-batch source is supported this kind of variable
+                //if (OutputVariables.First().Shape.Dimensions.Last() > 1 && evParams.MBSource.Type == MinibatchType.Custom)
+                //{
+                //    var result1 = MLEvaluator.EvaluateFunctionEx(trainer.Model(), evParams, device);
+                //    validEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result1.actual, result1.predicted, device);
+                //}
+                //else
+                //{
+                //    var result = MLEvaluator.EvaluateFunction(trainer.Model(), evParams, device);
+                //    validEval = MLEvaluator.CalculateMetrics(trainer.EvaluationFunction().Name, result.actual, result.predicted, device);
+                //}
 
             }
 

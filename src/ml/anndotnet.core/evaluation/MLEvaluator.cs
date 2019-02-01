@@ -42,7 +42,7 @@ namespace ANNdotNET.Core
             {
                 //define eval result
                 var er = new EvaluationResult();
-                er.OutputClasses = new List<string>();
+                er.OutputClasses = new List<string>() {""};
                 er.Actual = new List<float>();
                 er.Predicted = new List<float>();
                 er.Header = new List<string>();
@@ -64,11 +64,19 @@ namespace ANNdotNET.Core
                 //
                 var dataset = MLFactory.GetDataPath(dicMParameters, dsType);
                 if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset) || dataset == " ")
-                    return er;
+                {
+                    if(dsType== DataSetType.Testing)
+                        dataset = MLFactory.GetDataPath(dicMParameters, DataSetType.Validation);
+                    if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset) || dataset == " ")
+                        return er;
+                }
+                   
 
                 //get output classes in case the ml problem is classification
                 var strCls = dicMParameters.ContainsKey("metadata") ? dicMParameters["metadata"] : "";
-                er.OutputClasses = MLFactory.GetOutputClasses(strCls);
+                var oc = MLFactory.GetOutputClasses(strCls);
+                if (oc != null)
+                    er.OutputClasses = oc;
 
                 //MInibatch
                 var mbTypestr = MLFactory.GetParameterValue(projectValues, "Type");
@@ -113,6 +121,13 @@ namespace ANNdotNET.Core
                     var result = await Task.Run(()=> MLEvaluator.EvaluateFunction(fun, evParams, device));
                     er.Actual = result.actual.ToList();
                     er.Predicted = result.predicted.ToList();
+
+                    if(er.OutputClasses.Count<2 && evParams.Ouptut.First().Shape.Dimensions.Last()>1)
+                    {
+                        var result1 = await Task.Run(() => MLEvaluator.EvaluateFunctionEx(fun, evParams, device));
+                        er.ActualEx = result1.actual;
+                        er.PredictedEx = result1.predicted;
+                    }
                     return er;
                 }
                 else if (evType == EvaluationType.ResultExtended)
@@ -168,9 +183,13 @@ namespace ANNdotNET.Core
                 while (true)
                 {
                     //get one minibatch of data for training
-                    var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
-                    var mdDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
-                    var inMap = new Dictionary<Variable, Value>();
+                    //var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
+                    //var mdDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
+                    //var inMap = new Dictionary<Variable, Value>();
+                    //
+                    var isSweepEnd = false;
+                    var iovars = evParam.Input.Union(evParam.Ouptut).ToList();
+                    var mdDataEx = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, ref isSweepEnd, iovars, device);
 
                     //input
                     var vars = evParam.Input;
@@ -212,7 +231,7 @@ namespace ANNdotNET.Core
                     }
 
                     // check if sweep end reached
-                    if (mbData.Any(x => x.Value.sweepEnd))
+                    if (/*mbData.Any(x => x.Value.sweepEnd)*/isSweepEnd)
                         break;
                 }
 
@@ -264,9 +283,15 @@ namespace ANNdotNET.Core
                 {
                     Value predicted = null;
                     //get one minibatch of data for training
-                    var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
-                    var mbDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
+                    //var mbData = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, device);
+                    //var mbDataEx = MinibatchSourceEx.ToMinibatchValueData(mbData, evParam.Input.Union(evParam.Ouptut).ToList());
+                    //var inMap = new Dictionary<Variable, Value>();
+
+                    var isSweepEnd = false;
+                    var iovars = evParam.Input.Union(evParam.Ouptut).ToList();
+                    var mbDataEx = evParam.MBSource.GetNextMinibatch(evParam.MinibatchSize, ref isSweepEnd, iovars, device);
                     var inMap = new Dictionary<Variable, Value>();
+
                     //
                     var vars = fun.Arguments.Union(fun.Outputs);
                     for (int i = 0; i < vars.Count()/* mbDataEx.Count*/; i++)
@@ -297,7 +322,7 @@ namespace ANNdotNET.Core
                     predictedLst.AddRange(pred);
 
                     // check if sweep end reached
-                    if (mbData.Any(x => x.Value.sweepEnd))
+                    if (/*mbData.Any(x => x.Value.sweepEnd)*/isSweepEnd)
                         break;
                 }
 
@@ -310,12 +335,37 @@ namespace ANNdotNET.Core
             }
 
         }
-
+        /// <summary>
+        /// Calculate smetrisc for 1D actual and predictes values
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="actual"></param>
+        /// <param name="predicted"></param>
+        /// <param name="device"></param>
+        /// <returns></returns>
         public static double CalculateMetrics(string functionName, IEnumerable<float> actual, IEnumerable<float> predicted, DeviceDescriptor device)
         {
 
             var fun = createFunction(functionName);
             var result = fun(actual.Select(x => (double)x).ToArray(), predicted.Select(x => (double)x).ToArray());
+            return result;
+        }
+
+        /// <summary>
+        /// Calculates matrics for time series with more than one timeStep ahead
+        /// </summary>
+        /// <param name="functionName"></param>
+        /// <param name="actual"></param>
+        /// <param name="predicted"></param>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public static double CalculateMetrics(string functionName, IEnumerable<IEnumerable<float>> actual, IEnumerable<IEnumerable<float>> predicted, DeviceDescriptor device)
+        {
+
+            var fun = createFunctionEx(functionName);
+            var actualValues = actual.Select(x => x.Select(xx => (double)xx).ToArray()).ToArray();
+            var predictedValues = predicted.Select(x => x.Select(xx => (double)xx).ToArray()).ToArray();
+            var result = fun(actualValues, predictedValues);
             return result;
         }
 
@@ -346,6 +396,19 @@ namespace ANNdotNET.Core
                 mpt.PB = (float)actual.PBIAS(predicted);
                 mpt.CORR = (float)actual.R(predicted);
                 mpt.DETC = (float)actual.R2(predicted);
+            }
+            if (evalResult.OutputClasses.Count < 2 && evalResult.ActualEx.First().Count > 1)
+            {
+                //Training data set
+                var actualValues = evalResult.ActualEx.Select(x => x.Select(xx => (double)xx).ToArray()).ToArray();
+                var predictedValues = evalResult.PredictedEx.Select(x => x.Select(xx => (double)xx).ToArray()).ToArray();
+
+                mpt.SE = (float)AdvancedStatistics.SE(actualValues, predictedValues);
+                mpt.RMSE = (float)AdvancedStatistics.RMSE(actualValues, predictedValues);
+                mpt.NSE = (float)AdvancedStatistics.NSE(actualValues, predictedValues);
+                mpt.PB = (float)AdvancedStatistics.PBIAS(actualValues, predictedValues);
+                mpt.CORR = (float)AdvancedStatistics.R(actualValues, predictedValues);
+                mpt.DETC = (float)AdvancedStatistics.R2(actualValues, predictedValues);
             }
             else if (evalResult.OutputClasses.Count > 1)
             {
@@ -546,18 +609,19 @@ namespace ANNdotNET.Core
 
                 var testMB = new MinibatchSourceEx(MinibatchType.Image, stremsConfig.ToArray(),features,labels,mapFile,null,30,false, 0);
 
-               //
+                //
+                var vars = features.Union(labels).ToList();
                 var retVal = new List<int>();
                 var mbSize = imagePaths.Count();
                 if (mbSize > 30)
                     mbSize = 30;
                 while (true)
                 {
-
-                    var nextMB = testMB.GetNextMinibatch((uint)mbSize, device);
+                    bool isSweepEnd = false;
+                    var inputMap = testMB.GetNextMinibatch((uint)mbSize,ref isSweepEnd, vars, device);
                     //prepare data for trainer
-                    var inputMap = new Dictionary<Variable, Value>();
-                    inputMap.Add(features.First(), nextMB.Where(x => x.Key.m_name.Equals(features.First().Name)).Select(x => x.Value.data).FirstOrDefault());
+                    //var inputMap = new Dictionary<Variable, Value>();
+                    //inputMap.Add(features.First(), nextMB.Where(x => x.Key.m_name.Equals(features.First().Name)).Select(x => x.Value.data).FirstOrDefault());
                     
 
                     var outputMap = new Dictionary<Variable, Value>();
@@ -573,7 +637,7 @@ namespace ANNdotNET.Core
                         retVal.Add((int)l);
                     }
 
-                    if (nextMB.Any(x => x.Value.sweepEnd))
+                    if (/*nextMB.Any(x => x.Value.sweepEnd)*/ isSweepEnd)
                         break;
                 }
 
@@ -609,6 +673,27 @@ namespace ANNdotNET.Core
                     return GPdotNet.MathStuff.AdvancedStatistics.MSE;
                 case EFunction.ClassificationAccuracy:
                     return GPdotNet.MathStuff.AdvancedStatistics.CA;
+
+                default:
+                    throw new Exception($"The '{functionName}' function is not supported!");
+            }
+        }
+
+        private static Func<double[][], double[][], double> createFunctionEx(string functionName)
+        {
+            var fun = (EFunction)Enum.Parse(typeof(EFunction), functionName, true);
+            switch (fun)
+            {
+                //case EFunction.ClassificationError:
+                //    return GPdotNet.MathStuff.AdvancedStatistics.CE;
+                case EFunction.SquaredError:
+                    return GPdotNet.MathStuff.AdvancedStatistics.SE;
+                case EFunction.RMSError:
+                    return GPdotNet.MathStuff.AdvancedStatistics.RMSE;
+                case EFunction.MSError:
+                    return GPdotNet.MathStuff.AdvancedStatistics.MSE;
+                ////case EFunction.ClassificationAccuracy:
+                ////    return GPdotNet.MathStuff.AdvancedStatistics.CA;
 
                 default:
                     throw new Exception($"The '{functionName}' function is not supported!");

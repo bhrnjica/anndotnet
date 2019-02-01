@@ -132,25 +132,55 @@ namespace ANNdotNET.Core
             }
             else if (Type == MinibatchType.Custom)
             {
-                var retVal = nextBatch(custommb, StreamConfigurations, (int)minibatchSizeInSamples, 1, device);
+                var retVal = nextBatch(custommb, StreamConfigurations, (int)minibatchSizeInSamples);
                 var mb = new UnorderedMapStreamInformationMinibatchData();
-
-                for (int i = 0; i < retVal.Count; i++)
+                var eofs = custommb.EndOfStream;
+                //create minibatch
+                foreach (var d in retVal)
                 {
-                    var k = retVal.ElementAt(i);
-                    //this is fix for 2.6 version since the Value  data is not valid, so it must be clone in order to create MiniBatchData
-                    var mbData = new MinibatchData(k.Value.data.DeepClone(true), k.Value.numberOfSequences, k.Value.numberOfSamples, k.Value.sweepEnd);
-                   
-                    var si = new StreamInformation();
-                    si.m_definesMbSize = StreamConfigurations[i].m_definesMbSize;
-                    si.m_storageFormat = k.Value.data.StorageFormat;
-                    si.m_name = StreamConfigurations[i].m_streamName;
+                    var v = Value.CreateBatchOfSequences<float>(new NDShape(1, d.Key.m_dim), d.Value, device);
+                    var mbd = new MinibatchData(v, (uint)d.Value.Count(), (uint)d.Value.Sum(x => x.Count), eofs);
 
-                    //
-                   mb.Add(si, mbData);
-                   //mb.Add(si, k.Value);
+                    var si = new StreamInformation();
+                    si.m_definesMbSize = d.Key.m_definesMbSize;
+                    si.m_storageFormat = StorageFormat.Dense;
+                    si.m_name = d.Key.m_streamName;
+
+                    mb.Add(si, mbd);
                 }
 
+                return mb;
+            }
+            else
+                throw new Exception("Unsupported Mini-batch-source type!");
+
+        }
+        public Dictionary<Variable, Value> GetNextMinibatch(uint minibatchSizeInSamples, ref bool sweepEnd, List<Variable> vars,  DeviceDescriptor device)
+        {
+            if (Type == MinibatchType.Default || Type == MinibatchType.Image)
+            {
+                var args = defaultmb.GetNextMinibatch(minibatchSizeInSamples, device);
+                sweepEnd = args.Any(x => x.Value.sweepEnd);
+                //
+                var arguments = MinibatchSourceEx.ToMinibatchValueData(args, vars);
+                return arguments;
+            }
+            else if (Type == MinibatchType.Custom)
+            {
+                var retVal = nextBatch(custommb, StreamConfigurations, (int)minibatchSizeInSamples);
+                var mb = new Dictionary<Variable, Value>();
+                sweepEnd = custommb.EndOfStream;
+                //create minibatch
+                foreach (var d in retVal)
+                {
+                    var v = Value.CreateBatchOfSequences<float>(new NDShape(1, d.Key.m_dim), d.Value, device);
+                    //
+                    var var = vars.Where(x => x.Name == d.Key.m_streamName).FirstOrDefault();
+                    if (var == null)
+                        throw new Exception("Variable cannot be  null!");
+                    //
+                    mb.Add(var, v);
+                }
                 return mb;
             }
             else
@@ -232,7 +262,7 @@ namespace ANNdotNET.Core
             {
                 using (var mbreader = new StreamReader(strFilePath))
                 {
-                    var retVal = nextBatch(mbreader, streamConfigurations, -1, 1, device);
+                    var retVal = nextBatch1(mbreader, streamConfigurations, -1, 1, device);
                     var mb = new UnorderedMapStreamInformationMinibatchData();
 
                     for (int i = 0; i < retVal.Count; i++)
@@ -242,11 +272,11 @@ namespace ANNdotNET.Core
                         var key = k.Key;
                         var si = new StreamInformation();
                         si.m_definesMbSize = streamConfigurations[i].m_definesMbSize;
-                        si.m_storageFormat = k.Value.data.StorageFormat;
+                        si.m_storageFormat = k.Value.StorageFormat;
                         si.m_name = streamConfigurations[i].m_streamName;
                         
                         var stream = streamConfigurations[i];
-                        mb.Add(si, k.Value);
+                        mb.Add(si,new MinibatchData( k.Value));
                     }
 
                     return mb;
@@ -288,11 +318,51 @@ namespace ANNdotNET.Core
         /// <param name="iteration"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        private static Dictionary<StreamConfiguration, MinibatchData> nextBatch(TextReader stream,
-            StreamConfiguration[] m_streamConfig, int batchSize, int iteration, DeviceDescriptor device)
+        private static Dictionary<StreamConfiguration, List<List<float>>> nextBatch(TextReader stream,
+            StreamConfiguration[] m_streamConfig, int batchSize)
         {
             var values = new Dictionary<StreamConfiguration, List<List<float>>>();
-            var retVal = new Dictionary<StreamConfiguration, MinibatchData>();
+            
+            //local function for creating a batch of data
+            if (((StreamReader)stream).EndOfStream)
+                ((StreamReader)stream).BaseStream.Position = 0;
+
+            //in case batchSize is less than 1 retrieve all data set
+            var reader = batchSize <= 0 ? ReadLineFromFile((StreamReader)stream) : ReadLineFromFile((StreamReader)stream).Take(batchSize);
+            //
+            foreach (var batchLine in reader)
+            {
+                var streams = batchLine.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
+                var dics = processTextLine<float>(streams, m_streamConfig);
+                //
+                foreach (var d in dics)
+                {
+                    if (!values.ContainsKey(d.Key))
+                    {
+                        var l = new List<List<float>>();
+                        l.Add(d.Value);
+                        values.Add(d.Key, l);
+                    }
+                    else
+                        values[d.Key].Add(d.Value);
+                }
+            }
+            
+
+            //in case of end batch return null
+            //this should never happen
+            if (values.Count == 0)
+            {
+                return null;
+            }
+            else
+                return values;
+        }
+        private static Dictionary<StreamConfiguration, Value> nextBatch1(TextReader stream,
+           StreamConfiguration[] m_streamConfig, int batchSize, int iteration, DeviceDescriptor device)
+        {
+            var values = new Dictionary<StreamConfiguration, List<List<float>>>();
+            var retVal = new Dictionary<StreamConfiguration, Value>();
             var endOfStream = false;
 
             //local function for creating a batch of data
@@ -333,8 +403,9 @@ namespace ANNdotNET.Core
             foreach (var d in values)
             {
                 var v = Value.CreateBatchOfSequences<float>(new NDShape(1, d.Key.m_dim), d.Value, device);
-                var mbd = new MinibatchData(v, (uint)d.Value.Count, (uint)d.Value.Sum(x => x.Count), endOfStream);
-                retVal.Add(d.Key, mbd);
+                //var mbd = new MinibatchData(v, (uint)d.Value.Count, (uint)d.Value.Sum(x => x.Count), endOfStream);
+                //retVal.Add(d.Key, mbd);
+                retVal.Add(d.Key, v);
             }
             //
             return retVal;
@@ -353,8 +424,13 @@ namespace ANNdotNET.Core
             foreach (var stream in m_streamConfig)
             {
                 var strvalues = streams.Where(x => x.StartsWith(stream.m_streamName)).Select(x => x.Substring(stream.m_streamName.Length)).FirstOrDefault();
-                var lst = strvalues.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x,CultureInfo.InvariantCulture)).ToList();
-                retVal.Add(stream, lst);
+                if (strvalues != null)
+                {
+                    var lst = strvalues.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries).Select(x => float.Parse(x, CultureInfo.InvariantCulture)).ToList();
+                    retVal.Add(stream, lst);
+                }
+                else
+                    return null;
             }
             return retVal;
         }
