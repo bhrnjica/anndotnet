@@ -83,6 +83,10 @@ namespace DataProcessing.Wnd
                     ds.Data = new List<List<string>>();
                     foreach (var l in Model.Labels)
                     {
+                        if (string.IsNullOrEmpty(l.Label) || string.IsNullOrEmpty(l.Folder)
+                            || Model.Channels <= 0 || Model.Width <= 0 || Model.Height <= 0)
+                            throw new Exception("One or more image classification data parameters has invalid value!");
+
                         var strRow = new List<string>() { l.Label, l.Folder, l.Query, Model.Channels.ToString(),
                             Model.Height.ToString(), Model.Width.ToString(),Model.DataAugmentation.ToString()
 

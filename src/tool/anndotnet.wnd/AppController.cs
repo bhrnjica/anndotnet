@@ -527,7 +527,10 @@ namespace anndotnet.wnd
                 e.CanExecute = false;
                 return;
             }
-            e.CanExecute = !(prj.DataSet == null || prj.DataSet.Data == null);
+            if (prj.Settings.ProjectType == ProjectType.ImageClassification && prj.DataSet != null)
+                e.CanExecute = true;
+            else 
+                e.CanExecute = !(prj.DataSet == null || prj.DataSet.Data == null);
 
         }
 

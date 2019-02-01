@@ -48,7 +48,7 @@
                 <StackPanel Orientation="Horizontal" >
                     <Label x:Name="lblHdim3"  Width="100"  Content="Channels:" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
                     <Label Width="2"/>
-                    <TextBox x:Name="txtHdim13" Text="{Binding Channels,FallbackValue=3, TargetNullValue=3}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
+                    <TextBox x:Name="txtHdim13" Text="{Binding Channels}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" Width="50"/>
                 </StackPanel >
                 <StackPanel Orientation="Horizontal" >
                     <Label Width="2"/>
