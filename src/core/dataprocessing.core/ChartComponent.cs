@@ -11,11 +11,11 @@ namespace DataProcessing.Core
     {
         public static PlotModel BarPlot(string title, List<object> x, IEnumerable<double> y, string xLabel = "", string yLabel = "")
         {
-            var model = new PlotModel { Title = "Class histogram" };
+            var model = new PlotModel { Title = title };
 
             var barSeries = new ColumnSeries();
             var bars = new List<ColumnItem>();
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < y.Count(); i++)
             {
                 var b = new ColumnItem(y.ElementAt(i), i);
                 bars.Add(b);
@@ -77,6 +77,34 @@ namespace DataProcessing.Core
             //
             return model;
         }
+        public static PlotModel ScaterPlot(string title, List<object> x, double[] y, System.Drawing.Color markerColor, MarkerType mType, string xLabel = " ", string yLabel = " ")
+        {
+            var model = new PlotModel { Title = "Class histogram" };
+            var scater = ScatterSeries(x, y, markerColor, mType);
+
+            model.Series.Add(scater);
+            //add category axis
+            var xAxes = new DateTimeAxis
+            {
+                Title = xLabel,
+                Position = AxisPosition.Bottom,
+
+                
+            };
+            model.Axes.Add(xAxes);
+
+
+            //add category axis
+            var yAxes = new LinearAxis()
+            {
+                Title = yLabel,
+                Position = AxisPosition.Left,
+            };
+            model.Axes.Add(yAxes);
+            //
+            return model;
+        }
+
 
         public static LineSeries LineSeries(string seriesTitle, double[] x, double[] y, System.Drawing.Color markerColor, MarkerType mType)
         {
@@ -89,6 +117,22 @@ namespace DataProcessing.Core
                 lineSeries.Points.Add(b);
             }
             lineSeries.Color= OxyColor.FromRgb(markerColor.R, markerColor.G, markerColor.B);
+            //lineSeries.MarkerFill = 
+            lineSeries.MarkerType = mType;
+            return lineSeries;
+        }
+
+        public static LineSeries LineSeries(string seriesTitle, DateTime[] x, double[] y, System.Drawing.Color markerColor, MarkerType mType)
+        {
+            var lineSeries = new LineSeries();
+            lineSeries.Title = seriesTitle;
+            for (int i = 0; i < x.Length; i++)
+            {
+                var b = DateTimeAxis.CreateDataPoint(x[i], y[i]);
+
+                lineSeries.Points.Add(b);
+            }
+            lineSeries.Color = OxyColor.FromRgb(markerColor.R, markerColor.G, markerColor.B);
             //lineSeries.MarkerFill = 
             lineSeries.MarkerType = mType;
             return lineSeries;
@@ -110,6 +154,23 @@ namespace DataProcessing.Core
             return scatterSeries;
         }
 
+        public static ScatterSeries ScatterSeries(List<object> x, double[] y, System.Drawing.Color markerColor, MarkerType mType)
+        {
+            var scatterSeries = new ScatterSeries();
+           // var scatterSeries = new List<DataPoint>();
+
+            for (int i = 0; i < x.Count; i++)
+            {
+                var b = new ScatterPoint(CategoryAxis.ToDouble(x[i]), y[i]);
+                scatterSeries.Points.Add(b);
+            }
+            scatterSeries.MarkerFill = OxyColor.FromRgb(markerColor.R, markerColor.G, markerColor.B);
+            scatterSeries.MarkerType = mType;
+            return scatterSeries;
+        }
+
+
+
         public static PlotModel LinePlot(string titlePlot, string titleSeries, double[] x, double[] y, System.Drawing.Color markerColor, MarkerType mType, string xLabel = " ", string yLabel = " ")
         {
             var model = new PlotModel { Title = titlePlot };
@@ -118,6 +179,32 @@ namespace DataProcessing.Core
             model.Series.Add(scater);
             //add category axis
             var xAxes = new LinearAxis
+            {
+                Title = xLabel,
+                Position = AxisPosition.Bottom,
+            };
+            model.Axes.Add(xAxes);
+
+
+            //add category axis
+            var yAxes = new LinearAxis()
+            {
+                Title = yLabel,
+                Position = AxisPosition.Left,
+            };
+            model.Axes.Add(yAxes);
+            //
+            return model;
+        }
+
+        public static PlotModel LinePlot(string titlePlot, string titleSeries, DateTime[] x, double[] y, System.Drawing.Color markerColor, MarkerType mType, string xLabel = " ", string yLabel = " ")
+        {
+            var model = new PlotModel { Title = titlePlot };
+            var scater = LineSeries(titleSeries, x, y, markerColor, mType);
+
+            model.Series.Add(scater);
+            //add category axis
+            var xAxes = new DateTimeAxis
             {
                 Title = xLabel,
                 Position = AxisPosition.Bottom,

@@ -29,7 +29,7 @@ namespace anndotnet.core.app
             //runConvNetExample();
             //cntkModelToGraphviz();
             Console.ReadKey();
-            return;
+            //return;
 
             var rnd = new Random(1);
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
@@ -37,7 +37,7 @@ namespace anndotnet.core.app
             var root = "C:\\sc\\github\\anndotnet\\src\\tool";
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
-            var mlConfigFile3 = $"{root}anndotnet.tool\\model_mlconfigs\\iris.mlconfig";
+            var mlConfigFile3 = $"model_mlconfigs\\iris.mlconfig";
 
             //run example
             var token2 = new CancellationToken();

@@ -113,10 +113,14 @@
     </Content>
     <Content Include="..\anndotnet.tool\model_mlconfigs\iris.mlconfig">
       <Link>model_mlconfigs\iris.mlconfig</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\anndotnet.tool\model_mlconfigs\convNet.mlconfig">
       <Link>model_mlconfigs\convNet.mlconfig</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.tool\model_mlconfigs\iris\log\model_unique-mlconfig-identification.history">
+      <Link>model_mlconfigs\iris\log\model_unique-mlconfig-identification.history</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="App.config" />
