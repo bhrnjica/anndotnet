@@ -1,7 +1,7 @@
 # ANNdotNET
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md)
 [![DOI](https://zenodo.org/badge/126162816.svg)](https://zenodo.org/badge/latestdoi/126162816)
-[![developed by](https://avatars3.githubusercontent.com/u/12556447?s=50&u=f2cd3be70373c9654b9d53a4f69ddfd7a8ed6596&v=4=)
+![developed by](https://avatars3.githubusercontent.com/u/12556447?s=50&u=f2cd3be70373c9654b9d53a4f69ddfd7a8ed6596&v=4=)
 
 ![ANNdotNET Logo](./src/tool/anndotnet.wnd/Images/annLogo_start2.png)
 
