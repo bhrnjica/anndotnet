@@ -878,7 +878,7 @@ namespace anndotnet.wnd.Models
                 if (DataSetsDefined.Item2)
                     resultV = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
-                if (DataSetsDefined.Item2)
+                if (DataSetsDefined.Item3)
                     resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
                 //prepare headers
