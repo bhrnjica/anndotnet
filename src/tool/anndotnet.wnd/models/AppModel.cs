@@ -47,7 +47,7 @@ namespace anndotnet.wnd.Models
             get
             {
                 var v = Assembly.GetExecutingAssembly().GetName().Version;
-                return $"v.{v.Major}.{v.Minor}"-rc{DateTime.Now.Year}{DateTime.Now.Month.ToString("D2")}{DateTime.Now.Day.ToString("D2")}";
+                return $"v.{v.Major}.{v.Minor}-rc{DateTime.Now.Year}{DateTime.Now.Month.ToString("D2")}{DateTime.Now.Day.ToString("D2")}";
             }
         }
 
