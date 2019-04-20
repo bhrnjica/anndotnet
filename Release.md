@@ -18,7 +18,7 @@ This version brings several important updates and new features:
   - ``Inser`` button Insert Layer in the network at specific position.#36
 
 ### Upgrade to CNTK 2.7
- - All modules are upgraded to CNTK 2.7.
+ - All modules have been upgraded to CNTK 2.7.
  - CUDA 10 must be installed in order to support GPU processing.
 
 ### Bug Fixes
@@ -70,7 +70,7 @@ This version brings upgrade of Machine Learning Engine and set of minor bug fixe
 ANNdotNET v1.0 - deep learning tool on .NET platform
 ============
 
-ANNdotNET – is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, evaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluation models.
+ANNdotNET â€“ is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, evaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluation models.
 The process of creating, training, evaluating and exporting models is provided from the GUI Application and does not require knowledge for supported programming languages. 
 
 The ANNdotNET is ideal in several scenarios:
@@ -111,7 +111,7 @@ The project is hosted at <http://github.com/bhrnjica/anndotnet>. For more inform
 ANNdotNET v1.0 - deep learning tool on .NET platform
 ============
 
-ANNdotNET – is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, elvaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine ` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine ` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluaton models.
+ANNdotNET â€“ is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, elvaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine ` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine ` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluaton models.
 
 - For software requirements please see previous release note.
 - For instruction how to start the application please see previous release note.
@@ -136,7 +136,7 @@ ANNdotNET – is an open source project for deep learning on .NET Platform. This i
 ANNdotNET v1.0 - deep learning tool on .NET platform
 ============
 
-ANNdotNET – is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, elvaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine ` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine ` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluaton models.
+ANNdotNET â€“ is an open source project for deep learning on .NET Platform. This is complete GUI solution for data preparation, training, elvaluation and deployment ml models. ANNdotNET introduces the ANNdotNET Machine Learning Engine ( `MLEngine `) which is responsible for training and evaluation models defined in the mlconfig files. The `MLEngine ` relies on Microsoft Cognitive Toolkit, CNTK open source library which is proved to be one of the best open source library for deep learning. Through all application's components `MLEngine ` exposed all great features of the CNTK e.g. GPU support for training and evaluation, different kind of learners. `MLEngine ` also extends CNTK features with more evaluation functions (RMSE, MSE, Classification Accuracy, Coefficient of Determination, etc.), Extended Mini-batch Sources, Trainer and Evaluaton models.
 
 - For software requiremens please see previous release note.
 - For instruction how to start the application please see previous release note.
@@ -149,7 +149,7 @@ This release tends to stabilize the code and inlucdes some unfinished features f
 ANNdotNET v1.0 - deep learning tool on .NET platform
 ============
 
-ANNdotNET – is an open source project for deep learning written in C# for
+ANNdotNET â€“ is an open source project for deep learning written in C# for
 creating and training deep learning models. The application relies on Microsoft
 Cognitive Toolkit, CNTK, and it is supposed to be GUI tool for CNTK library with
 extensions in data preprocessing, model evaluation, exporting and deploying deep
