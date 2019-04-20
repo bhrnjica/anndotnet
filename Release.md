@@ -17,6 +17,10 @@ This version brings several important updates and new features:
   - Add new Layer types: Convolution, Pooling, etc. #18
   - ``Inser`` button Insert Layer in the network at specific position.#36
 
+### Upgrade to CNTK 2.7
+ - All modules are upgraded to CNTK 2.7.
+ - CUDA 10 must be installed in order to support GPU processing.
+
 ### Bug Fixes
 - Some WinForms Dialogs has been converted into WPF based windows in order to fix WInForm DPI issue on scalled monitors. #42
 - Minor code improvements and bug fixes
