@@ -34,13 +34,13 @@ namespace anndotnet.core.app
             var rnd = new Random(1);
             Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
 
-            var root = "C:\\sc\\github\\anndotnet\\src\\tool";
+            //var root = "C:\\sc\\github\\anndotnet\\src\\tool";
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
             var mlConfigFile3 = $"model_mlconfigs\\iris.mlconfig";
 
             //run example
-            var token2 = new CancellationToken();
+           // var token2 = new CancellationToken();
 
             //train mlconfig 
             //var result = MachineLearning.Train(mlConfigFile1, trainingProgress, token2, null);
@@ -349,12 +349,12 @@ namespace anndotnet.core.app
 
             //2. Predict future sales,-  Multiple Input variables
             //Kaggle competition dataset
-            var mlConfigFile1 = "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models" +
-                "\\predict_future_sales.mlconfig";
+            //var mlConfigFile1 = "C:\\Users\\bhrnjica\\OneDrive - BHRNJICA\\AI Projects\\ann-custom-models" +
+            //    "\\predict_future_sales.mlconfig";
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine($"****Predict Future Sales****");
             Console.WriteLine(Environment.NewLine);
-            var token1 = new CancellationToken();
+            //var token1 = new CancellationToken();
             //MachineLearning.Train(mlConfigFile1, trainingProgress, token1, CustomNNModels.CustomModelCallEntryPoint);
 
             }

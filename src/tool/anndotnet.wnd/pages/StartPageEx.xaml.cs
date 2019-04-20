@@ -156,7 +156,7 @@ namespace anndotnet.wnd.Pages
                 }
 
                 
-                var zipFile = "";
+                //var zipFile = "";
                 if(string.IsNullOrEmpty(example.Name))
                 {
                     MessageBox.Show("File not found.","ANNDotNET");

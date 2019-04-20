@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -82,7 +82,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CNTK.GPU" Version="2.6.0" />
+    <PackageReference Include="CNTK.Deps.OpenCV.Zip" Version="2.7.0" />
+    <PackageReference Include="CNTK.GPU" Version="2.7.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.0.0-unstable1035" />
   </ItemGroup>
 

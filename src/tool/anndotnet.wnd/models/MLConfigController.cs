@@ -946,15 +946,15 @@ namespace anndotnet.wnd.Models
             await Task.Delay(1);
             return true;
             //Not available in C#
-            if (string.IsNullOrEmpty(TrainingParameters.LastBestModel) || !File.Exists(TrainingParameters.LastBestModel))
-            {
-                MessageBox.Show("No trained model exist. The mode cannot be exported.");
-                return true;
-            }
-            //save cntk model in document folder
-            var modelPath = filepath + ".model";
+            //if (string.IsNullOrEmpty(TrainingParameters.LastBestModel) || !File.Exists(TrainingParameters.LastBestModel))
+            //{
+            //    MessageBox.Show("No trained model exist. The mode cannot be exported.");
+            //    return true;
+            //}
+            ////save cntk model in document folder
+            //var modelPath = filepath + ".model";
 
-            Project.SaveCNTKModel(modelPath, TrainingParameters.LastBestModel);
+            //Project.SaveCNTKModel(modelPath, TrainingParameters.LastBestModel);
         }
 
         /// <summary>

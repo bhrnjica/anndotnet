@@ -96,7 +96,7 @@ namespace anndotnet.unit
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;

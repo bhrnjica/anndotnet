@@ -634,7 +634,7 @@ namespace anndotnet.wnd.Models
             var fi = new FileInfo(fileName);
             if(!fi.Exists)
             {
-                using (FileStream fileStream = new FileStream(fileName, FileMode.Create));
+                using (FileStream fileStream = new FileStream(fileName, FileMode.Create)) {; }
 
             }
             using (FileStream fileStream = new FileStream(fileName, FileMode.Truncate))
