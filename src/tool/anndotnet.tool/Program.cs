@@ -24,11 +24,11 @@ namespace anndotnet.core.app
 
         static void Main(string[] args)
         {
-            graphConvNetExample();
+            //graphConvNetExample();
 
             //runConvNetExample();
             //cntkModelToGraphviz();
-            Console.ReadKey();
+            //Console.ReadKey();
             //return;
 
             var rnd = new Random(1);
@@ -37,13 +37,14 @@ namespace anndotnet.core.app
             var root = "C:\\sc\\github\\anndotnet\\src\\tool";
             //Iris flower recognition
             //Famous multi class classification datset: https://archive.ics.uci.edu/ml/datasets/iris
+
             var mlConfigFile3 = $"model_mlconfigs\\iris.mlconfig";
 
             //run example
             var token2 = new CancellationToken();
 
             //train mlconfig 
-            //var result = MachineLearning.Train(mlConfigFile1, trainingProgress, token2, null);
+            var result = MachineLearning.Train(mlConfigFile3, trainingProgress, token2, null);
 
             //once the mode is trained you can write performance analysis of the model
             MachineLearning.PrintPerformance(mlConfigFile3);

@@ -216,12 +216,57 @@ namespace GPdotNet.MathStuff
 
             //calculate mean
             for (int j = 0; j < mcolData[0].Length; j++)
-                sum[j] = sum[j] / (double)mcolData[0].Length;
+                sum[j] = sum[j] / (double)mcolData.Length;
 
             return sum.ToArray();
         }
 
+        public static double[] StdOf(double[][] mcolData)
+        {
+            if (mcolData == null || mcolData.Length < 2)
+                throw new Exception("'coldData' cannot be null or empty!");
+            if (mcolData[0].Length < 1)
+                throw new Exception("'coldData' cannot be null or empty!");
 
+            //calculate summ of the values
+            var stds = new List<double>();
+            var cols = mcolData.ToColumnVector();
+            foreach (var v in cols)
+                stds.Add(v.Stdev());
+
+            return stds.ToArray();
+        }
+
+        public static double[] MinOf(double[][] mcolData)
+        {
+            if (mcolData == null || mcolData.Length < 2)
+                throw new Exception("'coldData' cannot be null or empty!");
+            if (mcolData[0].Length < 1)
+                throw new Exception("'coldData' cannot be null or empty!");
+
+            //calculate summ of the values
+            var min = new List<double>();
+            var cols = mcolData.ToColumnVector();
+            foreach (var v in cols)
+                min.Add(v.Min());
+
+            return min.ToArray();
+        }
+        public static double[] MaxOf(double[][] mcolData)
+        {
+            if (mcolData == null || mcolData.Length < 2)
+                throw new Exception("'coldData' cannot be null or empty!");
+            if (mcolData[0].Length < 1)
+                throw new Exception("'coldData' cannot be null or empty!");
+
+            //calculate summ of the values
+            var max = new List<double>();
+            var cols = mcolData.ToColumnVector();
+            foreach (var v in cols)
+                max.Add(v.Max());
+
+            return max.ToArray();
+        }
         private static void checkDataSets(double[][] obsData, double[][] preData)
         {
             if (obsData == null || obsData.Length < 2)

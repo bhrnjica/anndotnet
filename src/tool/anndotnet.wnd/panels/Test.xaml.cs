@@ -63,7 +63,7 @@ namespace anndotnet.wnd.Panels
                         }
                        
                         int index = 0;
-                        //firs numeric column shoud be positioned first
+                        //numeric column should be positioned first
                         foreach(var c in testData.Where(x => x.Kind != DataKind.Label && x.Type== MLDataType.Numeric))
                         {
                             //
