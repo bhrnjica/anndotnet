@@ -55,8 +55,8 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cntk.Core.Managed-2.6, Version=2.6.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
-      <HintPath>..\..\..\packages\CNTK.GPU.2.6.0\lib\netstandard2.0\Cntk.Core.Managed-2.6.dll</HintPath>
+    <Reference Include="Cntk.Core.Managed-2.7, Version=2.7.0.0, Culture=neutral, PublicKeyToken=a82c1f3f67b62253, processorArchitecture=AMD64">
+      <HintPath>..\..\..\packages\CNTK.GPU.2.7.0\lib\netstandard2.0\Cntk.Core.Managed-2.7.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDna.Integration, Version=0.34.6373.42344, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\ExcelDna.Integration.0.34.6\lib\ExcelDna.Integration.dll</HintPath>
@@ -97,24 +97,24 @@
     <Error Condition="Exists('..\..\..\packages\ExcelDna.AddIn.0.34.6\tools\ExcelDna.AddIn.targets') And ('$(RunExcelDnaBuild)' != '' And $(RunExcelDnaBuild))" Text="ExcelDna cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
-  <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.Cuda.2.6.0\build\netstandard2.0\CNTK.Deps.Cuda.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets'))" />
-  </Target>
-  <Import Project="..\..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.cuDNN.2.6.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets')" />
-  <Import Project="..\..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.MKL.2.6.0\build\netstandard2.0\CNTK.Deps.MKL.targets')" />
-  <Import Project="..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.6.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" />
-  <Import Project="..\..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets" Condition="Exists('..\..\..\packages\CNTK.GPU.2.6.0\build\netstandard2.0\CNTK.GPU.targets')" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.xll"
 copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.dna" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.dna"
 copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64-packed.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64-packed.xll"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.cuDNN.2.7.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.cuDNN.2.7.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.MKL.2.7.0\build\netstandard2.0\CNTK.Deps.MKL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.MKL.2.7.0\build\netstandard2.0\CNTK.Deps.MKL.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.7.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.7.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\CNTK.GPU.2.7.0\build\netstandard2.0\CNTK.GPU.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\CNTK.GPU.2.7.0\build\netstandard2.0\CNTK.GPU.targets'))" />
+  </Target>
+  <Import Project="..\..\..\packages\CNTK.Deps.cuDNN.2.7.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.cuDNN.2.7.0\build\netstandard2.0\CNTK.Deps.cuDNN.targets')" />
+  <Import Project="..\..\..\packages\CNTK.Deps.MKL.2.7.0\build\netstandard2.0\CNTK.Deps.MKL.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.MKL.2.7.0\build\netstandard2.0\CNTK.Deps.MKL.targets')" />
+  <Import Project="..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.7.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.OpenCV.Zip.2.7.0\build\netstandard2.0\CNTK.Deps.OpenCV.Zip.targets')" />
+  <Import Project="..\..\..\packages\CNTK.GPU.2.7.0\build\netstandard2.0\CNTK.GPU.targets" Condition="Exists('..\..\..\packages\CNTK.GPU.2.7.0\build\netstandard2.0\CNTK.GPU.targets')" />
 </Project>

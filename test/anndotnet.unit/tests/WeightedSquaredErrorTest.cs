@@ -42,7 +42,7 @@ namespace anndotnet.unit
             //
             var result = outMap[loss].GetDenseData<float>(loss);
 
-            Assert.Equal(result[0][0], 7680,2);
+            Assert.Equal((double)result[0][0], (double)7680.0, 2);
 
 
         }

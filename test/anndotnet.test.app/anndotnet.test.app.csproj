@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CNTK.GPU" Version="2.6.0" />
+    <PackageReference Include="CNTK.Deps.OpenCV.Zip" Version="2.7.0" />
+    <PackageReference Include="CNTK.GPU" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,90 +18,6 @@
     <ProjectReference Include="..\..\src\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
     <ProjectReference Include="..\..\src\ml\anndotnet.core\anndotnet.core.csproj" />
     <ProjectReference Include="..\..\src\ml\anndotnet.lib\anndotnet.lib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Composite-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Composite-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.opencv.zip\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\Release\opencv_world310.dll" Link="dll\opencv_world310.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.cuda\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\nvml.dll" Link="dll\nvml.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.cuda\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\cudart64_90.dll" Link="dll\cudart64_90.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.mkl\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\mklml.dll" Link="dll\mklml.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.mkl\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\libiomp5md.dll" Link="dll\libiomp5md.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Deserializers.Image-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Deserializers.Image-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.PerformanceProfiler-2.6-rc0.dev20180821.dll" Link="dll\Cntk.PerformanceProfiler-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Deserializers.HTK-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Deserializers.HTK-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.cuda\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\cublas64_90.dll" Link="dll\cublas64_90.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.opencv.zip\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\zlib.dll" Link="dll\zlib.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.cuda\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\cusparse64_90.dll" Link="dll\cusparse64_90.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Math-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Math-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.cuda\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\curand64_90.dll" Link="dll\curand64_90.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Core-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Core-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.mkl\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\mkldnn.dll" Link="dll\mkldnn.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Deserializers.TextFormat-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Deserializers.TextFormat-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.opencv.zip\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\zip.dll" Link="dll\zip.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Core.CSBinding-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Core.CSBinding-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.gpu\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Release\Cntk.Deserializers.Binary-2.6-rc0.dev20180821.dll" Link="dll\Cntk.Deserializers.Binary-2.6-rc0.dev20180821.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\bhrnjica\.nuget\packages\cntk.deps.cudnn\2.6.0-rc0.dev20180821\build\netstandard2.0\\..\..\support\x64\Dependency\cudnn64_7.dll" Link="dll\cudnn64_7.dll" />
   </ItemGroup>
 
 </Project>

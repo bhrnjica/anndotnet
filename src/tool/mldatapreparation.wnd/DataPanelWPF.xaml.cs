@@ -642,8 +642,11 @@ namespace DataProcessing.Wnd
         public void ResetExperimentalPanel()
         {
             listView1.Clear();
-            //numCtrlNumForTest.Value = 0;
-            //numberRadio.Checked = true;
+
+            txtValidationCount.Text = "0";
+            txtTestCount.Text = "0";
+            txtTestCount.Text = "0";
+            radionPercentige.IsChecked = true;
         }
 
         public void SetDataSet(ANNDataSet dataSet)
