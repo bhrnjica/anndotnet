@@ -33,6 +33,11 @@ namespace anndotnet.unit
         };
 
         [Fact]
+        public void CNTK_GPU_Test()
+        {
+            Assert.True(DeviceDescriptor.UseDefaultDevice().Type.ToString() == "GPU");
+        }
+        [Fact]
         public void lstm_test01()
         {
             //define values, and variables
