@@ -169,8 +169,6 @@ namespace DataProcessing.Core
             return scatterSeries;
         }
 
-
-
         public static PlotModel LinePlot(string titlePlot, string titleSeries, double[] x, double[] y, System.Drawing.Color markerColor, MarkerType mType, string xLabel = " ", string yLabel = " ")
         {
             var model = new PlotModel { Title = titlePlot };

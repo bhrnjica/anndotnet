@@ -258,8 +258,8 @@ namespace GPdotNet.MathStuff
         /// <returns></returns>
         public static double Stdev(this double[] colData)
         {
-            if (colData == null || colData.Length < 4)
-                throw new Exception("'coldData' cannot be null or less than 4 elements!");
+            if (colData == null || colData.Length < 3)
+                throw new Exception("'coldData' cannot be null or less than 3 elements!");
 
             //number of elements
             int count = colData.Length;

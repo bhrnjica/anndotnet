@@ -44,7 +44,7 @@ namespace anndotnet.core.app
            // var token2 = new CancellationToken();
 
             //train mlconfig 
-            var result = MachineLearning.Train(mlConfigFile3, trainingProgress, token2, null);
+            var result = MachineLearning.Train(mlConfigFile3, trainingProgress, new CancellationToken(), null);
 
             //once the mode is trained you can write performance analysis of the model
             MachineLearning.PrintPerformance(mlConfigFile3);
