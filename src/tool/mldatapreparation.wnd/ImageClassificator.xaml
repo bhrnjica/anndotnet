@@ -74,7 +74,7 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Test data set" HorizontalAlignment="Left" Margin="20,5,0,0"  >
+            <GroupBox Header="Test data set" HorizontalAlignment="Left" Margin="20,5,0,0" Visibility="Collapsed" >
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,5,0,0">
                     <Label Content="Select last " HorizontalAlignment="Left"  VerticalAlignment="Top"/>
                     <TextBox x:Name="txtTestCount" Text="0" Width="50" PreviewTextInput="TextBox_PreviewTextInput" TextAlignment="Right" VerticalAlignment="Center" />

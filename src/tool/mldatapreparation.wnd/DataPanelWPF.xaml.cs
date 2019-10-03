@@ -713,7 +713,7 @@ namespace DataProcessing.Wnd
                    // this.Cursor = Cursors.WaitCursor;
                     m_strData = dlg.Data;
                     m_strHeader = dlg.Header;
-                    FillDataGrid(dlg.Header, dlg.Data);
+                    FillDataGrid(dlg.Header, dlg.Data.Where(x=>x!=null).ToArray());
                 }
             }
             catch (Exception)

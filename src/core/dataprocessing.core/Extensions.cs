@@ -55,7 +55,10 @@ namespace DataProcessing.Core
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    col[i] = input[i][j];
+                    if (input[i] != null)
+                        col[i] = input[i][j];
+                    else
+                        break;
 
                 }
                 colVecData.Add(col);

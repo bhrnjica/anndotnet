@@ -878,17 +878,18 @@ namespace anndotnet.wnd.Models
                 if (DataSetsDefined.Item2)
                     resultV = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Validation, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
-                if (DataSetsDefined.Item3)
-                    resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
+                //removed this since 1.3
+                //if (DataSetsDefined.Item3)
+                //    resultTe = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Testing, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
                 //prepare headers
                 var header = resultT.Header;
 
                 List<List<string>> trainData = prepareToPersist(resultT);
                 List<List<string>> validData = prepareToPersist(resultV);
-                List<List<string>> testData = prepareToPersist(resultTe);
+                //List<List<string>> testData = prepareToPersist(resultTe);
 
-                ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, testData, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false, resultT.OutputClasses);
+                ANNdotNET.Lib.Export.ExportToExcel.Export(trainData, validData, null, filepath, "ANNdotNETEval({0}:{1}, \"" + networkPath + "\")", false, resultT.OutputClasses);
                 return true;
             }
             catch (Exception)

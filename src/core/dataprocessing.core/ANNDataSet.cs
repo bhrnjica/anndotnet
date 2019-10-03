@@ -145,8 +145,11 @@ namespace DataProcessing.Core
             //
             for (int i = 0; i < rowCount; i++)
             {
-                var row = rowData[i].Split(columDelimiter);
+                if (string.IsNullOrEmpty(rowData[i]))
+                    continue;
 
+                var row = rowData[i].Split(columDelimiter);
+                
                 //column creation for each row
                 if (i == 0 && isFirstRowHeader)
                     header = new string[colCount];

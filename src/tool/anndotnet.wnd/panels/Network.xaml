@@ -35,10 +35,10 @@
                         <TextBlock Text="2) Validation: " Margin="2" />
                         <TextBlock Text="{Binding DataSetsDefined.Item2}"  Foreground="{Binding DataSetsDefined.Item2, Converter={StaticResource BoolToColorConverter}}" Margin="2" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <TextBlock Text="3) Test: " Margin="2" />
                         <TextBlock Text="{Binding DataSetsDefined.Item3}"  Foreground="{Binding DataSetsDefined.Item3, Converter={StaticResource BoolToColorConverter}}"  Margin="2" />
-                    </StackPanel>
+                    </StackPanel>-->
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Input Layer" MaxHeight="190" Margin="0,5,0,0" >

@@ -38,11 +38,11 @@ namespace ANNdotNET.Lib.Export
                     ws2 = wb.Worksheets.Add("Validation");
                     ws2.Cell(1, 1).Value = "Validation Data";
                 }
-                if (dataTest != null && dataTest.Count > 0)
-                {
-                    ws3 = wb.Worksheets.Add("Test");
-                    ws3.Cell(1, 1).Value = "Test Data";
-                }
+                //if (dataTest != null && dataTest.Count > 0)
+                //{
+                //    ws3 = wb.Worksheets.Add("Test");
+                //    ws3.Cell(1, 1).Value = "Test Data";
+                //}
 
 
                 writeDataToExcel(dataTrain,ws1, autoheader);
@@ -50,8 +50,8 @@ namespace ANNdotNET.Lib.Export
                 if (dataValid != null && dataValid.Count > 0)
                     writeDataToExcel(dataValid, ws2, autoheader);
 
-                if (dataTest != null && dataTest.Count > 0)
-                    writeDataToExcel(dataTest, ws3, autoheader);
+                //if (dataTest != null && dataTest.Count > 0)
+                //    writeDataToExcel(dataTest, ws3, autoheader);
 
 
                 var ind = ace.AlphabetFromIndex(dataTrain[0].Count-1)+"3";
@@ -80,17 +80,17 @@ namespace ANNdotNET.Lib.Export
                         writeOutputClasses(ws2, dataValid[0].Count,outputClasses);
                 }
 
-                if (dataTest != null && dataTest.Count > 0)
-                {
-                    //write output column name for validation sheet
-                    ws3.Cell(2, dataTest[0].Count + 1).Value = ouputColumn;
-                    //write formula
-                    ws3.Cell(3, dataTest[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
+                //if (dataTest != null && dataTest.Count > 0)
+                //{
+                //    //write output column name for validation sheet
+                //    ws3.Cell(2, dataTest[0].Count + 1).Value = ouputColumn;
+                //    //write formula
+                //    ws3.Cell(3, dataTest[0].Count + 1).Value = string.Format(excelFormula, "A3", ind);
 
-                    //write output classes on validation sheet
-                    if (outputClasses != null && outputClasses.Count > 1)
-                        writeOutputClasses(ws3, dataTest[0].Count, outputClasses);
-                }
+                //    //write output classes on validation sheet
+                //    if (outputClasses != null && outputClasses.Count > 1)
+                //        writeOutputClasses(ws3, dataTest[0].Count, outputClasses);
+                //}
                 //
                 wb.SaveAs(strFilePath, false);
             }
