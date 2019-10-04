@@ -96,10 +96,10 @@ namespace ANNdotNET.Core
         {
             try
             {
-                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, DataSetType.Testing, EvaluationType.Results);
+                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, DataSetType.Validation, EvaluationType.Results);
 
                 if (er.Actual == null)
-                    throw new Exception("Export has failed. No testing nor validation datatset to export.");
+                    throw new Exception("Export has failed. No validation datatset to export.");
 
                 //
                 List<string> strLine = new List<string>();

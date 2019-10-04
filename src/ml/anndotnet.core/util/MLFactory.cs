@@ -875,14 +875,14 @@ namespace ANNdotNET.Core
                 var strPath = $"{dicPath["root"]}\\{dataPaths["Validation"]}";
                 return strPath;
             }
-            else if (dsType == DataSetType.Testing)
-            {
-                if (string.IsNullOrEmpty(dataPaths["Test"]) || dataPaths["Test"] == " ")
-                    return dataPaths["Test"];
+            //else if (dsType == DataSetType.Testing)
+            //{
+            //    if (string.IsNullOrEmpty(dataPaths["Test"]) || dataPaths["Test"] == " ")
+            //        return dataPaths["Test"];
 
-                var strPath = $"{dicPath["root"]}\\{dataPaths["Test"]}";
-                return strPath;
-            }
+            //    var strPath = $"{dicPath["root"]}\\{dataPaths["Test"]}";
+            //    return strPath;
+            //}
             else
                 return null;
         }

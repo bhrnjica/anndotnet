@@ -106,7 +106,7 @@ namespace NNetwork.Core.Common
     {
         Training,
         Validation,
-        Testing,
+     //   Testing,
         Custom,
     }
 

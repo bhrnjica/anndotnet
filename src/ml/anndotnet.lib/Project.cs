@@ -573,11 +573,11 @@ namespace ANNdotNET.Lib
                 Dictionary<string, string> strMlCOnfig = new Dictionary<string, string>();
 
                 var validPath = settings.ValidationSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Validation) : "";
-                var testPath = settings.TestSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Testing) : "";
+                //var testPath = settings.TestSetCount > 0 ? MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Testing) : "";
                 //
                 var strPaths = $"|Training:{MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Training)} " +
                                $"|Validation:{validPath} " +
-                               $"|Test:{testPath} " +
+                              // $"|Test:{testPath} " +
                                $"|TempModels:{MLFactory.m_MLTempModelFolder} |Models:{MLFactory.m_MLModelFolder} " +
                                $"|Result:{mlconfigName}_result.csv |Logs:{MLFactory.m_MLLogFolder} ";
 
@@ -1029,9 +1029,9 @@ namespace ANNdotNET.Lib
             else if (dsType == DataSetType.Validation)
                 return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName,
                     MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Validation));
-            else if (dsType == DataSetType.Testing)
-                return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName,
-                    MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Testing));
+            //else if (dsType == DataSetType.Testing)
+            //    return Path.Combine(settings.ProjectFolder, Path.GetFileNameWithoutExtension(settings.ProjectFile), mlconfigName,
+            //        MLFactory.GetDefaultMLConfigDatSetPath((int)DataSetType.Testing));
             else
                 throw new Exception("Data set is not recognized.");
         }

@@ -344,7 +344,7 @@ namespace anndotnet.wnd.Models
             //define daata paths
             var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
             var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
-            var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
+            //var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
 
             //
             var data = DataSet.Data;
@@ -440,10 +440,10 @@ namespace anndotnet.wnd.Models
                 File.WriteAllLines(strPathValid, validationData);
             }
             //in case of empty validation data set skip file creation
-            if (testData.Count() > 0)
-            {
-                File.WriteAllLines(strPathTest, testData);
-            }
+            //if (testData.Count() > 0)
+            //{
+            //    File.WriteAllLines(strPathTest, testData);
+            //}
 
         }
 
@@ -471,7 +471,7 @@ namespace anndotnet.wnd.Models
         {
             var strPathTrain = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Training);
             var strPathValid = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Validation);
-            var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
+            //var strPathTest = Project.GetDefaultMLDatasetPath(Settings, modelName, DataSetType.Testing);
 
             //get dataset based on options 
             var ds = dataSet.GetDataSet(dataSet.RandomizeData);
@@ -491,8 +491,8 @@ namespace anndotnet.wnd.Models
             //calculate testing rows
             int testCount = dataSet.IsPrecentige ? (int)(dataSet.RowsToTest * data.Count / 100.0) : dataSet.RowsToValidation;
             //in case of empty validation data set skip file creation
-            if (testCount == 0)
-                strPathTest = "";
+            //if (testCount == 0)
+            //    strPathTest = "";
 
             //create training ml ready dataset file
             int trainCount = data.Count - validCount - testCount;
@@ -510,11 +510,11 @@ namespace anndotnet.wnd.Models
                 File.WriteAllLines(strPathValid, d);
             }
             //in case of empty validation data set skip file creation
-            if (testCount > 0)
-            {
-                var d = data.Skip(trainCount + validCount).Take(testCount).ToList();
-                File.WriteAllLines(strPathTest, d);
-            }
+            //if (testCount > 0)
+            //{
+            //    var d = data.Skip(trainCount + validCount).Take(testCount).ToList();
+            //    File.WriteAllLines(strPathTest, d);
+            //}
 
 
             //enumerate all column and setup column information needed for mlconfig creation

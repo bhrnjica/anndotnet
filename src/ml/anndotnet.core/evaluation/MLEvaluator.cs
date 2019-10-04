@@ -65,8 +65,8 @@ namespace ANNdotNET.Core
                 var dataset = MLFactory.GetDataPath(dicMParameters, dsType);
                 if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset) || dataset == " ")
                 {
-                    if(dsType== DataSetType.Testing)
-                        dataset = MLFactory.GetDataPath(dicMParameters, DataSetType.Validation);
+                    //if(dsType== DataSetType.Testing)
+                    //    dataset = MLFactory.GetDataPath(dicMParameters, DataSetType.Validation);
                     if (string.IsNullOrEmpty(dataset) || string.IsNullOrEmpty(dataset) || dataset == " ")
                         return er;
                 }
