@@ -24,11 +24,11 @@ namespace ANNdotNET.Core
                 if (er.Actual == null)
                     throw new Exception("Export has failed. No testing nor validation datatset to export.");
 
-                var pa = MLEvaluator.CalculatePerformance(er, "Testing data");
+                var pa = MLEvaluator.CalculatePerformance(er, dsType.ToString());
                 
                 //print performance result
                 var strB = new List<string>();
-                var problemType = pa.Classes.Count() == 1 ? "Regression" : (pa.Classes.Count() == 2 ? "Binary" : "Multiclass");
+                var problemType = pa.Classes.Count() == 1 ? "Regression" : (pa.Classes.Count() == 2 ? "Binary" : "Multi-class");
                 ///////////////////////////////REGRESSION////////////////////////////////
                 strB.Add("*************               ANNdotNET                    ********************");
                 strB.Add("**********************Model Performance Analysis*****************************");
@@ -92,11 +92,11 @@ namespace ANNdotNET.Core
                 throw;
             }
         }
-        public static async Task<bool> ExportToCSV(string mlconfigPath, DeviceDescriptor device, string filePathExport)
+        public static async Task<bool> ExportToCSV(string mlconfigPath, DeviceDescriptor device, string filePathExport, DataSetType dsType= DataSetType.Validation)
         {
             try
             {
-                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, DataSetType.Validation, EvaluationType.Results);
+                var er = await MLEvaluator.EvaluateMLConfig(mlconfigPath, device, dsType, EvaluationType.Results);
 
                 if (er.Actual == null)
                     throw new Exception("Export has failed. No validation datatset to export.");

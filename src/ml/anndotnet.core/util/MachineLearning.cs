@@ -88,12 +88,12 @@ namespace anndotnet.core.app
         /// Prints the performance analysis on the console
         /// </summary>
         /// <param name="mlConfigPath"></param>
-        public static void PrintPerformance(string mlConfigPath)
+        public static void PrintPerformance(string mlConfigPath, DataSetType dsType = DataSetType.Validation)
         {
             try
             {
                 //print evaluation result on console
-                var performanceData = MLExport.PrintPerformance(mlConfigPath, DataSetType.Validation, DeviceDescriptor.UseDefaultDevice());
+                var performanceData = MLExport.PrintPerformance(mlConfigPath, dsType, DeviceDescriptor.UseDefaultDevice());
                 performanceData.Wait();
                 foreach (var s in performanceData.Result)
                     Console.WriteLine(s);
@@ -138,19 +138,26 @@ namespace anndotnet.core.app
         /// </summary>
         /// <param name="mlConfigPath"></param>
         /// <param name="resultPath"></param>
-        public static void ExportResult(string mlConfigPath, string resultPath)
+        public static void ExportResult(string mlConfigPath, string resultPath, DataSetType dsType)
         {
-            //TODO
+            var device = DeviceDescriptor.UseDefaultDevice();
+            var task = MLExport.ExportToCSV(mlConfigPath, device, resultPath, dsType);
+
+            task.Wait();
         }
 
         /// <summary>
-        /// Export result for specific dataset based on trained model in the mlconfig file
+        /// Evaluate model for specific value
         /// </summary>
         /// <param name="mlConfigPath"></param>
         /// <param name="resultPath"></param>
-        public static void Predict(string mlConfigPath, string resultPath)
+        public static object Predict(string modelPath, float[] rowVector)
         {
-            //TODO
+            //
+            var device = DeviceDescriptor.UseDefaultDevice();
+            var result = MLEvaluator.TestModel(modelPath, rowVector, device);
+
+            return result;
         }
     }
 }
