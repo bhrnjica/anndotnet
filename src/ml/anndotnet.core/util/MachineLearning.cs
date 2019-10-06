@@ -159,5 +159,18 @@ namespace anndotnet.core.app
 
             return result;
         }
+        /// <summary>
+        /// Evaluate model for specific set of values
+        /// </summary>
+        /// <param name="mlConfigPath"></param>
+        /// <param name="resultPath"></param>
+        public static List<float> Predict(string modelPath, float[][] rowVector)
+        {
+            //
+            var device = DeviceDescriptor.UseDefaultDevice();
+            var result = MLEvaluator.TestModel(modelPath, rowVector, device);
+
+            return result;
+        }
     }
 }

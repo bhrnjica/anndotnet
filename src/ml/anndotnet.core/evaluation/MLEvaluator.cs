@@ -581,6 +581,73 @@ namespace ANNdotNET.Core
 
         }
         /// <summary>
+        /// Test cntk model stored at 'modelPath' against set of vector of values
+        /// </summary>
+        /// <param name="modelPath"></param>
+        /// <param name="vector"></param>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public static List<float> TestModel(string modelPath, float[][] vector, DeviceDescriptor device)
+        {
+            try
+            {
+                var results = new List<float>();
+                //
+                FileInfo fi = new FileInfo(modelPath);
+                if (!fi.Exists)
+                {
+                    throw new Exception($"The '{fi.FullName}' does not exist. Make sure the model is places at this location.");
+                }
+
+                //load the model from disk
+                var model = Function.Load(fi.FullName, device);
+                //input map creation for model evaluation
+                var inputMap = new Dictionary<Variable, Value>();
+                //output map 
+                var predictedDataMap = new Dictionary<Variable, Value>();
+
+                foreach (var vec in vector)
+                {
+                    inputMap.Clear();
+                    predictedDataMap.Clear();
+                    
+                    int columnSpan = 0;
+                    foreach (var var in model.Arguments)
+                    {
+                        var dim = var.Shape.Dimensions.First();
+                        Value values = Value.CreateBatch<float>(var.Shape, vec.Skip(columnSpan).Take(dim), device);
+                        inputMap.Add(var, values);
+
+                        columnSpan += dim;
+                    }
+
+                    //output map 
+                    foreach (var outp in model.Outputs)
+                    {
+                        predictedDataMap.Add(outp, null);
+                    }
+
+                    //evaluate the model
+                    model.Evaluate(inputMap, predictedDataMap, device);
+
+                    //extract the result  as one hot vector
+                    var outputData = predictedDataMap[model.Output].GetDenseData<float>(model.Output);
+
+                    //extract result
+                    var retVal=  MLValue.GetResult(outputData.First());
+                    results.Add(retVal);
+                }
+
+                return results;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        /// <summary>
         /// Test cntk model stored at 'modelPath' against array of image paths
         /// </summary>
         /// <param name="modelPath"></param>
