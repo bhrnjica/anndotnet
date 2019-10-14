@@ -40,9 +40,11 @@ In order to handle with machine learning configuration file (*mlconfig*), ANNdot
 ANNdotNET is x64 Windows desktop application running on .NET Framework 4.7.2. and .NET Core 2.0. In order to run the application, the following software components need to be installed:
 
 * Windows 10 with x64 architecture
-* .NET Framework 4.7.2 +
+* .NET Framework 4.7.2 +, and .NET Core 2.+
 * [Visual C++ 2017 version 15.4 v14.11 toolset](https://aka.ms/vs/15/release/vc_redist.x64.exe)
-* [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) 
+* [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784)
+* [CUDA 10 for GPU support](https://developer.nvidia.com/cuda-10.0-download-archive)
+* [cuDNN v7.4.2 (Dec 14, 2018), for CUDA 10.0](https://developer.nvidia.com/rdp/cudnn-archive)
 
 Note: The application is tested on clean *Windows Pro 10 1709 build*. Probably the application will run on Windows 8 and Windows 7 as well, once the user installs the prerequisites.
 
