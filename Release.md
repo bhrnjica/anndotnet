@@ -1,3 +1,16 @@
+ANNdotNET v1.3-Preview - deep learning tool on .NET platform
+============
+This version contains some minor code changes and consolidation
+- Switch to .NET Framework 4.8
+- Remove Test Set from the Data Preparation panel
+- Added more scaling layers
+- Implemented missing methods in the ml module
+
+### Bug Fixes
+- 
+
+
+
 ANNdotNET v1.2 - deep learning tool on .NET platform
 ============
 This version brings several important updates and new features:
