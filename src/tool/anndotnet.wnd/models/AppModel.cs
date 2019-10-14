@@ -89,7 +89,7 @@ namespace anndotnet.wnd.Models
         {
             get
             {
-                return "Bahrudin Hrnjica, 2017-2018";
+                return $"Bahrudin Hrnjica, 2017-2019";
             }
         }
 
