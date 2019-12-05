@@ -84,7 +84,7 @@
   <ItemGroup>
     <PackageReference Include="CNTK.Deps.OpenCV.Zip" Version="2.7.0" />
     <PackageReference Include="CNTK.GPU" Version="2.7.0" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0-unstable1035" />
+    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
