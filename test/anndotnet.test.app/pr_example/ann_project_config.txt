@@ -6,6 +6,6 @@
 project:|Name:projectName  |ValidationSetCount:10 |PrecentigeSplit:False |RandomizeData:False |Models: |Info:
 
 !Data tag provides metadata for the datatset. It defines each column: Name, DataType, DataKind, MissingValue, Normalization. 
-data:|RawData:ann_data.txt |Column1:x1;String;Label;none; |Column1:x2;category;feature;average; |Column1:x3;category;feature;random; |Column1:y;numeric;label;none; |Column1:y1;category;none;none; 
+data:|RawData:ann_data.txt |Column1:x1;None;Label;none; |Column1:x2;category;feature;average; |Column1:x3;category;feature;random; |Column1:y;numeric;label;none; |Column1:y1;category;none;none; 
 
 parser:| RowSeparator:rn | ColumnSeparator: ; | Header:0 | SkipLines:0

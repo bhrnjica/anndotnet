@@ -1,3 +1,3 @@
-project:|Name:newProject |ValidationSetCount:0 |PrecentigeSplit:False |RandomizeData:0 |Models:  |Info:
+project:|Name:newProject |Type:Default |ValidationSetCount:0 |TestSetCount:0 |PrecentigeSplit:0 |RandomizeData:0 |MLConfigs:  |Info:
 data:|RawData: 
 parser:parser:|RowSeparator:rn | ColumnSeparator:, ; |Header:0 |SkipLines:0

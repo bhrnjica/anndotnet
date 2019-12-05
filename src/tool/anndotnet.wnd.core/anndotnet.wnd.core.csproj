@@ -1,0 +1,722 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="images\about48.png" />
+    <None Remove="images\annabout.png" />
+    <None Remove="images\anndotnet.ico" />
+    <None Remove="images\ANNLogo_350x134pix.png" />
+    <None Remove="images\annLogo_start2.png" />
+    <None Remove="images\closegp48.png" />
+    <None Remove="images\cntk_logo32.png" />
+    <None Remove="images\csv.png" />
+    <None Remove="images\defaultPrj48.png" />
+    <None Remove="images\eval32.png" />
+    <None Remove="images\excel16.png" />
+    <None Remove="images\exit48.png" />
+    <None Remove="images\experiment.png" />
+    <None Remove="images\hyperlink_32.png" />
+    <None Remove="images\imgClass48.png" />
+    <None Remove="images\loaddata32.png" />
+    <None Remove="images\loaddatai32.png" />
+    <None Remove="images\logo.png" />
+    <None Remove="images\mathematica48.png" />
+    <None Remove="images\model.png" />
+    <None Remove="images\newgp48.png" />
+    <None Remove="images\newmodel.png" />
+    <None Remove="images\onnx32.png" />
+    <None Remove="images\opengp48.png" />
+    <None Remove="images\refresdata.png" />
+    <None Remove="images\runmodel16.png" />
+    <None Remove="images\runmodel48.png" />
+    <None Remove="images\runningmodel.png" />
+    <None Remove="images\savegp48.png" />
+    <None Remove="images\start.png" />
+    <None Remove="images\stopmodel16.png" />
+    <None Remove="images\stopmodel48.png" />
+    <None Remove="Resources\AirQ\AirQuality.ann" />
+    <None Remove="Resources\AirQ\AirQuality\airquality_rawdata.txt" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config.mlconfig" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_train" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_valid" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config\models\model_at_87of1000_epochs_TimeSpan_636738532791050245" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint" />
+    <None Remove="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint.ckp" />
+    <None Remove="Resources\AirQ\ProjectInfo.rtf" />
+    <None Remove="Resources\Bike\BikeSharingProject.ann" />
+    <None Remove="Resources\Bike\BikeSharingProject\BikeSharingProject_rawdata.txt" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM.mlconfig" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM\data\mldataset_train" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM\data\mldataset_valid" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM\log\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.history" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM\models\model_at_74of1000_epochs_TimeSpan_636738951668257665" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.checkpoint" />
+    <None Remove="Resources\Bike\BikeSharingProject\DailySharingLSTM\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.checkpoint.ckp" />
+    <None Remove="Resources\Bike\ProjectInfo.rtf" />
+    <None Remove="Resources\BreastC\BreastCancerProject.ann" />
+    <None Remove="Resources\BreastC\BreastCancerProject\BreastCancerProject_rawdata.txt" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig.mlconfig" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\data\mldataset_train" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\data\mldataset_valid" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636738335237339134" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint" />
+    <None Remove="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint.ckp" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig.mlconfig" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\data\mldataset_train" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\data\mldataset_valid" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738334523502776" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint" />
+    <None Remove="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint.ckp" />
+    <None Remove="Resources\BreastC\ProjectInfo.rtf" />
+    <None Remove="Resources\CatDog\CatDog.ann" />
+    <None Remove="Resources\CatDog\CatDog\convNet.mlconfig" />
+    <None Remove="Resources\CatDog\CatDog\convNet\data\mldataset_train" />
+    <None Remove="Resources\CatDog\CatDog\convNet\data\mldataset_valid" />
+    <None Remove="Resources\CatDog\CatDog\convNet\log\model_unique-mlconfig-identification.history" />
+    <None Remove="Resources\CatDog\CatDog\convNet\models\model_at_217of300_epochs_TimeSpan_636818507285194648" />
+    <None Remove="Resources\CatDog\CatDog\convNet\model_unique-mlconfig-identification.checkpoint" />
+    <None Remove="Resources\CatDog\CatDog\convNet\model_unique-mlconfig-identification.checkpoint.ckp" />
+    <None Remove="Resources\CatDog\CatDog\convNet_data.txt" />
+    <None Remove="Resources\CatDog\ProjectInfo.rtf" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject.ann" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\ConcreteSlumpProject_rawdata.txt" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel.mlconfig" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel\data\mldataset_train" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel\data\mldataset_valid" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel\log\model_4c2300e5-914e-49dd-a553-390701a6070e.history" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636733003278423117" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel\model_4c2300e5-914e-49dd-a553-390701a6070e.checkpoint" />
+    <None Remove="Resources\Concrete\ConcreteSlumpProject\FFNModel\model_4c2300e5-914e-49dd-a553-390701a6070e.checkpoint.ckp" />
+    <None Remove="Resources\Concrete\ProjectInfo.rtf" />
+    <None Remove="Resources\Glass\GlassIdentificationProject.ann" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config.mlconfig" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config\data\mldataset_train" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config\data\mldataset_valid" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config\log\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.history" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config\models\model_at_956of1000_epochs_TimeSpan_636734041859422597" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint.ckp" />
+    <None Remove="Resources\Glass\GlassIdentificationProject\GlassIdentificationProject_rawdata.txt" />
+    <None Remove="Resources\Glass\ProjectInfo.rtf" />
+    <None Remove="Resources\Iris\IrisProject.ann" />
+    <None Remove="Resources\Iris\IrisProject\FFModel.mlconfig" />
+    <None Remove="Resources\Iris\IrisProject\FFModel\data\mldataset_train" />
+    <None Remove="Resources\Iris\IrisProject\FFModel\data\mldataset_valid" />
+    <None Remove="Resources\Iris\IrisProject\FFModel\log\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.history" />
+    <None Remove="Resources\Iris\IrisProject\FFModel\models\model_at_983of1000_epochs_TimeSpan_636729018198856673" />
+    <None Remove="Resources\Iris\IrisProject\FFModel\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.checkpoint" />
+    <None Remove="Resources\Iris\IrisProject\FFModel\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.checkpoint.ckp" />
+    <None Remove="Resources\Iris\IrisProject\IrisProject_rawdata.txt" />
+    <None Remove="Resources\Iris\ProjectInfo.rtf" />
+    <None Remove="Resources\MNIST\MNIST-Project.ann" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet.mlconfig" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet\data\MNIST-train-reduced.txt" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet\data\MNIST-validation.txt" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet\log\model_mnist-ml-configuration.history" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet\models\model_at_0of250_epochs_TimeSpan_636732107409817493" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet\model_mnist-ml-configuration.checkpoint" />
+    <None Remove="Resources\MNIST\MNIST-Project\FFnet\model_mnist-ml-configuration.checkpoint.ckp" />
+    <None Remove="Resources\MNIST\ProjectInfo.rtf" />
+    <None Remove="Resources\Mushroom\MushroomProject.ann" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory.mlconfig" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory\data\mldataset_train" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory\data\mldataset_valid" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory\log\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.history" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory\models\model_at_27of100_epochs_TimeSpan_636734026055657638" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.checkpoint" />
+    <None Remove="Resources\Mushroom\MushroomProject\EmbeddingCategory\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.checkpoint.ckp" />
+    <None Remove="Resources\Mushroom\MushroomProject\MushroomProject_rawdata.txt" />
+    <None Remove="Resources\Mushroom\ProjectInfo.rtf" />
+    <None Remove="Resources\Titanic\ProjectInfo.rtf" />
+    <None Remove="Resources\Titanic\TitanicProject.ann" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel.mlconfig" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel\data\mldataset_train" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel\data\mldataset_valid" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel\log\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.history" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.checkpoint" />
+    <None Remove="Resources\Titanic\TitanicProject\DNNModel\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.checkpoint.ckp" />
+    <None Remove="Resources\Titanic\TitanicProject\TitanicProject_rawdata.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\anndotnet.wnd\About.xaml.cs" Link="About.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\AppCommands.cs" Link="AppCommands.cs" />
+    <Compile Include="..\anndotnet.wnd\AppController.cs" Link="AppController.cs" />
+    <Compile Include="..\anndotnet.wnd\commons\BaseModel.cs" Link="commons\BaseModel.cs" />
+    <Compile Include="..\anndotnet.wnd\commons\ObservableObject.cs" Link="commons\ObservableObject.cs" />
+    <Compile Include="..\anndotnet.wnd\commons\TreeeViewAttachedProperties.cs" Link="commons\TreeeViewAttachedProperties.cs" />
+    <Compile Include="..\anndotnet.wnd\commons\TreeViewHelper.cs" Link="commons\TreeViewHelper.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\BoolToColorConverter.cs" Link="converters\BoolToColorConverter.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\BoolToGridRowHeightConverter.cs" Link="converters\BoolToGridRowHeightConverter.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\BoolToOpositeValueConverter.cs" Link="converters\BoolToOpositeValueConverter.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\IMultiConverter.cs" Link="converters\IMultiConverter.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\IsEditingConverter.cs" Link="converters\IsEditingConverter.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\LearnerParametersToVisibility.cs" Link="converters\LearnerParametersToVisibility.cs" />
+    <Compile Include="..\anndotnet.wnd\converters\LPToRegularizersToVisibility.cs" Link="converters\LPToRegularizersToVisibility.cs" />
+    <Compile Include="..\anndotnet.wnd\forms\BinEvalWnd.xaml.cs" Link="forms\BinEvalWnd.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\forms\MClassEvalWnd.xaml.cs" Link="forms\MClassEvalWnd.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\MainWindow.xaml.cs" Link="MainWindow.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\models\ANNProjectController.cs" Link="models\ANNProjectController.cs" />
+    <Compile Include="..\anndotnet.wnd\models\AppModel.cs" Link="models\AppModel.cs" />
+    <Compile Include="..\anndotnet.wnd\models\entities\ExamplesModel.cs" Link="models\entities\ExamplesModel.cs" />
+    <Compile Include="..\anndotnet.wnd\models\entities\InputLayer.cs" Link="models\entities\InputLayer.cs" />
+    <Compile Include="..\anndotnet.wnd\models\entities\ModelEvaluation.cs" Link="models\entities\ModelEvaluation.cs" />
+    <Compile Include="..\anndotnet.wnd\models\entities\TestColumn.cs" Link="models\entities\TestColumn.cs" />
+    <Compile Include="..\anndotnet.wnd\models\entities\TrainingHistory.cs" Link="models\entities\TrainingHistory.cs" />
+    <Compile Include="..\anndotnet.wnd\models\entities\TrainingProgress.cs" Link="models\entities\TrainingProgress.cs" />
+    <Compile Include="..\anndotnet.wnd\models\MLConfigController.cs" Link="models\MLConfigController.cs" />
+    <Compile Include="..\anndotnet.wnd\models\StartModel.cs" Link="models\StartModel.cs" />
+    <Compile Include="..\anndotnet.wnd\pages\ProjectPage.xaml.cs" Link="pages\ProjectPage.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\pages\StartPageEx.xaml.cs" Link="pages\StartPageEx.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\pages\TrainingPage.xaml.cs" Link="pages\TrainingPage.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\components\BinaryClassification.xaml.cs" Link="panels\components\BinaryClassification.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\components\LayerItem.xaml.cs" Link="panels\components\LayerItem.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\components\Multiclass.xaml.cs" Link="panels\components\Multiclass.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\components\Regression.xaml.cs" Link="panels\components\Regression.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\Evaluation.xaml.cs" Link="panels\Evaluation.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\Network.xaml.cs" Link="panels\Network.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\Test.xaml.cs" Link="panels\Test.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\Training.xaml.cs" Link="panels\Training.xaml.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\ZedChartExt.cs" Link="panels\ZedChartExt.cs" />
+    <Compile Include="..\anndotnet.wnd\panels\ZedChartExt.Designer.cs" Link="panels\ZedChartExt.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\anndotnet.wnd\anndotnet.ico" Link="anndotnet.ico" />
+    <Content Include="..\anndotnet.wnd\images\about48.png" Link="images\about48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\annabout.png" Link="images\annabout.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\anndotnet.ico" Link="images\anndotnet.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\ANNLogo_350x134pix.png" Link="images\ANNLogo_350x134pix.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\annLogo_start2.png" Link="images\annLogo_start2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\closegp48.png" Link="images\closegp48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\cntk_logo32.png" Link="images\cntk_logo32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\csv.png" Link="images\csv.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\defaultPrj48.png" Link="images\defaultPrj48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\eval32.png" Link="images\eval32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\excel16.png" Link="images\excel16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\exit48.png" Link="images\exit48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\experiment.png" Link="images\experiment.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\hyperlink_32.png" Link="images\hyperlink_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\imgClass48.png" Link="images\imgClass48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\loaddata32.png" Link="images\loaddata32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\loaddatai32.png" Link="images\loaddatai32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\logo.png" Link="images\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\mathematica48.png" Link="images\mathematica48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\model.png" Link="images\model.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\newgp48.png" Link="images\newgp48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\newmodel.png" Link="images\newmodel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\onnx32.png" Link="images\onnx32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\opengp48.png" Link="images\opengp48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\refresdata.png" Link="images\refresdata.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\runmodel16.png" Link="images\runmodel16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\runmodel48.png" Link="images\runmodel48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\runningmodel.png" Link="images\runningmodel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\savegp48.png" Link="images\savegp48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\start.png" Link="images\start.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\stopmodel16.png" Link="images\stopmodel16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\anndotnet.wnd\images\stopmodel48.png" Link="images\stopmodel48.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\about48.png" />
+    <Content Include="images\annabout.png" />
+    <Content Include="images\anndotnet.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ANNLogo_350x134pix.png" />
+    <Content Include="images\annLogo_start2.png" />
+    <Content Include="images\closegp48.png" />
+    <Content Include="images\cntk_logo32.png" />
+    <Content Include="images\csv.png" />
+    <Content Include="images\defaultPrj48.png" />
+    <Content Include="images\eval32.png" />
+    <Content Include="images\excel16.png" />
+    <Content Include="images\exit48.png" />
+    <Content Include="images\experiment.png" />
+    <Content Include="images\hyperlink_32.png" />
+    <Content Include="images\imgClass48.png" />
+    <Content Include="images\loaddata32.png" />
+    <Content Include="images\loaddatai32.png" />
+    <Content Include="images\logo.png" />
+    <Content Include="images\mathematica48.png" />
+    <Content Include="images\model.png" />
+    <Content Include="images\newgp48.png" />
+    <Content Include="images\newmodel.png" />
+    <Content Include="images\onnx32.png" />
+    <Content Include="images\opengp48.png" />
+    <Content Include="images\refresdata.png" />
+    <Content Include="images\runmodel16.png" />
+    <Content Include="images\runmodel48.png" />
+    <Content Include="images\runningmodel.png" />
+    <Content Include="images\savegp48.png" />
+    <Content Include="images\start.png" />
+    <Content Include="images\stopmodel16.png" />
+    <Content Include="images\stopmodel48.png" />
+    <Content Include="Resources\AirQ\AirQuality.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\airquality_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\log\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\models\model_at_87of1000_epochs_TimeSpan_636738532791050245">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\AirQuality\Stacked LSTM config\model_27fcb33e-3d18-4f98-8c23-5f0ff3658264.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\AirQ\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\BikeSharingProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\log\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\models\model_at_74of1000_epochs_TimeSpan_636738951668257665">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\BikeSharingProject\DailySharingLSTM\model_041c6e32-7450-4a1e-9ff1-bd6b1b98243f.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bike\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\BreastCancerProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\log\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\models\model_at_438of1000_epochs_TimeSpan_636738335237339134">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\CategoryEmbedding mlconfig\model_d37fcd3c-bc5a-4f60-a348-7d86038ce567.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\log\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\models\model_at_991of1000_epochs_TimeSpan_636738334523502776">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\BreastCancerProject\FeedForward mlconfig\model_753e75c9-917b-4bbd-a5fc-c769a818d1eb.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\BreastC\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\log\model_unique-mlconfig-identification.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\models\model_at_217of300_epochs_TimeSpan_636818507285194648">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\model_unique-mlconfig-identification.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet\model_unique-mlconfig-identification.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\CatDog\convNet_data.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\CatDog\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\ConcreteSlumpProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\log\model_4c2300e5-914e-49dd-a553-390701a6070e.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\models\model_at_983of3000_epochs_TimeSpan_636733003278423117">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\model_4c2300e5-914e-49dd-a553-390701a6070e.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ConcreteSlumpProject\FFNModel\model_4c2300e5-914e-49dd-a553-390701a6070e.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Concrete\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\log\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\models\model_at_956of1000_epochs_TimeSpan_636734041859422597">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\FFnet config\model_6465a6f7-0043-4b13-9b22-a3fd422b5707.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\GlassIdentificationProject\GlassIdentificationProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Glass\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel\log\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel\models\model_at_983of1000_epochs_TimeSpan_636729018198856673">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\FFModel\model_33fe0968-d640-4b53-97dc-982dcf2b1cad.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\IrisProject\IrisProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Iris\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\data\MNIST-train-reduced.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\data\MNIST-validation.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\log\model_mnist-ml-configuration.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\models\model_at_0of250_epochs_TimeSpan_636732107409817493">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\model_mnist-ml-configuration.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\MNIST-Project\FFnet\model_mnist-ml-configuration.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\MNIST\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\log\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\models\model_at_27of100_epochs_TimeSpan_636734026055657638">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\EmbeddingCategory\model_f081f70c-40d6-49f1-b3bd-ba2bd530177a.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\MushroomProject\MushroomProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mushroom\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\ProjectInfo.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject.ann">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\data\mldataset_train">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\data\mldataset_valid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\log\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.history">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\models\model_at_783of1000_epochs_TimeSpan_636733002008373880">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.checkpoint">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\DNNModel\model_5ba4060a-ae8c-4e3a-983a-4d466e0d9d81.checkpoint.ckp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Titanic\TitanicProject\TitanicProject_rawdata.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.94.2" />
+    <PackageReference Include="CNTK.GPU" Version="2.7.0" />
+    <PackageReference Include="ControlzEx" Version="4.2.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+    <PackageReference Include="Fluent.Ribbon" Version="7.0.0" />
+    <PackageReference Include="Octokit" Version="0.36.0" />
+    <PackageReference Include="ZedGraph" Version="5.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="..\anndotnet.wnd\About.xaml" Link="About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\forms\BinEvalWnd.xaml" Link="forms\BinEvalWnd.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\forms\MClassEvalWnd.xaml" Link="forms\MClassEvalWnd.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\Images.xaml" Link="Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\MainWindow.xaml" Link="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\pages\ProjectPage.xaml" Link="pages\ProjectPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\pages\StartPageEx.xaml" Link="pages\StartPageEx.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\pages\TrainingPage.xaml" Link="pages\TrainingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\components\BinaryClassification.xaml" Link="panels\components\BinaryClassification.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\components\LayerItem.xaml" Link="panels\components\LayerItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\components\Multiclass.xaml" Link="panels\components\Multiclass.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\components\Regression.xaml" Link="panels\components\Regression.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\Evaluation.xaml" Link="panels\Evaluation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\Network.xaml" Link="panels\Network.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\Test.xaml" Link="panels\Test.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\panels\Training.xaml" Link="panels\Training.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="..\anndotnet.wnd\Styles.xaml" Link="Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\dataprocessing.core\dataprocessing.core.csproj" />
+    <ProjectReference Include="..\..\core\dotnetgraph\dotnetgraph.csproj" />
+    <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj" />
+    <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
+    <ProjectReference Include="..\..\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
+    <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
+    <ProjectReference Include="..\..\ml\anndotnet.lib\anndotnet.lib.csproj" />
+    <ProjectReference Include="..\anndotnet.tool.net\anndotnet.tool.net.csproj" />
+    <ProjectReference Include="..\anndotnet.tool\anndotnet.tool.csproj" />
+    <ProjectReference Include="..\mldatapreparation.wnd\dataprocessing.wnd.csproj" />
+  </ItemGroup>
+
+</Project>

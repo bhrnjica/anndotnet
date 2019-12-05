@@ -1,0 +1,3 @@
+project:|Name:ConcreteSlumpProject  |ValidationSetCount:20 |PrecentigeSplit:1 |MLConfigs:FFNModel |Info:
+data:|RawData:ConcreteSlumpProject_rawdata.txt |Column01:No;None;Feature;Average; |Column02:Cement;Numeric;Feature;Average; |Column03:Slag;Numeric;Feature;Average; |Column04:Fly_ash;Numeric;Feature;Average; |Column05:Water;Numeric;Feature;Average; |Column06:SP;Numeric;Feature;Average; |Column07:Coarse_Aggr_;Numeric;Feature;Average; |Column08:Fine_Aggr_;Numeric;Feature;Average; |Column09:SLUMP_cm_;Numeric;Label;Average; |Column10:FLOW_cm_;Category;None;Average; |Column11:Compressive_Strength__28_day__Mpa_;Numeric;None;Average; 
+parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0
