@@ -149,6 +149,10 @@
       <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>
       <Name>dataprocessing.core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\core\dotnetgraph\dotnetgraph.csproj">
+      <Project>{dead9db3-fac7-4ce9-adc4-1affe655f409}</Project>
+      <Name>dotnetgraph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj">
       <Project>{2c9ba4c2-1d8f-4e67-b7eb-88763df896f4}</Project>
       <Name>gpdotnet.math</Name>
@@ -168,6 +172,10 @@
     <ProjectReference Include="..\..\ml\anndotnet.lib\anndotnet.lib.csproj">
       <Project>{f6617707-5ae0-4514-bbcb-51a0bb22eaeb}</Project>
       <Name>anndotnet.lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mldatapreparation.wnd\dataprocessing.wnd.csproj">
+      <Project>{392b33d2-3b1c-4a37-935b-a38431dd4596}</Project>
+      <Name>dataprocessing.wnd</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

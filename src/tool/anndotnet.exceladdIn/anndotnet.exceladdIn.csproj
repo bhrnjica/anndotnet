@@ -95,7 +95,11 @@
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.xll"
 copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.dna" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64.dna"
-copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64-packed.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64-packed.xll"</PostBuildEvent>
+copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64-packed.xll" "$(SolutionDir)\src\tool\anndotnet.wnd\bin\x64\Debug\anndotnet.exceladdIn-AddIn64-packed.xll"
+
+copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.xll" "$(SolutionDir)\src\tool\anndotnet.wnd.core\bin\x64\Debug\netcoreapp3.1\anndotnet.exceladdIn-AddIn64.xll"
+copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64.dna" "$(SolutionDir)\src\tool\anndotnet.wnd.core\bin\x64\Debug\netcoreapp3.1\anndotnet.exceladdIn-AddIn64.dna"
+copy /Y "$(TargetDir)anndotnet.exceladdIn-AddIn64-packed.xll" "$(SolutionDir)\src\tool\anndotnet.wnd.core\bin\x64\Debug\netcoreapp3.1\anndotnet.exceladdIn-AddIn64-packed.xll"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -727,6 +727,10 @@
       <Project>{0d0d51c4-4c0e-4f3e-af68-0df3296d0b6f}</Project>
       <Name>dataprocessing.core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\core\dotnetgraph\dotnetgraph.csproj">
+      <Project>{dead9db3-fac7-4ce9-adc4-1affe655f409}</Project>
+      <Name>dotnetgraph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj">
       <Project>{8343da4b-f96d-47a2-9ab2-af6f0735509a}</Project>
       <Name>gpdotnet.math</Name>
@@ -747,16 +751,14 @@
       <Project>{f6617707-5ae0-4514-bbcb-51a0bb22eaeb}</Project>
       <Name>anndotnet.lib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\anndotnet.exceladdIn\anndotnet.exceladdIn.csproj">
-      <Project>{f1ee07a0-be4e-4de1-b2bd-f1a658d1fd82}</Project>
-      <Name>anndotnet.exceladdIn</Name>
-    </ProjectReference>
     <ProjectReference Include="..\mldatapreparation.wnd\dataprocessing.wnd.csproj">
       <Project>{392b33d2-3b1c-4a37-935b-a38431dd4596}</Project>
       <Name>dataprocessing.wnd</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.6.0-rc0.dev20180823\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />
   <Import Project="..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets" Condition="Exists('..\..\..\packages\CNTK.Deps.Cuda.2.7.0\build\netstandard2.0\CNTK.Deps.Cuda.targets')" />

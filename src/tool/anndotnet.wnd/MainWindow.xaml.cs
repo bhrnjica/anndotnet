@@ -170,7 +170,7 @@ namespace anndotnet.wnd
             Application.Current.Dispatcher.BeginInvoke(
                    DispatcherPriority.Background,
                new Action(
-           ()=>MessageBox.Show(ex.Message, "ANNdotNET v1.0")
+           ()=>MessageBox.Show(ex.Message, "ANNdotNET v1.3")
             ));
 
         }

@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Platforms>x64</Platforms>
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -714,8 +716,6 @@
     <ProjectReference Include="..\..\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
     <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
     <ProjectReference Include="..\..\ml\anndotnet.lib\anndotnet.lib.csproj" />
-    <ProjectReference Include="..\anndotnet.tool.net\anndotnet.tool.net.csproj" />
-    <ProjectReference Include="..\anndotnet.tool\anndotnet.tool.csproj" />
     <ProjectReference Include="..\mldatapreparation.wnd\dataprocessing.wnd.csproj" />
   </ItemGroup>
 

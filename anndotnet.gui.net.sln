@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.lib", "src\ml\ann
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gpdotnet.math", "src\core\gpdotnet.math\gpdotnet.math.csproj", "{2C9BA4C2-1D8F-4E67-B7EB-88763DF896F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "anndotnet.wnd", "src\tool\anndotnet.wnd\anndotnet.wnd.csproj", "{E5E0822A-DF60-4E1B-B744-344F9675FAFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "anndotnet.wnd.net", "src\tool\anndotnet.wnd\anndotnet.wnd.net.csproj", "{E5E0822A-DF60-4E1B-B744-344F9675FAFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "anndotnet.exceladdIn", "src\tool\anndotnet.exceladdIn\anndotnet.exceladdIn.csproj", "{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}"
 EndProject
@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "anndotnet.tool.net", "src\t
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnetgraph", "src\core\dotnetgraph\dotnetgraph.csproj", "{DEAD9DB3-FAC7-4CE9-ADC4-1AFFE655F409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "anndotnet.wnd.core", "src\tool\anndotnet.wnd.core\anndotnet.wnd.core.csproj", "{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.wnd.core", "src\tool\anndotnet.wnd.core\anndotnet.wnd.core.csproj", "{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -146,6 +146,7 @@ Global
 		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Debug|x64.ActiveCfg = Debug|x64
+		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Debug|x64.Build.0 = Debug|x64
 		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1EE07A0-BE4E-4DE1-B2BD-F1A658D1FD82}.Release|x64.ActiveCfg = Release|x64
@@ -168,8 +169,8 @@ Global
 		{DEAD9DB3-FAC7-4CE9-ADC4-1AFFE655F409}.Release|x64.Build.0 = Release|Any CPU
 		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Debug|x64.ActiveCfg = Debug|x64
+		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Debug|x64.Build.0 = Debug|x64
 		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CD032925-0A8C-4DFA-AC7C-7C2065D1C4FB}.Release|x64.ActiveCfg = Release|Any CPU
