@@ -41,7 +41,7 @@ namespace anndotnet.unit
             Action testCode = () => { var lst = value.Shape.Dimensions.ToString(); };
             var ex = Record.Exception(testCode);
             
-           Assert.False(value.IsValid);
+           Assert.True(ex.Message.StartsWith("This Value object is invalid and can no longer be accessed."));
 
         }
 
