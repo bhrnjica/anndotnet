@@ -1,8 +1,0 @@
-configid:27fcb33e-3d18-4f98-8c23-5f0ff3658264
-metadata:|Column01:month;Category;Feature;Ignore;1;10;11;12;2;3;4;5;6;7;8;9 |Column02:hour;Category;Feature;Ignore;0;1;10;11;12;13;14;15;16;17;18;19;2;20;21;22;23;3;4;5;6;7;8;9 |Column03:CO_GT;Numeric;Feature;Ignore; |Column04:PT08_S1_CO;Numeric;Feature;Ignore; |Column05:NMHC_GT;Numeric;Feature;Ignore; |Column06:PT08_S2_NMHC;Numeric;Feature;Ignore; |Column07:Nox_GT;Numeric;Feature;Ignore; |Column08:PT08_S3_Nox;Numeric;Feature;Ignore; |Column09:NO2_GT;Numeric;Feature;Ignore; |Column10:PT08_S4_NO2;Numeric;Feature;Ignore; |Column11:PT08_S5_O3;Numeric;Feature;Ignore; |Column12:RH;Numeric;Feature;Ignore; |Column13:CO_level;Category;Label;Ignore;High;Low;Moderate;Very High;Very low 
-features:|NumFeatures  10 0	|month 12 0	|hour 24 0	
-labels:|CO_level 5 0	
-network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Embedding 24 0 0 None 0 0 |Layer:LSTM 24 24 0 TanH 1 1 |Layer:LSTM 12 12 0 TanH 1 1 |Layer:Drop 0 0 10 None 0 0 |Layer:Dense 12 0 0 TanH 0 0 |Layer:Dense 5 0 0 Softmax 0 0 
-learning:|Type:AdamLearner |LRate:0.08 |Momentum:0.9 |Loss:CrossEntropyWithSoftmax|Eval:ClassificationAccuracy|L1:0|L2:0
-training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:0 |RandomizeBatch:1 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:1 |ContinueTraining:0 |TrainedModel:models\model_at_87of1000_epochs_TimeSpan_636738532791050245    
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test: |TempModels:temp_models |Models:models |Result:MLConfig2_result.csv |Logs:log 

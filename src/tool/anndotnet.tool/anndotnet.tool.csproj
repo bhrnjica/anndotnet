@@ -1,97 +1,40 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <StartupObject>anndotnet.core.app.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="data\**" />
-    <Compile Remove="mlconfigs\**" />
-    <EmbeddedResource Remove="data\**" />
-    <EmbeddedResource Remove="mlconfigs\**" />
-    <None Remove="data\**" />
-    <None Remove="mlconfigs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Program.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="model_mlconfigs\BCML\data\BCMLData.txt" />
-    <None Remove="model_mlconfigs\BCML\data\BCMLData_train.txt" />
-    <None Remove="model_mlconfigs\BCML\data\BCMLData_valid.txt" />
-    <None Remove="model_mlconfigs\BCML_mlconfig" />
-    <None Remove="model_mlconfigs\daily_sales\data\daily_sales_train_cntk.txt" />
-    <None Remove="model_mlconfigs\daily_sales\data\daily_sales_valid_cntk.txt" />
-    <None Remove="model_mlconfigs\daily_sales_mlconfig" />
-    <None Remove="model_mlconfigs\iris\data\mldataset_train" />
-    <None Remove="model_mlconfigs\iris\data\mldataset_valid" />
-    <None Remove="model_mlconfigs\iris_mlconfig" />
-    <None Remove="model_mlconfigs\multipleOutput\mo_training.txt" />
-    <None Remove="model_mlconfigs\multipleOutput\mo_validation.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="model_mlconfigs\BCML\data\BCMLData.txt">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\BCML\data\BCMLData_train.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\BCML\data\BCMLData_valid.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\daily_sales\data\daily_sales_train_cntk.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\daily_sales\data\daily_sales_valid_cntk.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\iris\data\mldataset_train">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\iris\data\mldataset_valid">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\multipleOutput\mo_training.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="model_mlconfigs\multipleOutput\mo_validation.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <PackageReference Include="Microsoft.ML" Version="1.4.0" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="1.15.1" />
+    <PackageReference Include="TensorFlow.NET" Version="0.15.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\dataprocessing.core\dataprocessing.core.csproj" />
-    <ProjectReference Include="..\..\core\gpdotnet.math\gpdotnet.math.csproj" />
     <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
-    <ProjectReference Include="..\..\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
     <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="model_mlconfigs\iris\models\" />
+    <Reference Include="Daany.DataFrame">
+      <HintPath>..\..\..\..\daany\lib\Daany.DataFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.DataFrame.Ext">
+      <HintPath>..\..\..\..\daany\lib\Daany.DataFrame.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.MathStuff">
+      <HintPath>..\..\..\..\daany\lib\Daany.MathStuff.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.Stat">
+      <HintPath>..\..\..\..\daany\lib\Daany.Stat.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Program.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CNTK.Deps.OpenCV.Zip" Version="2.7.0" />
-    <PackageReference Include="CNTK.GPU" Version="2.7.0" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="model_mlconfigs\BCML.mlconfig">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="model_mlconfigs\iris.mlconfig">
+    <None Update="iris.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,3 +1,0 @@
-project:|Name:IrisProject  |ValidationSetCount:20 |PrecentigeSplit:0 |MLConfigs:FFModel |Info:
-data:|RawData:IrisProject_rawdata.txt |Column01:sepal_length;Numeric;Feature;Ignore; |Column02:sepal_width;Numeric;Feature;Ignore; |Column03:petal_length;Numeric;Feature;Ignore; |Column04:petal_width;Numeric;Feature;Ignore; |Column05:species;Category;Label;Ignore; 
-parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0

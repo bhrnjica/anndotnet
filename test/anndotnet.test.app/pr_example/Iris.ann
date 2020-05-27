@@ -1,6 +1,0 @@
-!
-project:|Name:Iris  |ValidationSetCount:20 |PrecentigeSplit:False |RandomizeData:False |Models:Model0 |Info:
-!
-data:|RawData:Iris_rawData.txt |Column1:survived;Category;Label;Random; |Column2:alive;None;None;Ignore; |Column3:alone;None;None;Ignore; |Column4:pclass;Category;None;Random; |Column5:sex;Category;None;Random; |Column6:age;Category;None;Average; |Column7:sibsp;Category;None;Ignore; |Column8:parch;Category;None;Ignore; |Column9:fare;Category;None;Ignore; |Column10:embarked;None;None;Ignore; |Column11:class;Category;None;Random; |Column12:who;Category;Feature;Ignore; |Column13:adult_male;Category;Feature;Ignore; |Column14:deck;Numeric;None;Ignore; |Column15:embark_town;Category;None;Ignore; 
-!
-parser:| RowSeparator:rn | ColumnSeparator: ; | Header:0 | SkipLines:0

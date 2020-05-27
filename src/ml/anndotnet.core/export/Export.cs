@@ -7,7 +7,6 @@ using CNTK;
 using System.IO;
 using System.Globalization;
 using System.Drawing;
-using GPdotNet.MathStuff;
 using System.Threading.Tasks;
 
 namespace ANNdotNET.Core

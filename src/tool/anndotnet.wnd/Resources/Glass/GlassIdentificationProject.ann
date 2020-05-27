@@ -1,3 +1,0 @@
-project:|Name:GlassIdentificationProject  |ValidationSetCount:20 |PrecentigeSplit:1 |MLConfigs:FFnet config |Info:ProjectInfo.rtf
-data:|RawData:GlassIdentificationProject_rawdata.txt |Column01:Id;Numeric;None;Ignore; |Column02:RI;Numeric;Feature;Ignore; |Column03:Sodium;Numeric;Feature;Ignore; |Column04:Magnesium;Numeric;Feature;Ignore; |Column05:Aluminum;Numeric;Feature;Ignore; |Column06:Silicon;Numeric;Feature;Ignore; |Column07:Potassium;Numeric;Feature;Ignore; |Column08:Calcium;Numeric;Feature;Ignore; |Column09:Barium;Numeric;Feature;Ignore; |Column10:Iron;Numeric;Feature;Ignore; |Column11:GlassType;Category;Label;Ignore; 
-parser:|RowSeparator:rn |ColumnSeparator: ; |Header:0 |SkipLines:0

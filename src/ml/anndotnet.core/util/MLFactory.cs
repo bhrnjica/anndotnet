@@ -632,9 +632,10 @@ namespace ANNdotNET.Core
         {
             try
             {
-                NetToGraph fg = new NetToGraph();
-                var dotStr = fg.ToGraph(model);
-                return dotStr;
+                //NetToGraph fg = new NetToGraph();
+                //var dotStr = fg.ToGraph(model);
+                //return dotStr;
+                return null;
             }
             catch (Exception)
             {

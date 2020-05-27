@@ -11,7 +11,7 @@
 // http://bhrnjica.wordpress.com                                                        //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-using GPdotNet.MathStuff;
+using Daany.MathStuff;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

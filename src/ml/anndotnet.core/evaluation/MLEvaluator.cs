@@ -17,9 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GPdotNet.MathStuff;
 using System.Threading.Tasks;
 using System.Globalization;
+using Daany.MathStuff;
+using Daany.MathStuff.Ext;
 
 namespace ANNdotNET.Core
 {
@@ -390,7 +391,7 @@ namespace ANNdotNET.Core
             if (evalResult.OutputClasses.Count == 1)
             {
                 //Training data set
-                mpt.SE = (float)actual.SE(predicted);
+                mpt.SE = (float)actual.SE(predicted).Sum();
                 mpt.RMSE = (float)actual.RMSE(predicted);
                 mpt.NSE = (float)actual.NSE(predicted);
                 mpt.PB = (float)actual.PBIAS(predicted);
@@ -403,12 +404,12 @@ namespace ANNdotNET.Core
                 var actualValues = evalResult.ActualEx.Select(x => x.Select(xx => (double)xx).ToArray()).ToArray();
                 var predictedValues = evalResult.PredictedEx.Select(x => x.Select(xx => (double)xx).ToArray()).ToArray();
 
-                mpt.SE = (float)AdvancedStatistics.SE(actualValues, predictedValues);
-                mpt.RMSE = (float)AdvancedStatistics.RMSE(actualValues, predictedValues);
-                mpt.NSE = (float)AdvancedStatistics.NSE(actualValues, predictedValues);
-                mpt.PB = (float)AdvancedStatistics.PBIAS(actualValues, predictedValues);
-                mpt.CORR = (float)AdvancedStatistics.R(actualValues, predictedValues);
-                mpt.DETC = (float)AdvancedStatistics.R2(actualValues, predictedValues);
+                mpt.SE = (float)Daany.MathStuff.Ext.AdvancedStatistics.SE(actualValues, predictedValues);
+                mpt.RMSE = (float)Daany.MathStuff.Ext.AdvancedStatistics.RMSE(actualValues, predictedValues);
+                mpt.NSE = (float)Daany.MathStuff.Ext.AdvancedStatistics.NSE(actualValues, predictedValues);
+                mpt.PB = (float)Daany.MathStuff.Ext.AdvancedStatistics.PBIAS(actualValues, predictedValues);
+                mpt.CORR = (float)Daany.MathStuff.Ext.AdvancedStatistics.R(actualValues, predictedValues);
+                mpt.DETC = (float)Daany.MathStuff.Ext.AdvancedStatistics.R2(actualValues, predictedValues);
             }
             else if (evalResult.OutputClasses.Count > 1)
             {
@@ -731,15 +732,15 @@ namespace ANNdotNET.Core
             switch (fun)
             {
                 case EFunction.ClassificationError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.CE;
+                    return Daany.MathStuff.AdvancedStatistics.CE;
                 case EFunction.SquaredError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.SE;
+                    return Daany.MathStuff.Ext.AdvancedStatistics.SE;
                 case EFunction.RMSError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.RMSE;
+                    return Daany.MathStuff.AdvancedStatistics.RMSE;
                 case EFunction.MSError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.MSE;
+                    return Daany.MathStuff.AdvancedStatistics.MSE;
                 case EFunction.ClassificationAccuracy:
-                    return GPdotNet.MathStuff.AdvancedStatistics.CA;
+                    return Daany.MathStuff.AdvancedStatistics.CA;
 
                 default:
                     throw new Exception($"The '{functionName}' function is not supported!");
@@ -754,11 +755,11 @@ namespace ANNdotNET.Core
                 //case EFunction.ClassificationError:
                 //    return GPdotNet.MathStuff.AdvancedStatistics.CE;
                 case EFunction.SquaredError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.SE;
+                    return Daany.MathStuff.Ext.AdvancedStatistics.SE;
                 case EFunction.RMSError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.RMSE;
+                    return Daany.MathStuff.Ext.AdvancedStatistics.RMSE;
                 case EFunction.MSError:
-                    return GPdotNet.MathStuff.AdvancedStatistics.MSE;
+                    return Daany.MathStuff.Ext.AdvancedStatistics.MSE;
                 ////case EFunction.ClassificationAccuracy:
                 ////    return GPdotNet.MathStuff.AdvancedStatistics.CA;
 

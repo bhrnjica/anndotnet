@@ -1,8 +1,0 @@
-configid:5ba4060a-ae8c-4e3a-983a-4d466e0d9d81
-metadata:|Column01:sex;Category;Feature;Random;female;male |Column02:age;Numeric;Feature;Average; |Column03:sibsp;Numeric;Feature;Average; |Column04:parch;Numeric;Feature;Average; |Column05:pclass;Category;Feature;Random;1;2;3 |Column06:survived;Category;Label;Random;no;yes 
-features:|NumFeatures  3 0	|sex 2 0	|pclass 3 0	
-labels:|survived 2 0
-network:|Layer:Normalization 0 0 0 None 0 0 |Layer:Dense 7 0 0 ReLU 0 0 |Layer:Dense 2 0 0 Softmax 0 0 
-learning:|Type:SGDLearner |LRate:0.001 |Momentum:1 |Loss:BinaryCrossEntropy|Eval:ClassificationAccuracy|L1:0|L2:0
-training:|Type:Default |BatchSize:50 |Epochs:1000 |Normalization:NumFeatures |RandomizeBatch:0 |SaveWhileTraining:1 |FullTrainingSetEval:1 |ProgressFrequency:50 |ContinueTraining:0 |TrainedModel:models\model_at_783of1000_epochs_TimeSpan_636733002008373880  
-paths:|Training:data\mldataset_train |Validation:data\mldataset_valid |Test: |TempModels:temp_models |Models:models |Result:DNNModel_result.csv |Logs:log 

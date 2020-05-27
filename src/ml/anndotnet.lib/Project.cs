@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using ANNdotNET.Lib.Ext;
 using DataProcessing.Core;
 using System.Threading.Tasks;
 
