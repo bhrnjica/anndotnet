@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Daany.DataFrame" Version="0.6.4" />
+    <PackageReference Include="Daany.DataFrame.Ext" Version="0.6.4" />
+    <PackageReference Include="TensorFlow.NET" Version="0.20.1" />
+  </ItemGroup>
+
+</Project>

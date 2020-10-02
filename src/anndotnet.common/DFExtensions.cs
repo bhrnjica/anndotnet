@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 
 using Daany;
-using Daany.Ext;
 using Microsoft.ML;
+using Daany.Ext;
 
-namespace AnnDotNET.Tool
+namespace AnnDotNET.Common
 {
     public static class DFExtensions
     {

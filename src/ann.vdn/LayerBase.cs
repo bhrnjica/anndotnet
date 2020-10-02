@@ -1,4 +1,5 @@
-﻿namespace AnnDotNET.Tool
+﻿
+namespace ann.vnd
 {
     public class LayerBase
     {
@@ -17,6 +18,13 @@
 
         public int? Seed { get; set; }
         public bool HasBias {get;set;}
-       
+
+        
+    }
+    public class LayerType
+    {
+    }
+    public class Activation
+    {
     }
 }

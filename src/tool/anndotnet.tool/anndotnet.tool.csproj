@@ -7,15 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ML" Version="1.4.0" />
-    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="1.15.1" />
-    <PackageReference Include="TensorFlow.NET" Version="0.15.1" />
+    <Compile Remove="ModelBuilder.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\dataprocessing.core\dataprocessing.core.csproj" />
-    <ProjectReference Include="..\..\core\nnetwork.core\nnetwork.core.csproj" />
-    <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
+    <None Remove="iris.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="iris.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ModelBuilder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML" Version="1.4.0" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.0" />
+    <PackageReference Include="TensorFlow.NET" Version="0.20.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ann.vdn\ann.vdn.csproj" />
+    <ProjectReference Include="..\..\anndotnet.common\anndotnet.common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,12 +48,6 @@
     <Reference Include="Daany.Stat">
       <HintPath>..\..\..\..\daany\lib\Daany.Stat.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="iris.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
