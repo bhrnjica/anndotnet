@@ -48,7 +48,7 @@ namespace AnnDotNET.Tool
             var lr = learner.Create(y, z, new TrainingParameters());
 
             //training process
-            TVTrainer tr = new TVTrainer(dFeed);
+            TVTrainer tr = new TVTrainer(xData, yData, 1);
             tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress });
 
             //evaluation
@@ -60,10 +60,11 @@ namespace AnnDotNET.Tool
 
         private static void binaryCassModel()
         {
+            //prepare the data
             (var xData, var yData) = PrepareTitanicData();
 
-            var dFeed = new DataFeed(xData, yData, 50);
-
+             
+            //create place holders
             Placeholders plcHolder = new Placeholders();
             (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
                                                     output: (-1, yData.Shape.Dimensions.Last()));
@@ -78,13 +79,15 @@ namespace AnnDotNET.Tool
             var lr = learner.Create(y, z, new TrainingParameters());
 
             //training process
-            TVTrainer tr = new TVTrainer(dFeed);
+            TVTrainer tr = new TVTrainer(xData, yData, 1);
             tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress });
 
             //evaluation
 
 
             //prediction
+
+
             return;
         }
 
@@ -92,7 +95,7 @@ namespace AnnDotNET.Tool
         {
             (var xData, var yData) = PrepareSlumpData();
 
-            var dFeed = new DataFeed(xData, yData, 0);
+             
 
             Placeholders plcHolder = new Placeholders();
             (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
@@ -108,7 +111,7 @@ namespace AnnDotNET.Tool
             var lr = learner.Create(y, z, new TrainingParameters());
 
             //training process
-            TVTrainer tr = new TVTrainer(dFeed);
+            TVTrainer tr = new TVTrainer(xData, yData, 1);
             tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress, MinibatchSize = 0 });
 
             //evaluation

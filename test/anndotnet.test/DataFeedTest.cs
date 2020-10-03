@@ -96,9 +96,9 @@ namespace anndotnet.test
             (NDArray x, NDArray y) = PrepareSimpleData();
 
             //Create DataFeed with features and labels and minibatch size 
-            var df = new DataFeed(x, y, 0);
+            var df = new TVTrainer(x, y, 20);
 
-            var data = df.Split(20);
+            var data = df.Split(1, false);
             var train = data.train.GetFullBatch();
             var test = data.validation.GetFullBatch();
 
@@ -118,9 +118,9 @@ namespace anndotnet.test
             (NDArray x, NDArray y) = PrepareSimpleData();
 
             //Create DataFeed with features and labels and minibatch size 
-            var df = new DataFeed(x, y, 0);
+            var df = new TVTrainer(x, y, 20);
 
-            var data = df.Split(20,true,1);
+            var data = df.Split(1, true);
             var train = data.train.GetFullBatch();
             var test = data.validation.GetFullBatch();
 

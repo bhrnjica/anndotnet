@@ -59,29 +59,7 @@ namespace AnnDotNET.Common
         }
 
 
-        public (DataFeed train, DataFeed validation) Split(int percentage, bool shuffle = false, int seed = 1)
-        {
-            int testSize = (X.shape[0] * percentage) / 100;
-            int trainSize = X.shape[0] - testSize;
-
-            //generate indexes
-            var random = new Random(seed);
-            var lst = Enumerable.Range(0, X.shape[0]);
-            var trainIds = shuffle ?  lst.OrderBy(t => random.Next()).ToArray().Take(trainSize) : lst.Take(trainSize);
-            var testIds = lst.Except(trainIds);
-
-            //create ndarrays
-            var trArray = np.array(trainIds);
-            var teArray = np.array(testIds);
-            //
-            var trainX = X[trArray];
-            var testX = X[teArray];
-            var trainY = Y[trArray];
-            var testY = Y[teArray];
-
-            return (new DataFeed(trainX, trainY, BatchSize), new DataFeed(testX, testY, BatchSize));
-
-        }
+       
         private Slice GetSlice(int batchIndex)
         {
             int start = batchIndex * BatchSize;
