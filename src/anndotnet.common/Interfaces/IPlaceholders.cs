@@ -10,7 +10,7 @@ namespace AnnDotNET.Common
 {
     public interface IPlaceholders
     {
-       (Tensor X, Tensor Y) Create(Shape input, Shape output);
+       (Tensor X, Tensor Y) Create(Shape input, Shape output, TF_DataType inType, TF_DataType outType);
        (Tensor X, Tensor Y) Create(int inDim, int outDim);
     }
 }

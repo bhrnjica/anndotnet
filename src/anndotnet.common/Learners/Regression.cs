@@ -19,14 +19,13 @@ namespace AnnDotNET.Common
             {
                 // Squared error
                 tr.Loss = tf.reduce_sum(tf.pow(model - y, 2.0f));
-                //tr.Loss = tf.reduce_mean(loss);
             });
 
             tf_with(tf.variable_scope("Evaluation"), delegate
             {
                 // Mean squared error
                 var cost = tf.reduce_sum(tf.pow(model - y, 2.0f));
-                tr.Eval = tf.reduce_mean(cost, -1);
+                tr.Eval = tf.reduce_mean(cost);
             });
 
             // We add the training operation, ...

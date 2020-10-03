@@ -10,7 +10,7 @@ namespace AnnDotNET.Common
 {
     public interface ITrainer
     {
-        public bool Train(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr, DataFeed dFeed);
-        public bool TrainOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr, DataFeed dFeed);
+        public bool Run(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr);
+        public bool RunOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr);
     }
 }

@@ -60,6 +60,33 @@ namespace ann.vdn
             return z;
         }
 
+        public Tensor CreateSimpleRegression(Tensor x)
+        {
+            Tensor z = null;
+            int? random_seed = 1;
+            tf_with(tf.variable_scope("FullyConnected"), delegate
+            {
+                var initValue = tf.random_uniform(shape: (x.shape.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+                var initValueb = tf.random_uniform(shape: 5, seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+
+                var w1 = tf.Variable<Tensor>(initValue, name: "w1");
+                var b1 = tf.Variable<Tensor>(initValueb, name: "b1");
+
+                z = tf.matmul(x, w1) + b1;
+                var yyy = tf.nn.tanh(z);
+
+                var initValue2 = tf.random_uniform(shape: (5, 1), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+                var initValueb2 = tf.random_uniform(shape: 1, seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+
+                var w2 = tf.Variable<Tensor>(initValue2, name: "w2");
+                var b2 = tf.Variable<Tensor>(initValueb2, name: "b2");
+
+                z = tf.matmul(yyy, w2) + b2;
+            });
+
+            return z;
+        }
+
         public bool Save(Session sess, string filePath)
         {
             

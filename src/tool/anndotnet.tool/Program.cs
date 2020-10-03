@@ -18,32 +18,104 @@ namespace AnnDotNET.Tool
 
         static void Main(string[] args)
         {
-            (var X_data, var Y_data) = PrepareData();
+            //regressonModel();
 
-            var dFeed = new DataFeed(X_data, Y_data, 50);
+            //binaryCassModel();
+
+            multiclassModel();
+            
+
+        }
+
+        private static void multiclassModel()
+        {
+            (var xData, var yData) = PrepareIrisData();
+
+            var dFeed = new DataFeed(xData, yData, 50);
+
 
             Placeholders plcHolder = new Placeholders();
-            (Tensor x, Tensor y) = plcHolder.Create(4, 3);
+            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
+                                                    output: (-1, yData.Shape.Dimensions.Last()));
 
             //create network
             int outDim = y.shape.Last();
             NetworkModel model = new NetworkModel();
             Tensor z = model.Create(x, outDim);
-            
+
             //define learner
             var learner = new ClassificationLearner();
             var lr = learner.Create(y, z, new TrainingParameters());
 
             //training process
-            Trainer tr = new Trainer();
-            tr.TrainOffline(x, y, lr, new TrainingParameters() { Progress = Progress }, dFeed);
- 
+            TVTrainer tr = new TVTrainer(dFeed);
+            tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress });
+
             //evaluation
 
 
             //prediction
             return;
+        }
 
+        private static void binaryCassModel()
+        {
+            (var xData, var yData) = PrepareTitanicData();
+
+            var dFeed = new DataFeed(xData, yData, 50);
+
+            Placeholders plcHolder = new Placeholders();
+            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
+                                                    output: (-1, yData.Shape.Dimensions.Last()));
+
+            //create network
+            int outDim = y.shape.Last();
+            NetworkModel model = new NetworkModel();
+            Tensor z = model.CreateLogisticRegression(x);
+
+            //define learner
+            var learner = new ClassificationLearner();
+            var lr = learner.Create(y, z, new TrainingParameters());
+
+            //training process
+            TVTrainer tr = new TVTrainer(dFeed);
+            tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress });
+
+            //evaluation
+
+
+            //prediction
+            return;
+        }
+
+        private static void regressonModel()
+        {
+            (var xData, var yData) = PrepareSlumpData();
+
+            var dFeed = new DataFeed(xData, yData, 0);
+
+            Placeholders plcHolder = new Placeholders();
+            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
+                                                    output: (-1, yData.Shape.Dimensions.Last()));
+
+            //create network
+            int outDim = y.shape.Last();
+            NetworkModel model = new NetworkModel();
+            Tensor z = model.CreateSimpleRegression(x);
+
+            //define learner
+            var learner = new RegressionLearner();
+            var lr = learner.Create(y, z, new TrainingParameters());
+
+            //training process
+            TVTrainer tr = new TVTrainer(dFeed);
+            tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress, MinibatchSize = 0 });
+
+            //evaluation
+
+
+            //prediction
+            return;
         }
 
         public static void Progress(TrainingProgress tp)
@@ -60,7 +132,7 @@ namespace AnnDotNET.Tool
        
 
 
-        public static (NDArray, NDArray) PrepareData()
+        public static (NDArray, NDArray) PrepareIrisData()
         {
 
             //read the iris data and create DataFrame object
@@ -74,32 +146,33 @@ namespace AnnDotNET.Tool
 
         }
 
-
-        
-        public static void Predict(DataFeed dFeed)
+        public static (NDArray, NDArray) PrepareTitanicData()
         {
-            var graph = new Graph().as_default();
-            using (var sess = tf.Session(graph))
-            {
-                graph.Import(Path.Join(".resources/logistic_regression", "model.pb"));
 
-                // restoring the model
-                // var saver = tf.train.import_meta_graph("logistic_regression/tensorflowModel.ckpt.meta");
-                // saver.restore(sess, tf.train.latest_checkpoint('logistic_regression'));
-                var pred = graph.OperationByName("Softmax");
-                var output = pred.outputs[0];
-                var x = graph.OperationByName("Placeholder");
-                var input = x.outputs[0];
+            //read the iris data and create DataFrame object
+            var df = DataFrame.FromCsv("titanic.txt", sep: ',');
 
-                // predict
-                var (batch_xs, batch_ys) = dFeed.GetFullBatch();
-                var results = sess.run(output, new FeedItem(input, batch_xs[np.arange(1)]));
+            //prepare the data
+            var features = new string[] { "Pclass", "Sex", "SibSp", "Parch" };
+            var label = "Survived";
+            //
+            return df.PrepareData(features, label);
 
-                if (results[0].argmax() == (batch_ys[0] as NDArray).argmax())
-                    print("predicted OK!");
-                else
-                    throw new ValueError("predict error, should be 90% accuracy");
-            }
+        }
+
+        public static (NDArray, NDArray) PrepareSlumpData()
+        {
+            var coltypes = new ColType[] { ColType.I32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32 };
+            //read the iris data and create DataFrame object
+            var df = DataFrame.FromCsv("slump.txt", sep: ';', colTypes:coltypes );
+
+            //prepare the data
+            var features = new string[] { "Cement", "Slag","Fly_ash", "Water", "SP", "Coarse_Aggr"};
+            var label = "Strength";
+            //
+            var retVal =  df.PrepareData(features, label);
+
+            return retVal;
         }
 
     }

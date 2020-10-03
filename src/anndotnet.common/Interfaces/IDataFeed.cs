@@ -12,5 +12,7 @@ namespace AnnDotNET.Common
         IEnumerable<(NDArray xBatch, NDArray yBatch)> GetNextBatch();
         (NDArray xBatch, NDArray yBatch) GetFullBatch();
 
+        (DataFeed train, DataFeed validation) Split(int percentage, bool shuffle, int seed);
+
     }
 }

@@ -11,7 +11,7 @@ namespace AnnDotNET.Common
 {
     public class Placeholders : IPlaceholders
     {
-       public (Tensor X, Tensor Y) Create(Shape input, Shape output)
+       public (Tensor X, Tensor Y) Create(Shape input, Shape output, TF_DataType inType= TF_DataType.TF_FLOAT, TF_DataType outType= TF_DataType.TF_FLOAT)
         {
             tf.compat.v1.disable_eager_execution();
 
@@ -20,8 +20,8 @@ namespace AnnDotNET.Common
             //
             tf_with(tf.variable_scope("placeholders"), delegate
             {
-                X = tf.placeholder(tf.float32, shape: input);
-                Y = tf.placeholder(tf.int32, shape:output);
+                X = tf.placeholder(inType, shape: input);
+                Y = tf.placeholder(outType, shape:output);
             });
             //
             return (X, Y);

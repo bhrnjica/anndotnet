@@ -25,7 +25,7 @@ namespace AnnDotNET.Common
             tf_with(tf.variable_scope("Evaluation"), delegate
             {
                 var y_pred = tf.cast(model > 0, tf.int32);
-                tr.Eval = tf.reduce_mean(tf.cast(tf.equal(y_pred, y), tf.float32));
+                tr.Eval = tf.reduce_mean(tf.cast(tf.equal(y_pred,tf.cast(y,tf.int32)), tf.float32));
                 // accuracy = tf.Print(accuracy, data =[accuracy], message = "accuracy:")
             });
 

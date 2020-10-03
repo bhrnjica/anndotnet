@@ -1,4 +1,5 @@
-﻿using NumSharp;
+﻿using Daany.MathStuff;
+using NumSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,10 @@ using Tensorflow;
 
 namespace AnnDotNET.Common
 {
+    public static class Util
+    {
+        
+    }
     public enum ProgressType
     {
         Initialization,

@@ -14,9 +14,7 @@ namespace AnnDotNET.Common
     {
        public static (NDArray X, NDArray Y)  PrepareData(this DataFrame df, string[] features, string label)
         {
-            //var train_X = np.array(3.3f, 4.4f, 5.5f, 6.71f, 6.93f, 4.168f, 9.779f, 6.182f, 7.59f, 2.167f, 7.042f, 10.791f, 5.313f, 7.997f, 5.654f, 9.27f, 3.1f);
-            //var train_Y = np.array(1.7f, 2.76f, 2.09f, 3.19f, 1.694f, 1.573f, 3.366f, 2.596f, 2.53f, 1.221f, 2.827f, 3.465f, 1.65f, 2.904f, 2.42f, 2.94f, 1.3f);
-            var featureDf = prepareDf(df[features]);
+             var featureDf = prepareDf(df[features]);
             //
             var lDf = df.Create((label, null));
             var labelDf = prepareDf(lDf);
@@ -47,6 +45,7 @@ namespace AnnDotNET.Common
             
             var cols = dfF.Columns;
             var mlCntx = new MLContext();
+
             //check id all columns have valid type
             if (dfF.ColTypes.Any(x => x == ColType.DT))
                 throw new Exception("DataTime column cannot be directly prepare to ML. Consider to transform it to another type.");

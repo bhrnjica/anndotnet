@@ -9,11 +9,18 @@ using static Tensorflow.Binding;
 
 namespace AnnDotNET.Common
 {
-    public class Trainer : ITrainer
+    public class TVTrainer : ITrainer
     {
         ConfigProto _config;
         Operation _init;
-        public Trainer()
+        DataFeed _dFeed;
+        DataFeed _train;
+        DataFeed _valid;
+
+        int _percentageSplit;
+
+
+        public TVTrainer(NDArray x, NDArray y, int percentageSplit = 20)
         {
             _config = new ConfigProto
             {
@@ -24,8 +31,14 @@ namespace AnnDotNET.Common
 
             // Initialize the variables (i.e. assign their default value)
              _init = tf.global_variables_initializer();
+
+            //
+            _dFeed = dFeed;
+            _percentageSplit = percentageSplit;
+            (_train, _valid) = _dFeed.Split(_percentageSplit);
+            
         }
-        public bool TrainOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr, DataFeed dFeed)
+        public bool RunOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
         {
             using (var sess = tf.Session(_config))
             {
@@ -33,7 +46,7 @@ namespace AnnDotNET.Common
                 sess.run(_init);
 
                 // check the accuracy before training
-                var (x_input, y_input) = dFeed.GetFullBatch();
+                var (x_input, y_input) = _dFeed.GetFullBatch();
 
                 //report of zero epoch
                 var (eval, loss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
@@ -43,7 +56,7 @@ namespace AnnDotNET.Common
                 foreach (var i in range(1, tr.Epoch))
                 {
                     // by sampling some input data (fetching)
-                    (x_input, y_input) = dFeed.GetFullBatch();
+                    (x_input, y_input) = _dFeed.GetFullBatch();
 
                     //train and back propagate error
                     sess.run(lr.Learner, (x, x_input), (y, y_input));
@@ -58,7 +71,7 @@ namespace AnnDotNET.Common
                 }
 
                 // Finally, we check our final accuracy
-                (x_input, y_input) = dFeed.GetFullBatch();
+                (x_input, y_input) = _dFeed.GetFullBatch();
 
                 sess.run(lr.Eval, (x, x_input), (y, y_input));
                 tr.Progress(new TrainingProgress() { ProgressType = ProgressType.Completed, Iteration = tr.Epoch, Eval = eval, Loss = loss });
@@ -67,7 +80,7 @@ namespace AnnDotNET.Common
             return true;
         }
 
-        public bool Train(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr, DataFeed dFeed)
+        public bool Run(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
         {
             //
             using (var sess = tf.Session())
@@ -81,7 +94,7 @@ namespace AnnDotNET.Common
                 {
 
                     // Loop over all batches
-                    foreach (var batch in dFeed.GetNextBatch())
+                    foreach (var batch in _dFeed.GetNextBatch())
                     {
                         var (batch_xs, batch_ys) = batch;
 
@@ -94,7 +107,7 @@ namespace AnnDotNET.Common
 
                     // Compute average values
                     //calculate loss and evaluation function
-                    var fullBatch = dFeed.GetFullBatch();
+                    var fullBatch = _dFeed.GetFullBatch();
                     (float eval, float loss) = sess.run((lr.Eval, lr.Loss), (x, fullBatch.xBatch), (y, fullBatch.yBatch));
 
 
