@@ -3,7 +3,7 @@
 
 ![ANNdotNET Logo](./docs/images/annLogo_start2.png)
 
-ANNdotNET –  is an open source project for deep learning written in C# and supports .NET and .NET Core platform. The main purpose of the project is creating and training deep learning models. One of the main project component is ANNdotNET ML Engine which is based on Tensorflow.Net. The project supposed to be GUI tool for deep learning with extensions in data preprocessing, model evaluation, exporting and deploying. 
+ANNdotNET –  is an open source project for deep learning written in C# and supports .NET and .NET Core platform. The main purpose of the project is creating and training deep learning models. One of the main project component is ANNdotNET ML Engine which is based on Tensorflow.Net. The project supposed to be GUI tool for deep learning with data preprocessing, model evaluation, exporting and deploying. 
  
 The project is hosted at http://github.com/bhrnjica/anndotnet, and the project documentation can be found at the project wiki pages at https://github.com/bhrnjica/anndotnet/wiki.  
 
