@@ -3,7 +3,7 @@
 [![DOI](https://zenodo.org/badge/126162816.svg)](https://zenodo.org/badge/latestdoi/126162816)
 ![developed by](https://avatars3.githubusercontent.com/u/12556447?s=55&u=f2cd3be70373c9654b9d53a4f69ddfd7a8ed6596&v=4=)
 
-![ANNdotNET Logo](./src/tool/anndotnet.wnd/Images/annLogo_start2.png)
+![ANNdotNET Logo](./docs/images/annLogo_start2.png)
 
 ANNdotNET –  is an open source project for deep learning written in C# and supports .NET and .NET Core platform. The main purpose of the project is creating and training deep learning models. One of the main project component is ANNdotNET ML Engine which is based on Tensorflow.Net. The project supposed to be GUI tool for deep learning with extensions in data preprocessing, model evaluation, exporting and deploying. 
  

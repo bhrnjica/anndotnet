@@ -8,6 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{721F6DD8-03B3-4E8D-B7A9-64407D371093}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{7622CA23-6F93-4322-9A8F-046E9723E803}"
+	ProjectSection(SolutionItems) = preProject
+		coc.md = coc.md
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		Release.md = Release.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tool", "tool", "{879EF08D-0BC8-4558-B48E-839CFD9FA8B5}"
 EndProject
@@ -18,6 +24,42 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.common", "src\anndotnet.common\anndotnet.common.csproj", "{7901FBF4-CDE9-44E1-A735-732D4C06F7DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ann.vdn", "src\ann.vdn\ann.vdn.csproj", "{4271153F-10EE-4F8A-967D-96D253E139CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{53655133-86F2-4A04-846B-7D1D9AB76815}"
+	ProjectSection(SolutionItems) = preProject
+		docs\images\14684be79e3fc6460a7908db00e0b616.jpg = docs\images\14684be79e3fc6460a7908db00e0b616.jpg
+		docs\images\14ab6f259a54b6e22d50b2fcba593dc4.jpg = docs\images\14ab6f259a54b6e22d50b2fcba593dc4.jpg
+		docs\images\2edfc159cd9c3a555178b966b46e9dbd.png = docs\images\2edfc159cd9c3a555178b966b46e9dbd.png
+		docs\images\2fe28a45f1725c6511d415357a10b594.png = docs\images\2fe28a45f1725c6511d415357a10b594.png
+		docs\images\32de751099d58f038ab281c3f8b29651.png = docs\images\32de751099d58f038ab281c3f8b29651.png
+		docs\images\43a59f2ec771889ed5a5ad8e105a647c.png = docs\images\43a59f2ec771889ed5a5ad8e105a647c.png
+		docs\images\43b67c5b4ce4c94f5c474f94f98cc262.png = docs\images\43b67c5b4ce4c94f5c474f94f98cc262.png
+		docs\images\53722efde0bcce57c55688c9aae5b250.png = docs\images\53722efde0bcce57c55688c9aae5b250.png
+		docs\images\738b4a2a7d3baf83d3870ac10d2b77fb.jpg = docs\images\738b4a2a7d3baf83d3870ac10d2b77fb.jpg
+		docs\images\7c1df576bf4ced8ef8bee8415aee3ebb.png = docs\images\7c1df576bf4ced8ef8bee8415aee3ebb.png
+		docs\images\7d9f7758f3b32a50f4d2d70cfd07d1e3.png = docs\images\7d9f7758f3b32a50f4d2d70cfd07d1e3.png
+		docs\images\8a2d83c23a750272fd0bcdc4ff927f53.png = docs\images\8a2d83c23a750272fd0bcdc4ff927f53.png
+		docs\images\anandotnet_projectexplorer02.jpg = docs\images\anandotnet_projectexplorer02.jpg
+		docs\images\anndotnet-exceladdin-img01.jpg = docs\images\anndotnet-exceladdin-img01.jpg
+		docs\images\anndotnet-exceladdin-img01.png = docs\images\anndotnet-exceladdin-img01.png
+		docs\images\anndotnet-exceladdin-img02.png = docs\images\anndotnet-exceladdin-img02.png
+		docs\images\anndotnet-exceladdin-img03.png = docs\images\anndotnet-exceladdin-img03.png
+		docs\images\anndotnet-exceladdin-img04.png = docs\images\anndotnet-exceladdin-img04.png
+		docs\images\anndotnet_data_preparation.png = docs\images\anndotnet_data_preparation.png
+		docs\images\anndotnet_data_preparation1.png = docs\images\anndotnet_data_preparation1.png
+		docs\images\anndotnet_data_preparation2.png = docs\images\anndotnet_data_preparation2.png
+		docs\images\anndotnet_project_explorer.jpg = docs\images\anndotnet_project_explorer.jpg
+		docs\images\anndotnet_startwnd.jpg = docs\images\anndotnet_startwnd.jpg
+		docs\images\anndotnet_startwnd.png = docs\images\anndotnet_startwnd.png
+		docs\images\annetwork_designer.jpg = docs\images\annetwork_designer.jpg
+		docs\images\annetwork_designer.png = docs\images\annetwork_designer.png
+		docs\images\annLogo_start2.png = docs\images\annLogo_start2.png
+		docs\images\ca93bf7412de5eeebd40d94ea561c057.png = docs\images\ca93bf7412de5eeebd40d94ea561c057.png
+		docs\images\f2e2ab5a082b6a823c1362ced8452332.png = docs\images\f2e2ab5a082b6a823c1362ced8452332.png
+		docs\images\fac7a4a653e1b72dd963eb087e03f5e3.png = docs\images\fac7a4a653e1b72dd963eb087e03f5e3.png
+		docs\images\fe49bb139724fa9a78f59e55db89b557.png = docs\images\fe49bb139724fa9a78f59e55db89b557.png
+		docs\images\projectsfile_structure.png = docs\images\projectsfile_structure.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +111,7 @@ Global
 		{8096EC67-AF3A-4CB0-A9F1-77A8746EC57E} = {88972845-2076-4EC4-9175-49E27255511E}
 		{7901FBF4-CDE9-44E1-A735-732D4C06F7DD} = {879EF08D-0BC8-4558-B48E-839CFD9FA8B5}
 		{4271153F-10EE-4F8A-967D-96D253E139CA} = {879EF08D-0BC8-4558-B48E-839CFD9FA8B5}
+		{53655133-86F2-4A04-846B-7D1D9AB76815} = {7622CA23-6F93-4322-9A8F-046E9723E803}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB1329E7-A57C-4356-AA89-7EA38292DAB3}
