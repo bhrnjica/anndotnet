@@ -11,7 +11,7 @@ namespace AnnDotNET.Common
 {
     public class RegressionLearner : ILearner 
     {
-        public AnnLearner Create(Tensor y, Tensor model, TrainingParameters par)
+        public AnnLearner Create(Tensor y, Tensor model, LearningParameters par)
         {
             var tr = new AnnLearner();
 

@@ -9,7 +9,7 @@ namespace AnnDotNET.Common
 {
     public interface IDataFeed 
     {
-        IEnumerable<(NDArray xBatch, NDArray yBatch)> GetNextBatch();
+        IEnumerable<(NDArray xBatch, NDArray yBatch)> GetNextBatch(int batchSize);
         (NDArray xBatch, NDArray yBatch) GetFullBatch();
     }
 }

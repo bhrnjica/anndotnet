@@ -69,12 +69,19 @@ namespace AnnDotNET.Common
             var trainY = Y[trArray];
             var testY = Y[teArray];
 
-            return (new DataFeed(trainX, trainY, 1), new DataFeed(testX, testY, 1));
+            return (new DataFeed(trainX, trainY), new DataFeed(testX, testY));
 
         }
 
         public bool RunOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
         {
+            //check for progress
+            if (tr.Progress == null)
+            {
+                var pt = new ProgressTVTraining();
+                tr.Progress = pt.Run;
+            }
+
             using (var sess = tf.Session(_config))
             {
 
@@ -85,7 +92,7 @@ namespace AnnDotNET.Common
 
                 //report of zero epoch
                 var (eval, loss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
-                tr.Progress(new TrainingProgress() {ProgressType= ProgressType.Initialization, Iteration = 0, Eval=eval, Loss= loss });
+                tr.Progress(new TrainingProgress() {ProgressType= ProgressType.Initialization, Iteration = 0, TrainEval=eval, TrainLoss= loss });
 
                 // training
                 foreach (var i in range(1, tr.Epoch))
@@ -99,17 +106,35 @@ namespace AnnDotNET.Common
                     // We regularly check the loss
                     if (i % tr.ProgressStep == 0)
                     {
-                        (eval, loss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
-                        tr.Progress(new TrainingProgress() { ProgressType = ProgressType.Training, Iteration = i, Eval = eval, Loss = loss });
+                        var (x_inputV, y_inputV) = _valid.GetFullBatch();
+                        //
+                        var (TEval, TLoss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
+                        var (VEval, VLoss) = sess.run((lr.Eval, lr.Loss), (x, x_inputV), (y, y_inputV));
+
+                        //report progress
+                        tr.Progress(new TrainingProgress() 
+                            { ProgressType = ProgressType.Training, Iteration = i, 
+                                TrainEval = TEval, TrainLoss = TLoss, ValidEval = VEval, ValidLoss = VLoss
+                        });
                     }
                         
                 }
 
                 // Finally, we check our final accuracy
-                (x_input, y_input) = _train.GetFullBatch();
+                var tranData = _train.GetFullBatch();
+                var (TEvala, TLossa) = sess.run((lr.Eval, lr.Loss), (x, tranData.xBatch), (y, tranData.yBatch));
 
-                sess.run(lr.Eval, (x, x_input), (y, y_input));
-                tr.Progress(new TrainingProgress() { ProgressType = ProgressType.Completed, Iteration = tr.Epoch, Eval = eval, Loss = loss });
+                //Evaluate validation set
+                var validData = _valid.GetFullBatch();
+                var (VEvala, VLossa) = sess.run((lr.Eval, lr.Loss), (x, validData.xBatch), (y, validData.yBatch));
+
+                //report progress
+                tr.Progress(new TrainingProgress() 
+                        { 
+                            ProgressType = ProgressType.Completed, 
+                            Iteration = tr.Epoch, TrainEval = TEvala, TrainLoss = TLossa,
+                                                  ValidEval = VEvala,ValidLoss = VLossa
+                });
             }
 
             return true;
@@ -117,6 +142,13 @@ namespace AnnDotNET.Common
 
         public bool Run(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
         {
+            //check for progress
+            if (tr.Progress == null)
+            {
+                var pt = new ProgressTVTraining();
+                tr.Progress = pt.Run;
+            }
+
             //
             using (var sess = tf.Session())
             {
@@ -125,31 +157,36 @@ namespace AnnDotNET.Common
 
                 int batchCount = 0;
                 // Training cycle
-                foreach (var epoch in range(1, tr.Epoch))
+                foreach (var e in range(1, tr.Epoch))
                 {
 
                     // Loop over all batches
-                    foreach (var batch in _train.GetNextBatch())
+                    foreach (var (x_in, y_in) in _train.GetNextBatch(tr.MinibatchSize))
                     {
-                        var (batch_xs, batch_ys) = batch;
-
+                        
                         // Run optimization op (backprop)
-                        sess.run(lr.Learner, (x, batch_xs),(y, batch_ys));
+                        sess.run(lr.Learner, (x, x_in),(y, y_in));
 
                         //batch counting
                         batchCount++;
                     }
 
-                    // Compute average values
-                    //calculate loss and evaluation function
-                    var fullBatch = _train.GetFullBatch();
-                    (float eval, float loss) = sess.run((lr.Eval, lr.Loss), (x, fullBatch.xBatch), (y, fullBatch.yBatch));
+                    var (x_input, y_input) = _train.GetFullBatch();
+                    var (x_inputV, y_inputV) = _valid.GetFullBatch();
+                    //
+                    var (TEval, TLoss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
+                    var (VEval, VLoss) = sess.run((lr.Eval, lr.Loss), (x, x_inputV), (y, y_inputV));
 
-
-                    // Display logs per epoch step
-                    if (epoch % tr.ProgressStep == 0)
-                        tr.Progress(new TrainingProgress() { Iteration = epoch, Eval = eval, Loss = loss });
-
+                    //report progress
+                    tr.Progress(new TrainingProgress()
+                    {
+                        ProgressType = ProgressType.Training,
+                        Iteration = e,
+                        TrainEval = TEval,
+                        TrainLoss = TLoss,
+                        ValidEval = VEval,
+                        ValidLoss = VLoss
+                    });
                 }
 
                 return true;

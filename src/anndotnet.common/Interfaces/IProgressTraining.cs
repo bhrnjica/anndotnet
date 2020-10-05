@@ -4,12 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tensorflow;
 
 namespace AnnDotNET.Common
 {
-    public interface ILearner
+    public interface IProgressTraining
     {
-       public AnnLearner Create(Tensor y, Tensor model, LearningParameters par);
+        void Run(TrainingProgress tp);
     }
 }

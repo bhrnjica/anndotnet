@@ -35,6 +35,11 @@ namespace AnnDotNET.Common
         public Operation Learner { get; set; }
     }
 
+    public class LearningParameters
+    {
+        
+    }
+
     public class TrainingParameters
     {
         public TrainingType TrainingType { get; set; }
@@ -53,8 +58,10 @@ namespace AnnDotNET.Common
 
         public Action<TrainingProgress> Progress { get; set; }
 
+
         public TrainingParameters()
         {
+            Progress = null;
             TrainingType = TrainingType.TrainValidation;
             EarlyStopping = EarlyStopping.None;
             Epoch = 5000;
@@ -68,9 +75,12 @@ namespace AnnDotNET.Common
     public class TrainingProgress
     {
         public ProgressType ProgressType { get; set; }
+        public int FoldIndex { get; set; }
         public int Iteration { get; set; }
-        public float Loss { get; set; }
-        public float Eval { get; set; }
+        public float TrainLoss { get; set; }
+        public float TrainEval { get; set; }
+        public float ValidLoss { get; set; }
+        public float ValidEval { get; set; }
     }
    public  class Ann
     {

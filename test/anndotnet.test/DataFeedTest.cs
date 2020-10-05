@@ -20,13 +20,14 @@ namespace anndotnet.test
             (NDArray x, NDArray y) = PrepareData();
 
             //Create DataFeed with features and labels and minibatch size 
-            var df = new DataFeed(x, y, 88);
+            var df = new DataFeed(x, y);
 
             //enumerate data with minibatchsize
             int batchIndex = 0;
-            foreach (var d in df.GetNextBatch())
+            int batchSize = 88;
+            foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * df.BatchSize+1);
+                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -39,13 +40,14 @@ namespace anndotnet.test
             (NDArray x, NDArray y) = PrepareData();
 
             //Create DataFeed with features and labels and minibatch size 
-            var df = new DataFeed(x, y, 1);
+            var df = new DataFeed(x, y);
 
             //enumerate data with minibatchsize
             int batchIndex = 0;
-            foreach (var d in df.GetNextBatch())
+            int batchSize = 1;
+            foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * df.BatchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -58,13 +60,14 @@ namespace anndotnet.test
             (NDArray x, NDArray y) = PrepareData();
 
             //Create DataFeed with features and labels and minibatch size 
-            var df = new DataFeed(x, y, 50);
+            var df = new DataFeed(x, y);
 
             //enumerate data with minibatchsize
             int batchIndex = 0;
-            foreach (var d in df.GetNextBatch())
+            int batchSize = 50;
+            foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * df.BatchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -77,13 +80,14 @@ namespace anndotnet.test
             (NDArray x, NDArray y) = PrepareData();
 
             //Create DataFeed with features and labels and minibatch size 
-            var df = new DataFeed(x, y, 0);
+            var df = new DataFeed(x, y);
 
             //enumerate data with minibatchsize
             int batchIndex = 0;
-            foreach (var d in df.GetNextBatch())
+            int batchSize = 0;
+            foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * df.BatchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 

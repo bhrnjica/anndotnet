@@ -12,33 +12,20 @@ namespace AnnDotNET.Common
     {
         NDArray X { get; set; }
         NDArray Y { get; set; }
-
-        public int BatchSize { get; set; }
-        int position = -1;
-
-        public object Current
-        {
-            get 
-            {
-                Slice slice = GetSlice(position);
-                return (X[slice], Y[slice]);
-            }
-        }
-
-        public DataFeed(NDArray x, NDArray y, int batchsize)
+        
+        public DataFeed(NDArray x, NDArray y)
         {
             X = x;
             Y = y;
-            BatchSize = batchsize <=0 ? 0 :batchsize;
         }
 
         
-        public IEnumerable<(NDArray xBatch, NDArray yBatch)> GetNextBatch()
+        public IEnumerable<(NDArray xBatch, NDArray yBatch)> GetNextBatch(int batchSize)
         {
             int batchPos = 0;
             while(true)
             {
-                Slice slice = GetSlice(batchPos);
+                Slice slice = GetSlice(batchPos, batchSize);
                 batchPos++;
                 var xBatch = X[slice];
                 var yBatch = Y[slice];
@@ -47,7 +34,7 @@ namespace AnnDotNET.Common
 
                 yield return (xBatch, yBatch);
                 //if batch-size is equal to zero
-                if (BatchSize == 0)
+                if (batchSize == 0)
                     break;
             }
             
@@ -60,10 +47,10 @@ namespace AnnDotNET.Common
 
 
        
-        private Slice GetSlice(int batchIndex)
+        private Slice GetSlice(int batchIndex, int batchSize)
         {
-            int start = batchIndex * BatchSize;
-            int end = BatchSize == 0 ? -1 : start + BatchSize;           
+            int start = batchIndex * batchSize;
+            int end = batchSize == 0 ? -1 : start + batchSize;           
             var slice = new Slice(start, end);
             return slice;
         }

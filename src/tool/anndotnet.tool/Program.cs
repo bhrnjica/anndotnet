@@ -18,11 +18,12 @@ namespace AnnDotNET.Tool
 
         static void Main(string[] args)
         {
+            regressonModel_cv_training();
             //regressonModel();
 
             //binaryCassModel();
 
-            multiclassModel();
+            //multiclassModel();
             
 
         }
@@ -31,7 +32,7 @@ namespace AnnDotNET.Tool
         {
             (var xData, var yData) = PrepareIrisData();
 
-            var dFeed = new DataFeed(xData, yData, 50);
+            var dFeed = new DataFeed(xData, yData);
 
 
             Placeholders plcHolder = new Placeholders();
@@ -45,11 +46,11 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new ClassificationLearner();
-            var lr = learner.Create(y, z, new TrainingParameters());
+            var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 1);
-            tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress });
+            tr.Run(x, y, lr, new TrainingParameters());
 
             //evaluation
 
@@ -76,11 +77,11 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new ClassificationLearner();
-            var lr = learner.Create(y, z, new TrainingParameters());
+            var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 1);
-            tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress });
+            tr.Run(x, y, lr, new TrainingParameters());
 
             //evaluation
 
@@ -108,11 +109,11 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new RegressionLearner();
-            var lr = learner.Create(y, z, new TrainingParameters());
+            var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 1);
-            tr.Run(x, y, lr, new TrainingParameters() { Progress = Progress, MinibatchSize = 0 });
+            tr.Run(x, y, lr, new TrainingParameters() { MinibatchSize = 65 });
 
             //evaluation
 
@@ -121,16 +122,56 @@ namespace AnnDotNET.Tool
             return;
         }
 
-        public static void Progress(TrainingProgress tp)
+        private static void regressonModel_cv_training()
         {
-            if(tp.ProgressType== ProgressType.Initialization)
-                Console.WriteLine($"_________________________________________________________");
+            (var xData, var yData) = PrepareSlumpData();
 
-            Console.WriteLine($"Iteration={tp.Iteration}, Loss={Math.Round(tp.Loss, 3)}, Eval={Math.Round(tp.Eval, 3)}");
 
-            if (tp.ProgressType == ProgressType.Completed)
-                Console.WriteLine($"_________________________________________________________");
+
+            Placeholders plcHolder = new Placeholders();
+            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
+                                                    output: (-1, yData.Shape.Dimensions.Last()));
+
+            //create network
+            int outDim = y.shape.Last();
+            NetworkModel model = new NetworkModel();
+            Tensor z = model.CreateSimpleRegression(x);
+
+            //define learner
+            var learner = new RegressionLearner();
+            var lr = learner.Create(y, z, new LearningParameters());
+
+            //training process
+            var tr = new CVTrainer(xData, yData, 5);
+            tr.Run(x, y, lr, new TrainingParameters() { Epoch= 500, MinibatchSize = 65 });
+
+            //evaluation
+
+
+            //prediction
+            return;
         }
+
+        //public static void CVProgress(TrainingProgress tp)
+        //{
+        //    if (tp.ProgressType == ProgressType.Initialization)
+        //        Console.WriteLine($"_________________________________________________________");
+
+        //    Console.WriteLine($"Fold={tp.FoldIndex}, Iteration={tp.Iteration}, Loss={Math.Round(tp.TrainLoss, 3)}, Eval={Math.Round(tp.TrainEval, 3)}");
+
+        //    if (tp.ProgressType == ProgressType.Completed)
+        //        Console.WriteLine($"_________________________________________________________");
+        //}
+        //public static void Progress(TrainingProgress tp)
+        //{
+        //    if(tp.ProgressType== ProgressType.Initialization)
+        //        Console.WriteLine($"_________________________________________________________");
+
+        //    Console.WriteLine($"Iteration={tp.Iteration}, Loss={Math.Round(tp.TrainLoss, 3)}, Eval={Math.Round(tp.TrainEval, 3)}");
+
+        //    if (tp.ProgressType == ProgressType.Completed)
+        //        Console.WriteLine($"_________________________________________________________");
+        //}
 
        
 
