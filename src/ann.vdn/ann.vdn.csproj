@@ -9,4 +9,8 @@
     <PackageReference Include="TensorFlow.NET" Version="0.20.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\anndotnet.common\anndotnet.common.csproj" />
+  </ItemGroup>
+
 </Project>

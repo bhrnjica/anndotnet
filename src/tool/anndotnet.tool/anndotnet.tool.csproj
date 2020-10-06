@@ -50,6 +50,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="mlconfigs\iris.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mlconfigs\iris_raw.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="slump.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

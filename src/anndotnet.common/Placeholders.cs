@@ -27,6 +27,20 @@ namespace AnnDotNET.Common
             return (X, Y);
         }
 
+        public Tensor Create(Shape input, TF_DataType inType = TF_DataType.TF_FLOAT)
+        {
+            tf.compat.v1.disable_eager_execution();
+
+            Tensor X = null;
+            //
+            tf_with(tf.variable_scope($"x_placeholder"), delegate
+            {
+                X = tf.placeholder(inType, shape: input);
+            });
+            //
+            return X;
+        }
+
         public (Tensor X, Tensor Y) Create(int inDim, int outDim)
         {
             Shape input = (-1, inDim);

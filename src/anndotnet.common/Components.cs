@@ -19,6 +19,14 @@ namespace AnnDotNET.Common
         Training,
         Completed,
     }
+    public enum ValueInitializer
+    {
+        GlorotUniform,
+        GlorotNormal,
+        RandomUniform,
+        RandomNormal,
+    }
+
     public enum EarlyStopping
     {
         None,
@@ -40,6 +48,17 @@ namespace AnnDotNET.Common
         
     }
 
+    public enum LearnerType
+    {
+        SGDLearner = 0,
+        MomentumSGDLearner = 1,
+        RMSPropLearner = 2,
+        FSAdaGradLearner = 3,
+        AdamLearner = 4,
+        AdaGradLearner = 5,
+        AdaDeltaLearner = 6
+    }
+
     public class TrainingParameters
     {
         public TrainingType TrainingType { get; set; }
@@ -57,7 +76,7 @@ namespace AnnDotNET.Common
         public int SplitPercentage { get; set; }
 
         public Action<TrainingProgress> Progress { get; set; }
-
+        public string LastBestModel { get; set; }
 
         public TrainingParameters()
         {

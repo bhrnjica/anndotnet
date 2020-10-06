@@ -18,13 +18,40 @@ namespace AnnDotNET.Tool
 
         static void Main(string[] args)
         {
-            regressonModel_cv_training();
+
+            LoadMLConfig();
+
+            //regressonModel_cv_training();
             //regressonModel();
 
             //binaryCassModel();
 
             //multiclassModel();
             
+
+        }
+
+        private static void LoadMLConfig()
+        {
+            (var xData, var yData) = PrepareIrisData();
+
+            var retVal=   MLFactory.LoadMLConfiguration("mlconfigs/iris.mlconfig");
+            var f = MLFactory.CreateMLFactory(retVal);
+           var z = MLFactory.CreateNetworkModel(retVal["network"], f.Inputs, f.Outputs);
+
+            //define learner
+            var learner = new ClassificationLearner();
+            var lr = learner.Create(f.Outputs.FirstOrDefault(), z, new LearningParameters());
+
+            //training process
+            TVTrainer tr = new TVTrainer(xData, yData, 1);
+            tr.Run(f.Inputs.FirstOrDefault(), f.Outputs.FirstOrDefault(), lr, new TrainingParameters());
+
+            //evaluation
+
+
+            //prediction
+            return;
 
         }
 
