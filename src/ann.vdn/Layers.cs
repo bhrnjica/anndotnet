@@ -67,7 +67,6 @@ namespace ann.vdn
             return z;
         }
 
-
         public Tensor Drop(Tensor inX, float rate, string name)
         {
             Tensor z = null;

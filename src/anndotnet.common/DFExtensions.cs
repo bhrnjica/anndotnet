@@ -57,7 +57,7 @@ namespace AnnDotNET.Common
             {
                 if (dfF.ColTypes[j] == ColType.STR || dfF.ColTypes[j] == ColType.IN)
                 {
-                    var hot = dfF.EncodeColumn(mlCntx, cols[j], encodedOnly: true);
+                    var hot = dfF.EncodeColumn(mlCntx, cols[j], true);
                     finalDf = finalDf.Append(hot, verticaly: false);
                     //add to column list
                     foreach (var c in hot.Columns)
@@ -72,5 +72,48 @@ namespace AnnDotNET.Common
 
             return finalDf[finalColumns.ToArray()];
         }
+
+        //public static DataFrame EncodeColumn(DataFrame df, string colName, bool encodedOnly = false)
+        //{
+        //    var colVector = df[colName];
+        //    var originalLabels = colVector.Select(x=>x.ToString()).Distinct().ToList();
+            
+        //    //IDataView data = mlContext.Data.LoadFromEnumerable<CategoryColumn>(colVector.Select(x => new CategoryColumn() { Classes = x.ToString() }));
+        //    //var fitData = mlContext.Transforms.Categorical.OneHotEncoding(nameof(CategoryColumn.Classes)).Fit(data);
+        //    //var transData = fitData.Transform(data);
+
+        //    ////retrieve annotation from the column about slotnames
+        //    //VBuffer<ReadOnlyMemory<char>> labels = default;
+        //    //transData.Schema[nameof(CategoryColumn.Classes)].GetSlotNames(ref labels);
+
+        //    //var convertedData = mlContext.Data.CreateEnumerable<EncodedColumn>(transData, true);
+        //    //var originalLabels = labels.DenseValues().Select(x => x.ToString()).ToList();
+        //    var dict = new Dictionary<string, List<object>>();
+        //    foreach (var r in colVector)
+        //    {
+        //        for (int i = 0; i < originalLabels.Count; i++)
+        //        {
+        //            if (!dict.ContainsKey(originalLabels[i]))
+        //            {
+        //                var lst = new List<object>();
+        //                lst.Add((object)r);
+        //                dict.Add(originalLabels[i], lst);
+        //            }
+        //            else
+        //                dict[originalLabels[i]].Add((object)r.Classes[i]);
+        //        }
+
+        //    }
+        //    if (encodedOnly)
+        //    {
+        //        var newDf = new DataFrame(dict);
+        //        return newDf;
+        //    }
+        //    else
+        //    {
+        //        var newDf = df.AddColumns(dict);
+        //        return newDf;
+        //    }
+        //}
     }
 }

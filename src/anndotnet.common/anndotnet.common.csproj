@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Daany.DataFrame" Version="0.6.4" />
-    <PackageReference Include="Daany.DataFrame.Ext" Version="0.6.4" />
     <PackageReference Include="TensorFlow.NET" Version="0.20.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\daany\src\daany.df\Daany.DataFrame.csproj" />
+    <ProjectReference Include="..\..\..\daany\src\daany.ext\Daany.DataFrame.Ext.csproj" />
+    <ProjectReference Include="..\..\..\daany\src\daany.mathstuff\Daany.MathStuff.csproj" />
   </ItemGroup>
 
 </Project>

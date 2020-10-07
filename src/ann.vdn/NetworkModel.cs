@@ -60,6 +60,15 @@ namespace ann.vdn
             return z;
         }
 
+        public Tensor CreatAlexNetNetwork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Tensor CreateResNet()
+        {
+            throw new NotImplementedException();
+        }
         public Tensor CreateSimpleRegression(Tensor x)
         {
             Tensor z = null;

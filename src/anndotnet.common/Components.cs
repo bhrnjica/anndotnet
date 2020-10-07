@@ -9,9 +9,15 @@ using Tensorflow;
 
 namespace AnnDotNET.Common
 {
-    public static class Util
+    public enum EFunction
     {
-        
+        SquaredError,
+        ClassificationError,
+        ClassificationAccuracy,
+        BinaryCrossEntropy,
+        CrossEntropyWithSoftmax,
+        RMSError,
+        MSError,
     }
     public enum ProgressType
     {
@@ -33,8 +39,8 @@ namespace AnnDotNET.Common
     }
     public enum TrainingType
     {
-        TrainValidation,
-        CrossValidation,
+        TVTraining,
+        CVTraining,
     }
     public class AnnLearner
     {
@@ -45,7 +51,13 @@ namespace AnnDotNET.Common
 
     public class LearningParameters
     {
-        
+        public LearnerType LearnerType { get; set; }
+        public EFunction LossFunction { get; set; }
+        public EFunction EvaluationFunction { get; set; }
+        public double LearningRate { get; set; }
+        public double Momentum { get; set; }
+        public double L1Regularizer { get; set; }
+        public double L2Regularizer { get; set; }
     }
 
     public enum LearnerType
@@ -65,7 +77,7 @@ namespace AnnDotNET.Common
 
         public EarlyStopping EarlyStopping { get; set; }
 
-        public int Epoch { get; set; }
+        public int Epochs { get; set; }
 
         public int ProgressStep { get; set; }
 
@@ -81,9 +93,9 @@ namespace AnnDotNET.Common
         public TrainingParameters()
         {
             Progress = null;
-            TrainingType = TrainingType.TrainValidation;
+            TrainingType = TrainingType.TVTraining;
             EarlyStopping = EarlyStopping.None;
-            Epoch = 5000;
+            Epochs = 500;
             ProgressStep = 10;
             MinibatchSize = 100;
             KFold = 5;

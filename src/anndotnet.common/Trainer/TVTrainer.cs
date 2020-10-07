@@ -95,7 +95,7 @@ namespace AnnDotNET.Common
                 tr.Progress(new TrainingProgress() {ProgressType= ProgressType.Initialization, Iteration = 0, TrainEval=eval, TrainLoss= loss });
 
                 // training
-                foreach (var i in range(1, tr.Epoch))
+                foreach (var i in range(1, tr.Epochs))
                 {
                     // by sampling some input data (fetching)
                     (x_input, y_input) = _train.GetFullBatch();
@@ -132,7 +132,7 @@ namespace AnnDotNET.Common
                 tr.Progress(new TrainingProgress() 
                         { 
                             ProgressType = ProgressType.Completed, 
-                            Iteration = tr.Epoch, TrainEval = TEvala, TrainLoss = TLossa,
+                            Iteration = tr.Epochs, TrainEval = TEvala, TrainLoss = TLossa,
                                                   ValidEval = VEvala,ValidLoss = VLossa
                 });
             }
@@ -157,7 +157,7 @@ namespace AnnDotNET.Common
 
                 int batchCount = 0;
                 // Training cycle
-                foreach (var e in range(1, tr.Epoch))
+                foreach (var e in range(1, tr.Epochs))
                 {
 
                     // Loop over all batches

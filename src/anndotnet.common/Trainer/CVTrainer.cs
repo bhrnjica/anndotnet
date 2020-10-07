@@ -67,7 +67,7 @@ namespace AnnDotNET.Common
                     var feed = _cvData[f];
 
                     // Training cycle
-                    foreach (var epoch in range(1, tr.Epoch))
+                    foreach (var epoch in range(1, tr.Epochs))
                     {
                         int batchCount = 0;
                         // Loop over all batches
@@ -123,7 +123,7 @@ namespace AnnDotNET.Common
                     reportProgress(sess,x,y,xTrain,yTrain,xValid,yValid, f, 0, lr, tr);
 
                     // training
-                    foreach (var i in range(1, tr.Epoch))
+                    foreach (var i in range(1, tr.Epochs))
                     {
                         // by sampling some input data (fetching)
                         (xTrain, yTrain) = feed.train.GetFullBatch();

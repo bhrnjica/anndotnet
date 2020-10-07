@@ -10,9 +10,13 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using anndotnet.common;
 using AnnDotNET.Common;
+using Daany;
+using NumSharp;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,8 +29,8 @@ namespace ann.vdn
     {
         #region Private Fields
         //constant for handling files
-        public static char[] m_cntkSpearator = new char[] { '|' };
-        public static char[] m_cntkSpearator2 = new char[] { ' ', '\t' };
+        public static char[] m_Spearator = new char[] { '|' };
+        public static char[] m_Spearator2 = new char[] { ' ', '\t' };
         public static char[] m_ParameterNameSeparator = new char[] { ':' };
         public static char[] m_ValueSpearator = new char[] { ';' };
         public static readonly string m_NumFeaturesGroupName = "NumFeatures";
@@ -130,147 +134,280 @@ namespace ann.vdn
         /// </summary>
         /// <param name="dicMParameters"></param>
         /// <returns></returns>
-        public static MLFactory CreateMLFactory(Dictionary<string, string> dicMParameters)
+        //public static MLFactory CreateMLFactory(Dictionary<string, string> dicMParameters)
+        //{
+        //    try
+        //    {
+        //        MLFactory f = new MLFactory();
+
+        //        //extract features and label strings and create CNTK input variables 
+        //        var strFeatures = dicMParameters["features"];
+        //        var strLabels = dicMParameters["labels"];
+        //        //var dynamicAxes = dicMParameters["network"].Contains("LSTM") && !dicMParameters["network"].Contains("CudaStacked");
+
+        //        //create placeholders
+        //        f.Placeholders(strFeatures, strLabels,TF_DataType.TF_FLOAT);
+
+        //        return f;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
+        //}
+
+        //private void Placeholders(string features, string labels, TF_DataType dTypes)
+        //{
+        //    try
+        //    {
+        //        //parse feature variables
+        //        var strFeatures = features.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries);
+        //        var strLabels = labels.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries);
+
+        //        Inputs = createPlaceholders(strFeatures, dTypes);
+        //        Outputs = createPlaceholders(strLabels, dTypes);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+
+        //}
+
+        //private List<Tensor> createPlaceholders(string[] strVariable, TF_DataType type)
+        //{
+        //    var lst = new List<Tensor>();
+        //    for (int i = 0; i < strVariable.Length; i++)
+        //    {
+        //        var str = strVariable[i];
+        //        var fVar = str.Split(MLFactory.m_Spearator2, StringSplitOptions.RemoveEmptyEntries);
+        //        if (fVar.Length != 3)
+        //            throw new Exception("One of variables were not formatted properly!");
+
+        //        //Input variable can be defined on two ways, as vector(array) with dimension n, or as 1d matrix as (1,n)
+        //        //in 1D convolution layer input varibale required to be defined like this. 
+        //        //check for dynamic axes
+
+        //        int[] shape = null;
+
+        //        //multidimensional input variable
+        //        if (fVar[1].Contains(m_ValueSpearator[0].ToString()))
+        //           shape = fVar[1].Split(m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries).Select(x => int.Parse(x)).ToArray();
+        //        else//1D variable
+        //            shape = new int[] {-1, int.Parse(fVar[1]) };
+
+        //        //create variable
+        //        var plc = new Placeholders();
+        //        var v = plc.Create(shape, type);
+        //        lst.Add(v);
+        //    }
+
+        //    return lst;
+        //}
+
+        public static (Tensor x, Tensor y) CreatePlaceholders(NDArray xData, NDArray yData)
         {
-            try
-            {
-                MLFactory f = new MLFactory();
+            //
+            List<int> shapeX = new List<int>();
+            List<int> shapeY = new List<int>();
 
-                //extract features and label strings and create CNTK input variables 
-                var strFeatures = dicMParameters["features"];
-                var strLabels = dicMParameters["labels"];
-                //var dynamicAxes = dicMParameters["network"].Contains("LSTM") && !dicMParameters["network"].Contains("CudaStacked");
-                
-                //create placeholders
-                f.Placeholders(strFeatures, strLabels,TF_DataType.TF_FLOAT);
+            //
+            shapeX.Add(-1);//first dimension
+            shapeX.AddRange(xData.Shape.Dimensions.Skip(1));
+            shapeY.Add(-1);//first dimentsion
+            shapeY.AddRange(yData.Shape.Dimensions.Skip(1));
 
-                return f;
-            }
-            catch (Exception)
-            {
+            //create variable
+            var plc = new Placeholders();
+            var x = plc.Create(shapeX.ToArray(), TF_DataType.TF_FLOAT);
+            var y = plc.Create(shapeY.ToArray() , TF_DataType.TF_FLOAT);
 
-                throw;
-            }
-
+            return (x, y);
         }
 
-        private void Placeholders(string features, string labels, TF_DataType dTypes)
+        /// <summary>
+        /// Creates TrainingParameter object form string
+        /// </summary>
+        /// <param name="strTrainingData"></param>
+        /// <returns></returns>
+        public static TrainingParameters CreateTrainingParameters(string strTrainingData)
         {
             try
             {
+                //
+                var trParam = new TrainingParameters();
                 //parse feature variables
-                var strFeatures = features.Split(m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-                var strLabels = labels.Split(m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
+                var strParameters = strTrainingData.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries);
 
-                Inputs = createPlaceholders(strFeatures, dTypes);
-                Outputs = createPlaceholders(strLabels, dTypes);
+
+                //training type
+                var type = strParameters.Where(x => x.StartsWith("Type:")).Select(x => x.Substring("Type:".Length)).FirstOrDefault();
+                //in case the parameter is not provided throw exception
+                if (string.IsNullOrEmpty(type))
+                    throw new Exception("Unsupported Training type, or the parameter is not provided!");
+
+                type = type.Trim();
+                if(type == "Default")//backward compatibility
+                    trParam.TrainingType = TrainingType.TVTraining;
+                else//convert to enum
+                trParam.TrainingType = (TrainingType)Enum.Parse(typeof(TrainingType), type, true);
+
+
+                //mbs
+                var mbs = strParameters.Where(x => x.StartsWith("BatchSize:")).Select(x => x.Substring("BatchSize:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(mbs))
+                    throw new Exception("Unsupported BatchSize!");
+                //convert to float
+                trParam.MinibatchSize = int.Parse(mbs, CultureInfo.InvariantCulture);
+
+                //split
+                var psplit = strParameters.Where(x => x.StartsWith("Split:")).Select(x => x.Substring("Split:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(psplit))
+                    throw new Exception("Unsupported percentage split!");
+                //convert to float
+                trParam.SplitPercentage = int.Parse(psplit, CultureInfo.InvariantCulture);
+
+                //kfold
+                var kfold = strParameters.Where(x => x.StartsWith("KFold:")).Select(x => x.Substring("KFold:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(kfold))
+                    throw new Exception("Unsupported kFold split!");
+                //convert to float
+                trParam.KFold = int.Parse(kfold, CultureInfo.InvariantCulture);
+
+                //epochs
+                var epochs = strParameters.Where(x => x.StartsWith("Epochs:")).Select(x => x.Substring("Epochs:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(epochs))
+                    throw new Exception("Unsupported Epochs!");
+                //convert to float
+                trParam.Epochs = int.Parse(epochs, CultureInfo.InvariantCulture);
+
+                //ProgressFrequency
+                var progFreq = strParameters.Where(x => x.StartsWith("ProgressFrequency:")).Select(x => x.Substring("ProgressFrequency:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(progFreq))
+                    throw new Exception("Unsupported ProgressFrequency!");
+                //convert to float
+                trParam.ProgressStep = int.Parse(progFreq, CultureInfo.InvariantCulture);
+
+                //randomize
+                //var randomizeBatch = strParameters.Where(x => x.StartsWith("RandomizeBatch:")).Select(x => x.Substring("RandomizeBatch:".Length)).FirstOrDefault();
+                //if (string.IsNullOrEmpty(randomizeBatch))
+                //    throw new Exception("Unsupported RandomizeBatch!");
+
+                ////convert to float
+                //trParam.RandomizeBatch = randomizeBatch.Trim(' ') == "1" ? true : false;
+
+                //normalization data
+                //var normalization = strParameters.Where(x => x.StartsWith("Normalization:")).Select(x => x.Substring("Normalization:".Length)).FirstOrDefault();
+                //if (string.IsNullOrEmpty(normalization) || normalization.Trim(' ') == "0")
+                //    trParam.Normalization = new string[] { "0" };
+                //else if (normalization.Trim(' ') == "1")
+                //    trParam.Normalization = new string[] { "1" };
+                //else
+                //{
+                //    trParam.Normalization = normalization.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                //}
+
+                //save while training
+                //var saveWhileTraining = strParameters.Where(x => x.StartsWith("SaveWhileTraining:")).Select(x => x.Substring("SaveWhileTraining:".Length)).FirstOrDefault();
+                //if (string.IsNullOrEmpty(saveWhileTraining))
+                //    throw new Exception("Required SaveWhileTrainig option!");
+                //trParam.SaveModelWhileTraining = saveWhileTraining.Trim(' ') == "1" ? true : false;
+
+                ////FullTrainingSetEval 
+                //var fullTrainingSetEval = strParameters.Where(x => x.StartsWith("FullTrainingSetEval:")).Select(x => x.Substring("FullTrainingSetEval:".Length)).FirstOrDefault();
+                //if (string.IsNullOrEmpty(fullTrainingSetEval))
+                //{
+                //    trParam.FullTrainingSetEval = true;//by default full training set is enabled. Disable it in case of large dataset
+                //}
+                //else
+                //    trParam.FullTrainingSetEval = fullTrainingSetEval.Trim(' ') == "1" ? true : false;
+
+                //continue training from previous model
+                //var continueTraining = strParameters.Where(x => x.StartsWith("ContinueTraining:")).Select(x => x.Substring("ContinueTraining:".Length)).FirstOrDefault();
+                //if (string.IsNullOrEmpty(continueTraining))
+                //    trParam.ContinueTraining = false;
+                //else
+                //    trParam.ContinueTraining = continueTraining.Trim(' ') == "1" ? true : false;
+
+                //best found model
+                var trainedModel = strParameters.Where(x => x.StartsWith("TrainedModel:")).Select(x => x.Substring("TrainedModel:".Length)).FirstOrDefault();
+                trParam.LastBestModel = trainedModel;
+
+                return trParam;
             }
             catch (Exception)
             {
-
                 throw;
             }
-
-        }
-
-        private List<Tensor> createPlaceholders(string[] strVariable, TF_DataType type)
-        {
-            var lst = new List<Tensor>();
-            for (int i = 0; i < strVariable.Length; i++)
-            {
-                var str = strVariable[i];
-                var fVar = str.Split(MLFactory.m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries);
-                if (fVar.Length != 3)
-                    throw new Exception("One of variables were not formatted properly!");
-
-                //Input variable can be defined on two ways, as vector(array) with dimension n, or as 1d matrix as (1,n)
-                //in 1D convolution layer input varibale required to be defined like this. 
-                //check for dynamic axes
-                
-                int[] shape = null;
-
-                //multidimensional input variable
-                if (fVar[1].Contains(m_ValueSpearator[0].ToString()))
-                   shape = fVar[1].Split(m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries).Select(x => int.Parse(x)).ToArray();
-                else//1D variable
-                    shape = new int[] {-1, int.Parse(fVar[1]) };
-
-                //create variable
-                var plc = new Placeholders();
-                var v = plc.Create(shape, type);
-                lst.Add(v);
-            }
-
-            return lst;
-        }
-
-        public static List<string> GetOutputClasses(string strMetadata)
-        {
-            if (string.IsNullOrEmpty(strMetadata))
-                return null;
-
-
-            var columns = strMetadata.Split(MLFactory.m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
-            var labelColumn = columns.Where(x => x.Contains("Label")).FirstOrDefault();
-            if (string.IsNullOrEmpty(labelColumn))
-                return null;
-
-            return GetColumnClasses(labelColumn);
-        }
-
-        public static List<string> GetColumnClasses(string columnData)
-        {
-            var lst = new List<string>();
-            var paramName = columnData.Split(MLFactory.m_ParameterNameSeparator, StringSplitOptions.RemoveEmptyEntries);
-            if (paramName == null || paramName.Length != 2)
-                return null;
-
-
-            var par = paramName[1].Split(MLFactory.m_ValueSpearator, StringSplitOptions.RemoveEmptyEntries);
-
-            lst = par.Skip(4).Select(x => x.Trim(' ')).ToList();
-            return lst;
         }
 
         /// <summary>
-        /// Returns CheckPoint of the model.
+        /// Create LearningParameters object from string.
         /// </summary>
-        /// <param name="mlconfigPath"></param>
-        /// <param name="configid"></param>
+        /// <param name="strLearning"></param>
         /// <returns></returns>
-        public static string GetModelCheckPointPath(string mlconfigPath, string configid)
-        {
-            var modelFolder = MLFactory.GetMLConfigFolder(mlconfigPath);
-            var name = MLFactory.GetMLConfigFolderName(mlconfigPath);
-            return $"{modelFolder}\\model_{configid}.checkpoint";
-        }
-
-        /// <summary>
-        /// Returns training history path of the model.
-        /// </summary>
-        /// <param name="mlconfigPath"></param>
-        /// <param name="configid"></param>
-        /// <returns></returns>
-        public static string GetTrainingHistoryPath(string mlconfigPath, string configid)
-        {
-            var modelFolder = MLFactory.GetMLConfigFolder(mlconfigPath);
-            var name = MLFactory.GetMLConfigFolderName(mlconfigPath);
-            return $"{modelFolder}\\{MLFactory.m_MLLogFolder}\\model_{configid}.history";
-        }
-
-        public static string GetMLConfigId(string mlconfigPath)
+        public static LearningParameters CreateLearningParameters(string strLearning)
         {
             try
             {
-                //Load ML configuration file
-                var dicMParameters = MLFactory.LoadMLConfiguration(mlconfigPath);
+                //
+                var trParam = new LearningParameters();
+                //parse feature variables
+                var strParameters = strLearning.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries);
 
-                if (dicMParameters.ContainsKey("configid"))
-                {
-                    return dicMParameters["configid"].Trim(' ');
-                }
-                else
-                    return null;
+                //learner type
+                var type = strParameters.Where(x => x.StartsWith("Type:")).Select(x => x.Substring("Type:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(type))
+                    throw new Exception("Unsupported Learning type!");
+                //convert to enum
+                trParam.LearnerType = (LearnerType)Enum.Parse(typeof(LearnerType), type, true);
+
+                //loss function
+                var loss = strParameters.Where(x => x.StartsWith("Loss:")).Select(x => x.Substring("Loss:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(loss))
+                    throw new Exception("Unsupported Loss function!");
+                //convert to enum
+                trParam.LossFunction = (EFunction)Enum.Parse(typeof(EFunction), loss, true);
+
+                //eval function
+                var eval = strParameters.Where(x => x.StartsWith("Eval:")).Select(x => x.Substring("Eval:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(eval))
+                    throw new Exception("Unsupported Evaluation function!");
+                //convert to enum
+                trParam.EvaluationFunction = (EFunction)Enum.Parse(typeof(EFunction), eval, true);
+
+                //lr function
+                var lr = strParameters.Where(x => x.StartsWith("LRate:")).Select(x => x.Substring("LRate:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(lr))
+                    throw new Exception("Unsupported Learning Rate function!");
+                //convert to float
+                trParam.LearningRate = double.Parse(lr, CultureInfo.InvariantCulture);
+
+                //momentum function
+                var momentum = strParameters.Where(x => x.StartsWith("Momentum:")).Select(x => x.Substring("momentum:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(momentum))
+                    throw new Exception("Unsupported Momentum parameter!");
+                //convert to float
+                trParam.Momentum = double.Parse(momentum, CultureInfo.InvariantCulture);
+
+                // L1 
+                var l1 = strParameters.Where(x => x.StartsWith("L1:")).Select(x => x.Substring("L1:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(l1))
+                    trParam.L1Regularizer = 0;
+                else //convert to float
+                    trParam.L1Regularizer = double.Parse(l1, CultureInfo.InvariantCulture);
+
+                // L2 
+                var l2 = strParameters.Where(x => x.StartsWith("L2:")).Select(x => x.Substring("L2:".Length)).FirstOrDefault();
+                if (string.IsNullOrEmpty(l2))
+                    trParam.L2Regularizer = 0;
+                else //convert to float
+                    trParam.L2Regularizer = double.Parse(l2, CultureInfo.InvariantCulture);
+                // 
+                return trParam;
             }
             catch (Exception)
             {
@@ -279,33 +416,9 @@ namespace ann.vdn
             }
         }
 
+        
         /// <summary>
-        /// Returns path of mlconfig folder
-        /// </summary>
-        /// <param name="mlconfigFullPath"></param>
-        /// <returns></returns>
-        public static string GetMLConfigFolder(string mlconfigFullPath)
-        {
-            //remove last suffix from the path
-            var folder = mlconfigFullPath.Substring(0, mlconfigFullPath.Length /*-MLFactory.m_MLConfigSufix.Length*/- MLFactory.m_MLConfigFileExt.Length);
-            return folder;
-        }
-
-        /// <summary>
-        /// Returns the Name of the mlconfig folder 
-        /// </summary>
-        /// <param name="mlconfigPath"></param>
-        /// <returns></returns>
-        private static object GetMLConfigFolderName(string mlconfigPath)
-        {
-            var folderName = Path.GetFileNameWithoutExtension(mlconfigPath);
-            //var name = fileName.Substring(0, fileName.Length /*-MLFactory.m_MLConfigSufix.Length*/-MLFactory.m_MLConfigFileExt.Length);
-            return folderName;
-        }
-
-        /// <summary>
-        /// Creates network models based on ml configuration string or to create custom model in case 
-        /// custom model creation delegate function is defined
+        /// Creates network models based on list of network layers
         /// </summary>
         /// <param name="strNetwork"></param>
         /// <param name="inputLayer"></param>
@@ -313,14 +426,15 @@ namespace ann.vdn
         /// <param name="customModel"></param>
         /// <param name="device"></param>
         /// <returns></returns>
-        public static Tensor CreateNetworkModel(string strNetwork, List<Tensor> inputs, List<Tensor> outputs)
+        public static Tensor CreateNetworkModel(string strNetwork, Tensor x, Tensor y)
         {
             Tensor nnModel = null;
             //for custom implementation should use this string format
             if (!strNetwork.StartsWith("|Custom") && !strNetwork.StartsWith("|Layer:Custom"))
             {
                 var Layers = MLFactory.CreateNetworkParameters(strNetwork);
-                nnModel = MLFactory.CreateNetwrok(Layers,inputs.FirstOrDefault(), outputs.FirstOrDefault());
+
+                nnModel = MLFactory.CreateNetwrok(Layers,x, y);
             }
             else
                 throw new Exception("Not supported custom models.");
@@ -416,7 +530,7 @@ namespace ann.vdn
 
 
         /// <summary>
-        /// Extract the string and create network parameters aranged in network layer
+        /// Extract the string and create network parameters arranged in network layer
         /// </summary>
         /// <param name="strNetwork"></param>
         /// <returns></returns>
@@ -427,7 +541,7 @@ namespace ann.vdn
                 //
                 var layers = new List<NNLayer>();
                 //parse feature variables
-                var strParameters = strNetwork.Split(m_cntkSpearator, StringSplitOptions.RemoveEmptyEntries);
+                var strParameters = strNetwork.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries);
 
                 //in case of custom network model
                 if (strParameters.Length == 1 && (strParameters[0].Contains("Custom") || strParameters[0].Contains("custom")))
@@ -443,20 +557,37 @@ namespace ann.vdn
                     var strLayerValues = strParameters[i];
                     var ind = strLayerValues.IndexOf(":");
                     var layer = strLayerValues.Substring(ind + 1);
-                    var values = layer.Split(m_cntkSpearator2, StringSplitOptions.RemoveEmptyEntries);
+                    var values = layer.Split(m_Spearator2, StringSplitOptions.RemoveEmptyEntries);
 
                     //create layer
                     var l = new NNLayer();
-                    l.Type = (LayerType)Enum.Parse(typeof(LayerType), values[0], true);
-                    l.Name = $"{values[0]}_Layer";
-                    l.Param1 = int.Parse(values[1].Trim(' '));
-                    l.Param2 = int.Parse(values[2].Trim(' '));
-                    l.Param3 = int.Parse(values[3].Trim(' '));
-                    l.FParam = (Activation)Enum.Parse(typeof(Activation), values[4], true);
-                    l.BParam1 = values[5] == "1" ? true : false;
-                    l.BParam2 = values[6] == "1" ? true : false;
-                    l.UseFParam = (l.Type != LayerType.Embedding && l.Type != LayerType.Scale);
-                    layers.Add(l);
+                    var type =  (LayerType)Enum.Parse(typeof(LayerType), values[0], true);
+                    if(type != LayerType.Activation)
+                    {
+                        l.Type = type;
+                        l.Name = $"{values[0]}_Layer";
+                        l.Param1 = int.Parse(values[1].Trim(' '));
+                        l.Param2 = int.Parse(values[2].Trim(' '));
+                        l.Param3 = int.Parse(values[3].Trim(' '));
+                        l.FParam = 0;
+                        l.BParam1 = values[5] == "1" ? true : false;
+                        l.BParam2 = values[6] == "1" ? true : false;
+                        l.UseFParam = (l.Type != LayerType.Embedding && l.Type != LayerType.Scale);
+                        layers.Add(l);
+
+                    }
+                    //
+                    var act = (Activation)Enum.Parse(typeof(Activation), values[4], true);
+
+                    //add activation as separated layer
+                    if(act != Activation.None)
+                    {
+                        var ll = new NNLayer();
+                        ll.Name = $"Activation_Layer";
+                        ll.Type = LayerType.Activation;
+                        ll.FParam = act;
+                        layers.Add(ll);
+                    }
                 }
 
                 return layers;
@@ -467,5 +598,86 @@ namespace ann.vdn
                 throw;
             }
         }
+
+        /// <summary>
+        /// Prepares data based on matedata and raw file name.
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <param name="paths"></param>
+        /// <returns></returns>
+        public static (NDArray xData, NDArray yData) PrepareData(string metadata, string paths)
+        {
+            var filePath = paths.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Substring("Training:".Length)).FirstOrDefault();
+            var strMetaParameters = metadata.Split(m_Spearator, StringSplitOptions.RemoveEmptyEntries);
+            var cols = new List<string>();
+            var features = new List<string>();
+            var labels = new List<string>();
+            var types = new List<Daany.ColType>();
+            var missingValue = new Dictionary<string, string>();
+            for(int i=0; i< strMetaParameters.Length; i++)
+            {
+                var c = strMetaParameters[i];
+                var colName = c.Substring($"Column_{(i+1).ToString("00")}:".Length-1).Split(';');
+                
+                if (colName[1] == "Numeric")
+                {
+                    cols.Add(colName[0]);
+                    types.Add(Daany.ColType.F32);
+                    
+                }  
+                else if(colName[1] == "Category")
+                {
+                    cols.Add(colName[0]);
+                    types.Add(Daany.ColType.IN);
+                }
+
+                if (colName[2] == "Feature")
+                {
+                    features.Add(colName[0]);
+                    missingValue.Add(colName[0], colName[3]);
+
+                }
+                else if (colName[2] == "Label")
+                {
+                    labels.Add(colName[0]);
+                    missingValue.Add(colName[0], colName[3]);
+                }
+                   
+            }
+
+            var df = Daany.DataFrame.FromCsv(filePath: filePath, sep: ';', names: cols.ToArray(), colTypes: types.ToArray());
+            //handling missing value
+            
+
+            DataFrame dff = handlingMissingValue(df, missingValue);
+
+            return df.PrepareData(features.ToArray(), labels.FirstOrDefault());
+
+        }
+
+        private static DataFrame handlingMissingValue(DataFrame df, Dictionary<string, string> missingValue)
+        {
+            var missing = df.MissingValues();
+            foreach (var mv in missing)
+            {
+                var value = missingValue[mv.Key];
+                if (value.Equals("ignore",StringComparison.OrdinalIgnoreCase))
+                    df.DropNA(mv.Key);
+                else if (value.Equals("average", StringComparison.OrdinalIgnoreCase))
+                    df.FillNA(mv.Key, Aggregation.Avg);
+                else if (value.Equals("mode", StringComparison.OrdinalIgnoreCase))
+                    df.FillNA(mv.Key, Aggregation.Mode);
+                else if (value.Equals("random", StringComparison.OrdinalIgnoreCase))
+                    df.FillNA(mv.Key, Aggregation.Random);
+                else if (value.Equals("max", StringComparison.OrdinalIgnoreCase))
+                    df.FillNA(mv.Key, Aggregation.Max);
+                else if (value.Equals("min", StringComparison.OrdinalIgnoreCase))
+                    df.FillNA(mv.Key, Aggregation.Min);
+            }
+
+            return df;
+        }
+
+       
     }
 }

@@ -18,8 +18,10 @@ namespace AnnDotNET.Tool
 
         static void Main(string[] args)
         {
+            
+            MLRunner.Run("mlconfigs/titanic.mlconfig");
 
-            LoadMLConfig();
+            //MLRunner.Run("mlconfigs/iris.mlconfig");
 
             //regressonModel_cv_training();
             //regressonModel();
@@ -33,25 +35,9 @@ namespace AnnDotNET.Tool
 
         private static void LoadMLConfig()
         {
-            (var xData, var yData) = PrepareIrisData();
+            
 
-            var retVal=   MLFactory.LoadMLConfiguration("mlconfigs/iris.mlconfig");
-            var f = MLFactory.CreateMLFactory(retVal);
-           var z = MLFactory.CreateNetworkModel(retVal["network"], f.Inputs, f.Outputs);
-
-            //define learner
-            var learner = new ClassificationLearner();
-            var lr = learner.Create(f.Outputs.FirstOrDefault(), z, new LearningParameters());
-
-            //training process
-            TVTrainer tr = new TVTrainer(xData, yData, 1);
-            tr.Run(f.Inputs.FirstOrDefault(), f.Outputs.FirstOrDefault(), lr, new TrainingParameters());
-
-            //evaluation
-
-
-            //prediction
-            return;
+            
 
         }
 
@@ -170,7 +156,7 @@ namespace AnnDotNET.Tool
 
             //training process
             var tr = new CVTrainer(xData, yData, 5);
-            tr.Run(x, y, lr, new TrainingParameters() { Epoch= 500, MinibatchSize = 65 });
+            tr.Run(x, y, lr, new TrainingParameters() { Epochs= 500, MinibatchSize = 65 });
 
             //evaluation
 
