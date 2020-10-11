@@ -1,8 +1,9 @@
+using System;
 using Daany;
-using AnnDotNET.Common;
 using NumSharp;
 using NUnit.Framework;
-using System;
+using Anndotnet.Core.Data;
+using Anndotnet.Core.Trainers;
 
 namespace anndotnet.test
 {
@@ -157,7 +158,10 @@ namespace anndotnet.test
             var features = new string[] {"Id", "sepal_length", "sepal_width", "petal_length", "petal_width" };
             var label = "species";
             //
-            return df.PrepareData(features, label);
+            //return df.PrepareData(features, label);
+            new NotImplementedException();
+
+            return (null, null); 
 
         }
     }

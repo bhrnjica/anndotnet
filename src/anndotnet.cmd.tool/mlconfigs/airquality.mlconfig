@@ -1,0 +1,238 @@
+{
+  "Id": "ba8e63cb-bd78-4b86-b540-2b0bde87a19f",
+  "Parser": {
+    "RowSeparator": "\r\n",
+    "ColumnSeparator": ";",
+    "HasHeader": false,
+    "SkipLine": 0,
+    "MissingValueSymbol": null,
+    "DescriptionSymbol": "!"
+  },
+  "Metadata": [
+    {
+      "Id": 1,
+      "Name": "Data",
+      "MLType": "none",
+      "ValueColumnType": "dt",
+      "ValueFormat": "m/d/yyyy",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 2,
+      "Name": "Time",
+      "MLType": "none",
+      "ValueColumnType": "str",
+      "ValueFormat": "hh:mm:ss AM",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 3,
+      "Name": "month",
+      "MLType": "feature",
+      "ValueColumnType": "in",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "dummy1",
+      "ClassValues": null
+    },
+    {
+      "Id": 4,
+      "Name": "hour",
+      "MLType": "feature",
+      "ValueColumnType": "in",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "ordinal",
+      "ClassValues": null
+    },
+    {
+      "Id": 5,
+      "Name": "CO_GT",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 6,
+      "Name": "PT08_S1_CO",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 7,
+      "Name": "Column07",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 8,
+      "Name": "Column08",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 9,
+      "Name": "Column09",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 10,
+      "Name": "Column10",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 11,
+      "Name": "Column11",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 12,
+      "Name": "Column12",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 13,
+      "Name": "Column13",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 14,
+      "Name": "Column14",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 15,
+      "Name": "Column15",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 16,
+      "Name": "Column16",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 17,
+      "Name": "Column17",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "none",
+      "ClassValues": null
+    },
+    {
+      "Id": 21,
+      "Name": "Column21",
+      "MLType": "label",
+      "ValueColumnType": "in",
+      "ValueFormat": "",
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    }
+  ],
+  "Network": [
+    {
+      "Type": 2,
+      "OutDim": 15,
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": 14,
+      "Activation": 1,
+      "Name": "ReLuLayer"
+    },
+    {
+      "Type": 2,
+      "OutDim": 5,
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": 14,
+      "Activation": 3,
+      "Name": "ReLuLayer"
+    }
+  ],
+  "LParameters": {
+    "LearnerType": "adamLearner",
+    "LossFunction": "crossEntropyWithSoftmax",
+    "EvaluationFunction": "classificationAccuracy",
+    "LearningRate": 0.01,
+    "Momentum": 0,
+    "L1Regularizer": 0,
+    "L2Regularizer": 0
+  },
+  "TParameters": {
+    "TrainingType": "tvTraining",
+    "EarlyStopping": "none",
+    "Epochs": 500,
+    "ProgressStep": 10,
+    "MinibatchSize": 100,
+    "KFold": 5,
+    "SplitPercentage": 20,
+    "Progress": null,
+    "LastBestModel": null
+  },
+  "Paths": {
+    "Training": "mlconfigs/airquality_rawdata.txt"
+  }
+}
