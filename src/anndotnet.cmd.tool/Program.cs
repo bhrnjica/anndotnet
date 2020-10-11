@@ -22,7 +22,7 @@ namespace AnnDotNET.Tool
 
         static void Main(string[] args)
         {
-         
+
             //var mData = loadMetaData();
             //var mlConfig = new MLConfig();
             //mlConfig.Id = Guid.NewGuid();
@@ -43,9 +43,9 @@ namespace AnnDotNET.Tool
             //    { "Training" ,"mlconfigs/airquality_rawdata.txt"}
             //};
 
-            //MLFactory.Save(mlConfig, @"C:\sc\github\anndotnet\src\tool\AnnDotNET.Tool\mlconfigs\airquality.mlconfig").Wait();
+            //MLFactory.Save(mlConfig, @"..\..\..\..\src\anndotnet.cmd.tool\mlconfigs\airquality.mlconfig").Wait();
 
-            var mlCOnf = MLFactory.Load(@"C:\sc\github\anndotnet\src\tool\AnnDotNET.Tool\mlconfigs\airquality.mlconfig");
+            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\airquality.mlconfig");
             mlCOnf.Wait();
 
             MLRunner.Run(mlCOnf.Result);

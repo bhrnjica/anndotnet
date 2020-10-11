@@ -36,7 +36,7 @@
       "ValueColumnType": "in",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "dummy1",
+      "Encoding": "dummy",
       "ClassValues": null
     },
     {
