@@ -10,7 +10,7 @@ namespace Anndotnet.Core.Interface
 {
     public interface ITrainer
     {
-        public bool Run(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr);
-        public bool RunOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr);
+        public bool Run(Tensor x, Tensor y, Learner lr, TrainingParameters tr);
+        public bool RunOffline(Tensor x, Tensor y, Learner lr, TrainingParameters tr);
     }
 }

@@ -76,7 +76,7 @@ namespace Anndotnet.Core.Trainers
 
         }
 
-        public bool RunOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
+        public bool RunOffline(Tensor x, Tensor y, Learner lr, TrainingParameters tr)
         {
             //check for progress
             if (tr.Progress == null)
@@ -94,7 +94,7 @@ namespace Anndotnet.Core.Trainers
                 var (x_input, y_input) = _train.GetFullBatch();
 
                 //report of zero epoch
-                var (eval, loss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
+                var (eval, loss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
                 tr.Progress(new TrainingProgress() {ProgressType= ProgressType.Initialization, Iteration = 0, TrainEval=eval, TrainLoss= loss });
 
                 // training
@@ -104,15 +104,15 @@ namespace Anndotnet.Core.Trainers
                     (x_input, y_input) = _train.GetFullBatch();
 
                     //train and back propagate error
-                    sess.run(lr.Learner, (x, x_input), (y, y_input));
+                    sess.run(lr.Optimizer, (x, x_input), (y, y_input));
 
                     // We regularly check the loss
                     if (i % tr.ProgressStep == 0)
                     {
                         var (x_inputV, y_inputV) = _valid.GetFullBatch();
                         //
-                        var (TEval, TLoss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
-                        var (VEval, VLoss) = sess.run((lr.Eval, lr.Loss), (x, x_inputV), (y, y_inputV));
+                        var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
+                        var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_inputV), (y, y_inputV));
 
                         //report progress
                         tr.Progress(new TrainingProgress() 
@@ -125,11 +125,11 @@ namespace Anndotnet.Core.Trainers
 
                 // Finally, we check our final accuracy
                 var tranData = _train.GetFullBatch();
-                var (TEvala, TLossa) = sess.run((lr.Eval, lr.Loss), (x, tranData.xBatch), (y, tranData.yBatch));
+                var (TEvala, TLossa) = sess.run((lr.Evals.First(), lr.Loss), (x, tranData.xBatch), (y, tranData.yBatch));
 
                 //Evaluate validation set
                 var validData = _valid.GetFullBatch();
-                var (VEvala, VLossa) = sess.run((lr.Eval, lr.Loss), (x, validData.xBatch), (y, validData.yBatch));
+                var (VEvala, VLossa) = sess.run((lr.Evals.First(), lr.Loss), (x, validData.xBatch), (y, validData.yBatch));
 
                 //report progress
                 tr.Progress(new TrainingProgress() 
@@ -143,7 +143,7 @@ namespace Anndotnet.Core.Trainers
             return true;
         }
 
-        public bool Run(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
+        public bool Run(Tensor x, Tensor y, Learner lr, TrainingParameters tr)
         {
             //check for progress
             if (tr.Progress == null)
@@ -168,7 +168,7 @@ namespace Anndotnet.Core.Trainers
                     {
                         
                         // Run optimization op (backprop)
-                        sess.run(lr.Learner, (x, x_in),(y, y_in));
+                        sess.run(lr.Optimizer, (x, x_in),(y, y_in));
 
                         //batch counting
                         batchCount++;
@@ -177,8 +177,8 @@ namespace Anndotnet.Core.Trainers
                     var (x_input, y_input) = _train.GetFullBatch();
                     var (x_inputV, y_inputV) = _valid.GetFullBatch();
                     //
-                    var (TEval, TLoss) = sess.run((lr.Eval, lr.Loss), (x, x_input), (y, y_input));
-                    var (VEval, VLoss) = sess.run((lr.Eval, lr.Loss), (x, x_inputV), (y, y_inputV));
+                    var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
+                    var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_inputV), (y, y_inputV));
 
                     //report progress
                     tr.Progress(new TrainingProgress()

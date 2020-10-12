@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mlconfig\MLFactory_old.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Mlconfig\MLFactory_old.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
   </ItemGroup>
 

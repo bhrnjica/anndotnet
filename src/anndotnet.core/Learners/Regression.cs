@@ -12,9 +12,9 @@ namespace Anndotnet.Core.Learners
 {
     public class RegressionLearner : ILearner 
     {
-        public AnnLearner Create(Tensor y, Tensor model, LearningParameters par)
+        public Learner Create(Tensor y, Tensor model, LearningParameters par)
         {
-            var tr = new AnnLearner();
+            var tr = new Learner();
 
             tf_with(tf.variable_scope("Loss"), delegate
             {
@@ -26,12 +26,13 @@ namespace Anndotnet.Core.Learners
             {
                 // Mean squared error
                 var cost = tf.reduce_sum(tf.pow(model - y, 2.0f));
-                tr.Eval = tf.reduce_mean(cost);
+                var eval = tf.reduce_mean(cost);
+                tr.Evals.Add(eval);
             });
 
             // We add the training operation, ...
             var adam = tf.train.AdamOptimizer(0.01f);
-            tr.Learner = adam.minimize(tr.Loss, name: "train_op");
+            tr.Optimizer = adam.minimize(tr.Loss, name: "train_op");
 
             return tr;
         }

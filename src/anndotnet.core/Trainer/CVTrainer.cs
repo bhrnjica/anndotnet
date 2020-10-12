@@ -51,7 +51,7 @@ namespace Anndotnet.Core.Trainers
             _init = tf.global_variables_initializer();
         }
 
-        public bool Run(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
+        public bool Run(Tensor x, Tensor y, Learner lr, TrainingParameters tr)
         {
             //check for progress
             if(tr.Progress==null)
@@ -79,7 +79,7 @@ namespace Anndotnet.Core.Trainers
                             var (xTrain, yTrain) = batch;
 
                             // Run optimization op (backprop)
-                            sess.run(lr.Learner, (x, xTrain), (y, yTrain));
+                            sess.run(lr.Optimizer, (x, xTrain), (y, yTrain));
 
                             //batch counting
                             batchCount++;
@@ -102,7 +102,7 @@ namespace Anndotnet.Core.Trainers
             return true;
         }
 
-        public bool RunOffline(Tensor x, Tensor y, AnnLearner lr, TrainingParameters tr)
+        public bool RunOffline(Tensor x, Tensor y, Learner lr, TrainingParameters tr)
         {
             //check for progress
             if (tr.Progress == null)
@@ -132,7 +132,7 @@ namespace Anndotnet.Core.Trainers
                         (xTrain, yTrain) = feed.train.GetFullBatch();
                         
                         //train and back propagate error
-                        sess.run(lr.Learner, (x, xTrain), (y, yTrain));
+                        sess.run(lr.Optimizer, (x, xTrain), (y, yTrain));
 
                         // progress about training
                         if (i % tr.ProgressStep == 0)
@@ -177,12 +177,17 @@ namespace Anndotnet.Core.Trainers
             return (new DataFeed(trainX, trainY), new DataFeed(testX, testY));
         }
 
-        private void reportProgress(Session sess,Tensor x, Tensor y, NDArray xTrain, NDArray yTrain, NDArray xValid, NDArray yValid, int f, int i, AnnLearner lr, TrainingParameters tr)
+        private void reportProgress(Session sess,Tensor x, Tensor y, NDArray xTrain, NDArray yTrain, NDArray xValid, NDArray yValid, int f, int i, Learner lr, TrainingParameters tr)
         {
+            var funs = new List<Tensor>();
+            funs.Add(lr.Loss);
+            funs.AddRange(lr.Evals);
+
+
 
             //
-            var (TEval, TLoss) = sess.run((lr.Eval, lr.Loss), (x, xTrain), (y, yTrain));
-            var (VEval, VLoss) = sess.run((lr.Eval, lr.Loss), (x, xValid), (y, yValid));
+            var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, xTrain), (y, yTrain));
+            var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, xValid), (y, yValid));
 
             //report progress
             tr.Progress(new TrainingProgress()

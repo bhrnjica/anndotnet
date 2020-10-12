@@ -1,5 +1,5 @@
 {
-  "Id": "ba8e63cb-bd78-4b86-b540-2b0bde87a19f",
+  "Id": "124f6a69-70be-43d9-94e2-da3782af3f71",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
@@ -14,7 +14,7 @@
       "Name": "Data",
       "MLType": "none",
       "ValueColumnType": "dt",
-      "ValueFormat": "m/d/yyyy",
+      "ValueFormat": "mm/dd/yyy",
       "MissingValue": "none",
       "Encoding": "none",
       "ClassValues": null
@@ -36,7 +36,7 @@
       "ValueColumnType": "in",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "dummy",
+      "Encoding": "ordinal",
       "ClassValues": null
     },
     {
@@ -214,8 +214,11 @@
   ],
   "LParameters": {
     "LearnerType": "adamLearner",
-    "LossFunction": "crossEntropyWithSoftmax",
-    "EvaluationFunction": "classificationAccuracy",
+    "LossFunction": "classificationCrossEntroy",
+    "EvaluationFunctions": [
+      "classificationAccuracy",
+      "classificationError"
+    ],
     "LearningRate": 0.01,
     "Momentum": 0,
     "L1Regularizer": 0,

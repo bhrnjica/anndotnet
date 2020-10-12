@@ -23,27 +23,33 @@ namespace AnnDotNET.Tool
         static void Main(string[] args)
         {
 
-            //var mData = loadMetaData();
-            //var mlConfig = new MLConfig();
-            //mlConfig.Id = Guid.NewGuid();
-            //mlConfig.Parser = new DataParser();
-            //mlConfig.Metadata=mData;
-            //mlConfig.LParameters = new LearningParameters()
-            //{ EvaluationFunction = EFunction.ClassificationAccuracy, LossFunction= EFunction.CrossEntropyWithSoftmax, LearnerType = LearnerType.AdamLearner, LearningRate = 0.01 };
-            //mlConfig.TParameters = new TrainingParameters();
-            //mlConfig.Network = new List<LayerBase>()
-            //{
-            //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 15 },
-            //    new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.ReLU},
-            //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 5 },
-            //    new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.Softmax},
-            //};
-            //mlConfig.Paths = new Dictionary<string, string>()
-            //{
-            //    { "Training" ,"mlconfigs/airquality_rawdata.txt"}
-            //};
+            var mData = loadMetaData();
+            var mlConfig = new MLConfig();
+            mlConfig.Id = Guid.NewGuid();
+            mlConfig.Parser = new DataParser();
+            mlConfig.Metadata = mData;
+            mlConfig.LParameters = new LearningParameters()
 
-            //MLFactory.Save(mlConfig, @"..\..\..\..\src\anndotnet.cmd.tool\mlconfigs\airquality.mlconfig").Wait();
+                    { EvaluationFunctions = new List<Metrics>() 
+                    { Metrics.ClassificationAccuracy, Metrics.ClassificationError }, 
+
+                    LossFunction = Losses.ClassificationCrossEntroy, 
+                    LearnerType = LearnerType.AdamLearner, LearningRate = 0.01 };
+
+            mlConfig.TParameters = new TrainingParameters();
+            mlConfig.Network = new List<LayerBase>()
+            {
+                new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 15 },
+                new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.ReLU},
+                new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 5 },
+                new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.Softmax},
+            };
+            mlConfig.Paths = new Dictionary<string, string>()
+            {
+                { "Training" ,"mlconfigs/airquality_rawdata.txt"}
+            };
+
+            MLFactory.Save(mlConfig, @"..\..\..\..\\mlconfigs\airquality.mlconfig").Wait();
 
             var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\airquality.mlconfig");
             mlCOnf.Wait();

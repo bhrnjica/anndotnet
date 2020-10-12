@@ -9,15 +9,23 @@ using Tensorflow;
 
 namespace Anndotnet.Core
 {
-    public enum EFunction
+    public enum Metrics
     {
         SquaredError,
+        RMSError,
+        MSError,
         ClassificationError,
         ClassificationAccuracy,
         BinaryCrossEntropy,
         CrossEntropyWithSoftmax,
-        RMSError,
-        MSError,
+        
+    }
+
+    public enum Losses
+    {
+        SquaredError,
+        BinaryCrossEntropy,
+        ClassificationCrossEntroy,
     }
     public enum ProgressType
     {
@@ -42,18 +50,23 @@ namespace Anndotnet.Core
         TVTraining,
         CVTraining,
     }
-    public class AnnLearner
+    public class Learner
     {
-        public Tensor Eval { get; set; }
+        public List<Tensor> Evals { get; set; }
         public Tensor Loss { get; set; }
-        public Operation Learner { get; set; }
+        public Operation Optimizer { get; set; }
+
+        public Learner()
+        {
+            Evals = new List<Tensor>();
+        }
     }
 
     public class LearningParameters
     {
         public LearnerType LearnerType { get; set; }
-        public EFunction LossFunction { get; set; }
-        public EFunction EvaluationFunction { get; set; }
+        public Losses LossFunction { get; set; }
+        public List<Metrics> EvaluationFunctions { get; set; }
         public double LearningRate { get; set; }
         public double Momentum { get; set; }
         public double L1Regularizer { get; set; }

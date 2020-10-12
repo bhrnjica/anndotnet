@@ -10,6 +10,6 @@ namespace Anndotnet.Core.Interface
 {
     public interface ILearner
     {
-       public AnnLearner Create(Tensor y, Tensor model, LearningParameters par);
+       public Learner Create(Tensor y, Tensor model, LearningParameters par);
     }
 }

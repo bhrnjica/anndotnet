@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <RootNamespace>Anndotnet.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -377,7 +377,7 @@ namespace Anndotnet.Vnd
                 if (string.IsNullOrEmpty(eval))
                     throw new Exception("Unsupported Evaluation function!");
                 //convert to enum
-                trParam.EvaluationFunction = (EFunction)Enum.Parse(typeof(EFunction), eval, true);
+                trParam.EvaluationFunctions = (EFunction)Enum.Parse(typeof(EFunction), eval, true);
 
                 //lr function
                 var lr = strParameters.Where(x => x.StartsWith("LRate:")).Select(x => x.Substring("LRate:".Length)).FirstOrDefault();
