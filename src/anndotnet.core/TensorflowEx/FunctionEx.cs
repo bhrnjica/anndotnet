@@ -191,7 +191,7 @@ namespace Anndotnet.Core.TensorflowEx
             Tensor retVal = null;
             tf_with(tf.variable_scope("Loss"), delegate
             {
-                return 1.0f - Accuracy(y,z, trashold);
+                retVal= 1.0f - Accuracy(y,z, trashold);
             });
 
             return retVal;

@@ -23,33 +23,36 @@ namespace AnnDotNET.Tool
         static void Main(string[] args)
         {
 
-            var mData = loadMetaData();
-            var mlConfig = new MLConfig();
-            mlConfig.Id = Guid.NewGuid();
-            mlConfig.Parser = new DataParser();
-            mlConfig.Metadata = mData;
-            mlConfig.LParameters = new LearningParameters()
+            //var mData = loadMetaData();
+            //var mlConfig = new MLConfig();
+            //mlConfig.Id = Guid.NewGuid();
+            //mlConfig.Parser = new DataParser();
+            //mlConfig.Metadata = mData;
+            //mlConfig.LParameters = new LearningParameters()
 
-                    { EvaluationFunctions = new List<Metrics>() 
-                    { Metrics.ClassificationAccuracy, Metrics.ClassificationError }, 
+            //{
+            //    EvaluationFunctions = new List<Metrics>()
+            //        { Metrics.ClassificationAccuracy, Metrics.ClassificationError },
 
-                    LossFunction = Losses.ClassificationCrossEntroy, 
-                    LearnerType = LearnerType.AdamLearner, LearningRate = 0.01 };
+            //    LossFunction = Losses.ClassificationCrossEntroy,
+            //    LearnerType = LearnerType.AdamLearner,
+            //    LearningRate = 0.01f
+            //};
 
-            mlConfig.TParameters = new TrainingParameters();
-            mlConfig.Network = new List<LayerBase>()
-            {
-                new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 15 },
-                new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.ReLU},
-                new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 5 },
-                new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.Softmax},
-            };
-            mlConfig.Paths = new Dictionary<string, string>()
-            {
-                { "Training" ,"mlconfigs/airquality_rawdata.txt"}
-            };
-            
-            MLFactory.Save(mlConfig, @"..\..\..\..\\mlconfigs\airquality.mlconfig").Wait();
+            //mlConfig.TParameters = new TrainingParameters();
+            //mlConfig.Network = new List<LayerBase>()
+            //{
+            //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 15 },
+            //    new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.ReLU},
+            //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 5 },
+            //    new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.Softmax},
+            //};
+            //mlConfig.Paths = new Dictionary<string, string>()
+            //{
+            //    { "Training" ,"mlconfigs/airquality_rawdata.txt"}
+            //};
+
+            //MLFactory.Save(mlConfig, @"..\..\..\..\\mlconfigs\airquality.mlconfig").Wait();
 
             var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\airquality.mlconfig");
             mlCOnf.Wait();
@@ -81,7 +84,7 @@ namespace AnnDotNET.Tool
                     Name = "Data",
                     MLType = MLColumnType.None,
                     ValueColumnType = ColType.DT,
-                    ValueFormat = "mm/dd/yyy",
+                    ValueFormat = "m/d/yyyy",
                     Encoding = CategoryEncoding.None,
                     ClassValues = null,
                     MissingValue = Aggregation.None

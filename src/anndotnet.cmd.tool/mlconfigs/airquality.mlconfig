@@ -1,5 +1,5 @@
 {
-  "Id": "124f6a69-70be-43d9-94e2-da3782af3f71",
+  "Id": "bdaeaedf-ec1a-4be9-a99e-af448bd6d2bd",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
@@ -14,7 +14,7 @@
       "Name": "Data",
       "MLType": "none",
       "ValueColumnType": "dt",
-      "ValueFormat": "mm/dd/yyy",
+      "ValueFormat": "m/d/yyyy",
       "MissingValue": "none",
       "Encoding": "none",
       "ClassValues": null

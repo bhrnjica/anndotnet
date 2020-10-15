@@ -1,4 +1,5 @@
 ﻿using Anndotnet.Core.Interface;
+using Anndotnet.Core.TensorflowEx;
 using NumSharp;
 using System;
 using System.Collections;
@@ -16,25 +17,62 @@ namespace Anndotnet.Core.Learners
         {
             var tr = new Learner();
 
-            tf_with(tf.variable_scope("Loss"), delegate
-            {
-                // Squared error
-                tr.Loss = tf.reduce_sum(tf.pow(model - y, 2.0f));
-            });
+            tr.Loss = createLossFunction(y, model, par.LossFunction);
 
-            tf_with(tf.variable_scope("Evaluation"), delegate
+            //evaluation function
+            tr.Evals = new List<Tensor>();
+            foreach (var f in par.EvaluationFunctions)
             {
-                // Mean squared error
-                var cost = tf.reduce_sum(tf.pow(model - y, 2.0f));
-                var eval = tf.reduce_mean(cost);
-                tr.Evals.Add(eval);
-            });
+                var ef = createEvaluationFunction(y, model, f);
+                tr.Evals.Add(ef);
+            }
 
             // We add the training operation, ...
-            var adam = tf.train.AdamOptimizer(0.01f);
-            tr.Optimizer = adam.minimize(tr.Loss, name: "train_op");
+            Optimizer opt = createOptimizer(par);
+            tr.Optimizer = opt.minimize(tr.Loss, name: "train_op");
 
             return tr;
+        }
+
+        private Optimizer createOptimizer(LearningParameters par)
+        {
+            switch (par.LearnerType)
+            {
+                case LearnerType.SGDLearner:
+                    return tf.train.GradientDescentOptimizer(par.LearningRate);
+                case LearnerType.AdamLearner:
+                    return tf.train.AdamOptimizer(par.LearningRate);
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        private Tensor createEvaluationFunction(Tensor y, Tensor model, Metrics f)
+        {
+            switch (f)
+            {
+                case Metrics.SquaredError:
+                    return FunctionEx.SquaredError(y, model);
+                case Metrics.MSError:
+                    return FunctionEx.MeanSquaredError(y, model);
+                case Metrics.RMSError:
+                    return FunctionEx.RootMeanSquaredError(y, model);
+                case Metrics.AbsoluteError:
+                    return FunctionEx.AbsoluteError(y, model);
+                default:
+                    throw new NotSupportedException($"Not supported eval function '{f.ToString()}' for classification Learner.");
+            }
+        }
+
+        private Tensor createLossFunction(Tensor y, Tensor model, Losses lossFunction)
+        {
+            switch (lossFunction)
+            {
+                case Losses.SquaredError:
+                    return FunctionEx.SquaredError(y, model);
+                default:
+                    throw new NotSupportedException("Not supported loss function.");
+            }
         }
     }
 }

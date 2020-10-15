@@ -1,4 +1,5 @@
 ﻿using Anndotnet.Core.Interface;
+using Anndotnet.Core.TensorflowEx;
 using NumSharp;
 using System;
 using System.Collections;
@@ -16,21 +17,13 @@ namespace Anndotnet.Core.Learners
         {
             var tr = new Learner();
 
-            tf_with(tf.variable_scope("Loss"), delegate
+            tr.Loss = createFunction(y, model, par.LossFunction);
+            tr.Evals = new List<Tensor>();
+            foreach (var f in par.EvaluationFunctions)
             {
-
-                var losses = tf.nn.sigmoid_cross_entropy_with_logits(tf.cast(y, tf.float32), model);
-                
-                tr.Loss = tf.reduce_mean(losses);
-            });
-
-            tf_with(tf.variable_scope("Evaluation"), delegate
-            {
-                var y_pred = tf.cast(model > 0, tf.int32);
-                var eval = tf.reduce_mean(tf.cast(tf.equal(y_pred,tf.cast(y,tf.int32)), tf.float32));
-                tr.Evals.Add(eval);
-                // accuracy = tf.Print(accuracy, data =[accuracy], message = "accuracy:")
-            });
+                var ef = createFunction(y, model, f);
+                tr.Evals.Add(ef);
+            }
 
             // We add the training operation, ...
             var adam = tf.train.AdamOptimizer(0.01f);
@@ -39,5 +32,34 @@ namespace Anndotnet.Core.Learners
             return tr;
         }
 
+        private Tensor createFunction(Tensor y, Tensor model, Metrics f)
+        {
+            switch (f)
+            {
+                case Metrics.Precision:
+                    return FunctionEx.Precision(y, model);
+                case Metrics.Recall:
+                    return FunctionEx.Recall(y, model);
+                case Metrics.ClassificationError:
+                    return FunctionEx.ClassificationError(y, model);
+                case Metrics.ClassificationAccuracy:
+                    return FunctionEx.Accuracy(y, model);
+                default:
+                    throw new NotSupportedException($"Not supported eval function '{f.ToString()}' for classification Learner.");
+            }
+        }
+
+        private Tensor createFunction(Tensor y, Tensor model, Losses lossFunction)
+        {
+            switch (lossFunction)
+            {
+                case Losses.BinaryCrossEntropy:
+                    return FunctionEx.BinaryCrossEntropy(y, model);
+                case Losses.ClassificationCrossEntroy:
+                    return FunctionEx.MultiClassCrossEntropy(y, model);
+                default:
+                    throw new NotSupportedException("Not supported loss function.");
+            }
+        }
     }
 }

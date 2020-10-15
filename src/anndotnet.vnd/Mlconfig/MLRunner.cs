@@ -31,12 +31,12 @@ namespace Anndotnet.Vnd
             if (y.dims.Last() > 1)
             {
                 var learner = new ClassificationLearner();
-                lr = learner.Create(y, z, new LearningParameters());
+                lr = learner.Create(y, z,mlConfig.LParameters);
             }
             else
             {
                 var learner = new RegressionLearner();
-                lr = learner.Create(y, z, new LearningParameters());
+                lr = learner.Create(y, z, mlConfig.LParameters);
             }
 
 

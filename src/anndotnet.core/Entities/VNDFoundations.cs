@@ -11,14 +11,15 @@ namespace Anndotnet.Core
 {
     public enum Metrics
     {
+        AbsoluteError,
         SquaredError,
         RMSError,
         MSError,
-        ClassificationError,
         ClassificationAccuracy,
-        BinaryCrossEntropy,
-        CrossEntropyWithSoftmax,
-        
+        ClassificationError,
+        Precision,
+        Recall,
+
     }
 
     public enum Losses
@@ -67,7 +68,7 @@ namespace Anndotnet.Core
         public LearnerType LearnerType { get; set; }
         public Losses LossFunction { get; set; }
         public List<Metrics> EvaluationFunctions { get; set; }
-        public double LearningRate { get; set; }
+        public float LearningRate { get; set; }
         public double Momentum { get; set; }
         public double L1Regularizer { get; set; }
         public double L2Regularizer { get; set; }
