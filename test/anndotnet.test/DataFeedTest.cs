@@ -1,9 +1,13 @@
 using System;
 using Daany;
+using Daany.Ext;
 using NumSharp;
 using NUnit.Framework;
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Trainers;
+using Anndotnet.Core;
+using System.Collections.Generic;
+using Anndotnet.Vnd;
 
 namespace anndotnet.test
 {
@@ -155,14 +159,20 @@ namespace anndotnet.test
             var df = DataFrame.FromCsv("files/iris.txt", sep: '\t');
 
             //prepare the data
-            var features = new string[] {"Id", "sepal_length", "sepal_width", "petal_length", "petal_width" };
-            var label = "species";
+            var cols = new List<ColumnInfo>() 
+            { 
+                new ColumnInfo(){ Id=1, Name= "sepal_length", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
+                new ColumnInfo(){ Id=2, Name= "sepal_width", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
+                new ColumnInfo(){ Id=3, Name= "petal_length", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
+                new ColumnInfo(){ Id=4, Name= "petal_width", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
+                new ColumnInfo(){ Id=5, Name= "species", MLType=MLColumnType.Label, ValueColumnType= ColType.IN, Encoding= CategoryEncoding.OneHot },
+            };
+            var mlCOnfig = new MLConfig();
             //
-            //return df.PrepareData(features, label);
-            new NotImplementedException();
-
-            return (null, null); 
-
+            //return df.TransformData(mlConfig.Metadata);
+            // var tran =  df.TransformData(mlCOnfig);
+            throw new NotImplementedException();
+          //  (NDArray xData, NDArray yData) = MLFactory.PrepareData(mlConfig, "Training");
         }
     }
 }

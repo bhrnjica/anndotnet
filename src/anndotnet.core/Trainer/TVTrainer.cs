@@ -176,6 +176,12 @@ namespace Anndotnet.Core.Trainers
 
                     var (x_input, y_input) = _train.GetFullBatch();
                     var (x_inputV, y_inputV) = _valid.GetFullBatch();
+
+                    var funs = new List<Tensor>();
+                    funs.Add(lr.Loss);
+                    funs.AddRange(lr.Evals);
+
+                    var results = sess.run(funs.ToArray(), (x, x_input), (y, y_input));
                     //
                     var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
                     var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_inputV), (y, y_inputV));

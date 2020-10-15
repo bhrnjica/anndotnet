@@ -26,15 +26,12 @@ namespace anndotnet.test
                 LogDevicePlacement = true
             };
 
-
-            // Initialize the variables (i.e. assign their default value)
-            _init = tf.global_variables_initializer();
         }
 
         [Test]
         public void Test1()
         {
-
+            tf.enable_eager_execution();
             // Define tensor constants.
             var a = tf.constant(2f);
             var b = tf.constant(3f);
@@ -47,7 +44,7 @@ namespace anndotnet.test
             Assert.IsTrue(mean.ToArray<float>()[0] == 3.5);
 
             var sum = tf.reduce_sum(new[] { a, b, c });
-            Assert.IsTrue(sum.ToArray<float>()[0] == 3.5);
+            Assert.IsTrue(sum.ToArray<float>()[0] == 10);
 
         }
 
@@ -68,7 +65,7 @@ namespace anndotnet.test
             //evaluate functions
             using (var sess = tf.Session(_config))
             {
-                sess.run(_init);
+                sess.run(tf.global_variables_initializer());
                 var vv1 = sess.run(ce, (y, actual), (z, predicted));
 
                 // Access tensors value.
@@ -95,7 +92,7 @@ namespace anndotnet.test
             //evaluate functions
             using (var sess = tf.Session(_config))
             {
-                sess.run(_init);
+                sess.run(tf.global_variables_initializer());
                 var vv1 = sess.run(ce, (y, actual), (z, predicted));
 
                 // Access tensors value.
@@ -125,7 +122,7 @@ namespace anndotnet.test
             //evaluate functions
             using (var sess = tf.Session(_config))
             {
-                sess.run(_init);
+                sess.run(tf.global_variables_initializer());
                 var vv1 = sess.run(ce, (y, actual), (z, predicted));
                
                 // Access tensors value.
@@ -155,7 +152,7 @@ namespace anndotnet.test
             //evaluate functions
             using (var sess = tf.Session(_config))
             {
-                sess.run(_init);
+                sess.run(tf.global_variables_initializer());
                 var vv1 = sess.run(ce, (y, actual), (z, predicted));
 
                 // Access tensors value.
@@ -189,7 +186,7 @@ namespace anndotnet.test
             //evaluate functions
             using (var sess = tf.Session(_config))
             {
-                sess.run(_init);
+                sess.run(tf.global_variables_initializer());
                 var vv1 = sess.run(ce, (y, labels), (z, logit));
                 var vv2 = sess.run(ce1, (y, labels), (z, logit));
                 var vv3 = sess.run(ce2, (y, labels), (z, logit));
@@ -227,7 +224,7 @@ namespace anndotnet.test
             //evaluate functions
             using (var sess = tf.Session(_config))
             {
-                sess.run(_init);
+                sess.run(tf.global_variables_initializer());
                 var vv1 = sess.run(be1, (y, labels), (z, logit));
                 var vv2 = sess.run(be2, (y, labels), (z, logit));
                 var vv3 = sess.run(be3, (y, labels), (z, logit));
@@ -235,13 +232,441 @@ namespace anndotnet.test
                 var vv5 = sess.run(be5, (y, labels), (z, logit));
 
                 // Access tensors value.
-                float calcValue = vv1.ToArray<float>()[0];
+                float calcValue = (float)Math.Round(vv5.ToArray<float>()[0],2);
                // float calcValue1 = ce1.ToArray<float>()[0];
-                Assert.IsTrue(calcValue == 0.247f);
+                Assert.IsTrue(calcValue == 0.75f);
             }
+        }
+
+        [Test]
+        public void BinaryAccuracy()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(6, 1);
+            var shape1 = new Shape(-1, 1);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
 
 
+            var actual =    new NDArray(new[] { 0.0f, 1.00f, 0.00f, 1.00f, 1.00f, 0.00f }, shape);
+            var predicted = new NDArray(new[] { 0.20f, 0.80f, 0.70f, 0.30f, 0.51f, 0.50f }, shape);
 
+            var ce = FunctionEx.Accuracy(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                float calcValue = (float)Math.Round(vv1.ToArray<float>()[0], 2);
+
+                Assert.IsTrue(calcValue == 0.50f);
+            }
+        }
+
+        [Test]
+        public void AccuracyTest()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(3, 2);
+            var shape1 = new Shape(-1, 2);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+  
+            var actual    = new NDArray(new[] {  0.0f, 1.00f, 0.00f, 1.00f, 1.00f, 0.00f }, shape);
+            var predicted = new NDArray(new[] { 0.20f, 0.80f, 0.70f, 0.30f, 0.50f, 0.50f }, shape);
+
+            var ce = FunctionEx.Accuracy(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                float calcValue = (float)Math.Round(vv1.ToArray<float>()[0], 2);
+
+                Assert.IsTrue(calcValue == 0.67f);
+            }
+        }
+
+        public void ErrorTest()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(3, 2);
+            var shape1 = new Shape(-1, 2);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] { 0.0f, 1.00f, 0.00f, 1.00f, 1.00f, 0.00f }, shape);
+            var predicted = new NDArray(new[] { 0.20f, 0.80f, 0.70f, 0.30f, 0.50f, 0.50f }, shape);
+
+            var ce = FunctionEx.ClassificationError(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                float calcValue = (float)Math.Round(vv1.ToArray<float>()[0], 2);
+
+                Assert.IsTrue(calcValue == 1.0f- 0.67f);
+            }
+        }
+
+        [Test]
+        public void AccuracyTest1()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(3, 3);
+            var shape1 = new Shape(-1, 3);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(   new[] { 0.0f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 0.00f, 0.00f, 1.00f }, shape);
+            var predicted = new NDArray(new[] { 0.10f, 0.80f, 0.10f, 0.40f, 0.30f, 0.30f,0.40f, 0.50f, 0.10f }, shape);
+
+            var ce = FunctionEx.Accuracy(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                float calcValue = (float)Math.Round(vv1.ToArray<float>()[0], 2);
+
+                Assert.IsTrue(calcValue == 0.67f);
+            }
+        }
+
+        [Test]
+        public void ConfusionMatrixTest1()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(10, 3);
+            var shape1 = new Shape(-1, 3);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] {
+                                            1f,0f,0f,
+                                            0f,1f,0f,
+                                            0f,0f,1f,
+                                            1f,0f,0f,
+                                            0f,0f,1f,
+                                            0f,1f,0f,
+                                            0f,1f,0f,
+                                            0f,0f,1f,
+                                            1f,0f,0f,
+                                            0f,1f,0f,
+            }, shape);
+            var predicted = new NDArray(new[] {
+                            0.800f,0.100f,0.100f,
+                            0.600f,0.200f,0.200f,
+                            0.100f,0.100f,0.800f,
+                            0.900f,0.055f,0.045f,
+                            0.100f,0.350f,0.550f,
+                            0.600f,0.200f,0.200f,
+                            0.300f,0.600f,0.100f,
+                            0.100f,0.200f,0.700f,
+                            0.900f,0.090f,0.010f,
+                            0.800f,0.100f,0.100f,
+            }, shape);
+
+            var ce = FunctionEx.ConfusionMatrix(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                var calcValue = vv1.ToArray<float>();
+
+                Assert.IsTrue(calcValue[0] == 3f);
+                Assert.IsTrue(calcValue[1] == 0f);
+                Assert.IsTrue(calcValue[2] == 0f);
+                Assert.IsTrue(calcValue[3] == 3f);
+                Assert.IsTrue(calcValue[4] == 1f);
+                Assert.IsTrue(calcValue[5] == 0f);
+                Assert.IsTrue(calcValue[6] == 0f);
+                Assert.IsTrue(calcValue[7] == 0f);
+                Assert.IsTrue(calcValue[8] == 3f);
+            }
+        }
+
+        [Test]
+        public void ConfusionMatrixTest2()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(10, 1);
+            var shape1 = new Shape(-1, 1);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] {
+                                            1f,
+                                            0f,
+                                            0f,
+                                            1f,
+                                            0f,
+                                            0f,
+                                            0f,
+                                            0f,
+                                            1f,
+                                            0f,
+            }, shape);
+            var predicted = new NDArray(new[] {
+                            0.800f,
+                            0.600f,
+                            0.100f,
+                            0.900f,
+                            0.100f,
+                            0.600f,
+                            0.300f,
+                            0.100f,
+                            0.900f,
+                            0.800f,
+            }, shape);
+
+            var ce = FunctionEx.ConfusionMatrix(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                var calcValue = vv1.ToArray<float>();
+
+                Assert.IsTrue(calcValue[0] == 3f);
+                Assert.IsTrue(calcValue[1] == 0f);
+                Assert.IsTrue(calcValue[2] == 3f);
+                Assert.IsTrue(calcValue[3] == 4f);
+            }
+        }
+
+
+        [Test]
+        public void PrecisionTest()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(10, 3);
+            var shape1 = new Shape(-1, 3);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] {
+                                            1f,0f,0f,
+                                            0f,1f,0f,
+                                            0f,0f,1f,
+                                            1f,0f,0f,
+                                            0f,0f,1f,
+                                            0f,1f,0f,
+                                            0f,1f,0f,
+                                            0f,0f,1f,
+                                            1f,0f,0f,
+                                            0f,1f,0f,
+            }, shape);
+            var predicted = new NDArray(new[] {
+                            0.800f,0.100f,0.100f,
+                            0.600f,0.200f,0.200f,
+                            0.100f,0.100f,0.800f,
+                            0.900f,0.055f,0.045f,
+                            0.100f,0.350f,0.550f,
+                            0.600f,0.200f,0.200f,
+                            0.300f,0.600f,0.100f,
+                            0.100f,0.200f,0.700f,
+                            0.900f,0.090f,0.010f,
+                            0.800f,0.100f,0.100f,
+            }, shape);
+
+            var ce = FunctionEx.Precision(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                var calcValue = vv1.ToArray<float>();
+
+                Assert.IsTrue(calcValue[0] == 0.5f);
+                Assert.IsTrue(calcValue[1] == 1f);
+                Assert.IsTrue(calcValue[2] == 1f);
+               
+            }
+        }
+
+        [Test]
+        public void RecallTest()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(10, 3);
+            var shape1 = new Shape(-1, 3);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] {
+                                            1f,0f,0f,
+                                            0f,1f,0f,
+                                            0f,0f,1f,
+                                            1f,0f,0f,
+                                            0f,0f,1f,
+                                            0f,1f,0f,
+                                            0f,1f,0f,
+                                            0f,0f,1f,
+                                            1f,0f,0f,
+                                            0f,1f,0f,
+            }, shape);
+            var predicted = new NDArray(new[] {
+                            0.800f,0.100f,0.100f,
+                            0.600f,0.200f,0.200f,
+                            0.100f,0.100f,0.800f,
+                            0.900f,0.055f,0.045f,
+                            0.100f,0.350f,0.550f,
+                            0.600f,0.200f,0.200f,
+                            0.300f,0.600f,0.100f,
+                            0.100f,0.200f,0.700f,
+                            0.900f,0.090f,0.010f,
+                            0.800f,0.100f,0.100f,
+            }, shape);
+
+            var ce = FunctionEx.Recall(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                var calcValue = vv1.ToArray<float>();
+
+                Assert.IsTrue(calcValue[0] == 1f);
+                Assert.IsTrue(calcValue[1] == 0.25f);
+                Assert.IsTrue(calcValue[2] == 1f);
+
+            }
+        }
+
+        [Test]
+        public void PrecisionTest2()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(10, 1);
+            var shape1 = new Shape(-1, 1);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] {
+                                            1f,
+                                            0f,
+                                            0f,
+                                            1f,
+                                            0f,
+                                            0f,
+                                            0f,
+                                            0f,
+                                            1f,
+                                            0f,
+            }, shape);
+            var predicted = new NDArray(new[] {
+                            0.800f,
+                            0.600f,
+                            0.100f,
+                            0.900f,
+                            0.100f,
+                            0.600f,
+                            0.300f,
+                            0.100f,
+                            0.900f,
+                            0.800f,
+            }, shape);
+
+            var ce = FunctionEx.Precision(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                var calcValue = vv1.ToArray<float>();
+
+                Assert.IsTrue(calcValue[0] == 0.5f);
+                
+            }
+        }
+
+        [Test]
+        public void RecallTest2()
+        {
+            tf.compat.v1.disable_eager_execution();
+            var shape = new Shape(10, 1);
+            var shape1 = new Shape(-1, 1);
+            var y = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "y");
+            var z = tf.placeholder(TF_DataType.TF_FLOAT, shape1, "z");
+
+
+            var actual = new NDArray(new[] {
+                                            1f,
+                                            0f,
+                                            0f,
+                                            1f,
+                                            0f,
+                                            0f,
+                                            0f,
+                                            0f,
+                                            1f,
+                                            0f,
+            }, shape);
+            var predicted = new NDArray(new[] {
+                            0.800f,
+                            0.600f,
+                            0.100f,
+                            0.900f,
+                            0.100f,
+                            0.600f,
+                            0.300f,
+                            0.100f,
+                            0.900f,
+                            0.800f,
+            }, shape);
+
+            var ce = FunctionEx.Recall(y, z);
+
+            //evaluate functions
+            using (var sess = tf.Session(_config))
+            {
+                sess.run(tf.global_variables_initializer());
+                var vv1 = sess.run(ce, (y, actual), (z, predicted));
+
+                // Access tensors value.
+                var calcValue = vv1.ToArray<float>();
+
+                Assert.IsTrue(calcValue[0] == 1f);
+
+            }
         }
 
     }

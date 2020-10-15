@@ -48,7 +48,7 @@ namespace AnnDotNET.Tool
             {
                 { "Training" ,"mlconfigs/airquality_rawdata.txt"}
             };
-
+            
             MLFactory.Save(mlConfig, @"..\..\..\..\\mlconfigs\airquality.mlconfig").Wait();
 
             var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\airquality.mlconfig");

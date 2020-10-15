@@ -20,7 +20,7 @@ namespace Anndotnet.Core.Trainers
         NDArray Y;
         (DataFeed train, DataFeed valid)[] _cvData;
         int _kFold;
-        public CVTrainer(NDArray x, NDArray y, int kFold=5)
+        public CVTrainer(NDArray x, NDArray y, int kFold = 5)
         {
             _config = new ConfigProto
             {
@@ -183,8 +183,7 @@ namespace Anndotnet.Core.Trainers
             funs.Add(lr.Loss);
             funs.AddRange(lr.Evals);
 
-
-
+            var results = sess.run(funs.ToArray(), (x, xTrain), (y, yTrain));
             //
             var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, xTrain), (y, yTrain));
             var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, xValid), (y, yValid));
