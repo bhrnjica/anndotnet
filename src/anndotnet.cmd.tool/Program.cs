@@ -13,6 +13,7 @@ using Anndotnet.Vnd;
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Learners;
 using Anndotnet.Core.Trainers;
+using Anndotnet.Core.Entities;
 
 namespace AnnDotNET.Tool
 {
@@ -32,10 +33,10 @@ namespace AnnDotNET.Tool
 
             //{
             //    EvaluationFunctions = new List<Metrics>()
-            //        { Metrics.ClassificationAccuracy, Metrics.ClassificationError },
+            //        { Metrics.CAcc, Metrics.CErr },
 
-            //    LossFunction = Losses.ClassificationCrossEntroy,
-            //    LearnerType = LearnerType.AdamLearner,
+            //    LossFunction = Metrics.CCE,
+            //    LearnerType = LearnerType.Adam,
             //    LearningRate = 0.01f
             //};
 
@@ -49,15 +50,19 @@ namespace AnnDotNET.Tool
             //};
             //mlConfig.Paths = new Dictionary<string, string>()
             //{
-            //    { "Training" ,"mlconfigs/airquality_rawdata.txt"}
+            //    { "Training" ,"airquality_rawdata.txt"}
             //};
 
             //MLFactory.Save(mlConfig, @"..\..\..\..\\mlconfigs\airquality.mlconfig").Wait();
 
-            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\airquality.mlconfig");
+            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris.mlconfig");
             mlCOnf.Wait();
+            var mlConfig1 = mlCOnf.Result;
 
-            MLRunner.Run(mlCOnf.Result);
+            //
+            tf.set_random_seed(888888);
+            var mlRunner = new MLRunner(mlConfig1);
+            mlRunner.Run();
 
           //  MLRunner.Run("mlconfigs/titanic.mlconfig");
 
@@ -390,7 +395,7 @@ namespace AnnDotNET.Tool
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 20);
-            tr.Run(x, y, lr, new TrainingParameters());
+           // tr.Run(x, y, lr, new TrainingParameters(),new TrainingHistory(), new Dictionary<string, string>());
 
             //evaluation
 
@@ -421,7 +426,7 @@ namespace AnnDotNET.Tool
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 20);
-            tr.Run(x, y, lr, new TrainingParameters());
+           // tr.Run(x, y, lr, new TrainingParameters(),new TrainingHistory(), new Dictionary<string, string>());
 
             //evaluation
 
@@ -453,7 +458,7 @@ namespace AnnDotNET.Tool
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 20);
-            tr.Run(x, y, lr, new TrainingParameters() { MinibatchSize = 65 });
+           // tr.Run(x, y, lr, new TrainingParameters() { MinibatchSize = 65 }, new TrainingHistory(), new Dictionary<string, string>());
 
             //evaluation
 
@@ -483,7 +488,7 @@ namespace AnnDotNET.Tool
 
             //training process
             var tr = new CVTrainer(xData, yData, 5);
-            tr.Run(x, y, lr, new TrainingParameters() { Epochs= 500, MinibatchSize = 65 });
+            //tr.Run(x, y, lr, new TrainingParameters() { Epochs= 500, MinibatchSize = 65 }, new TrainingHistory(), new Dictionary<string, string>());
 
             //evaluation
 

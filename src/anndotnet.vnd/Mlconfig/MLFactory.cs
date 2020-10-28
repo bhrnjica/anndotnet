@@ -13,6 +13,7 @@ using Anndotnet.Core;
 using Anndotnet.Core.Extensions;
 using Anndotnet.Vnd.Util;
 using Anndotnet.Core.Data;
+using static Tensorflow.Binding;
 
 namespace Anndotnet.Vnd
 {
@@ -20,13 +21,13 @@ namespace Anndotnet.Vnd
     {
         public MLConfig MLConfig { get; set; }
 
+        public static string Root { get; set; }
 
-      
         internal static (NDArray xData, NDArray yData) PrepareData(MLConfig mlConfig, string stageName)
         {
-            var dateFormat = mlConfig.Metadata.Where(x => x.ValueColumnType == ColType.DT).Select(x=>x.ValueFormat).FirstOrDefault();
+            var dateFormat = mlConfig.Metadata.Where(x => x.ValueColumnType == ColType.DT).Select(x => x.ValueFormat).FirstOrDefault();
             //load data into DataFrame
-            var df = Daany.DataFrame.FromCsv(filePath: mlConfig.Paths[stageName], sep: mlConfig.Parser.ColumnSeparator, 
+            var df = Daany.DataFrame.FromCsv(filePath: $"{mlConfig.Paths["MainFolder"]}/{mlConfig.Paths[stageName]}", sep: mlConfig.Parser.ColumnSeparator, 
                                                 names: mlConfig.Metadata.Select(x=>x.Name).ToArray(), 
                                                 colTypes: mlConfig.Metadata.Select(x=>x.ValueColumnType).ToArray(),
                                                 missingValues: mlConfig.Parser.MissingValueSymbol,
@@ -44,7 +45,7 @@ namespace Anndotnet.Vnd
             return df;// throw new NotImplementedException();
         }
 
-        public static Tensor CreateNetwrok(List<LayerBase> layers, Tensor inX, Tensor outY)
+        public static Tensor CreateNetwrok(List<LayerBase> layers, Tensor inX, Tensor outY, int seed = 1234)
         {
             //
             ValueInitializer init = ValueInitializer.GlorotNormal;
@@ -59,7 +60,7 @@ namespace Anndotnet.Vnd
                     var nnl = layer as FCLayer;
                     if (nnl == null)
                         throw new ArgumentNullException("FCLayer cannot be null!");
-                    z = l.Dense(z, nnl.OutDim, init, layer.Name);
+                    z = l.Dense(z, nnl.OutDim, init, layer.Name, seed: seed);
                 }
                 else if (layer.Type == LayerType.Drop)
                 {
@@ -67,7 +68,7 @@ namespace Anndotnet.Vnd
                     if (nnl == null)
                         throw new ArgumentNullException("DropLayer cannot be null!");
 
-                    z = l.Drop(z, nnl.DropPercentage / 100.0f, layer.Name);
+                    z = l.Drop(z, nnl.DropPercentage / 100.0f, layer.Name, seed:seed);
                 }
                 else if (layer.Type == LayerType.Activation)
                 {
@@ -140,22 +141,16 @@ namespace Anndotnet.Vnd
             return z;
         }
 
-        public static (Tensor x, Tensor y) CreatePlaceholders(NDArray xData, NDArray yData)
+        public static (Tensor x, Tensor y) CreatePlaceholders(List<int> shapeX, List<int> shapeY)
         {
-            //
-            List<int> shapeX = new List<int>();
-            List<int> shapeY = new List<int>();
 
-            //
-            shapeX.Add(-1);//first dimension
-            shapeX.AddRange(xData.Shape.Dimensions.Skip(1));
-            shapeY.Add(-1);//first dimentsion
-            shapeY.AddRange(yData.Shape.Dimensions.Skip(1));
+            Tensor x= null;
+            Tensor y = null;
 
-            //create variable
+            // Placeholders for inputs (x) and outputs(y)
             var plc = new Placeholders();
-            var x = plc.Create(shapeX.ToArray(), TF_DataType.TF_FLOAT);
-            var y = plc.Create(shapeY.ToArray(), TF_DataType.TF_FLOAT);
+            x = plc.Create(shapeX.ToArray(), "X", TF_DataType.TF_FLOAT);
+            y = plc.Create(shapeY.ToArray(), "Y", TF_DataType.TF_FLOAT);
 
             return (x, y);
         }
@@ -171,6 +166,8 @@ namespace Anndotnet.Vnd
             //
             using (FileStream fs = File.Create(filePath))
             {
+                //mlConfig.Paths.Remove("MLConfig");
+                //mlConfig.Paths.Remove("MainFolder");
                 await JsonSerializer.SerializeAsync<MLConfig>(fs, mlConfig,options: options);
             }
 
@@ -194,7 +191,20 @@ namespace Anndotnet.Vnd
                 mlConfig =  await JsonSerializer.DeserializeAsync<MLConfig>(fs, options: options);
             }
 
-            //
+
+            //Set the current directory.
+            var dir = Path.GetDirectoryName(filePath);
+            var di = new DirectoryInfo(filePath);
+            if(!mlConfig.Paths.ContainsKey("MainFolder"))
+                mlConfig.Paths.Add("MainFolder", di.Parent.FullName);
+            else
+                mlConfig.Paths["MainFolder"]= di.Parent.FullName;
+
+            //save ml config file path
+            if (!mlConfig.Paths.ContainsKey("MLConfig"))
+                mlConfig.Paths.Add("MLConfig", new FileInfo(filePath).FullName);
+            else
+                mlConfig.Paths["MLConfig"] =new FileInfo(filePath).FullName;
             return mlConfig;
         }
 

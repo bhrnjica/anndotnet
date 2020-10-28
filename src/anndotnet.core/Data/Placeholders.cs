@@ -14,8 +14,6 @@ namespace Anndotnet.Core.Data
     {
        public (Tensor X, Tensor Y) Create(Shape input, Shape output, TF_DataType inType= TF_DataType.TF_FLOAT, TF_DataType outType= TF_DataType.TF_FLOAT)
         {
-            tf.compat.v1.disable_eager_execution();
-
             Tensor X = null;
             Tensor Y = null;
             //
@@ -28,16 +26,14 @@ namespace Anndotnet.Core.Data
             return (X, Y);
         }
 
-        public Tensor Create(Shape input, TF_DataType inType = TF_DataType.TF_FLOAT)
+        public Tensor Create(Shape input, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
         {
-            tf.compat.v1.disable_eager_execution();
-
             Tensor X = null;
             //
-            tf_with(tf.variable_scope($"x_placeholder"), delegate
-            {
-                X = tf.placeholder(inType, shape: input);
-            });
+            //tf_with(tf.variable_scope($"x_placeholder"), delegate
+            //{
+                X = tf.placeholder(inType, shape: input, name: name);
+            //});
             //
             return X;
         }

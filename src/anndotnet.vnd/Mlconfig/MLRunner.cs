@@ -8,49 +8,71 @@ using NumSharp;
 using Anndotnet.Core;
 using Anndotnet.Core.Learners;
 using Anndotnet.Core.Trainers;
+using Anndotnet.Core.Entities;
+using System.IO;
+using Anndotnet.Core.TensorflowEx;
 
 namespace Anndotnet.Vnd
 {
     public class MLRunner
     {
-        public static void Run(MLConfig mlConfig)
+        MLConfig MLConfig { get; set; }
+        TrainingHistory History { get; set; }
+
+        ConfigProto _config;
+        Operation _init;
+
+        public MLRunner(MLConfig mlConfig)
         {
-           //data preparation and tranformation
-            (NDArray xData, NDArray yData) = MLFactory.PrepareData(mlConfig, "Training");
-            
-            //create placeholders
-            (Tensor x, Tensor y) = MLFactory.CreatePlaceholders(xData, yData);
-
-            //create network
-            var z = MLFactory.CreateNetwrok(mlConfig.Network, x, y);
-
-            
-
-            //define learner
-            Learner lr = null;
-            if (y.dims.Last() > 1)
+            _config = new ConfigProto
             {
-                var learner = new ClassificationLearner();
-                lr = learner.Create(y, z,mlConfig.LParameters);
-            }
-            else
+                IntraOpParallelismThreads = 1,
+                InterOpParallelismThreads = 1,
+                LogDevicePlacement = true,
+            };
+
+            // Initialize the variables (i.e. assign their default value)
+            _init = tf.global_variables_initializer();
+
+            MLConfig = mlConfig;
+        }
+
+        public void Run()
+        {
+            //data preparation and transformation
+            (NDArray xData, NDArray yData) = MLFactory.PrepareData(MLConfig, "Training");
+
+            //
+            List<int> shapeX = new List<int>();
+            List<int> shapeY = new List<int>();
+            shapeX.Add(-1);//first dimension
+            shapeX.AddRange(xData.Shape.Dimensions.Skip(1));
+            shapeY.Add(-1);//first dimension
+            shapeY.AddRange(yData.Shape.Dimensions.Skip(1));
+
+            Session session = null;
+            tf.compat.v1.disable_eager_execution();
+
+            //load trained model if exists
+            if (MLConfig.TParameters.Retrain && MLConfig.Paths.ContainsKey("BestModel"))
             {
-                var learner = new RegressionLearner();
-                lr = learner.Create(y, z, mlConfig.LParameters);
+                session = loadModelCheckPoint();
+                
+            }
+            //create network from mlconfig file
+            if (session == null)
+            {
+                //create graph from machine learning configuration
+                var graph = createGraph(MLConfig, shapeX, shapeY);
+                session = tf.Session(graph);
+
+                // Run the initializer
+                session.run(_init);
+
             }
 
-
-            //training process
-            if (mlConfig.TParameters.TrainingType == TrainingType.TVTraining)
-            {
-                var tr = new TVTrainer(xData, yData, 1);
-                tr.Run(x, y, lr, mlConfig.TParameters);
-            }
-            else
-            {
-                var tr = new CVTrainer(xData, yData, mlConfig.TParameters.KFold);
-                tr.Run(x, y, lr, mlConfig.TParameters);
-            }
+            //Train model
+            Train(xData, yData, session);
 
 
             //evaluation
@@ -60,58 +82,140 @@ namespace Anndotnet.Vnd
             return;
 
         }
-        public static void Run(string mlconfigPath)
+
+        private void Train(NDArray xData, NDArray yData, Session session)
         {
-            //var retVal = MLFactory_old.LoadMLConfiguration(mlconfigPath);
+            //training process
+            if (MLConfig.TParameters.TrainingType == TrainingType.TVTraining)
+            {
+                var tr = new TVTrainer(xData, yData, MLConfig.TParameters.SplitPercentage);
+                //tr.Run(x, y, lr, MLConfig.TParameters, History, MLConfig.Paths);
+                tr.Run(session, MLConfig.LParameters, MLConfig.TParameters, processModel);
+            }
+            else
+            {
+                var tr = new CVTrainer(xData, yData, MLConfig.TParameters.KFold);
+                tr.Run(session, MLConfig.LParameters, MLConfig.TParameters, processModel);
+            }
+        }      
 
-            //(var xData, var yData) = MLFactory_old.PrepareData(retVal["metadata"], retVal["paths"]);
-            ////var f = MLFactory.CreateMLFactory(retVal);
+        private Graph createGraph(MLConfig mLConfig, List<int> shapeX, List<int> shapeY)
+        {
+            //create variable
+            var graph = new Graph().as_default();
 
-            //(Tensor x, Tensor y) = MLFactory_old.CreatePlaceholders(xData, yData);
-
-            //var z = MLFactory_old.CreateNetworkModel(retVal["network"], x, y);
-
-            ////create learning params
-            //var strLearning = retVal["learning"];
-            //LearningParameters lrData = MLFactory_old.CreateLearningParameters(strLearning);
-
-            ////create training param
-            //var strTraining = retVal["training"];
-            //TrainingParameters trData = MLFactory_old.CreateTrainingParameters(strTraining);
-
-
-            ////define learner
-            //Learner lr= null;
-            //if(y.dims.Last() > 1)
-            //{
-            //    var learner = new ClassificationLearner();
-            //    lr = learner.Create(y, z, new LearningParameters());
-            //}
-            //else
-            //{
-            //    var learner = new RegressionLearner();
-            //    lr = learner.Create(y, z, new LearningParameters());
-            //}
+            Tensor x = null;
+            Tensor y = null;
+            tf_with(tf.name_scope("Input"), delegate
+            {
+                // Placeholders for inputs (x) and outputs(y)
+                //create placeholders
+                (x, y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
+            });
+                    
+            //create network
+            var z = MLFactory.CreateNetwrok(MLConfig.Network, x, y);
             
+            var learner = new Learner();
+            //define learner
+            tf_with(tf.variable_scope("Train"), delegate
+            {
+                tf_with(tf.variable_scope("Loss"), delegate
+                {
+                    learner.Loss = FunctionEx.Create(y, z, mLConfig.LParameters.LossFunction);
+                });
 
-            ////training process
-            //if (trData.TrainingType == TrainingType.TVTraining)
-            //{
-            //    var tr = new TVTrainer(xData, yData, 1);
-            //    tr.Run(x, y, lr, trData);
-            //}
-            //else
-            //{
-            //    var tr = new CVTrainer(xData, yData, trData.KFold);
-            //    tr.Run(x, y, lr, trData);
-            //}
+                tf_with(tf.variable_scope("Optimizer"), delegate
+                {
+                    learner.Optimizer = FunctionEx.Optimizer(mLConfig.LParameters, learner.Loss);
+                });
 
+                for(int i=0; i< mLConfig.LParameters.EvaluationFunctions.Count; i++)
+                {
+                    var e = mLConfig.LParameters.EvaluationFunctions[i];
+                    tf_with(tf.variable_scope($"Eval{i}"), delegate
+                    {
+                        var ev  = FunctionEx.Create(y, z, e);
+                        learner.Evals.Add(ev);
+                    });
+                }
+            });
 
-            ////evaluation
+            //
+            return graph;
 
-
-            ////prediction
-            //return;
         }
+
+        private Session processModel(Session session, TrainingProgress tp)
+        {
+            if (session == null)
+            {
+                return loadModelCheckPoint();
+            }
+            else
+            {
+                //save only when training is completed.
+                if(tp.ProgressType== ProgressType.Completed)
+                {
+                    saveModel(session, tp);
+                    MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
+                }
+              
+                return null;
+            }
+
+        }
+
+        private Session saveModel(Session sess, TrainingProgress tp)
+        {
+            var paths = MLConfig.Paths;
+            var saver = tf.train.Saver();
+
+            if (!paths.ContainsKey("BestModel"))
+                paths.Add("BestModel", "");
+            if (!paths.ContainsKey("Models"))
+                paths.Add("Models", "Models");
+
+
+            // Restore variables from checkpoint
+            var root = $"{paths["MainFolder"]}";
+            var curDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(root);
+
+            //delete all previous models
+            var di = new DirectoryInfo(paths["Models"]);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+
+            var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
+            MLConfig.Paths["BestModel"] = strPath+".meta";
+            Directory.SetCurrentDirectory(curDir);
+            return null;
+        }
+
+        private Session loadModelCheckPoint()
+        {
+            var paths = MLConfig.Paths;
+            var modelFilePath = paths["BestModel"];
+            var root = $"{paths["MainFolder"]}";
+            var curDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(root);
+
+            var f = new FileInfo(modelFilePath);
+            if(f.Exists)
+            {
+                var graph = tf.Graph().as_default();
+                var sess = tf.Session(graph);
+                var saver = tf.train.import_meta_graph(modelFilePath);
+                // Restore variables from checkpoint
+                saver.restore(sess, tf.train.latest_checkpoint(new DirectoryInfo(modelFilePath).Parent.Name));
+                Directory.SetCurrentDirectory(curDir);
+                return sess;
+            }
+            return null;
+        }
+
     }
 }

@@ -10,14 +10,14 @@ using Anndotnet.Core.Data;
 using Anndotnet.Core.Interface;
 using Anndotnet.Core.Progress;
 using NumSharp;
+using Anndotnet.Core.Entities;
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
 namespace Anndotnet.Core.Trainers
 {
     public class TVTrainer : ITrainer
     {
-        ConfigProto _config;
-        Operation _init;
+        
         DataFeed _train;
         DataFeed _valid;
         NDArray X;
@@ -25,21 +25,12 @@ namespace Anndotnet.Core.Trainers
         int _percentageSplit;
 
 
-        public TVTrainer(NDArray x, NDArray y, int percentageSplit = 20, bool shuffle = false)
+        public TVTrainer(NDArray x, NDArray y, int percentageSplit = 20, bool shuffle = false, int seed= 1234)
         {
-            _config = new ConfigProto
-            {
-                IntraOpParallelismThreads = 1,
-                InterOpParallelismThreads = 1,
-                LogDevicePlacement = true
-            };
-
             X = x;
             Y = y;
             _percentageSplit = percentageSplit;
-
-            initTrainer(1,shuffle);
-
+            initTrainer(seed,shuffle);
         }
 
         private void initTrainer(int seed, bool shuffle = false)
@@ -48,8 +39,7 @@ namespace Anndotnet.Core.Trainers
 
             (_train, _valid) = Split(seed, shuffle);
 
-            // Initialize the variables (i.e. assign their default value)
-            _init = tf.global_variables_initializer();
+            
         }
 
         internal (DataFeed train, DataFeed validation) Split(int seed, bool shuffle = false)
@@ -76,130 +66,113 @@ namespace Anndotnet.Core.Trainers
 
         }
 
-        public bool RunOffline(Tensor x, Tensor y, Learner lr, TrainingParameters tr)
+        public bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, TrainingProgress, Session> processModel)
         {
             //check for progress
-            if (tr.Progress == null)
+            if (tParams.Progress == null)
             {
                 var pt = new ProgressTVTraining();
-                tr.Progress = pt.Run;
+                tParams.Progress = pt.Run;
             }
 
-            using (var sess = tf.Session(_config))
+            //get placeholders 
+            var x = session.graph.get_tensor_by_name("Input/X:0");
+            var y = session.graph.get_tensor_by_name("Input/Y:0");
+
+            //get optimizer
+            var opt = session.graph.get_operation_by_name($"Train/Optimizer/{lParams.LearnerType}");
+
+            //create list of loss and evaluation functions
+            var funs = new List<Tensor>();
+            var loss = session.graph.get_tensor_by_name($"Train/Loss/{lParams.LossFunction}:0");
+            funs.Add(loss);
+
+            //extract evaluation functions
+            for (int i = 0; i < lParams.EvaluationFunctions.Count(); i++)
             {
-
-                sess.run(_init);
-
-                // check the accuracy before training
-                var (x_input, y_input) = _train.GetFullBatch();
-
-                //report of zero epoch
-                var (eval, loss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
-                tr.Progress(new TrainingProgress() {ProgressType= ProgressType.Initialization, Iteration = 0, TrainEval=eval, TrainLoss= loss });
-
-                // training
-                foreach (var i in range(1, tr.Epochs))
-                {
-                    // by sampling some input data (fetching)
-                    (x_input, y_input) = _train.GetFullBatch();
-
-                    //train and back propagate error
-                    sess.run(lr.Optimizer, (x, x_input), (y, y_input));
-
-                    // We regularly check the loss
-                    if (i % tr.ProgressStep == 0)
-                    {
-                        var (x_inputV, y_inputV) = _valid.GetFullBatch();
-                        //
-                        var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
-                        var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_inputV), (y, y_inputV));
-
-                        //report progress
-                        tr.Progress(new TrainingProgress() 
-                            { ProgressType = ProgressType.Training, Iteration = i, 
-                                TrainEval = TEval, TrainLoss = TLoss, ValidEval = VEval, ValidLoss = VLoss
-                        });
-                    }
-                        
-                }
-
-                // Finally, we check our final accuracy
-                var tranData = _train.GetFullBatch();
-                var (TEvala, TLossa) = sess.run((lr.Evals.First(), lr.Loss), (x, tranData.xBatch), (y, tranData.yBatch));
-
-                //Evaluate validation set
-                var validData = _valid.GetFullBatch();
-                var (VEvala, VLossa) = sess.run((lr.Evals.First(), lr.Loss), (x, validData.xBatch), (y, validData.yBatch));
-
-                //report progress
-                tr.Progress(new TrainingProgress() 
-                        { 
-                            ProgressType = ProgressType.Completed, 
-                            Iteration = tr.Epochs, TrainEval = TEvala, TrainLoss = TLossa,
-                                                  ValidEval = VEvala,ValidLoss = VLossa
-                });
+                var efun = lParams.EvaluationFunctions[i];
+                var eval = session.graph.get_tensor_by_name($"Train/Eval{i}/{efun.ToString()}:0");
+                if (eval == null)
+                    break;
+                funs.Add(eval);
             }
-
-            return true;
-        }
-
-        public bool Run(Tensor x, Tensor y, Learner lr, TrainingParameters tr)
-        {
-            //check for progress
-            if (tr.Progress == null)
-            {
-                var pt = new ProgressTVTraining();
-                tr.Progress = pt.Run;
-            }
-
             //
-            using (var sess = tf.Session())
+            using (session)
             {
-                // Run the initializer
-                sess.run(_init);
-
-                int batchCount = 0;
                 // Training cycle
-                foreach (var e in range(1, tr.Epochs))
+                foreach (var epoch in range(1, tParams.Epochs + 1))
                 {
 
+                    int batchCount = 1;
                     // Loop over all batches
-                    foreach (var (x_in, y_in) in _train.GetNextBatch(tr.MinibatchSize))
+                    foreach (var (x_in, y_in) in _train.GetNextBatch(tParams.MinibatchSize))
                     {
-                        
                         // Run optimization op (backprop)
-                        sess.run(lr.Optimizer, (x, x_in),(y, y_in));
-
-                        //batch counting
+                        session.run(opt, (x, x_in), (y, y_in));
                         batchCount++;
                     }
+                    //Console.WriteLine($"BatchCount {batchCount}");
 
-                    var (x_input, y_input) = _train.GetFullBatch();
-                    var (x_inputV, y_inputV) = _valid.GetFullBatch();
-
-                    var funs = new List<Tensor>();
-                    funs.Add(lr.Loss);
-                    funs.AddRange(lr.Evals);
-
-                    var results = sess.run(funs.ToArray(), (x, x_input), (y, y_input));
-                    //
-                    var (TEval, TLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_input), (y, y_input));
-                    var (VEval, VLoss) = sess.run((lr.Evals.First(), lr.Loss), (x, x_inputV), (y, y_inputV));
-
-                    //report progress
-                    tr.Progress(new TrainingProgress()
+                    // Display logs per epoch step
+                    if (epoch % tParams.ProgressStep == 0 || epoch == 1 || epoch == tParams.Epochs)
                     {
-                        ProgressType = ProgressType.Training,
-                        Iteration = e,
-                        TrainEval = TEval,
-                        TrainLoss = TLoss,
-                        ValidEval = VEval,
-                        ValidLoss = VLoss
-                    });
+                        var (x_input, y_input) = _train.GetFullBatch();
+                        var (x_inputV, y_inputV) = _valid.GetFullBatch();
+
+                        //evaluate model
+                        var resultsT = session.run(funs.ToArray(), (x, x_input), (y, y_input));
+                        var resultsV = session.run(funs.ToArray(), (x, x_inputV), (y, y_inputV));
+                        var evalFunctions = funs.Skip(1).Select(ev => ev.op.name.Substring(ev.op.name.LastIndexOf("/") + 1)).ToArray();
+
+
+                        var progress = reportProgress(tParams, epoch, resultsT, resultsV, evalFunctions);
+                        tParams.Progress(progress);
+
+                        ////process model
+                        //if (progress.ProgressType == ProgressType.Completed)
+                        //{
+                        //    var W = session.graph.get_tensor_by_name("ReLuLayer/Relu:0");
+                        //    var b = session.graph.get_tensor_by_name("FCLAyer01/b:0");
+                        //    Console.WriteLine($"Training:  W={session.run(W, (x, x_input), (y, y_input))} b={session.run(b, (x, x_input), (y, y_input))}");
+                        //}
+                        processModel(session, progress);
+                    }
                 }
 
+                
                 return true;
             }
+        }
+
+        private static TrainingProgress reportProgress(TrainingParameters tParams, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs)
+        {
+            //report progress
+            var pr = new TrainingProgress()
+            {
+                ProgressType = ProgressType.Training,
+                Epoch = epoch,
+                Epochs = tParams.Epochs,
+                TrainLoss = resultsT.First(),
+                ValidLoss = resultsV.First(),
+            };
+
+            if (epoch == tParams.Epochs)
+                pr.ProgressType = ProgressType.Completed;
+            if(epoch == 1)
+                pr.ProgressType = ProgressType.Initialization;
+            //
+            var evalsT = resultsT.Skip(1).ToArray();
+            var evalsV = resultsV.Skip(1).ToArray();
+            pr.TrainEval = new Dictionary<string, float>();
+            pr.ValidEval = new Dictionary<string, float>();
+            //
+            for (int i = 0; i < evalsT.Length; i++)
+            {
+                pr.TrainEval.Add($"{evalFuncs[i]}", evalsT[i]);
+                pr.ValidEval.Add($"{evalFuncs[i]}", evalsV[i]);
+            }
+
+            return pr;
         }
     }
 }

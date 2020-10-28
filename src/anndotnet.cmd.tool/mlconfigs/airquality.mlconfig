@@ -1,5 +1,5 @@
 {
-  "Id": "bdaeaedf-ec1a-4be9-a99e-af448bd6d2bd",
+  "Id": "3ff65ccd-f6b7-4260-8ff3-22d133eb4e31",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
@@ -213,11 +213,11 @@
     }
   ],
   "LParameters": {
-    "LearnerType": "adamLearner",
-    "LossFunction": "classificationCrossEntroy",
+    "LearnerType": "adam",
+    "LossFunction": "cce",
     "EvaluationFunctions": [
-      "classificationAccuracy",
-      "classificationError"
+      "cAcc",
+      "cErr"
     ],
     "LearningRate": 0.01,
     "Momentum": 0,
@@ -227,6 +227,7 @@
   "TParameters": {
     "TrainingType": "tvTraining",
     "EarlyStopping": "none",
+    "Retrain": true,
     "Epochs": 500,
     "ProgressStep": 10,
     "MinibatchSize": 100,
@@ -236,6 +237,6 @@
     "LastBestModel": null
   },
   "Paths": {
-    "Training": "mlconfigs/airquality_rawdata.txt"
+    "Training": "airquality_rawdata.txt"
   }
 }

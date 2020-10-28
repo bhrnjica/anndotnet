@@ -12,7 +12,7 @@ namespace Anndotnet.Vnd
     public class Layers : LayersBase
     {
 
-        public Tensor Dense(Tensor inX, int outputDim, ValueInitializer initValueType, string name)
+        public Tensor Dense(Tensor inX, int outputDim, ValueInitializer initValueType, string name, int seed= 1234)
         {
             Tensor z = null;
             tf_with(tf.variable_scope(name), delegate
@@ -21,8 +21,8 @@ namespace Anndotnet.Vnd
                 int ouDim = outputDim;
 
                 //generate initial values
-                Tensor initValueW = RandomValues(initValueType, (inDim, ouDim), TF_DataType.TF_FLOAT);
-                Tensor initValueb = RandomValues(initValueType, shape: ouDim, TF_DataType.TF_FLOAT);
+                Tensor initValueW = RandomValues(initValueType, (inDim, ouDim), TF_DataType.TF_FLOAT, seed: seed);
+                Tensor initValueb = RandomValues(initValueType, shape: ouDim, TF_DataType.TF_FLOAT, seed: seed);
 
                 var w = tf.Variable<Tensor>(initValueW, name: "w");
                 var b = tf.Variable<Tensor>(initValueb, name: "b");
@@ -68,12 +68,12 @@ namespace Anndotnet.Vnd
             return z;
         }
 
-        public Tensor Drop(Tensor inX, float rate, string name)
+        public Tensor Drop(Tensor inX, float rate, string name, int seed= 1234)
         {
             Tensor z = null;
             tf_with(tf.variable_scope(name), delegate
             {
-                z = tf.nn.dropout(inX, rate: rate, name: name) ;
+                z = tf.nn.dropout(inX, rate: rate, name: name, seed: seed) ;
             });
 
             return z;

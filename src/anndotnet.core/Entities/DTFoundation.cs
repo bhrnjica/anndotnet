@@ -32,23 +32,6 @@ namespace Anndotnet.Core
     }
         
 
-
-    //Type of the column data
-    //public enum ColumnType
-    //{
-    //    [Description("String")]
-    //    Unknown = 0,
-    //    [Description("None")]
-    //    None,
-    //    [Description("Numeric")]
-    //    Numeric,//continuous column values
-    //    [Description("Binary")]
-    //    Binary,//binary column values (0,1)
-    //    [Description("Category")]
-    //    Category,//categorical column values    
-    //}
-    
-
     //Normalization  of the numerical column
     public enum Scaling
     {

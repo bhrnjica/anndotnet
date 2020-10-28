@@ -28,7 +28,7 @@ namespace Anndotnet.Core.Learners
             // We add the training operation, ...
             var adam = tf.train.AdamOptimizer(0.01f);
             tr.Optimizer = adam.minimize(tr.Loss, name: "train_op");
-
+            
             return tr;
         }
 
@@ -40,26 +40,18 @@ namespace Anndotnet.Core.Learners
                     return FunctionEx.Precision(y, model);
                 case Metrics.Recall:
                     return FunctionEx.Recall(y, model);
-                case Metrics.ClassificationError:
+                case Metrics.CErr:
                     return FunctionEx.ClassificationError(y, model);
-                case Metrics.ClassificationAccuracy:
+                case Metrics.CAcc:
                     return FunctionEx.Accuracy(y, model);
+                case Metrics.BCE:
+                    return FunctionEx.BinaryCrossEntropy(y, model);
+                case Metrics.CCE:
+                    return FunctionEx.MultiClassCrossEntropy(y, model);
                 default:
-                    throw new NotSupportedException($"Not supported eval function '{f.ToString()}' for classification Learner.");
+                    throw new NotSupportedException($"Not supported function '{f.ToString()}' for classification Learner.");
             }
         }
 
-        private Tensor createFunction(Tensor y, Tensor model, Losses lossFunction)
-        {
-            switch (lossFunction)
-            {
-                case Losses.BinaryCrossEntropy:
-                    return FunctionEx.BinaryCrossEntropy(y, model);
-                case Losses.ClassificationCrossEntroy:
-                    return FunctionEx.MultiClassCrossEntropy(y, model);
-                default:
-                    throw new NotSupportedException("Not supported loss function.");
-            }
-        }
     }
 }

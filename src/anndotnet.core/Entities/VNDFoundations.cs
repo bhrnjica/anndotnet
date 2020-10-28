@@ -3,31 +3,29 @@ using NumSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using Tensorflow;
 
 namespace Anndotnet.Core
 {
     public enum Metrics
     {
-        AbsoluteError,
-        SquaredError,
-        RMSError,
-        MSError,
-        ClassificationAccuracy,
-        ClassificationError,
-        Precision,
-        Recall,
+        AE,//absolute error
+        RMSE,//root mean squared error
+        MSE,//mean squared error
+        CAcc,//Classification accuracy
+        CErr,//classification error
+        Precision,//precision
+        Recall,//recall
+        SE,//squared error
+        BCE,//binary cross entropy
+        CCE,//classification cross entropy
 
     }
 
-    public enum Losses
-    {
-        SquaredError,
-        BinaryCrossEntropy,
-        ClassificationCrossEntroy,
-    }
     public enum ProgressType
     {
         Initialization,
@@ -66,7 +64,7 @@ namespace Anndotnet.Core
     public class LearningParameters
     {
         public LearnerType LearnerType { get; set; }
-        public Losses LossFunction { get; set; }
+        public Metrics LossFunction { get; set; }
         public List<Metrics> EvaluationFunctions { get; set; }
         public float LearningRate { get; set; }
         public double Momentum { get; set; }
@@ -76,13 +74,13 @@ namespace Anndotnet.Core
 
     public enum LearnerType
     {
-        SGDLearner = 0,
-        MomentumSGDLearner = 1,
-        RMSPropLearner = 2,
-        FSAdaGradLearner = 3,
-        AdamLearner = 4,
-        AdaGradLearner = 5,
-        AdaDeltaLearner = 6
+        SGD = 0,
+        MomentumSGD = 1,
+        RMSProp = 2,
+        FSAdaGrad = 3,
+        Adam = 4,
+        AdaGrad = 5,
+        AdaDelta = 6
     }
 
     public class TrainingParameters
@@ -91,6 +89,7 @@ namespace Anndotnet.Core
 
         public EarlyStopping EarlyStopping { get; set; }
 
+        public bool Retrain { get; set; }
         public int Epochs { get; set; }
 
         public int ProgressStep { get; set; }
@@ -100,7 +99,7 @@ namespace Anndotnet.Core
         public int KFold { get; set; }
 
         public int SplitPercentage { get; set; }
-
+        [JsonIgnore]
         public Action<TrainingProgress> Progress { get; set; }
         public string LastBestModel { get; set; }
 
@@ -114,26 +113,30 @@ namespace Anndotnet.Core
             MinibatchSize = 100;
             KFold = 5;
             SplitPercentage = 20;
+            Retrain = true;
         }
     }
 
     public class TrainingProgress
     {
         public ProgressType ProgressType { get; set; }
-        public int FoldIndex { get; set; }
-        public int Iteration { get; set; }
+        public int Fold { get; set; }
+        public int KFold { get; set; }
+        public int Epoch { get; set; }
+        public int Epochs { get; set; }
         public float TrainLoss { get; set; }
-        public float TrainEval { get; set; }
+        public Dictionary<string, float> TrainEval { get; set; }
         public float ValidLoss { get; set; }
-        public float ValidEval { get; set; }
+        public Dictionary<string, float> ValidEval { get; set; }
+
     }
-   public  class Ann
-    {
-        //placeholders
-        Tensor x { get; set; }
-        Tensor y { get; set; }
-        //model
-        Tensor z { get; set; }
-    }
+   //public  class Ann
+   // {
+   //     //placeholders
+   //     Tensor x { get; set; }
+   //     Tensor y { get; set; }
+   //     //model
+   //     Tensor z { get; set; }
+   // }
 
 }

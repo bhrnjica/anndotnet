@@ -36,13 +36,16 @@
 
 
   <ItemGroup>
+    <None Update="mlconfigs\iris.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="mlconfigs\airquality.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="mlconfigs\airquality_rawdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\iris.mlconfig">
+    <None Update="mlconfigs\iris11.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="mlconfigs\iris_raw.txt">

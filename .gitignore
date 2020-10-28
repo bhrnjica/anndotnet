@@ -258,6 +258,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/src/anndotnet.cmd.tool/mlconfigs/Models
+/src/anndotnet.cmd.tool/mlconfigs/TempModels
 /src/tool/anndotnet.tool/model_mlconfigs/iris/temp_models
 /src/tool/anndotnet.tool/model_mlconfigs/iris/models
 /src/tool/anndotnet.tool/model_mlconfigs/BCML/temp_models

@@ -8,7 +8,7 @@ namespace Anndotnet.Vnd
 {
     public class LayersBase
     {
-        protected Tensor RandomValues(ValueInitializer initValueType, TensorShape shape, TF_DataType type)
+        protected Tensor RandomValues(ValueInitializer initValueType, TensorShape shape, TF_DataType type, int seed=1234)
         {
             switch (initValueType)
             {
@@ -16,10 +16,10 @@ namespace Anndotnet.Vnd
                 case ValueInitializer.GlorotNormal:
                 case ValueInitializer.RandomUniform:
                 case ValueInitializer.RandomNormal:
-                    return tf.random_uniform(shape: shape, dtype: type);
+                    return tf.random_uniform(shape: shape, dtype: type, seed: seed);
             }
 
-            return tf.random_uniform(shape: shape, dtype: type);
+            return tf.random_uniform(shape: shape, dtype: type, seed: seed);
         }
     }
 }
