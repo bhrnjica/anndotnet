@@ -4,29 +4,11 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>anndotnet.cmd.tool</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ModelBuilder.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="iris.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="iris.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ModelBuilder.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.0" />
-    <PackageReference Include="TensorFlow.NET" Version="0.20.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,31 +18,28 @@
 
 
   <ItemGroup>
-    <None Update="mlconfigs\iris.mlconfig">
+    <None Update="mlconfigs\iris\iris.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\airquality.mlconfig">
+    <None Update="mlconfigs\air_quality\airquality.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\airquality_rawdata.txt">
+    <None Update="mlconfigs\air_quality\airquality_rawdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\iris11.mlconfig">
+    <None Update="mlconfigs\iris\iris_raw.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\iris_raw.txt">
+    <None Update="mlconfigs\titanic\titanic.mlconfig">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\titanic.mlconfig">
+    <None Update="mlconfigs\titanic\titanic_raw.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\titanic_raw.txt">
+    <None Update="mlconfigs\concrete\slump.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="slump.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="titanic.txt">
+    <None Update="mlconfigs\titanic\titanic.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

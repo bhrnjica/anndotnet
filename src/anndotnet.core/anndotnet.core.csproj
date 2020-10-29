@@ -10,7 +10,7 @@
     <PackageReference Include="Daany.DataFrame" Version="0.6.6" />
     <PackageReference Include="Daany.DataFrame.Ext" Version="0.6.6" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
-    <PackageReference Include="TensorFlow.NET" Version="0.20.1" />
+    <PackageReference Include="TensorFlow.NET" Version="0.21.0" />
   </ItemGroup>
 
   
