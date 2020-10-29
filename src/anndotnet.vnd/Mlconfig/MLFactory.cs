@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +26,7 @@ using Anndotnet.Core.Extensions;
 using Anndotnet.Vnd.Util;
 using Anndotnet.Core.Data;
 using static Tensorflow.Binding;
+using Anndotnet.Vnd.Layers;
 
 namespace Anndotnet.Vnd
 {
@@ -50,7 +63,7 @@ namespace Anndotnet.Vnd
             //
             ValueInitializer init = ValueInitializer.GlorotNormal;
             Tensor z = inX;
-            var l = new Layers();
+            var l = new TFLayers();
             //
             foreach (var layer in layers)
             {

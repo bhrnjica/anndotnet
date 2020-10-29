@@ -10,17 +10,24 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
+using Daany.Ext;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core
 {
-    public interface IProgressTraining
+
+    public enum Activation
     {
-        void Run(ProgressReport tp);
+        None = 0,
+        ReLU = 1,
+        Sigmoid = 2,
+        Softmax = 3,
+        TanH = 4,
+        Max = 5,
+        Avg = 6
     }
 }

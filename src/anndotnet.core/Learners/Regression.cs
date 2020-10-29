@@ -1,4 +1,16 @@
-﻿using Anndotnet.Core.Interface;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using Anndotnet.Core.Interface;
 using Anndotnet.Core.TensorflowEx;
 using NumSharp;
 using System;
@@ -13,26 +25,7 @@ namespace Anndotnet.Core.Learners
 {
     public class RegressionLearner : ILearner 
     {
-        public Learner Create(Tensor y, Tensor model, LearningParameters par)
-        {
-            var tr = new Learner();
-
-            tr.Loss = createFunction(y, model, par.LossFunction);
-
-            //evaluation function
-            tr.Evals = new List<Tensor>();
-            foreach (var f in par.EvaluationFunctions)
-            {
-                var ef = createFunction(y, model, f);
-                tr.Evals.Add(ef);
-            }
-
-            // We add the training operation, ...
-            Optimizer opt = createOptimizer(par);
-            tr.Optimizer = opt.minimize(tr.Loss, name: "train_op");
-
-            return tr;
-        }
+      
 
         private Optimizer createOptimizer(LearningParameters par)
         {

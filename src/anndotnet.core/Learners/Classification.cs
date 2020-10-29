@@ -1,4 +1,16 @@
-﻿using Anndotnet.Core.Interface;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using Anndotnet.Core.Interface;
 using Anndotnet.Core.TensorflowEx;
 using NumSharp;
 using System;
@@ -13,25 +25,7 @@ namespace Anndotnet.Core.Learners
 {
     public class ClassificationLearner : ILearner 
     {
-        public Learner Create(Tensor y, Tensor model, LearningParameters par)
-        {
-            var tr = new Learner();
-
-            tr.Loss = createFunction(y, model, par.LossFunction);
-            tr.Evals = new List<Tensor>();
-            foreach (var f in par.EvaluationFunctions)
-            {
-                var ef = createFunction(y, model, f);
-                tr.Evals.Add(ef);
-            }
-
-            // We add the training operation, ...
-            var adam = tf.train.AdamOptimizer(0.01f);
-            tr.Optimizer = adam.minimize(tr.Loss, name: "train_op");
-            
-            return tr;
-        }
-
+      
         private Tensor createFunction(Tensor y, Tensor model, Metrics f)
         {
             switch (f)

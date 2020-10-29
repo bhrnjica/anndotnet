@@ -10,17 +10,30 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
+using Daany.Ext;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core
 {
-    public interface IProgressTraining
+    public enum MissingValue
     {
-        void Run(ProgressReport tp);
+        [Description("None")]
+        None,//remove the row from the experiment
+        [Description("Ignore")]
+        Ignore,//remove the row from the experiment
+        [Description("Average")]
+        Average,//recalculate the column and put average value in all missing rows
+        [Description("Mode")]
+        Mode,//recalculate the column and put most frequent value in all missing rows
+        [Description("Random")]
+        Random,//recalculate the column and put most random value in all missing rows
+        [Description("Max")]
+        Max,//recalculate the column and put Max value in all missing rows
+        [Description("Min")]
+        Min //recalculate the column and put Min value in all missing rows
     }
 }

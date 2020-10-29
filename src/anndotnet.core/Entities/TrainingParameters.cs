@@ -10,17 +10,50 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using Daany.MathStuff;
 using NumSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
+using Tensorflow;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core
 {
-    public interface IProgressTraining
+    public class TrainingParameters
     {
-        void Run(ProgressReport tp);
+        public TrainingType TrainingType { get; set; }
+
+        public EarlyStopping EarlyStopping { get; set; }
+
+        public bool Retrain { get; set; }
+        public int Epochs { get; set; }
+
+        public int ProgressStep { get; set; }
+
+        public int MinibatchSize { get; set; }
+
+        public int KFold { get; set; }
+
+        public int SplitPercentage { get; set; }
+        [JsonIgnore]
+        public Action<ProgressReport> Progress { get; set; }
+        public string LastBestModel { get; set; }
+
+        public TrainingParameters()
+        {
+            Progress = null;
+            TrainingType = TrainingType.TVTraining;
+            EarlyStopping = EarlyStopping.None;
+            Epochs = 500;
+            ProgressStep = 10;
+            MinibatchSize = 100;
+            KFold = 5;
+            SplitPercentage = 20;
+            Retrain = true;
+        }
     }
 }

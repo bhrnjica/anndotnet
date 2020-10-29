@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{536551
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.core", "src\anndotnet.core\anndotnet.core.csproj", "{C9748022-C33C-4E45-9073-4F9DE69C0932}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.vdn", "src\anndotnet.vnd\anndotnet.vdn.csproj", "{4A5F6EBF-00A2-4C08-BAA7-688D76E73E6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.vnd", "src\anndotnet.vnd\anndotnet.vnd.csproj", "{4A5F6EBF-00A2-4C08-BAA7-688D76E73E6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.cmd.tool", "src\anndotnet.cmd.tool\anndotnet.cmd.tool.csproj", "{C6496BD8-C49F-4930-8077-7598D70F5996}"
 EndProject

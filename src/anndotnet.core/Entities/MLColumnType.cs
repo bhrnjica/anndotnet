@@ -10,17 +10,24 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
+using Daany.Ext;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core
 {
-    public interface IProgressTraining
+    //Variable type
+    public enum MLColumnType
     {
-        void Run(ProgressReport tp);
+        [Description("None")]
+        None, // ignore columns in modeling
+        [Description("Feature")]
+        Feature, //-treat column as input parameter or feature
+        [Description("Label")]
+        Label, // - treat column as output value or label
+
     }
 }

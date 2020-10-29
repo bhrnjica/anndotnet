@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +53,7 @@ namespace Anndotnet.Core.Trainers
 
         }
 
-        public bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, TrainingProgress, Session> processModel)
+        public bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel)
         {
             //check for progress
             if (tParams.Progress == null)
@@ -133,10 +145,10 @@ namespace Anndotnet.Core.Trainers
             return (new DataFeed(trainX, trainY), new DataFeed(testX, testY));
         }
 
-        private static TrainingProgress reportProgress(TrainingParameters tParams, int fold, int epoch,  NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs)
+        private static ProgressReport reportProgress(TrainingParameters tParams, int fold, int epoch,  NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs)
         {
             //report progress
-            var pr = new TrainingProgress()
+            var pr = new ProgressReport()
             {
                 ProgressType = ProgressType.Training,
                 Epoch = epoch,

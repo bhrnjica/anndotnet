@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -115,19 +127,18 @@ namespace Anndotnet.Vnd
                     
             //create network
             var z = MLFactory.CreateNetwrok(MLConfig.Network, x, y);
-            
-            var learner = new Learner();
+            Tensor loss = null;
             //define learner
             tf_with(tf.variable_scope("Train"), delegate
             {
                 tf_with(tf.variable_scope("Loss"), delegate
                 {
-                    learner.Loss = FunctionEx.Create(y, z, mLConfig.LParameters.LossFunction);
+                    loss = FunctionEx.Create(y, z, mLConfig.LParameters.LossFunction);
                 });
 
                 tf_with(tf.variable_scope("Optimizer"), delegate
                 {
-                    learner.Optimizer = FunctionEx.Optimizer(mLConfig.LParameters, learner.Loss);
+                   var optimizer = FunctionEx.Optimizer(mLConfig.LParameters, loss);
                 });
 
                 for(int i=0; i< mLConfig.LParameters.EvaluationFunctions.Count; i++)
@@ -136,7 +147,6 @@ namespace Anndotnet.Vnd
                     tf_with(tf.variable_scope($"Eval{i}"), delegate
                     {
                         var ev  = FunctionEx.Create(y, z, e);
-                        learner.Evals.Add(ev);
                     });
                 }
             });
@@ -146,7 +156,7 @@ namespace Anndotnet.Vnd
 
         }
 
-        private Session processModel(Session session, TrainingProgress tp)
+        private Session processModel(Session session, ProgressReport tp)
         {
             if (session == null)
             {
@@ -166,7 +176,7 @@ namespace Anndotnet.Vnd
 
         }
 
-        private Session saveModel(Session sess, TrainingProgress tp)
+        private Session saveModel(Session sess, ProgressReport tp)
         {
             var paths = MLConfig.Paths;
             var saver = tf.train.Saver();

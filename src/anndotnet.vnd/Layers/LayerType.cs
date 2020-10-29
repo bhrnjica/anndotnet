@@ -10,17 +10,25 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Vnd.Layers
 {
-    public interface IProgressTraining
+    //available network layer in the library
+    public enum LayerType
     {
-        void Run(ProgressReport tp);
-    }
+        Normalization,
+        Scale,
+        Dense,
+        Embedding,
+        Drop,
+        LSTM,
+        NALU,
+        Conv1D,
+        Conv2D,
+        Pooling1D,
+        Pooling2D,
+        CudaStackedLSTM,
+        CudaStackedGRU,
+        Custom,
+        Activation
+    }    
 }

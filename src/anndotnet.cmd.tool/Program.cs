@@ -391,7 +391,7 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new ClassificationLearner();
-            var lr = learner.Create(y, z, new LearningParameters());
+          //  var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 20);
@@ -422,7 +422,7 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new ClassificationLearner();
-            var lr = learner.Create(y, z, new LearningParameters());
+           // var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 20);
@@ -454,7 +454,7 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new RegressionLearner();
-            var lr = learner.Create(y, z, new LearningParameters());
+            //var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             TVTrainer tr = new TVTrainer(xData, yData, 20);
@@ -484,7 +484,7 @@ namespace AnnDotNET.Tool
 
             //define learner
             var learner = new RegressionLearner();
-            var lr = learner.Create(y, z, new LearningParameters());
+           // var lr = learner.Create(y, z, new LearningParameters());
 
             //training process
             var tr = new CVTrainer(xData, yData, 5);

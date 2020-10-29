@@ -10,17 +10,28 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
-namespace Anndotnet.Core.Interface
+using Tensorflow;
+using static Tensorflow.Binding;
+using Anndotnet.Core;
+namespace Anndotnet.Vnd
 {
-    public interface IProgressTraining
+    public class TFBase
     {
-        void Run(ProgressReport tp);
+        protected Tensor RandomValues(ValueInitializer initValueType, TensorShape shape, TF_DataType type, int seed=1234)
+        {
+            switch (initValueType)
+            {
+                case ValueInitializer.GlorotUniform:
+                case ValueInitializer.GlorotNormal:
+                case ValueInitializer.RandomUniform:
+                case ValueInitializer.RandomNormal:
+                    return tf.random_uniform(shape: shape, dtype: type, seed: seed);
+            }
+
+            return tf.random_uniform(shape: shape, dtype: type, seed: seed);
+        }
     }
 }

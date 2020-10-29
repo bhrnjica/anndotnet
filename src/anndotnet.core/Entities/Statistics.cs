@@ -10,17 +10,26 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
+using Daany.Ext;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core
 {
-    public interface IProgressTraining
+    //Statistic for Column
+    public class Statistics
     {
-        void Run(ProgressReport tp);
+        public double Mean;
+        public double Median;
+        public double Mode;
+        public double Random;
+        public double Range;
+        public double Min;
+        public double Max;
+        public double StdDev;
+        public List<string> Categories;
     }
 }

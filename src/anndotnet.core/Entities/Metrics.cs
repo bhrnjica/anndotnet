@@ -10,17 +10,31 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using Daany.MathStuff;
 using NumSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
+using Tensorflow;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core
 {
-    public interface IProgressTraining
+    public enum Metrics
     {
-        void Run(ProgressReport tp);
+        AE,//absolute error
+        RMSE,//root mean squared error
+        MSE,//mean squared error
+        CAcc,//Classification accuracy
+        CErr,//classification error
+        Precision,//precision
+        Recall,//recall
+        SE,//squared error
+        BCE,//binary cross entropy
+        CCE,//classification cross entropy
+
     }
 }

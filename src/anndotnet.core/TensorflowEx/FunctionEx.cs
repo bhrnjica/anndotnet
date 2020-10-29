@@ -1,4 +1,16 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,19 +48,6 @@ namespace Anndotnet.Core.TensorflowEx
             }
         }
 
-        public static Tensor Create1(Tensor y, Tensor model, Metrics lossFunction)
-        {
-            switch (lossFunction)
-            {
-                case Metrics.BCE:
-                    return FunctionEx.BinaryCrossEntropy(y, model);
-                case Metrics.CCE:
-                    return FunctionEx.MultiClassCrossEntropy(y, model);
-                default:
-                    throw new NotSupportedException("Not supported loss function.");
-            }
-
-        }
         /// <summary>
         /// Calculates RMSE between two tensors of the same shape.
         /// </summary>

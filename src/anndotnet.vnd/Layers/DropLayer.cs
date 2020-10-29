@@ -10,17 +10,13 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Anndotnet.Core;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Vnd.Layers
 {
-    public interface IProgressTraining
+    public class DropLayer : LayerBase
     {
-        void Run(ProgressReport tp);
-    }
+        public int DropPercentage { get; set; }
+        public DropLayer() => Type = LayerType.Drop;
+    }   
 }

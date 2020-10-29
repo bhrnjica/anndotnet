@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\anndotnet.core\anndotnet.core.csproj" />
-    <ProjectReference Include="..\..\src\anndotnet.vnd\anndotnet.vdn.csproj" />
+    <ProjectReference Include="..\..\src\anndotnet.vnd\anndotnet.vnd.csproj" />
   </ItemGroup>
 
 </Project>

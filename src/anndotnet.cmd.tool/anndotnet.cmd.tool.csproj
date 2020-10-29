@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
-    <ProjectReference Include="..\anndotnet.vnd\anndotnet.vdn.csproj" />
+    <ProjectReference Include="..\anndotnet.vnd\anndotnet.vnd.csproj" />
   </ItemGroup>
 
 
