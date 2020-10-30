@@ -1,0 +1,125 @@
+﻿//////////////////////////////////////////////////////////////////////////////////////////
+// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
+// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
+//                                                                                      //
+// This code is free software under the MIT License                                     //
+// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
+//                                                                                      //
+// Bahrudin Hrnjica                                                                     //
+// bhrnjica@hotmail.com                                                                 //
+// Bihac, Bosnia and Herzegovina                                                         //
+// http://bhrnjica.net                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////////
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Tensorflow;
+using static Tensorflow.Binding;
+using NumSharp;
+using Anndotnet.Core;
+using Anndotnet.Core.Learners;
+using Anndotnet.Core.Trainers;
+using Anndotnet.Core.Entities;
+using System.IO;
+using Anndotnet.Core.TensorflowEx;
+using Anndotnet.Core.Interface;
+using Anndotnet.Vnd.Layers;
+
+namespace Anndotnet.Vnd
+{
+    public class MLRunnerBase:IRunner
+    {
+        protected TrainingHistory History { get; set; }
+        protected ConfigProto _config;
+        protected Operation _init;
+
+        public MLRunnerBase()
+        {
+            _config = new ConfigProto
+            {
+                IntraOpParallelismThreads = 1,
+                InterOpParallelismThreads = 1,
+                LogDevicePlacement = true,
+            };
+        }
+
+
+        public virtual void Run()
+        {
+            //// prepare for training
+            //Prepare();
+
+            ////Train model
+            //Train(X, Y, session);
+
+
+            ////evaluation
+
+
+            ////prediction
+            //return;
+
+        }
+
+        protected virtual void Prepare()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void Train(NDArray xData, NDArray yData, Session session)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void Evaluate()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected Graph createGraph(List<LayerBase> net,LearningParameters lParams, List<int> shapeX, List<int> shapeY)
+        {
+            //create variable
+            var graph = new Graph().as_default();
+
+            Tensor x = null;
+            Tensor y = null;
+            tf_with(tf.name_scope("Input"), delegate
+            {
+                // Placeholders for inputs (x) and outputs(y)
+                //create placeholders
+                (x, y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
+            });
+                    
+            //create network
+            var z = MLFactory.CreateNetwrok(net, x, y);
+
+            //define learner for the network
+            Tensor loss = null;
+            tf_with(tf.variable_scope("Train"), delegate
+            {
+                tf_with(tf.variable_scope("Loss"), delegate
+                {
+                    loss = FunctionEx.Create(y, z, lParams.LossFunction);
+                });
+
+                tf_with(tf.variable_scope("Optimizer"), delegate
+                {
+                   var optimizer = FunctionEx.Optimizer(lParams, loss);
+                });
+
+                for(int i=0; i< lParams.EvaluationFunctions.Count; i++)
+                {
+                    var e = lParams.EvaluationFunctions[i];
+                    tf_with(tf.variable_scope($"Eval{i}"), delegate
+                    {
+                        var ev  = FunctionEx.Create(y, z, e);
+                    });
+                }
+            });
+
+
+            return graph;
+        }    
+    }
+}

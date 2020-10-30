@@ -98,5 +98,46 @@ namespace Anndotnet.Core.Extensions
             ndArray = ndArray.reshape(shape);
             return ndArray;
         }
+
+        public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
+        {
+            List<ColumnInfo> cols = new List<ColumnInfo>();
+            for(int i=0; i < df.ColCount(); i++)
+            {
+                var name = df.Columns[i];
+                var type = df.ColTypes[i];
+
+                var c = new ColumnInfo();
+                if (name == label)
+                {
+                    c.MLType = MLColumnType.Label;
+                    
+                    if (type== ColType.IN || type == ColType.STR)
+                    {
+                        c.ValueColumnType = ColType.IN;
+                        c.Encoding = CategoryEncoding.OneHot;
+                    }
+                    else
+                        c.ValueColumnType = type;
+                }
+                else
+                {
+                    c.MLType = MLColumnType.Feature;
+                    c.ValueColumnType = type;
+                    if (type == ColType.IN)
+                        c.Encoding = CategoryEncoding.Ordinal;
+                }
+
+                //
+                c.Id = i;
+                c.ClassValues = null;
+                c.MissingValue = Aggregation.None;
+                c.Name = name;
+                
+                cols.Add(c);
+            }
+
+            return cols;
+        }
     }
 }

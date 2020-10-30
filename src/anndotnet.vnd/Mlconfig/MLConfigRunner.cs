@@ -24,61 +24,71 @@ using Anndotnet.Core.Entities;
 using System.IO;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Core.Interface;
-using Anndotnet.Vnd.Layers;
 
 namespace Anndotnet.Vnd
 {
-    public class MLRunner : MLRunnerBase
+    public class MLConfigRunner : MLRunnerBase
     {
-        List<LayerBase> Network { get; set; }
-        LearningParameters LParameters { get; set; }
-        TrainingParameters TParameters { get; set; }
-        NDArray X;
-        NDArray Y;
+        MLConfig MLConfig { get; set; }
 
-        public MLRunner(List<LayerBase> network, LearningParameters lParam, TrainingParameters tParam, NDArray xData, NDArray yData):base()
+        public MLConfigRunner(MLConfig mlConfig):base()
         {
-            Network = network;
-            LParameters = lParam;
-            TParameters = tParam;
-            X = xData;
-            Y = yData;
+            _config = new ConfigProto
+            {
+                IntraOpParallelismThreads = 1,
+                InterOpParallelismThreads = 1,
+                LogDevicePlacement = true,
+            };
+
+            // Initialize the variables (i.e. assign their default value)
+            _init = tf.global_variables_initializer();
+
+            MLConfig = mlConfig;
         }
 
 
         public override void Run()
         {
+            //data preparation and transformation
+            (NDArray xData, NDArray yData) = MLFactory.PrepareData(MLConfig, "Training");
+
             //
             List<int> shapeX = new List<int>();
             List<int> shapeY = new List<int>();
             shapeX.Add(-1);//first dimension
-            shapeX.AddRange(X.Shape.Dimensions.Skip(1));
+            shapeX.AddRange(xData.Shape.Dimensions.Skip(1));
             shapeY.Add(-1);//first dimension
-            shapeY.AddRange(Y.Shape.Dimensions.Skip(1));
+            shapeY.AddRange(yData.Shape.Dimensions.Skip(1));
 
             Session session = null;
             tf.compat.v1.disable_eager_execution();
 
-            //create network from network collection
+            //load trained model if exists
+            if (MLConfig.TParameters.Retrain && MLConfig.Paths.ContainsKey("BestModel"))
+            {
+                session = loadModelCheckPoint();
+                
+            }
+            //create network from mlconfig file
             if (session == null)
             {
                 //create graph from machine learning configuration
                 var graph = createGraph(shapeX, shapeY);
                 session = tf.Session(graph);
 
-                // Initialize the variables (i.e. assign their default value)
-                _init = tf.global_variables_initializer();
-
                 // Run the initializer
                 session.run(_init);
+
             }
 
             //Train model
-            Train(X, Y, session);
+            Train(xData, yData, session);
 
             //evaluation
+            Evaluate();
 
             //prediction
+            
             return;
 
         }
@@ -86,18 +96,18 @@ namespace Anndotnet.Vnd
         protected override void Train(NDArray xData, NDArray yData, Session session)
         {
             //training process
-            if (TParameters.TrainingType == TrainingType.TVTraining)
+            if (MLConfig.TParameters.TrainingType == TrainingType.TVTraining)
             {
-                var tr = new TVTrainer(xData, yData, TParameters.SplitPercentage);
+                var tr = new TVTrainer(xData, yData, MLConfig.TParameters.SplitPercentage);
                 //tr.Run(x, y, lr, MLConfig.TParameters, History, MLConfig.Paths);
-                tr.Run(session, LParameters, TParameters, processModel);
+                tr.Run(session, MLConfig.LParameters, MLConfig.TParameters, processModel);
             }
             else
             {
-                var tr = new CVTrainer(xData, yData, TParameters.KFold);
-                tr.Run(session, LParameters, TParameters, processModel);
+                var tr = new CVTrainer(xData, yData, MLConfig.TParameters.KFold);
+                tr.Run(session, MLConfig.LParameters, MLConfig.TParameters, processModel);
             }
-        }
+        }      
 
         protected Graph createGraph(List<int> shapeX, List<int> shapeY)
         {
@@ -114,24 +124,24 @@ namespace Anndotnet.Vnd
             });
                     
             //create network
-            var z = MLFactory.CreateNetwrok(Network, x, y);
+            var z = MLFactory.CreateNetwrok(MLConfig.Network, x, y);
             Tensor loss = null;
             //define learner
             tf_with(tf.variable_scope("Train"), delegate
             {
                 tf_with(tf.variable_scope("Loss"), delegate
                 {
-                    loss = FunctionEx.Create(y, z, LParameters.LossFunction);
+                    loss = FunctionEx.Create(y, z, MLConfig.LParameters.LossFunction);
                 });
 
                 tf_with(tf.variable_scope("Optimizer"), delegate
                 {
-                   var optimizer = FunctionEx.Optimizer(LParameters, loss);
+                   var optimizer = FunctionEx.Optimizer(MLConfig.LParameters, loss);
                 });
 
-                for(int i=0; i< LParameters.EvaluationFunctions.Count; i++)
+                for(int i=0; i< MLConfig.LParameters.EvaluationFunctions.Count; i++)
                 {
-                    var e = LParameters.EvaluationFunctions[i];
+                    var e = MLConfig.LParameters.EvaluationFunctions[i];
                     tf_with(tf.variable_scope($"Eval{i}"), delegate
                     {
                         var ev  = FunctionEx.Create(y, z, e);
@@ -148,15 +158,15 @@ namespace Anndotnet.Vnd
         {
             if (session == null)
             {
-                return null;// loadModelCheckPoint();
+                return loadModelCheckPoint();
             }
             else
             {
                 //save only when training is completed.
                 if(tp.ProgressType== ProgressType.Completed)
                 {
-                   // saveModel(session, tp);
-                    //MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
+                    saveModel(session, tp);
+                    MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
                 }
               
                 return null;
@@ -164,56 +174,56 @@ namespace Anndotnet.Vnd
 
         }
 
-        //private Session saveModel(Session sess, ProgressReport tp)
-        //{
-        //    var paths = MLConfig.Paths;
-        //    var saver = tf.train.Saver();
+        private Session saveModel(Session sess, ProgressReport tp)
+        {
+            var paths = MLConfig.Paths;
+            var saver = tf.train.Saver();
 
-        //    if (!paths.ContainsKey("BestModel"))
-        //        paths.Add("BestModel", "");
-        //    if (!paths.ContainsKey("Models"))
-        //        paths.Add("Models", "Models");
+            if (!paths.ContainsKey("BestModel"))
+                paths.Add("BestModel", "");
+            if (!paths.ContainsKey("Models"))
+                paths.Add("Models", "Models");
 
 
-        //    // Restore variables from checkpoint
-        //    var root = $"{paths["MainFolder"]}";
-        //    var curDir = Directory.GetCurrentDirectory();
-        //    Directory.SetCurrentDirectory(root);
+            // Restore variables from checkpoint
+            var root = $"{paths["MainFolder"]}";
+            var curDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(root);
 
-        //    //delete all previous models
-        //    var di = new DirectoryInfo(paths["Models"]);
-        //    foreach (FileInfo file in di.GetFiles())
-        //    {
-        //        file.Delete();
-        //    }
+            //delete all previous models
+            var di = new DirectoryInfo(paths["Models"]);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
 
-        //    var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
-        //    MLConfig.Paths["BestModel"] = strPath+".meta";
-        //    Directory.SetCurrentDirectory(curDir);
-        //    return null;
-        //}
+            var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
+            MLConfig.Paths["BestModel"] = strPath+".meta";
+            Directory.SetCurrentDirectory(curDir);
+            return null;
+        }
 
-        //private Session loadModelCheckPoint()
-        //{
-        //    var paths = MLConfig.Paths;
-        //    var modelFilePath = paths["BestModel"];
-        //    var root = $"{paths["MainFolder"]}";
-        //    var curDir = Directory.GetCurrentDirectory();
-        //    Directory.SetCurrentDirectory(root);
+        private Session loadModelCheckPoint()
+        {
+            var paths = MLConfig.Paths;
+            var modelFilePath = paths["BestModel"];
+            var root = $"{paths["MainFolder"]}";
+            var curDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(root);
 
-        //    var f = new FileInfo(modelFilePath);
-        //    if(f.Exists)
-        //    {
-        //        var graph = tf.Graph().as_default();
-        //        var sess = tf.Session(graph);
-        //        var saver = tf.train.import_meta_graph(modelFilePath);
-        //        // Restore variables from checkpoint
-        //        saver.restore(sess, tf.train.latest_checkpoint(new DirectoryInfo(modelFilePath).Parent.Name));
-        //        Directory.SetCurrentDirectory(curDir);
-        //        return sess;
-        //    }
-        //    return null;
-        //}
+            var f = new FileInfo(modelFilePath);
+            if(f.Exists)
+            {
+                var graph = tf.Graph().as_default();
+                var sess = tf.Session(graph);
+                var saver = tf.train.import_meta_graph(modelFilePath);
+                // Restore variables from checkpoint
+                saver.restore(sess, tf.train.latest_checkpoint(new DirectoryInfo(modelFilePath).Parent.Name));
+                Directory.SetCurrentDirectory(curDir);
+                return sess;
+            }
+            return null;
+        }
 
     }
 }

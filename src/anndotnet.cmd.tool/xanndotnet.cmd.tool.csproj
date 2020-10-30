@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <AssemblyName>anndotnet.cmd.tool</AssemblyName>
+    <RootNamespace>Anndotnet.cmd.tool</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

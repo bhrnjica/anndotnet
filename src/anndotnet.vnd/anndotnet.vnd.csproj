@@ -17,4 +17,8 @@
     <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Samples\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,241 @@
+{
+  "Id": "a257c7e6-f4a4-4d77-8f03-90493c807d98",
+  "Parser": {
+    "RowSeparator": "\r\n",
+    "ColumnSeparator": ";",
+    "HasHeader": false,
+    "SkipLine": 0,
+    "MissingValueSymbol": null,
+    "DescriptionSymbol": "!"
+  },
+  "Metadata": [
+    {
+      "Id": 0,
+      "Name": "Date",
+      "MLType": "feature",
+      "ValueColumnType": "dt",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 1,
+      "Name": "Time",
+      "MLType": "feature",
+      "ValueColumnType": "dt",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 2,
+      "Name": "Month",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 3,
+      "Name": "Hour",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 4,
+      "Name": "CO(GT)",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 5,
+      "Name": "PT08.S1(CO)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 6,
+      "Name": "NMHC(GT)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 7,
+      "Name": "C6H6(GT)",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 8,
+      "Name": "PT08.S2(NMHC)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 9,
+      "Name": "NOx(GT)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 10,
+      "Name": "PT08.S3(NOx)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 11,
+      "Name": "NO2(GT)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 12,
+      "Name": "PT08.S4(NO2)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 13,
+      "Name": "PT08.S5(O3)",
+      "MLType": "feature",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 14,
+      "Name": "T",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 15,
+      "Name": "RH",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 16,
+      "Name": "AH",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    },
+    {
+      "Id": 17,
+      "Name": "Quality",
+      "MLType": "label",
+      "ValueColumnType": "str",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Encoding": "oneHot",
+      "ClassValues": null
+    }
+  ],
+  "Network": [
+    {
+      "Type": 2,
+      "OutDim": 15,
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": 14,
+      "Activation": 1,
+      "Name": "ReLuLayer"
+    },
+    {
+      "Type": 2,
+      "OutDim": 5,
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": 14,
+      "Activation": 3,
+      "Name": "ReLuLayer"
+    }
+  ],
+  "LParameters": {
+    "LearnerType": "adam",
+    "LossFunction": "cce",
+    "EvaluationFunctions": [
+      "cAcc",
+      "cErr"
+    ],
+    "LearningRate": 0.01,
+    "Momentum": 0,
+    "L1Regularizer": 0,
+    "L2Regularizer": 0
+  },
+  "TParameters": {
+    "TrainingType": "tvTraining",
+    "EarlyStopping": "none",
+    "Retrain": true,
+    "Epochs": 500,
+    "ProgressStep": 10,
+    "MinibatchSize": 100,
+    "KFold": 5,
+    "SplitPercentage": 20,
+    "LastBestModel": null
+  },
+  "Paths": {
+    "Training": "airquality_rawdata.txt"
+  }
+}

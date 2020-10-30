@@ -14,6 +14,8 @@ using Anndotnet.Core.Data;
 using Anndotnet.Core.Learners;
 using Anndotnet.Core.Trainers;
 using Anndotnet.Core.Entities;
+using Anndotnet.cmd.tool;
+using System.Threading.Tasks;
 
 namespace AnnDotNET.Tool
 {
@@ -21,39 +23,11 @@ namespace AnnDotNET.Tool
     class Program
     {
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            await AirQualitiySample();
 
-            //var mData = loadMetaData();
-            //var mlConfig = new MLConfig();
-            //mlConfig.Id = Guid.NewGuid();
-            //mlConfig.Parser = new DataParser();
-            //mlConfig.Metadata = mData;
-            //mlConfig.LParameters = new LearningParameters()
-
-            //{
-            //    EvaluationFunctions = new List<Metrics>()
-            //        { Metrics.CAcc, Metrics.CErr },
-
-            //    LossFunction = Metrics.CCE,
-            //    LearnerType = LearnerType.Adam,
-            //    LearningRate = 0.01f
-            //};
-
-            //mlConfig.TParameters = new TrainingParameters();
-            //mlConfig.Network = new List<LayerBase>()
-            //{
-            //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 15 },
-            //    new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.ReLU},
-            //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 5 },
-            //    new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.Softmax},
-            //};
-            //mlConfig.Paths = new Dictionary<string, string>()
-            //{
-            //    { "Training" ,"airquality_rawdata.txt"}
-            //};
-
-            //MLFactory.Save(mlConfig, @"..\..\..\..\\mlconfigs\airquality.mlconfig").Wait();
+            return;
 
             var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris.mlconfig");
             mlCOnf.Wait();
@@ -61,10 +35,10 @@ namespace AnnDotNET.Tool
 
             //
             tf.set_random_seed(888888);
-            var mlRunner = new MLRunner(mlConfig1);
+            var mlRunner = new MLConfigRunner(mlConfig1);
             mlRunner.Run();
 
-          //  MLRunner.Run("mlconfigs/titanic.mlconfig");
+            //  MLRunner.Run("mlconfigs/titanic.mlconfig");
 
             //MLRunner.Run("mlconfigs/iris.mlconfig");
 
@@ -74,305 +48,21 @@ namespace AnnDotNET.Tool
             //binaryCassModel();
 
             //multiclassModel();
-            
+
 
         }
 
-        private static List<ColumnInfo> loadMetaData()
+        private static async Task AirQualitiySample()
         {
-            var metaData = new List<ColumnInfo>() { 
-
-                //col1:
-                new ColumnInfo()
-                {
-                    Id = 1,
-                    Name = "Data",
-                    MLType = MLColumnType.None,
-                    ValueColumnType = ColType.DT,
-                    ValueFormat = "m/d/yyyy",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-
-                //col2:
-                new ColumnInfo()
-                {
-                    Id = 2,
-                    Name = "Time",
-                    MLType = MLColumnType.None,
-                    ValueColumnType = ColType.STR,
-                    ValueFormat = "hh:mm:ss AM",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-
-                //col3
-                new ColumnInfo()
-                {
-                    Id = 3,
-                    Name = "month",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.IN,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.Ordinal,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-
-                //col4
-                new ColumnInfo()
-                {
-                    Id = 4,
-                    Name = "hour",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.IN,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.Ordinal,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-
-                //col5
-                new ColumnInfo()
-                {
-                    Id = 5,
-                    Name = "CO_GT",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-
-                //col6
-                new ColumnInfo()
-                {
-                    Id = 6,
-                    Name = "PT08_S1_CO",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col7
-                new ColumnInfo()
-                {
-                    Id = 7,
-                    Name = "Column07",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col8
-                new ColumnInfo()
-                {
-                    Id = 8,
-                    Name = "Column08",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col9
-                new ColumnInfo()
-                {
-                    Id = 9,
-                    Name = "Column09",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col10
-                new ColumnInfo()
-                {
-                    Id = 10,
-                    Name = "Column10",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col11
-                new ColumnInfo()
-                {
-                    Id = 11,
-                    Name = "Column11",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col12
-                new ColumnInfo()
-                {
-                    Id = 12,
-                    Name = "Column12",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col13
-                new ColumnInfo()
-                {
-                    Id = 13,
-                    Name = "Column13",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col14
-                new ColumnInfo()
-                {
-                    Id = 14,
-                    Name = "Column14",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col15
-                new ColumnInfo()
-                {
-                    Id = 15,
-                    Name = "Column15",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col16
-                new ColumnInfo()
-                {
-                    Id = 16,
-                    Name = "Column16",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                //col17
-                new ColumnInfo()
-                {
-                    Id = 17,
-                    Name = "Column17",
-                    MLType = MLColumnType.Feature,
-                    ValueColumnType = ColType.F32,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.None,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-                ////col18
-                //new ColumnInfo()
-                //{
-                //    Id = 18,
-                //    Name = "Column18",
-                //    MLType = MLColumnType.Feature,
-                //    ValueColumnType = ColType.F32,
-                //    ValueFormat = "",
-                //    Encoding = CategoryEncoding.None,
-                //    ClassValues = null,
-                //    MissingValue = Aggregation.None
-
-                //},
-                ////col19
-                //new ColumnInfo()
-                //{
-                //    Id = 19,
-                //    Name = "Column19",
-                //    MLType = MLColumnType.Feature,
-                //    ValueColumnType = ColType.F32,
-                //    ValueFormat = "",
-                //    Encoding = CategoryEncoding.None,
-                //    ClassValues = null,
-                //    MissingValue = Aggregation.None
-
-                //},
-                ////col20
-                //new ColumnInfo()
-                //{
-                //    Id = 20,
-                //    Name = "Column20",
-                //    MLType = MLColumnType.Feature,
-                //    ValueColumnType = ColType.F32,
-                //    ValueFormat = "",
-                //    Encoding = CategoryEncoding.None,
-                //    ClassValues = null,
-                //    MissingValue = Aggregation.None
-
-                //},
-                //col21
-                new ColumnInfo()
-                {
-                    Id = 21,
-                    Name = "Column21",
-                    MLType = MLColumnType.Label,
-                    ValueColumnType = ColType.IN,
-                    ValueFormat = "",
-                    Encoding = CategoryEncoding.OneHot,
-                    ClassValues = null,
-                    MissingValue = Aggregation.None
-
-                },
-
-            };
-            return metaData;
+            (NDArray x, NDArray y) = await AirQualitySample.generateAirQualityData();
+            (TrainingParameters tParams, LearningParameters lParams) = AirQualitySample.generateParameters();
+            var net = AirQualitySample.CreateNet();
+            
+            var r = new MLRunner(net, lParams, tParams, x, y);
+            r.Run();
         }
 
-        private static void LoadMLConfig()
-        {
-            
-
-            
-
-        }
-
+     
         private static void multiclassModel()
         {
             (var xData, var yData) = PrepareIrisData();
@@ -497,29 +187,7 @@ namespace AnnDotNET.Tool
             return;
         }
 
-        //public static void CVProgress(TrainingProgress tp)
-        //{
-        //    if (tp.ProgressType == ProgressType.Initialization)
-        //        Console.WriteLine($"_________________________________________________________");
-
-        //    Console.WriteLine($"Fold={tp.FoldIndex}, Iteration={tp.Iteration}, Loss={Math.Round(tp.TrainLoss, 3)}, Eval={Math.Round(tp.TrainEval, 3)}");
-
-        //    if (tp.ProgressType == ProgressType.Completed)
-        //        Console.WriteLine($"_________________________________________________________");
-        //}
-        //public static void Progress(TrainingProgress tp)
-        //{
-        //    if(tp.ProgressType== ProgressType.Initialization)
-        //        Console.WriteLine($"_________________________________________________________");
-
-        //    Console.WriteLine($"Iteration={tp.Iteration}, Loss={Math.Round(tp.TrainLoss, 3)}, Eval={Math.Round(tp.TrainEval, 3)}");
-
-        //    if (tp.ProgressType == ProgressType.Completed)
-        //        Console.WriteLine($"_________________________________________________________");
-        //}
-
        
-
 
         public static (NDArray, NDArray) PrepareIrisData()
         {
