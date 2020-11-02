@@ -25,8 +25,11 @@ namespace AnnDotNET.Tool
 
         static async Task Main(string[] args)
         {
-            await AirQualitiySample();
+            // await AirQualitiySample();
+            // AirQualityFromMLConfig();
 
+            //await RunIrisSample();
+           IrisFromMLConfig();
             return;
 
             var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris.mlconfig");
@@ -52,6 +55,28 @@ namespace AnnDotNET.Tool
 
         }
 
+        private static async Task RunIrisSample()
+        {
+            IrisSample iris = new IrisSample();
+           
+            (NDArray x, NDArray y) = await iris.GenerateData(); 
+            (TrainingParameters tParams, LearningParameters lParams) = iris.GenerateParameters();
+            var net = iris.CreateNet();
+
+            var r = new MLRunner(net, lParams, tParams, x, y);
+            r.Run();
+        }
+
+        private static void IrisFromMLConfig()
+        {
+            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris\iris.mlconfig");
+            mlCOnf.Wait();
+            var mlConfig1 = mlCOnf.Result;
+            //
+            var mlRunner = new MLConfigRunner(mlConfig1);
+            mlRunner.Run();
+        }
+
         private static async Task AirQualitiySample()
         {
             (NDArray x, NDArray y) = await AirQualitySample.generateAirQualityData();
@@ -60,6 +85,16 @@ namespace AnnDotNET.Tool
             
             var r = new MLRunner(net, lParams, tParams, x, y);
             r.Run();
+        }
+
+        private static void AirQualityFromMLConfig()
+        {
+            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
+            mlCOnf.Wait();
+            var mlConfig1 = mlCOnf.Result;
+            //
+            var mlRunner = new MLConfigRunner(mlConfig1);
+            mlRunner.Run();
         }
 
      

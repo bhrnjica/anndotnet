@@ -23,9 +23,50 @@ namespace Anndotnet.Core.TensorflowEx
     {
         public static Operation Optimizer(LearningParameters lp, Tensor loss)
         {
+            Tensor lr = null;
+            RefVariable globalStep = null;
+            if (lp.UsePolyDecay)
+            {
+                globalStep = new RefVariable(lp.LearningRate, trainable: false, dtype: TF_DataType.TF_FLOAT);
+                float startLr = lp.StartLRate;
+                float endLr = lp.EndLRate;
+                lr = tf.train.polynomial_decay(startLr, globalStep, lp.DecaySteps, endLr, power: lp.DecayPower, false, "polydecay");
+            }
+
             // We add the training operation, ...
-            var adam = tf.train.AdamOptimizer(lp.LearningRate);
-            return  adam.minimize(loss, name: LearnerType.Adam.ToString());     
+            switch (lp.LearnerType)
+            {
+                case LearnerType.SGD:
+                case LearnerType.MomentumSGD:
+                    if(lp.UsePolyDecay)
+                    {
+                        var sgd = tf.train.GradientDescentOptimizer(lr);
+                        return sgd.minimize(loss, name: lp.LearnerType.ToString(), global_step: globalStep);
+                    }
+                    else
+                    {
+                        var sgd = tf.train.GradientDescentOptimizer(lp.LearningRate);
+                        return sgd.minimize(loss, name: lp.LearnerType.ToString());
+                    }
+                case LearnerType.RMSProp:
+                case LearnerType.FSAdaGrad:
+                case LearnerType.Adam:
+                case LearnerType.AdaGrad:
+                case LearnerType.AdaDelta:
+                    if (lp.UsePolyDecay)
+                    {
+                        var adam = tf.train.AdamOptimizer(lr);
+                        return adam.minimize(loss, name: lp.LearnerType.ToString(), global_step: globalStep);
+                    }
+                    else
+                    {
+                        var adam = tf.train.AdamOptimizer(lp.LearningRate);
+                        return adam.minimize(loss, name:lp.LearnerType.ToString());
+                    }
+                default:
+                    throw new NotImplementedException("Learner type is not supported.");
+            }
+               
         }
         public static Tensor Create(Tensor y, Tensor model, Metrics f)
         {

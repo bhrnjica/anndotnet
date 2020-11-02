@@ -94,14 +94,19 @@
       "cErr"
     ],
     "LearningRate": 0.01,
+    "UsePolyDecay": false,
+    "StartLRate": 0,
+    "EndLRate": 0,
+    "DecayPower": 0,
+    "DecaySteps": 0,
     "Momentum": 0,
     "L1Regularizer": 0,
     "L2Regularizer": 0
   },
   "TParameters": {
-    "TrainingType": "cvTraining",
+    "TrainingType": "tvTraining",
     "EarlyStopping": "none",
-    "Retrain": true,
+    "Retrain": false,
     "Epochs": 500,
     "ProgressStep": 10,
     "MinibatchSize": 100,
@@ -111,9 +116,9 @@
   },
   "Paths": {
     "Training": "iris_raw.txt",
-    "BestModel": "Models/637395944525322815.ckp.meta",
+    "BestModel": "Models/637399463041162631.ckp.meta",
     "Models": "Models",
-    "MainFolder": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs",
-    "MLConfig": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris.mlconfig"
+    "MainFolder": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris",
+    "MLConfig": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris\\iris.mlconfig"
   }
 }

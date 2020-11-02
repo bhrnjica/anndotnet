@@ -276,3 +276,5 @@ __pycache__/
 /src/tool/anndotnet.tool/model_mlconfigs/BCML/models/model_at_1of1000_epochs_TimeSpan_636756746081780265
 /src/tool/anndotnet.wnd/Resources/Concrete/ConcreteSlumpProject/FFNModel/models
 /src/tool/anndotnet.wnd/Resources/Titanic/TitanicProject/DNNModel/models
+/src/anndotnet.cmd.tool/mlconfigs/air_quality/Models
+/src/anndotnet.cmd.tool/mlconfigs/iris/Models

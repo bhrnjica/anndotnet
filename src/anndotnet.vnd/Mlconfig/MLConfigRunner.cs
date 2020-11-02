@@ -40,9 +40,6 @@ namespace Anndotnet.Vnd
                 LogDevicePlacement = true,
             };
 
-            // Initialize the variables (i.e. assign their default value)
-            _init = tf.global_variables_initializer();
-
             MLConfig = mlConfig;
         }
 
@@ -76,6 +73,9 @@ namespace Anndotnet.Vnd
                 var graph = createGraph(shapeX, shapeY);
                 session = tf.Session(graph);
 
+                // Initialize the variables (i.e. assign their default value)
+                _init = tf.global_variables_initializer();
+                
                 // Run the initializer
                 session.run(_init);
 
@@ -85,7 +85,7 @@ namespace Anndotnet.Vnd
             Train(xData, yData, session);
 
             //evaluation
-            Evaluate();
+           // Evaluate();
 
             //prediction
             
@@ -98,7 +98,7 @@ namespace Anndotnet.Vnd
             //training process
             if (MLConfig.TParameters.TrainingType == TrainingType.TVTraining)
             {
-                var tr = new TVTrainer(xData, yData, MLConfig.TParameters.SplitPercentage);
+                var tr = new TVTrainer(xData, yData, MLConfig.TParameters.SplitPercentage, shuffle: true);
                 //tr.Run(x, y, lr, MLConfig.TParameters, History, MLConfig.Paths);
                 tr.Run(session, MLConfig.LParameters, MLConfig.TParameters, processModel);
             }
@@ -192,9 +192,12 @@ namespace Anndotnet.Vnd
 
             //delete all previous models
             var di = new DirectoryInfo(paths["Models"]);
-            foreach (FileInfo file in di.GetFiles())
+            if(di.Exists)
             {
-                file.Delete();
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
             }
 
             var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");

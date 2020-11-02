@@ -29,6 +29,11 @@ namespace Anndotnet.Core
         public Metrics LossFunction { get; set; }
         public List<Metrics> EvaluationFunctions { get; set; }
         public float LearningRate { get; set; }
+        public bool UsePolyDecay { get; set; }
+        public float StartLRate { get; set; }
+        public float EndLRate { get; set; }
+        public float DecayPower { get; set; }
+        public float DecaySteps { get; set; }
         public double Momentum { get; set; }
         public double L1Regularizer { get; set; }
         public double L2Regularizer { get; set; }
