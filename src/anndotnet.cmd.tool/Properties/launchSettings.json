@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "xanndotnet.cmd.tool": {
+      "commandName": "Project"
+    }
+  }
+}

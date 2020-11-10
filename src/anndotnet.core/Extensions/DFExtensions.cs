@@ -47,7 +47,7 @@ namespace Anndotnet.Core.Extensions
             return (x, y);
         }
 
-        private static DataFrame prepareDf(DataFrame df, List<ColumnInfo> metadata)
+       private static DataFrame prepareDf(DataFrame df, List<ColumnInfo> metadata)
         {
             var cols = df.Columns;
 
@@ -61,12 +61,17 @@ namespace Anndotnet.Core.Extensions
 
             for (int j = 0; j < df.ColCount(); j++)
             {
-                if (metadata[j].Encoding != CategoryEncoding.None)
+                //categorical data encoding
+                if (metadata[j].Transformer.DataNormalization == ColumnTransformer.Binary1 ||
+                    metadata[j].Transformer.DataNormalization == ColumnTransformer.Binary2 ||
+                    metadata[j].Transformer.DataNormalization == ColumnTransformer.Dummy ||
+                    metadata[j].Transformer.DataNormalization == ColumnTransformer.OneHot ||
+                    metadata[j].Transformer.DataNormalization == ColumnTransformer.Ordinal)
                 {
-                    (var edf, var cValues) = df.EncodeColumn(cols[j], metadata[j].Encoding, true);
+                    (var edf, var vVal, var eVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
                     finalDf = finalDf.Append(edf, verticaly: false);
                     //store encoded class values to metadata
-                    metadata[j].ClassValues = cValues;
+                    metadata[j].Transformer.ClassValues = eVal;
 
                     //add to column list
                     if (edf == null)
@@ -78,14 +83,22 @@ namespace Anndotnet.Core.Extensions
                     }
 
                 }
-                else
+                //Data normalization or scaling
+                else if (metadata[j].Transformer.DataNormalization == ColumnTransformer.MinMax ||
+                        metadata[j].Transformer.DataNormalization == ColumnTransformer.Standardizer)
+                {
+                    (var ndf, var nVal, var sVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
+                    metadata[j].Transformer.NormalizationValues = nVal;
                     finalColumns.Add(cols[j]);
+                }
+                else
+                 finalColumns.Add(cols[j]);
             }
 
             return finalDf[finalColumns.ToArray()];
         }
 
-        public static NDArray ToNDArray(this DataFrame df)
+       public static NDArray ToNDArray(this DataFrame df)
         {
             var shape = new Shape(df.RowCount(), df.ColCount());
             var lst = new List<float>();
@@ -95,11 +108,15 @@ namespace Anndotnet.Core.Extensions
 
             //
             var ndArray = new NDArray(arr);
-            ndArray = ndArray.reshape(shape);
+            
+            //reshape the data if the dimension is greather than 1
+            if(df.ColCount()>0)
+                ndArray = ndArray.reshape(shape);
+
             return ndArray;
         }
 
-        public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
+       public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
         {
             List<ColumnInfo> cols = new List<ColumnInfo>();
             for(int i=0; i < df.ColCount(); i++)
@@ -115,7 +132,7 @@ namespace Anndotnet.Core.Extensions
                     if (type== ColType.IN || type == ColType.STR)
                     {
                         c.ValueColumnType = ColType.IN;
-                        c.Encoding = CategoryEncoding.OneHot;
+                        c.Transformer.DataNormalization = ColumnTransformer.OneHot;
                     }
                     else
                         c.ValueColumnType = type;
@@ -125,12 +142,12 @@ namespace Anndotnet.Core.Extensions
                     c.MLType = MLColumnType.Feature;
                     c.ValueColumnType = type;
                     if (type == ColType.IN)
-                        c.Encoding = CategoryEncoding.Ordinal;
+                        c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
                 }
 
                 //
                 c.Id = i;
-                c.ClassValues = null;
+                c.Transformer.ClassValues = null;
                 c.MissingValue = Aggregation.None;
                 c.Name = name;
                 
@@ -139,5 +156,14 @@ namespace Anndotnet.Core.Extensions
 
             return cols;
         }
+
+       public static DataFrame HandlingMissingValue(this DataFrame df, List<ColumnInfo> metadata)
+       {
+           foreach(var m in metadata)                
+            {
+                df.FillNA(m.Name, m.MissingValue);
+            }
+           return df;
+       }
     }
 }

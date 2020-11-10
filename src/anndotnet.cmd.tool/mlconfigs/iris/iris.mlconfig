@@ -116,7 +116,7 @@
   },
   "Paths": {
     "Training": "iris_raw.txt",
-    "BestModel": "Models/637399463041162631.ckp.meta",
+    "BestModel": "Models/637399464453095265.ckp.meta",
     "Models": "Models",
     "MainFolder": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris",
     "MLConfig": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris\\iris.mlconfig"

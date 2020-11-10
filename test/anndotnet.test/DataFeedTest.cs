@@ -165,7 +165,7 @@ namespace anndotnet.test
                 new ColumnInfo(){ Id=2, Name= "sepal_width", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
                 new ColumnInfo(){ Id=3, Name= "petal_length", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
                 new ColumnInfo(){ Id=4, Name= "petal_width", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
-                new ColumnInfo(){ Id=5, Name= "species", MLType=MLColumnType.Label, ValueColumnType= ColType.IN, Encoding= CategoryEncoding.OneHot },
+                new ColumnInfo(){ Id=5, Name= "species", MLType=MLColumnType.Label, ValueColumnType= ColType.IN, Transformer= new DataTransformer(){ DataNormalization = ColumnTransformer.OneHot } },
             };
             var mlCOnfig = new MLConfig();
             //

@@ -24,6 +24,7 @@ using Anndotnet.Core.Entities;
 using System.IO;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Core.Interface;
+using System.Threading.Tasks;
 
 namespace Anndotnet.Vnd
 {
@@ -63,7 +64,7 @@ namespace Anndotnet.Vnd
             //load trained model if exists
             if (MLConfig.TParameters.Retrain && MLConfig.Paths.ContainsKey("BestModel"))
             {
-                session = loadModelCheckPoint();
+                session = loadModelCheckPoint(MLConfig.Paths);
                 
             }
             //create network from mlconfig file
@@ -158,15 +159,15 @@ namespace Anndotnet.Vnd
         {
             if (session == null)
             {
-                return loadModelCheckPoint();
+                return loadModelCheckPoint(MLConfig.Paths);
             }
             else
             {
                 //save only when training is completed.
                 if(tp.ProgressType== ProgressType.Completed)
                 {
-                    saveModel(session, tp);
-                    MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
+                    saveModel(session, MLConfig.Paths);
+                    //MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
                 }
               
                 return null;
@@ -174,59 +175,9 @@ namespace Anndotnet.Vnd
 
         }
 
-        private Session saveModel(Session sess, ProgressReport tp)
+        public async Task SaveMlConfig(string filePath)
         {
-            var paths = MLConfig.Paths;
-            var saver = tf.train.Saver();
-
-            if (!paths.ContainsKey("BestModel"))
-                paths.Add("BestModel", "");
-            if (!paths.ContainsKey("Models"))
-                paths.Add("Models", "Models");
-
-
-            // Restore variables from checkpoint
-            var root = $"{paths["MainFolder"]}";
-            var curDir = Directory.GetCurrentDirectory();
-            Directory.SetCurrentDirectory(root);
-
-            //delete all previous models
-            var di = new DirectoryInfo(paths["Models"]);
-            if(di.Exists)
-            {
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-            }
-
-            var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
-            MLConfig.Paths["BestModel"] = strPath+".meta";
-            Directory.SetCurrentDirectory(curDir);
-            return null;
+            await MLFactory.Save(MLConfig, filePath);
         }
-
-        private Session loadModelCheckPoint()
-        {
-            var paths = MLConfig.Paths;
-            var modelFilePath = paths["BestModel"];
-            var root = $"{paths["MainFolder"]}";
-            var curDir = Directory.GetCurrentDirectory();
-            Directory.SetCurrentDirectory(root);
-
-            var f = new FileInfo(modelFilePath);
-            if(f.Exists)
-            {
-                var graph = tf.Graph().as_default();
-                var sess = tf.Session(graph);
-                var saver = tf.train.import_meta_graph(modelFilePath);
-                // Restore variables from checkpoint
-                saver.restore(sess, tf.train.latest_checkpoint(new DirectoryInfo(modelFilePath).Parent.Name));
-                Directory.SetCurrentDirectory(curDir);
-                return sess;
-            }
-            return null;
-        }
-
     }
 }

@@ -28,7 +28,7 @@ using Anndotnet.Vnd.Layers;
 
 namespace Anndotnet.Vnd
 {
-    public class MLRunnerBase:IRunner
+    public class MLRunnerBase : IRunner
     {
         protected TrainingHistory History { get; set; }
         protected ConfigProto _config;
@@ -77,6 +77,57 @@ namespace Anndotnet.Vnd
             throw new NotImplementedException();
         }
 
+        protected Session saveModel(Session sess, Dictionary<string, string> paths)
+        {
+            var saver = tf.train.Saver();
+
+            if (!paths.ContainsKey("BestModel"))
+                paths.Add("BestModel", "");
+            if (!paths.ContainsKey("Models"))
+                paths.Add("Models", "Models");
+
+
+            // Restore variables from checkpoint
+            var root = $"{paths["MainFolder"]}";
+            var curDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(root);
+
+            //delete all previous models
+            var di = new DirectoryInfo(paths["Models"]);
+            if (di.Exists)
+            {
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+            }
+
+            var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
+            paths["BestModel"] = strPath + ".meta";
+            Directory.SetCurrentDirectory(curDir);
+            return null;
+        }
+
+        protected Session loadModelCheckPoint(Dictionary<string, string> paths)
+        {
+            var modelFilePath = paths["BestModel"];
+            var root = $"{paths["MainFolder"]}";
+            var curDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(root);
+
+            var f = new FileInfo(modelFilePath);
+            if (f.Exists)
+            {
+                var graph = tf.Graph().as_default();
+                var sess = tf.Session(graph);
+                var saver = tf.train.import_meta_graph(modelFilePath);
+                // Restore variables from checkpoint
+                saver.restore(sess, tf.train.latest_checkpoint(new DirectoryInfo(modelFilePath).Parent.Name));
+                Directory.SetCurrentDirectory(curDir);
+                return sess;
+            }
+            return null;
+        }
         protected Graph createGraph(List<LayerBase> net,LearningParameters lParams, List<int> shapeX, List<int> shapeY)
         {
             //create variable

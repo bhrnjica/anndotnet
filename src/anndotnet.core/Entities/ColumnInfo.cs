@@ -13,13 +13,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Text;
 using System.Text.Json.Serialization;
 using Daany.Ext;
 
 namespace Anndotnet.Core
 {
-   
+
     public class ColumnInfo
     {
         public int Id { get; set; }
@@ -28,8 +29,19 @@ namespace Anndotnet.Core
         public Daany.ColType ValueColumnType { get; set; }
         public string ValueFormat { get; set; }
         public Daany.Aggregation MissingValue { get; set; }
-        public CategoryEncoding Encoding { get; set; }
-        public string[] ClassValues { get; set; }
+        public DataTransformer Transformer { get; set; }
 
+        public ColumnInfo()
+        {
+            Transformer = new DataTransformer();
+        }
+    }
+
+    public class DataTransformer
+    {
+       public Daany.ColumnTransformer DataNormalization { get; set; }
+       public string[] ClassValues { get; set; }
+       public float[] NormalizationValues { get; set; }
+      
     }
 }

@@ -151,7 +151,8 @@ namespace Anndotnet.Core.Trainers
                     }
                 }
 
-                
+                session.close();
+                session.Dispose();
                 return true;
             }
         }

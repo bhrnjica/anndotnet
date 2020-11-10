@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Anndotnet.Core.Extensions;
 using NumSharp;
 
-namespace Anndotnet.cmd.tool
+namespace Anndotnet.Vnd.Samples
 {
     public static class AirQualitySample
     {
@@ -75,8 +75,7 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.None,
                         ValueColumnType = ColType.DT,
                         ValueFormat = "m/d/yyyy",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
+                        Transformer= new DataTransformer(),
                         MissingValue = Aggregation.None
 
                     },
@@ -89,8 +88,7 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.None,
                         ValueColumnType = ColType.STR,
                         ValueFormat = "hh:mm:ss AM",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
+                        Transformer= new DataTransformer(),
                         MissingValue = Aggregation.None
 
                     },
@@ -103,8 +101,10 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.IN,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.Ordinal,
-                        ClassValues = null,
+                        Transformer = new DataTransformer()
+                        {
+                            DataNormalization = ColumnTransformer.Ordinal,
+                        },
                         MissingValue = Aggregation.None
 
                     },
@@ -117,8 +117,10 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.IN,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.Ordinal,
-                        ClassValues = null,
+                        Transformer = new DataTransformer()
+                        {
+                             DataNormalization = ColumnTransformer.Ordinal,
+                        },
                         MissingValue = Aggregation.None
 
                     },
@@ -131,8 +133,7 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
+                        Transformer = new DataTransformer(),
                         MissingValue = Aggregation.None
 
                     },
@@ -145,8 +146,7 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
+                        Transformer= new DataTransformer(),
                         MissingValue = Aggregation.None
 
                     },
@@ -158,8 +158,10 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
+                        Transformer = new DataTransformer()
+                        {
+                            DataNormalization = ColumnTransformer.Ordinal,
+                        },
                         MissingValue = Aggregation.None
 
                     },
@@ -171,8 +173,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -184,8 +184,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -197,8 +195,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -210,8 +206,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -223,8 +217,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -236,8 +228,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -249,8 +239,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -262,8 +250,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -275,8 +261,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -288,8 +272,6 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.F32,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.None,
-                        ClassValues = null,
                         MissingValue = Aggregation.None
 
                     },
@@ -340,8 +322,10 @@ namespace Anndotnet.cmd.tool
                         MLType = MLColumnType.Label,
                         ValueColumnType = ColType.IN,
                         ValueFormat = "",
-                        Encoding = CategoryEncoding.OneHot,
-                        ClassValues = null,
+                        Transformer= new DataTransformer()
+                        {
+                             DataNormalization= ColumnTransformer.OneHot,
+                        },
                         MissingValue = Aggregation.None
 
                     },

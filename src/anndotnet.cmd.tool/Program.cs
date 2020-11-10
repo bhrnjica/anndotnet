@@ -14,8 +14,8 @@ using Anndotnet.Core.Data;
 using Anndotnet.Core.Learners;
 using Anndotnet.Core.Trainers;
 using Anndotnet.Core.Entities;
-using Anndotnet.cmd.tool;
 using System.Threading.Tasks;
+using Anndotnet.Vnd.Samples;
 
 namespace AnnDotNET.Tool
 {
@@ -29,7 +29,10 @@ namespace AnnDotNET.Tool
             // AirQualityFromMLConfig();
 
             //await RunIrisSample();
-           IrisFromMLConfig();
+            //IrisFromMLConfig();
+
+            await RunTitanicSample();
+            TitanicMLConfig();
             return;
 
             var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris.mlconfig");
@@ -55,6 +58,31 @@ namespace AnnDotNET.Tool
 
         }
 
+        private static void TitanicMLConfig()
+        {
+            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\titanic\titanic.mlconfig");
+            mlCOnf.Wait();
+            var mlConfig1 = mlCOnf.Result;
+            //
+            var mlRunner = new MLConfigRunner(mlConfig1);
+            mlRunner.Run();
+        }
+
+        private static async Task RunTitanicSample()
+        {
+            TitanicSample titanic = new TitanicSample();
+            (NDArray x, NDArray y) = await titanic.GenerateData();
+
+            (TrainingParameters tParams, LearningParameters lParams) = titanic.GenerateParameters();
+            var net = titanic.CreateNet();
+
+            var r = new MLRunner(net, lParams, tParams, x, y, titanic.Metadata);
+            r.Run();
+
+           await r.SaveMlConfig(titanic.Metadata,"titanic.mlconifg");
+
+        }
+
         private static async Task RunIrisSample()
         {
             IrisSample iris = new IrisSample();
@@ -63,7 +91,7 @@ namespace AnnDotNET.Tool
             (TrainingParameters tParams, LearningParameters lParams) = iris.GenerateParameters();
             var net = iris.CreateNet();
 
-            var r = new MLRunner(net, lParams, tParams, x, y);
+            var r = new MLRunner(net, lParams, tParams, x, y,null);
             r.Run();
         }
 
@@ -83,7 +111,7 @@ namespace AnnDotNET.Tool
             (TrainingParameters tParams, LearningParameters lParams) = AirQualitySample.generateParameters();
             var net = AirQualitySample.CreateNet();
             
-            var r = new MLRunner(net, lParams, tParams, x, y);
+            var r = new MLRunner(net, lParams, tParams, x, y, null);
             r.Run();
         }
 

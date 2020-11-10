@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Anndotnet.Core.Extensions;
 using NumSharp;
 
-namespace Anndotnet.cmd.tool
+namespace Anndotnet.Vnd.Samples
 {
     public  class IrisSample
     {

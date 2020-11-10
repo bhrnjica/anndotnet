@@ -25,26 +25,36 @@ using System.IO;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Core.Interface;
 using Anndotnet.Vnd.Layers;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace Anndotnet.Vnd
 {
     public class MLRunner : MLRunnerBase
     {
+        List<ColumnInfo> Metadata { get; set; }
         List<LayerBase> Network { get; set; }
         LearningParameters LParameters { get; set; }
         TrainingParameters TParameters { get; set; }
         NDArray X;
         NDArray Y;
 
-        public MLRunner(List<LayerBase> network, LearningParameters lParam, TrainingParameters tParam, NDArray xData, NDArray yData):base()
+        public MLRunner(List<LayerBase> network, LearningParameters lParam, TrainingParameters tParam, NDArray xData, NDArray yData, List<ColumnInfo> metadata):base()
         {
             Network = network;
             LParameters = lParam;
             TParameters = tParam;
             X = xData;
             Y = yData;
+            Metadata = metadata;
         }
 
+        public async Task SaveMlConfig(List<ColumnInfo> metadata, string filePath)
+        {
+            var mlCOnfig = getMLConfig();
+            mlCOnfig.Metadata = metadata;
+            await MLFactory.Save(mlCOnfig, filePath);
+        }
 
         public override void Run()
         {
@@ -54,7 +64,9 @@ namespace Anndotnet.Vnd
             shapeX.Add(-1);//first dimension
             shapeX.AddRange(X.Shape.Dimensions.Skip(1));
             shapeY.Add(-1);//first dimension
-            shapeY.AddRange(Y.Shape.Dimensions.Skip(1));
+            //
+            if(Y.Shape.Dimensions.Length > 1)
+                shapeY.AddRange(Y.Shape.Dimensions.Skip(1));
 
             Session session = null;
             tf.compat.v1.disable_eager_execution();
@@ -82,6 +94,7 @@ namespace Anndotnet.Vnd
             return;
 
         }
+
 
         protected override void Train(NDArray xData, NDArray yData, Session session)
         {
@@ -155,25 +168,34 @@ namespace Anndotnet.Vnd
                 //save only when training is completed.
                 if(tp.ProgressType== ProgressType.Completed)
                 {
-                   // saveModel(session, tp);
-                    //MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
+                    var paths = new Dictionary<string,string>();
+                    var mlConfig = getMLConfig();
+                    saveModel(session, paths);
                 }
               
                 return null;
             }
 
         }
+        private MLConfig getMLConfig()
+        {
+            var mlConfig = new MLConfig();
+            mlConfig.Id = Guid.NewGuid();
+            mlConfig.LParameters = LParameters;
+            mlConfig.TParameters = TParameters;
+            mlConfig.Metadata = Metadata;
+            mlConfig.Network = Network;
+            mlConfig.Paths = null;
+
+            return mlConfig;
+        }
 
         //private Session saveModel(Session sess, ProgressReport tp)
         //{
-        //    var paths = MLConfig.Paths;
+        //    var paths = new Dictionary<string, string>();
+        //    paths.Add("BestModel", "");
+        //    paths.Add("Models", "Models");
         //    var saver = tf.train.Saver();
-
-        //    if (!paths.ContainsKey("BestModel"))
-        //        paths.Add("BestModel", "");
-        //    if (!paths.ContainsKey("Models"))
-        //        paths.Add("Models", "Models");
-
 
         //    // Restore variables from checkpoint
         //    var root = $"{paths["MainFolder"]}";
@@ -188,7 +210,7 @@ namespace Anndotnet.Vnd
         //    }
 
         //    var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
-        //    MLConfig.Paths["BestModel"] = strPath+".meta";
+        //    paths["BestModel"] = strPath + ".meta";
         //    Directory.SetCurrentDirectory(curDir);
         //    return null;
         //}
