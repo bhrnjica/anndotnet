@@ -86,6 +86,9 @@ namespace Anndotnet.Vnd
             if (!paths.ContainsKey("Models"))
                 paths.Add("Models", "Models");
 
+            //generate main folder path if it is missing
+            if (!paths.ContainsKey("MainFolder"))
+                paths.Add("MainFolder", "");
 
             // Restore variables from checkpoint
             var root = $"{paths["MainFolder"]}";

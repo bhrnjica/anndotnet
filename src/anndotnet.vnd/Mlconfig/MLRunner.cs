@@ -53,6 +53,7 @@ namespace Anndotnet.Vnd
         {
             var mlCOnfig = getMLConfig();
             mlCOnfig.Metadata = metadata;
+            
             await MLFactory.Save(mlCOnfig, filePath);
         }
 
@@ -177,6 +178,7 @@ namespace Anndotnet.Vnd
             }
 
         }
+       
         private MLConfig getMLConfig()
         {
             var mlConfig = new MLConfig();
@@ -190,52 +192,6 @@ namespace Anndotnet.Vnd
             return mlConfig;
         }
 
-        //private Session saveModel(Session sess, ProgressReport tp)
-        //{
-        //    var paths = new Dictionary<string, string>();
-        //    paths.Add("BestModel", "");
-        //    paths.Add("Models", "Models");
-        //    var saver = tf.train.Saver();
-
-        //    // Restore variables from checkpoint
-        //    var root = $"{paths["MainFolder"]}";
-        //    var curDir = Directory.GetCurrentDirectory();
-        //    Directory.SetCurrentDirectory(root);
-
-        //    //delete all previous models
-        //    var di = new DirectoryInfo(paths["Models"]);
-        //    foreach (FileInfo file in di.GetFiles())
-        //    {
-        //        file.Delete();
-        //    }
-
-        //    var strPath = saver.save(sess, $"{paths["Models"]}/{DateTime.Now.Ticks}.ckp");
-        //    paths["BestModel"] = strPath + ".meta";
-        //    Directory.SetCurrentDirectory(curDir);
-        //    return null;
-        //}
-
-        //private Session loadModelCheckPoint()
-        //{
-        //    var paths = MLConfig.Paths;
-        //    var modelFilePath = paths["BestModel"];
-        //    var root = $"{paths["MainFolder"]}";
-        //    var curDir = Directory.GetCurrentDirectory();
-        //    Directory.SetCurrentDirectory(root);
-
-        //    var f = new FileInfo(modelFilePath);
-        //    if(f.Exists)
-        //    {
-        //        var graph = tf.Graph().as_default();
-        //        var sess = tf.Session(graph);
-        //        var saver = tf.train.import_meta_graph(modelFilePath);
-        //        // Restore variables from checkpoint
-        //        saver.restore(sess, tf.train.latest_checkpoint(new DirectoryInfo(modelFilePath).Parent.Name));
-        //        Directory.SetCurrentDirectory(curDir);
-        //        return sess;
-        //    }
-        //    return null;
-        //}
-
+    
     }
 }

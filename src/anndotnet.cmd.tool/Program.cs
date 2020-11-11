@@ -25,11 +25,34 @@ namespace AnnDotNET.Tool
 
         static async Task Main(string[] args)
         {
+            var str = @"
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    ******************ANNdotNET 2.0 - deep learning tool on .NET Framework.**********
+    *******        Run Deep learning pre-calculated examples               **********
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    Select the example to run:
+
+                1. - Multi-class: Iris example from MLConfig file.
+                2. - Multi-class: Iris example with data preparation task.
+                3. - Multi-class: AirQuality example from MLConfig file.
+                4. - Multi-class: AirQuality example with data preparation task.
+                5. - Binary-class: Titanic example from MLCOnfig file.
+                6. - Bnary-class: Titanic example with data preparation task.
+                7. - Regression: Concrete slump test from MLConfig.
+                8. - Regression: Concrete slump test from MLConfig.
+                x. - Exit
+                    ";
+            Console.WriteLine(str);
+
+            while (true)
+            {
+                var key = Console.ReadLine();
+                await RunExample(key);
+            }
             // await AirQualitiySample();
             // AirQualityFromMLConfig();
 
-            //await RunIrisSample();
-            //IrisFromMLConfig();
+            
 
             await RunTitanicSample();
             TitanicMLConfig();
@@ -56,6 +79,42 @@ namespace AnnDotNET.Tool
             //multiclassModel();
 
 
+        }
+
+        private static  async Task RunExample(string key)
+        {
+            if(key=="1")
+            {
+                IrisFromMLConfig();
+            }
+            else if(key=="2")
+            {
+                await RunIrisSample();
+            }
+            else if (key == "3")
+            {
+                AirQualityFromMLConfig();
+            }
+            else if (key == "4")
+            {
+                await AirQualitiySample();
+            }
+            else if (key == "5")
+            {
+                TitanicMLConfig();
+            }
+            else if (key == "6")
+            {
+               await RunTitanicSample();
+            }
+            else if(key == "x")
+            {
+                Environment.Exit(1);
+            }
+            else
+            {
+                Console.WriteLine("Not recognized example. Please try again.");
+            }
         }
 
         private static void TitanicMLConfig()
