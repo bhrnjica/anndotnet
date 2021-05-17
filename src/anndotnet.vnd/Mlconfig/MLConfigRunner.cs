@@ -48,7 +48,7 @@ namespace Anndotnet.Vnd
         public override void Run()
         {
             //data preparation and transformation
-            (NDArray xData, NDArray yData) = MLFactory.PrepareData(MLConfig, "Training");
+            (NDArray xData, NDArray yData) = MLFactory.PrepareData(MLConfig);
 
             //
             List<int> shapeX = new List<int>();

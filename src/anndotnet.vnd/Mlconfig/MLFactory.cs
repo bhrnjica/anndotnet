@@ -36,26 +36,19 @@ namespace Anndotnet.Vnd
 
         public static string Root { get; set; }
 
-        internal static (NDArray xData, NDArray yData) PrepareData(MLConfig mlConfig, string stageName)
+        internal static (NDArray xData, NDArray yData) PrepareData(MLConfig mlConfig)
         {
             var dateFormat = mlConfig.Metadata.Where(x => x.ValueColumnType == ColType.DT).Select(x => x.ValueFormat).FirstOrDefault();
             //load data into DataFrame
-            var df = Daany.DataFrame.FromCsv(filePath: $"{mlConfig.Paths["MainFolder"]}/{mlConfig.Paths[stageName]}", sep: mlConfig.Parser.ColumnSeparator, 
-                                                names: mlConfig.Metadata.Select(x=>x.Name).ToArray(), 
+            var df = Daany.DataFrame.FromCsv(filePath: $"{mlConfig.Paths["MainFolder"]}/{mlConfig.Parser.RawDataName}", sep: mlConfig.Parser.ColumnSeparator, 
+                                                names: mlConfig.
+                                                Parser.Header, 
                                                 colTypes: mlConfig.Metadata.Select(x=>x.ValueColumnType).ToArray(),
                                                 missingValues: mlConfig.Parser.MissingValueSymbol,
-                                                skipLines: mlConfig.Parser.SkipLine, dformat: dateFormat);
+                                                skipLines: mlConfig.Parser.SkipLines, dformat: dateFormat);
 
-            //handling missing value
-            var missingValue = new Dictionary<string, string>();
-            DataFrame dff = handlingMissingValue(df, missingValue);
-
+            //
             return df.TransformData(mlConfig.Metadata);
-        }
-
-        private static DataFrame handlingMissingValue(DataFrame df, object missingValue)
-        {
-            return df;// throw new NotImplementedException();
         }
 
         public static Tensor CreateNetwrok(List<LayerBase> layers, Tensor inX, Tensor outY, int seed = 1234)
@@ -206,8 +199,13 @@ namespace Anndotnet.Vnd
 
 
             //Set the current directory.
+            if (mlConfig.Paths == null)
+                mlConfig.Paths = new Dictionary<string, string>();
+
             var dir = Path.GetDirectoryName(filePath);
             var di = new DirectoryInfo(filePath);
+
+            //define mainfolder
             if(!mlConfig.Paths.ContainsKey("MainFolder"))
                 mlConfig.Paths.Add("MainFolder", di.Parent.FullName);
             else

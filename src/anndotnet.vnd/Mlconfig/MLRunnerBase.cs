@@ -87,12 +87,13 @@ namespace Anndotnet.Vnd
                 paths.Add("Models", "Models");
 
             //generate main folder path if it is missing
+            var curDir = Directory.GetCurrentDirectory();
             if (!paths.ContainsKey("MainFolder"))
-                paths.Add("MainFolder", "");
+                paths.Add("MainFolder", curDir);
 
             // Restore variables from checkpoint
             var root = $"{paths["MainFolder"]}";
-            var curDir = Directory.GetCurrentDirectory();
+            
             Directory.SetCurrentDirectory(root);
 
             //delete all previous models

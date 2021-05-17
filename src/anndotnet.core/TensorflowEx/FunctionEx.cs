@@ -84,8 +84,16 @@ namespace Anndotnet.Core.TensorflowEx
                     return FunctionEx.BinaryCrossEntropy(y, model);
                 case Metrics.CCE:
                     return FunctionEx.MultiClassCrossEntropy(y, model);
+                case Metrics.SE:
+                    return FunctionEx.SquaredError(y, model);
+                case Metrics.AE:
+                    return FunctionEx.AbsoluteError(y, model);
+                case Metrics.MSE:
+                    return FunctionEx.MeanSquaredError(y, model);
+                case Metrics.RMSE:
+                    return FunctionEx.RootMeanSquaredError(y, model);
                 default:
-                    throw new NotSupportedException($"Not supported function '{f.ToString()}' for classification Learner.");
+                    throw new NotSupportedException($"Not supported function '{f.ToString()}' for the Learner.");
             }
         }
 

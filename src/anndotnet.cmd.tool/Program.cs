@@ -37,7 +37,7 @@ namespace AnnDotNET.Tool
                 3. - Multi-class: AirQuality example from MLConfig file.
                 4. - Multi-class: AirQuality example with data preparation task.
                 5. - Binary-class: Titanic example from MLCOnfig file.
-                6. - Bnary-class: Titanic example with data preparation task.
+                6. - Binary-class: Titanic example with data preparation task.
                 7. - Regression: Concrete slump test from MLConfig.
                 8. - Regression: Concrete slump test from MLConfig.
                 x. - Exit
@@ -47,41 +47,11 @@ namespace AnnDotNET.Tool
             while (true)
             {
                 var key = Console.ReadLine();
-                await RunExample(key);
+                await RunExamples(key);
             }
-            // await AirQualitiySample();
-            // AirQualityFromMLConfig();
-
-            
-
-            await RunTitanicSample();
-            TitanicMLConfig();
-            return;
-
-            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris.mlconfig");
-            mlCOnf.Wait();
-            var mlConfig1 = mlCOnf.Result;
-
-            //
-            tf.set_random_seed(888888);
-            var mlRunner = new MLConfigRunner(mlConfig1);
-            mlRunner.Run();
-
-            //  MLRunner.Run("mlconfigs/titanic.mlconfig");
-
-            //MLRunner.Run("mlconfigs/iris.mlconfig");
-
-            //regressonModel_cv_training();
-            //regressonModel();
-
-            //binaryCassModel();
-
-            //multiclassModel();
-
-
         }
 
-        private static  async Task RunExample(string key)
+        private static  async Task RunExamples(string key)
         {
             if(key=="1")
             {
@@ -107,6 +77,14 @@ namespace AnnDotNET.Tool
             {
                await RunTitanicSample();
             }
+            else if (key == "7")
+            {
+                await RunConcreteSlumpSample();
+            }
+            else if (key == "8")
+            {
+                ConcreteSlumpMLConfig();
+            }
             else if(key == "x")
             {
                 Environment.Exit(1);
@@ -115,6 +93,25 @@ namespace AnnDotNET.Tool
             {
                 Console.WriteLine("Not recognized example. Please try again.");
             }
+        }
+
+        private static async Task RunConcreteSlumpSample()
+        {
+            SlampTestSample slump = new SlampTestSample();
+            (NDArray x, NDArray y) = await slump.GenerateData();
+
+            (TrainingParameters tParams, LearningParameters lParams) = slump.GenerateParameters();
+            var net = slump.CreateNet();
+
+            var r = new MLRunner(net, lParams, tParams, x, y, slump.Metadata);
+            r.Run();
+
+            await r.SaveMlConfig(slump.Metadata, new DataParser(), "slump.mlconifg");
+        }
+
+        private static void ConcreteSlumpMLConfig()
+        {
+            throw new NotImplementedException();
         }
 
         private static void TitanicMLConfig()
@@ -138,7 +135,7 @@ namespace AnnDotNET.Tool
             var r = new MLRunner(net, lParams, tParams, x, y, titanic.Metadata);
             r.Run();
 
-           await r.SaveMlConfig(titanic.Metadata,"titanic.mlconifg");
+           await r.SaveMlConfig(titanic.Metadata,new DataParser(),"titanic.mlconifg");
 
         }
 
@@ -152,11 +149,13 @@ namespace AnnDotNET.Tool
 
             var r = new MLRunner(net, lParams, tParams, x, y,null);
             r.Run();
+
+            await r.SaveMlConfig(iris.Metadata,iris.Parser, "../../../../mlconfigs/iris/iris.mlconfig");
         }
 
         private static void IrisFromMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\iris\iris.mlconfig");
+            var mlCOnf = MLFactory.Load(@"../../../../mlconfigs\iris\iris.mlconfig");
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
@@ -172,189 +171,19 @@ namespace AnnDotNET.Tool
             
             var r = new MLRunner(net, lParams, tParams, x, y, null);
             r.Run();
+
+            // await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
         }
 
         private static void AirQualityFromMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
+            var mlCOnf = MLFactory.Load(@"../../../../mlconfigs\air_quality\airquality.mlconfig");
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
             var mlRunner = new MLConfigRunner(mlConfig1);
             mlRunner.Run();
         }
-
-     
-        private static void multiclassModel()
-        {
-            (var xData, var yData) = PrepareIrisData();
-
-            var dFeed = new DataFeed(xData, yData);
-
-
-            Placeholders plcHolder = new Placeholders();
-            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
-                                                    output: (-1, yData.Shape.Dimensions.Last()));
-
-            //create network
-            int outDim = y.shape.Last();
-            NetworkModel model = new NetworkModel();
-            Tensor z = model.Create(x, outDim);
-
-            //define learner
-            var learner = new ClassificationLearner();
-          //  var lr = learner.Create(y, z, new LearningParameters());
-
-            //training process
-            TVTrainer tr = new TVTrainer(xData, yData, 20);
-           // tr.Run(x, y, lr, new TrainingParameters(),new TrainingHistory(), new Dictionary<string, string>());
-
-            //evaluation
-
-
-            //prediction
-            return;
-        }
-
-        private static void binaryCassModel()
-        {
-            //prepare the data
-            (var xData, var yData) = PrepareTitanicData();
-
-             
-            //create place holders
-            Placeholders plcHolder = new Placeholders();
-            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
-                                                    output: (-1, yData.Shape.Dimensions.Last()));
-
-            //create network
-            int outDim = y.shape.Last();
-            NetworkModel model = new NetworkModel();
-            Tensor z = model.CreateLogisticRegression(x);
-
-            //define learner
-            var learner = new ClassificationLearner();
-           // var lr = learner.Create(y, z, new LearningParameters());
-
-            //training process
-            TVTrainer tr = new TVTrainer(xData, yData, 20);
-           // tr.Run(x, y, lr, new TrainingParameters(),new TrainingHistory(), new Dictionary<string, string>());
-
-            //evaluation
-
-
-            //prediction
-
-
-            return;
-        }
-
-        private static void regressonModel()
-        {
-            (var xData, var yData) = PrepareSlumpData();
-
-             
-
-            Placeholders plcHolder = new Placeholders();
-            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
-                                                    output: (-1, yData.Shape.Dimensions.Last()));
-
-            //create network
-            int outDim = y.shape.Last();
-            NetworkModel model = new NetworkModel();
-            Tensor z = model.CreateSimpleRegression(x);
-
-            //define learner
-            var learner = new RegressionLearner();
-            //var lr = learner.Create(y, z, new LearningParameters());
-
-            //training process
-            TVTrainer tr = new TVTrainer(xData, yData, 20);
-           // tr.Run(x, y, lr, new TrainingParameters() { MinibatchSize = 65 }, new TrainingHistory(), new Dictionary<string, string>());
-
-            //evaluation
-
-
-            //prediction
-            return;
-        }
-
-        private static void regressonModel_cv_training()
-        {
-            (var xData, var yData) = PrepareSlumpData();
-
-
-
-            Placeholders plcHolder = new Placeholders();
-            (Tensor x, Tensor y) = plcHolder.Create(input: (-1, xData.Shape.Dimensions.Last()),
-                                                    output: (-1, yData.Shape.Dimensions.Last()));
-
-            //create network
-            int outDim = y.shape.Last();
-            NetworkModel model = new NetworkModel();
-            Tensor z = model.CreateSimpleRegression(x);
-
-            //define learner
-            var learner = new RegressionLearner();
-           // var lr = learner.Create(y, z, new LearningParameters());
-
-            //training process
-            var tr = new CVTrainer(xData, yData, 5);
-            //tr.Run(x, y, lr, new TrainingParameters() { Epochs= 500, MinibatchSize = 65 }, new TrainingHistory(), new Dictionary<string, string>());
-
-            //evaluation
-
-
-            //prediction
-            return;
-        }
-
-       
-
-        public static (NDArray, NDArray) PrepareIrisData()
-        {
-
-            //read the iris data and create DataFrame object
-            var df = DataFrame.FromCsv("iris.txt", sep: '\t');
-
-            //prepare the data
-            var features = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width" };
-            var label = "species";
-            //
-            new NotImplementedException();
-            return (null,null);
-
-        }
-
-        public static (NDArray, NDArray) PrepareTitanicData()
-        {
-
-            //read the iris data and create DataFrame object
-            var df = DataFrame.FromCsv("titanic.txt", sep: ',');
-
-            //prepare the data
-            var features = new string[] { "Pclass", "Sex", "SibSp", "Parch" };
-            var label = "Survived";
-            //
-            new NotImplementedException();
-            return (null, null);
-
-        }
-
-        public static (NDArray, NDArray) PrepareSlumpData()
-        {
-            var coltypes = new ColType[] { ColType.I32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.F32 };
-            //read the iris data and create DataFrame object
-            var df = DataFrame.FromCsv("slump.txt", sep: ';', colTypes:coltypes );
-
-            //prepare the data
-            var features = new string[] { "Cement", "Slag","Fly_ash", "Water", "SP", "Coarse_Aggr"};
-            var label = "Strength";
-            //
-            new NotImplementedException();
-
-            return (null, null);
-        }
-
+        
     }
 }

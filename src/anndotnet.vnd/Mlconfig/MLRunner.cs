@@ -49,10 +49,11 @@ namespace Anndotnet.Vnd
             Metadata = metadata;
         }
 
-        public async Task SaveMlConfig(List<ColumnInfo> metadata, string filePath)
+        public async Task SaveMlConfig(List<ColumnInfo> metadata, DataParser parser, string filePath)
         {
             var mlCOnfig = getMLConfig();
             mlCOnfig.Metadata = metadata;
+            mlCOnfig.Parser = parser;
             
             await MLFactory.Save(mlCOnfig, filePath);
         }
@@ -188,6 +189,7 @@ namespace Anndotnet.Vnd
             mlConfig.Metadata = Metadata;
             mlConfig.Network = Network;
             mlConfig.Paths = null;
+            mlConfig.Parser = new DataParser();
 
             return mlConfig;
         }

@@ -31,7 +31,11 @@ namespace Anndotnet.Vnd.Samples
 
             var mData = data.ParseMetadata("Quality");
 
+            //fix missing values
+            data.HandlingMissingValue(mData);
+
             (NDArray X, NDArray Y) = data.TransformData(mData);
+
 
             return (X,Y);
         }
@@ -97,7 +101,7 @@ namespace Anndotnet.Vnd.Samples
                     new ColumnInfo()
                     {
                         Id = 3,
-                        Name = "month",
+                        Name = "Month",
                         MLType = MLColumnType.Feature,
                         ValueColumnType = ColType.IN,
                         ValueFormat = "",

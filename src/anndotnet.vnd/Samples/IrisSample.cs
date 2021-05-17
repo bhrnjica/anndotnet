@@ -14,19 +14,29 @@ using NumSharp;
 
 namespace Anndotnet.Vnd.Samples
 {
-    public  class IrisSample
+   
+    public  class IrisSample : SampleBase
     {
-
+        
         public async Task<(NDArray X, NDArray Y)> GenerateData()
         {
-            var names = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width", "species"};
+            Parser = new DataParser();
+            Parser.ColumnSeparator = ';';
+            Parser.RawDataName = "mlconfigs/iris/iris_raw.txt";
+
+            Parser.Header = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width", "species"};
 
             //unzip the file
-            var rawdata = DataFrame.FromCsv("mlconfigs/iris/iris_raw.txt",';', names:names);
+            var rawdata = DFExtensions.FromDataParser(Parser);
 
             await Task.Delay(1);
 
             var mData = rawdata.ParseMetadata("species");
+            Metadata = mData;
+            
+
+            //fix missing values
+            rawdata.HandlingMissingValue(mData);
 
             (NDArray X, NDArray Y) = rawdata.TransformData(mData);
 

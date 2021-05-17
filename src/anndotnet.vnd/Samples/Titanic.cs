@@ -25,7 +25,6 @@ namespace Anndotnet.Vnd.Samples
             var columns = new string[] { "pclass", "survived", "name", "sex", "age", "sibsp", "parch", "ticket", "fare", "cabin", "embarked", "boat", "body", "home.dest" };
             var colTypes = new ColType[] { ColType.IN, ColType.IN, ColType.STR, ColType.IN, ColType.F32, ColType.F32, ColType.F32, ColType.STR, ColType.F32, ColType.STR, ColType.IN, ColType.STR, ColType.I32, ColType.IN };
 
-            var label = "survived";
             
             //load titanic data into Daany.DataFrame
             var rawdata = DataFrame.FromCsv("mlconfigs/titanic/titanic_full_raw.csv", ',',missingValues: new char[] { '?' }, colTypes: colTypes);

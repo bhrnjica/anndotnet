@@ -6,7 +6,29 @@
     "HasHeader": false,
     "SkipLine": 0,
     "MissingValueSymbol": null,
-    "DescriptionSymbol": "!"
+    "DescriptionSymbol": "!",
+    "RawDataName": "airquality_rawdata.txt",
+    "Header": [
+      "Date",
+      "Time",
+      "Month",
+      "Hour",
+      "CO(GT)",
+      "PT08.S1(CO)",
+      "NMHC(GT)",
+      "C6H6(GT)",
+      "PT08.S2(NMHC)",
+      "NOx(GT)",
+      "PT08.S3(NOx)",
+      "NO2(GT)",
+      "PT08.S4(NO2)",
+      "PT08.S5(O3)",
+      "T",
+      "RH",
+      "AH",
+      "Quality"
+    ],
+    "DateFormat": "m/d/yyyy"
   },
   "Metadata": [
     {
@@ -31,7 +53,7 @@
     },
     {
       "Id": 3,
-      "Name": "month",
+      "Name": "Month",
       "MLType": "feature",
       "ValueColumnType": "in",
       "ValueFormat": "",
@@ -54,7 +76,7 @@
     },
     {
       "Id": 4,
-      "Name": "hour",
+      "Name": "Hour",
       "MLType": "feature",
       "ValueColumnType": "in",
       "ValueFormat": "",
@@ -89,7 +111,7 @@
     },
     {
       "Id": 5,
-      "Name": "CO_GT",
+      "Name": "CO(GT)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -99,7 +121,7 @@
     },
     {
       "Id": 6,
-      "Name": "PT08_S1_CO",
+      "Name": "PT08.S1(CO)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -109,7 +131,7 @@
     },
     {
       "Id": 7,
-      "Name": "Column07",
+      "Name": "NMHC(GT)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -119,7 +141,7 @@
     },
     {
       "Id": 8,
-      "Name": "Column08",
+      "Name": "C6H6(GT)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -129,7 +151,7 @@
     },
     {
       "Id": 9,
-      "Name": "Column09",
+      "Name": "PT08.S2(NMHC)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -139,7 +161,7 @@
     },
     {
       "Id": 10,
-      "Name": "Column10",
+      "Name": "NOx(GT)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -149,7 +171,7 @@
     },
     {
       "Id": 11,
-      "Name": "Column11",
+      "Name": "PT08.S3(NOx)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -159,7 +181,7 @@
     },
     {
       "Id": 12,
-      "Name": "Column12",
+      "Name": "NO2(GT)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -169,7 +191,7 @@
     },
     {
       "Id": 13,
-      "Name": "Column13",
+      "Name": "PT08.S4(NO2)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
@@ -179,59 +201,61 @@
     },
     {
       "Id": 14,
-      "Name": "Column14",
+      "Name": "PT08.S5(O3)",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "none",
+      "DataNormalization": "none",
       "ClassValues": null
     },
     {
       "Id": 15,
-      "Name": "Column15",
+      "Name": "T",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "none",
+      "DataNormalization": "none",
       "ClassValues": null
     },
     {
       "Id": 16,
-      "Name": "Column16",
+      "Name": "RH",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "none",
+      "DataNormalization": "none",
       "ClassValues": null
     },
     {
       "Id": 17,
-      "Name": "Column17",
+      "Name": "AH",
       "MLType": "feature",
       "ValueColumnType": "f32",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "none",
+      "DataNormalization": "none",
       "ClassValues": null
     },
     {
       "Id": 21,
-      "Name": "Column21",
+      "Name": "Quality",
       "MLType": "label",
       "ValueColumnType": "in",
       "ValueFormat": "",
       "MissingValue": "none",
-      "Encoding": "oneHot",
-      "ClassValues": [
-        "Very High",
-        "High",
-        "Moderate",
-        "Low",
-        "Very low"
-      ]
+      "Transformer": {
+        "DataNormalization": "oneHot",
+        "ClassValues": [
+          "Very High",
+          "High",
+          "Moderate",
+          "Low",
+          "Very low"
+        ]
+      }
     }
   ],
   "Network": [

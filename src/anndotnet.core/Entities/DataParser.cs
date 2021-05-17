@@ -24,8 +24,12 @@ namespace Anndotnet.Core
         public string RowSeparator { get; set; } = "\r\n";
         public char ColumnSeparator { get; set; } = ';';
         public bool HasHeader { get; set; } = false;
-        public int SkipLine { get; set; } = 0;
+        public int SkipLines { get; set; } = 0;
         public char[] MissingValueSymbol { get; set; }
         public char DescriptionSymbol { get; set; } = '!';
+        public string RawDataName { get; set; }
+        public string[] Header { get; set; }
+        public string DateFormat { get; set; }
+        
     }
 }

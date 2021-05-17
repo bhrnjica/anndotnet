@@ -37,7 +37,7 @@
     <None Update="mlconfigs\titanic\titanic_raw.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="mlconfigs\concrete\slump.txt">
+    <None Update="mlconfigs\slumptest\slump.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -143,6 +143,10 @@ namespace Anndotnet.Core.Extensions
                     c.ValueColumnType = type;
                     if (type == ColType.IN)
                         c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                    else if(type == ColType.F32 || type == ColType.DD)
+                        c.Transformer.DataNormalization = ColumnTransformer.Standardizer;
+                    else if(type == ColType.I2)
+                        c.Transformer.DataNormalization = ColumnTransformer.Binary1;
                 }
 
                 //
@@ -165,5 +169,11 @@ namespace Anndotnet.Core.Extensions
             }
            return df;
        }
+
+       public static DataFrame FromDataParser(DataParser parser)
+        {
+            return DataFrame.FromCsv(filePath: parser.RawDataName, sep: parser.ColumnSeparator, names: parser.Header,
+                            dformat: parser.DateFormat,missingValues: parser.MissingValueSymbol,skipLines: parser.SkipLines );
+        }
     }
 }

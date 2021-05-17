@@ -1,67 +1,103 @@
 {
-  "Id": "3ff65ccd-f6b7-4261-8ff3-22d133eb4e31",
+  "Id": "9cbd25b6-c0ce-4a32-9d01-fda2e64ea94f",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
     "HasHeader": false,
-    "SkipLine": 0,
+    "SkipLines": 0,
     "MissingValueSymbol": null,
-    "DescriptionSymbol": "!"
+    "DescriptionSymbol": "!",
+    "RawDataName": "mlconfigs/iris/iris_raw.txt",
+    "Header": [
+      "sepal_length",
+      "sepal_width",
+      "petal_length",
+      "petal_width",
+      "species"
+    ],
+    "DateFormat": null
   },
   "Metadata": [
     {
-      "Id": 1,
+      "Id": 0,
       "Name": "sepal_length",
       "MLType": "feature",
       "ValueColumnType": "f32",
-      "ValueFormat": "",
+      "ValueFormat": null,
       "MissingValue": "none",
-      "Encoding": "none",
-      "ClassValues": null
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          5.8433332,
+          0.8280661
+        ]
+      }
     },
     {
-      "Id": 2,
+      "Id": 1,
       "Name": "sepal_width",
       "MLType": "feature",
       "ValueColumnType": "f32",
-      "ValueFormat": "",
+      "ValueFormat": null,
       "MissingValue": "none",
-      "Encoding": "none",
-      "ClassValues": null
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          3.0573332,
+          0.4358663
+        ]
+      }
     },
     {
-      "Id": 3,
+      "Id": 2,
       "Name": "petal_length",
       "MLType": "feature",
       "ValueColumnType": "f32",
-      "ValueFormat": "",
+      "ValueFormat": null,
       "MissingValue": "none",
-      "Encoding": "none",
-      "ClassValues": null
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          3.758,
+          1.7652982
+        ]
+      }
     },
     {
-      "Id": 4,
+      "Id": 3,
       "Name": "petal_width",
       "MLType": "feature",
       "ValueColumnType": "f32",
-      "ValueFormat": "",
+      "ValueFormat": null,
       "MissingValue": "none",
-      "Encoding": "none",
-      "ClassValues": null
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          1.1993333,
+          0.76223767
+        ]
+      }
     },
     {
-      "Id": 5,
+      "Id": 4,
       "Name": "species",
       "MLType": "label",
       "ValueColumnType": "in",
-      "ValueFormat": "",
+      "ValueFormat": null,
       "MissingValue": "none",
-      "Encoding": "oneHot",
-      "ClassValues": [
-        "setosa",
-        "versicolor",
-        "virginica"
-      ]
+      "Transformer": {
+        "DataNormalization": "oneHot",
+        "ClassValues": [
+          "setosa",
+          "versicolor",
+          "virginica"
+        ],
+        "NormalizationValues": null
+      }
     }
   ],
   "Network": [
@@ -73,7 +109,7 @@
     {
       "Type": 14,
       "Activation": 1,
-      "Name": "ReLuLayer"
+      "Name": "ReLu"
     },
     {
       "Type": 2,
@@ -83,7 +119,7 @@
     {
       "Type": 14,
       "Activation": 3,
-      "Name": "ReLuLayer"
+      "Name": "Softmax"
     }
   ],
   "LParameters": {
@@ -106,7 +142,7 @@
   "TParameters": {
     "TrainingType": "tvTraining",
     "EarlyStopping": "none",
-    "Retrain": false,
+    "Retrain": true,
     "Epochs": 500,
     "ProgressStep": 10,
     "MinibatchSize": 100,
@@ -114,11 +150,5 @@
     "SplitPercentage": 20,
     "LastBestModel": null
   },
-  "Paths": {
-    "Training": "iris_raw.txt",
-    "BestModel": "Models/637399464453095265.ckp.meta",
-    "Models": "Models",
-    "MainFolder": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris",
-    "MLConfig": "C:\\sc\\github\\anndotnet\\src\\anndotnet.cmd.tool\\mlconfigs\\iris\\iris.mlconfig"
-  }
+  "Paths": null
 }

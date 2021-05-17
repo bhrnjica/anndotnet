@@ -13,9 +13,7 @@ namespace anndotnet.test
     public class EvaluationFunctionTests
     {
         ConfigProto _config;
-        Operation _init;
-
-
+       
         [SetUp]
         public void Setup()
         {
