@@ -105,9 +105,9 @@ In case the PATH is not added the Excel addin must be installed every time you o
 # Tutorial and Webcast
 The following short videos quickly show how to create, train and evaluate regression, binary and multi class classification models.
 
-* [ Regression model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv1.mp4)
-* [ Binary classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv2.mp4)
-* [ Multiclass classification model ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/anndotnetv3.mp4)
-* [ Export options in ANNdotNET ](https://raw.githubusercontent.com/bhrnjica/anndotnet/master/Tutorials/export_options_in_anndotnet.mp4)
+* [ Regression model ](https://www.youtube.com/watch?v=usSav46d-e0&list=PLTk-S955yon0pRlfTwxtSBNX9eJULo7bu&index=1)
+* [ Binary classification model ](https://www.youtube.com/watch?v=dU7vhbt61ck&list=PLTk-S955yon0pRlfTwxtSBNX9eJULo7bu&index=2)
+* [ Multiclass classification model ](https://www.youtube.com/watch?v=2eCH0c0yyCs&list=PLTk-S955yon0pRlfTwxtSBNX9eJULo7bu&index=3)
+* [ Export options in ANNdotNET ](https://www.youtube.com/watch?v=ZP0D6esyq78&list=PLTk-S955yon0pRlfTwxtSBNX9eJULo7bu&index=4)
 
 More info at https://bhrnjica.net/anndotnet/
