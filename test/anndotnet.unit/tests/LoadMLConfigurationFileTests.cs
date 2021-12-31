@@ -37,7 +37,7 @@ namespace anndotnet.unit
             try
             {
             
-                var strPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\xcxml_config_file_test.txt";
+                var strPath = "../../../../data/xcxml_config_file_test.txt";
                 //var strPath = "../../../../data/xcxml_config_file_test.txt";
 
                 //

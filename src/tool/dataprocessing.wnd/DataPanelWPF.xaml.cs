@@ -1,20 +1,6 @@
 ﻿using DataProcessing.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using forms = System.Windows.Forms;
 
 namespace DataProcessing.Wnd
 {
@@ -23,16 +9,16 @@ namespace DataProcessing.Wnd
     /// <summary>
     /// Interaction logic for DataPanelWPF.xaml
     /// </summary>
-    public partial class DataPanelWPF : UserControl
+    public partial class DataPanelWPF : System.Windows.Controls.UserControl
     {
         //listview items
-        private forms.ListViewItem li;
+        private System.Windows.Forms.ListViewItem li;
         private int X = 0;
         private int Y = 0;
         private int subItemSelected = 0;
-        private forms.ComboBox cmbBox1 = new forms.ComboBox();
-        private forms.ComboBox cmbBox2 = new forms.ComboBox();
-        private forms.ComboBox cmbBox3 = new forms.ComboBox();
+        private System.Windows.Forms.ComboBox cmbBox1 = new System.Windows.Forms.ComboBox();
+        private System.Windows.Forms.ComboBox cmbBox2 = new System.Windows.Forms.ComboBox();
+        private System.Windows.Forms.ComboBox cmbBox3 = new System.Windows.Forms.ComboBox();
 
         private string[][] m_strData; //loaded string of data
         private string[] m_strHeader; //loaded string of data
@@ -56,7 +42,7 @@ namespace DataProcessing.Wnd
             cmbBox1.SelectedIndexChanged += new System.EventHandler(this.CmbSelected);
             cmbBox1.LostFocus += new System.EventHandler(this.CmbFocusOver);
             cmbBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CmbKeyPress);
-            cmbBox1.DropDownStyle = forms.ComboBoxStyle.DropDownList;
+            cmbBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cmbBox1.Hide();
 
             //second row combobox
@@ -70,7 +56,7 @@ namespace DataProcessing.Wnd
             cmbBox2.SelectedIndexChanged += new System.EventHandler(this.CmbSelected);
             cmbBox2.LostFocus += new System.EventHandler(this.CmbFocusOver);
             cmbBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CmbKeyPress);
-            cmbBox2.DropDownStyle = forms.ComboBoxStyle.DropDownList;
+            cmbBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cmbBox2.Hide();
 
 
@@ -90,13 +76,13 @@ namespace DataProcessing.Wnd
             cmbBox3.SelectedIndexChanged += new System.EventHandler(this.CmbSelected);
             cmbBox3.LostFocus += new System.EventHandler(this.CmbFocusOver);
             cmbBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CmbKeyPress);
-            cmbBox3.DropDownStyle = forms.ComboBoxStyle.DropDownList;
+            cmbBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cmbBox3.Hide();
         }
 
         private void CmbBox1_DropDownClosed(object sender, EventArgs e)
         {
-            var cd = sender as forms.ComboBox;
+            var cd = sender as System.Windows.Forms.ComboBox;
             if (cd != null)
                 cd.Hide();
         }
@@ -110,9 +96,9 @@ namespace DataProcessing.Wnd
 
         //implementation Header control 
         #region Cell ComboBox Events
-        private void CmbKeyPress(object sender, forms.KeyPressEventArgs e)
+        private void CmbKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
-            var combo = sender as forms.ComboBox;
+            var combo = sender as System.Windows.Forms.ComboBox;
 
             if (e.KeyChar == 13 || e.KeyChar == 27)
             {
@@ -122,13 +108,13 @@ namespace DataProcessing.Wnd
 
         private void CmbFocusOver(object sender, EventArgs e)
         {
-            var combo = sender as forms.ComboBox;
+            var combo = sender as System.Windows.Forms.ComboBox;
             combo.Hide();
         }
 
         private void CmbSelected(object sender, EventArgs e)
         {
-            var combo = sender as forms.ComboBox;
+            var combo = sender as System.Windows.Forms.ComboBox;
 
             int sel = combo.SelectedIndex;
             if (sel >= 0)
@@ -183,9 +169,9 @@ namespace DataProcessing.Wnd
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ListView1_MouseDoubleClick(object sender, forms.MouseEventArgs e)
+        private void ListView1_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            forms.ListViewHitTestInfo info = listView1.HitTest(X, Y);
+            System.Windows.Forms.ListViewHitTestInfo info = listView1.HitTest(X, Y);
             var row = info.Item.Index;
             var col = info.Item.SubItems.IndexOf(info.SubItem);
             var colType = listView1.Items[3].SubItems[col];
@@ -195,7 +181,7 @@ namespace DataProcessing.Wnd
             if (li == null || row > 3 || row < 1 || col < 1)
                 return;
 
-            forms.ComboBox combo = null;
+            System.Windows.Forms.ComboBox combo = null;
             if (row == 1)
                 combo = cmbBox1;
             else if (row == 2)
@@ -219,7 +205,7 @@ namespace DataProcessing.Wnd
 
         }
 
-        private void ListView1_MouseDown(object sender, forms.MouseEventArgs e)
+        private void ListView1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             
             X = e.X;
@@ -242,23 +228,23 @@ namespace DataProcessing.Wnd
             int numCol = cols.Count;
             //int numRow = 5;
 
-            forms.ColumnHeader colHeader = null;
-            colHeader = new forms.ColumnHeader();
+            System.Windows.Forms.ColumnHeader colHeader = null;
+            colHeader = new System.Windows.Forms.ColumnHeader();
             colHeader.Text = " ";
             colHeader.Width = 200;
             listView1.Columns.Add(colHeader);
             //
             for (int i = 0; i < numCol; i++)
             {
-                colHeader = new forms.ColumnHeader();
+                colHeader = new System.Windows.Forms.ColumnHeader();
                 colHeader.Text = cols[i].Name;
                 colHeader.Width = 200;
-                colHeader.TextAlign = forms.HorizontalAlignment.Center;
+                colHeader.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 
                 listView1.Columns.Add(colHeader);
             }
             //first row is going to represent column names
-            forms.ListViewItem LVI = listView1.Items.Add("Column name:");
+            System.Windows.Forms.ListViewItem LVI = listView1.Items.Add("Column name:");
             for (int i = 0; i < numCol; i++)
             {
                 LVI.SubItems.Add(cols[i].Name);
@@ -391,15 +377,15 @@ namespace DataProcessing.Wnd
                 }
             }
             ///
-            forms.ColumnHeader colHeader = null;
-            colHeader = new forms.ColumnHeader();
+            System.Windows.Forms.ColumnHeader colHeader = null;
+            colHeader = new System.Windows.Forms.ColumnHeader();
             colHeader.Text = " ";
             colHeader.Width = 150;
             listView1.Columns.Add(colHeader);
             //
             for (int i = 0; i < numCol; i++)
             {
-                colHeader = new forms.ColumnHeader();
+                colHeader = new System.Windows.Forms.ColumnHeader();
 
                 if (header == null)
                 {
@@ -418,7 +404,7 @@ namespace DataProcessing.Wnd
                 listView1.Columns.Add(colHeader);
             }
             //first row is going to represent column names
-            forms.ListViewItem LVI = listView1.Items.Add(MetaData.Name.Description());
+            System.Windows.Forms.ListViewItem LVI = listView1.Items.Add(MetaData.Name.Description());
             for (int i = 0; i < numCol; i++)
             {
                 if (header == null)
@@ -473,7 +459,7 @@ namespace DataProcessing.Wnd
                 return;
             int numCol = data[0].Count;
             int numRow = data.Count > 10 ? 10 : data.Count;
-            forms.ListViewItem LVI = null;
+            System.Windows.Forms.ListViewItem LVI = null;
             //insert data
             for (int j = 0; j < numRow; j++)
             {
@@ -483,7 +469,7 @@ namespace DataProcessing.Wnd
                 {
                     if (ColumnData.m_missingSymbols.Contains(data[j][i]))
                     {
-                        System.Windows.Forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                        System.Windows.Forms.ListViewItem.ListViewSubItem itm = new System.Windows.Forms.ListViewItem.ListViewSubItem();
                         itm.ForeColor = System.Drawing.Color.Red;
                         itm.Text = data[j][i];
                         LVI.SubItems.Add(itm);
@@ -504,7 +490,7 @@ namespace DataProcessing.Wnd
                 return;
             int numCol = data[0].Length;
             int numRow = data.Length;
-            forms.ListViewItem LVI = null;
+            System.Windows.Forms.ListViewItem LVI = null;
             var toColumnData = data.toColumnVector<string>();
 
             if (listView1.Items.Count <= 14)
@@ -515,7 +501,7 @@ namespace DataProcessing.Wnd
             //LVI.BackColor = SystemColors.GradientActiveCaption;
             for (int i = 0; i < numCol; i++)
             {
-                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new System.Windows.Forms.ListViewItem.ListViewSubItem();
                 //
                 itm.Text = "...";
                 //
@@ -537,7 +523,7 @@ namespace DataProcessing.Wnd
             LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             for (int i = 0; i < numCol; i++)
             {
-                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new System.Windows.Forms.ListViewItem.ListViewSubItem();
                 itm.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
                 itm.Text = toColumnData[i].Count().ToString();
                 //
@@ -557,7 +543,7 @@ namespace DataProcessing.Wnd
             LVI.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             for (int i = 0; i < numCol; i++)
             {
-                forms.ListViewItem.ListViewSubItem itm = new forms.ListViewItem.ListViewSubItem();
+                System.Windows.Forms.ListViewItem.ListViewSubItem itm = new System.Windows.Forms.ListViewItem.ListViewSubItem();
                 itm.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
                 if (cols.Count > 0 && cols[i].Type.StartsWith("Numeric", StringComparison.InvariantCulture))
                     itm.Text = "n/a";
@@ -706,7 +692,7 @@ namespace DataProcessing.Wnd
             try
             {
                 ImportData dlg = new ImportData();
-                if (dlg.ShowDialog() == forms.DialogResult.OK)
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     if (dlg.Data == null)
                         return;

@@ -23,7 +23,7 @@ namespace DataProcessing.Wnd
     /// <summary>
     /// Interaction logic for ItemItem.xaml
     /// </summary>
-    public partial class ImageItem : UserControl
+    public partial class ImageItem : System.Windows.Controls.UserControl
     {
         static string m_lastVisitedFolder;
         public ImageItem()

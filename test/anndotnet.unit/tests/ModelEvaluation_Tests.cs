@@ -22,17 +22,17 @@ namespace anndotnet.unit
             //create config streams
             f.CreateIOVariables("feature 4 0", "flower 3 0", DataType.Float);
             var trData = MLFactory.CreateTrainingParameters("|Type: default |BatchSize: 130 |Epochs:5 |Normalization: 0 |SaveWhileTraining: 0 |RandomizeBatch: 0 |ProgressFrequency: 1");
-        
-            string trainingPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_with_hot_vector.txt";
-            string validationPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_with_hot_vector_test.txt";
-            //string trainingPath = "../../../../data/iris_with_hot_vector.txt";
-            //string validationPath = "../../../../data/iris_with_hot_vector_test.txt";
 
-            //string trainingNormalizedPathh = "../../../../data/iris_train_normalized.txt";
-            string trainingNormalizedPathh = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_train_normalized.txt";
+            //string trainingPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_with_hot_vector.txt";
+            //string validationPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_with_hot_vector_test.txt";
+            string trainingPath = "../../../../data/iris_with_hot_vector.txt";
+            string validationPath = "../../../../data/iris_with_hot_vector_test.txt";
+
+            string trainingNormalizedPathh = "../../../../data/iris_train_normalized.txt";
+            //string trainingNormalizedPathh = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_train_normalized.txt";
             var strNormalizedLine = System.IO.File.ReadAllLines(trainingNormalizedPathh);
 
-            string validationNormalizedPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\iris_valid_normalized.txt";
+            string validationNormalizedPath = "../../../../data/iris_valid_normalized.txt";
             //string validationNormalizedPath = "../../../../data/iris_valid_normalized.txt";
             var strValidNormalizedLine = System.IO.File.ReadAllLines(validationNormalizedPath);
             //
@@ -176,8 +176,8 @@ namespace anndotnet.unit
             f.CreateIOVariables("|Itemid 1 0 |Sales 4 0 |Color 1 0", "|Label 1 0", DataType.Float);
             var trData = MLFactory.CreateTrainingParameters("|Type: default |BatchSize: 130 |Epochs:5 |Normalization:Sales |SaveWhileTraining: 0 |RandomizeBatch: 0 |ProgressFrequency: 1");
 
-            string trainingPath = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\cntk_dataset_for_normalization_test.txt";
-            string trainingNormalizedPathh = "C:\\sc\\github\\anndotnet\\test\\anndotnet.unit\\data\\cntk_dataset_for_normalization_test_result.txt";
+            string trainingPath = "../../../../data/cntk_dataset_for_normalization_test.txt";
+            string trainingNormalizedPathh = "../../../../data/cntk_dataset_for_normalization_test_result.txt";
 
             //string trainingPath = "../../../../data/cntk_dataset_for_normalization_test.txt";
             //string trainingNormalizedPathh = "../../../../data/cntk_dataset_for_normalization_test_result.txt";

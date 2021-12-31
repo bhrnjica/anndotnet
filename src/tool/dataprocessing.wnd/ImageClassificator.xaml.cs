@@ -22,7 +22,7 @@ namespace DataProcessing.Wnd
     /// <summary>
     /// Interaction logic for ImageClassificator.xaml
     /// </summary>
-    public partial class ImageClassificator : UserControl
+    public partial class ImageClassificator : System.Windows.Controls.UserControl
     {
         public ImageClassificator()
         {
@@ -57,13 +57,13 @@ namespace DataProcessing.Wnd
             var model = this.DataContext as ImageClassificatorModel;
             if (model == null || model.Labels == null)
                 return;
-           if (imageLabelList.SelectedItem!=null && MessageBoxResult.Yes == MessageBox.Show("Confirm deletion", "ANNdotNET", MessageBoxButton.YesNo))
+           if (imageLabelList.SelectedItem!=null && System.Windows.Forms.DialogResult.Yes == System.Windows.Forms.MessageBox.Show("Confirm deletion", "ANNdotNET", System.Windows.Forms.MessageBoxButtons.YesNo))
                 model.Labels.Remove((ImageLabelItem)imageLabelList.SelectedItem);
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var textBox = sender as TextBox;
+            var textBox = sender as System.Windows.Controls.TextBox;
             e.Handled = !Regex.IsMatch(e.Text, @"^[0-9]*(?:\.[0-9]*)?$");
         }
 

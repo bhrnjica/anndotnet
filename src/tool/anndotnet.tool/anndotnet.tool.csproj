@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
     <StartupObject>anndotnet.core.app.Program</StartupObject>
   </PropertyGroup>
@@ -84,7 +84,7 @@
   <ItemGroup>
     <PackageReference Include="CNTK.Deps.OpenCV.Zip" Version="2.7.0" />
     <PackageReference Include="CNTK.GPU" Version="2.7.0" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

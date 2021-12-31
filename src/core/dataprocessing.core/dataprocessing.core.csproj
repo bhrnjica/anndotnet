@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <SignAssembly>false</SignAssembly>
-    <DelaySign>false</DelaySign>
     <Platforms>AnyCPU;x64</Platforms>
     <RootNamespace>DataProcessing.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\gpdotnet.math\gpdotnet.math.csproj" />
-    <PackageReference Include="OxyPlot.Core" Version="2.0.0" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
   </ItemGroup>
 
 </Project>

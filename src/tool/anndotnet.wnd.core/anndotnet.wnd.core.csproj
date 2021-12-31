@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>x64</Platforms>
     <AssemblyVersion>1.3.0.0</AssemblyVersion>
@@ -645,12 +645,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.94.2" />
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="CNTK.GPU" Version="2.7.0" />
-    <PackageReference Include="ControlzEx" Version="4.2.0" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
-    <PackageReference Include="Fluent.Ribbon" Version="7.0.0" />
-    <PackageReference Include="Octokit" Version="0.36.0" />
+    <PackageReference Include="ControlzEx" Version="5.0.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
+    <PackageReference Include="Fluent.Ribbon" Version="9.0.1" />
+    <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="ZedGraph" Version="5.1.7" />
   </ItemGroup>
 
@@ -716,7 +716,7 @@
     <ProjectReference Include="..\..\ext\anndotnet.lib.ext\anndotnet.lib.ext.csproj" />
     <ProjectReference Include="..\..\ml\anndotnet.core\anndotnet.core.csproj" />
     <ProjectReference Include="..\..\ml\anndotnet.lib\anndotnet.lib.csproj" />
-    <ProjectReference Include="..\mldatapreparation.wnd\dataprocessing.wnd.csproj" />
+    <ProjectReference Include="..\dataprocessing.wnd\dataprocessing.wnd.csproj" />
   </ItemGroup>
 
 </Project>
