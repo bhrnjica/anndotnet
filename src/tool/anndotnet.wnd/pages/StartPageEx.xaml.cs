@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO.Compression;
 using System.IO;
+using System.Net.Http;
 
 namespace anndotnet.wnd.Pages
 {
@@ -26,8 +27,9 @@ namespace anndotnet.wnd.Pages
     /// </summary>
     public partial class StartPageEx
     {
+        // HttpClient is intended to be instantiated once per application, rather than per-use. See Remarks.
+        static readonly HttpClient client = new HttpClient();
         private string m_defaultBranch = "master";
-        //private string m_defaultBranch = "master";
         public Action<Exception> ReportException { get; internal set; }
 
         public StartPageEx()
@@ -205,17 +207,22 @@ namespace anndotnet.wnd.Pages
         /// <param name="localPath">The local path.</param>
         private static async Task downloadFile(string serverPath, string localPath)
         {
-            using (System.Net.WebClient wb = new System.Net.WebClient())
+            // Call asynchronous network methods in a try/catch block to handle exceptions.
+            try
             {
-                wb.DownloadProgressChanged += downloadProgressChanged;
-                await wb.DownloadFileTaskAsync(new Uri(serverPath), localPath);
+                var stream = await client.GetStreamAsync(new Uri(serverPath));
+
+                using (var fileStream = new FileStream(localPath, FileMode.Create, FileAccess.Write))
+                {
+                    stream.CopyTo(fileStream);
+                }               
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
             }
 
-        }
-
-        private static void downloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            
         }
     }
 }

@@ -30,7 +30,7 @@ namespace ANNdotNET.Lib.Export
                 var wb = new XLWorkbook();
                 var ws1 = wb.Worksheets.Add("Training");
                 IXLWorksheet ws2 = null;
-                IXLWorksheet ws3 = null;
+                //IXLWorksheet ws3 = null;
                 ws1.Cell(1, 1).Value = "Training Data";
 
                 if (dataValid != null && dataValid.Count > 0)

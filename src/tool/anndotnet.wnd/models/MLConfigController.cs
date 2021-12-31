@@ -872,7 +872,7 @@ namespace anndotnet.wnd.Models
                 var modelMLPath = Project.GetMLConfigPath(Settings, Name);
 
                 EvaluationResult resultV = null;
-                EvaluationResult resultTe = null;
+                //EvaluationResult resultTe = null;
                 var resultT = await Project.EvaluateMLConfig(modelMLPath, DataSetType.Training, EvaluationType.FeaturesOnly, ProcessDevice.Default);
 
                 if (DataSetsDefined.Item2)
