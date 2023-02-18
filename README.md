@@ -110,4 +110,4 @@ The following short videos quickly show how to create, train and evaluate regres
 * [ Multiclass classification model ](https://www.youtube.com/watch?v=2eCH0c0yyCs&list=PLTk-S955yon0pRlfTwxtSBNX9eJULo7bu&index=3)
 * [ Export options in ANNdotNET ](https://www.youtube.com/watch?v=ZP0D6esyq78&list=PLTk-S955yon0pRlfTwxtSBNX9eJULo7bu&index=4)
 
-More info at https://bhrnjica.net/anndotnet/
+More info at https://hrnjica.net/anndotnet/
