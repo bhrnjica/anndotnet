@@ -1,13 +1,12 @@
-using System;
-using Daany;
-using Daany.Ext;
-using NumSharp;
-using NUnit.Framework;
+using Anndotnet.Core;
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Trainers;
-using Anndotnet.Core;
-using System.Collections.Generic;
 using Anndotnet.Vnd;
+using Daany;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using Tensorflow.NumPy;
 
 namespace anndotnet.test
 {
@@ -32,7 +31,7 @@ namespace anndotnet.test
             int batchSize = 88;
             foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0] == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -52,7 +51,7 @@ namespace anndotnet.test
             int batchSize = 1;
             foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0] == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -72,7 +71,7 @@ namespace anndotnet.test
             int batchSize = 50;
             foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0] == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -92,7 +91,7 @@ namespace anndotnet.test
             int batchSize = 0;
             foreach (var d in df.GetNextBatch(batchSize))
             {
-                Assert.IsTrue(d.xBatch[0][0].GetValue<float>() == batchIndex * batchSize + 1);
+                Assert.IsTrue(d.xBatch[0][0]/*.GetValue<float>()*/ == batchIndex * batchSize + 1);
                 batchIndex++;
             }
 
@@ -112,13 +111,13 @@ namespace anndotnet.test
             var test = data.validation.GetFullBatch();
 
 
-            Assert.IsTrue(train.xBatch[0].GetValue<float>()== 1.1f);
-            Assert.IsTrue(train.xBatch[1].GetValue<float>() == 2.2f);
-            Assert.IsTrue(train.xBatch[2].GetValue<float>() == 3.3f);
-            Assert.IsTrue(train.xBatch[3].GetValue<float>() == 4.4f);
-            Assert.IsTrue(train.xBatch[4].GetValue<float>() == 5.5f);
-            Assert.IsTrue(train.yBatch[5].GetValue<float>() == 61.6f);
-            Assert.IsTrue(train.yBatch[7].GetValue<float>() == 81.8f);
+            Assert.IsTrue(train.xBatch[0] == 1.1f);
+            Assert.IsTrue(train.xBatch[1] == 2.2f);
+            Assert.IsTrue(train.xBatch[2] == 3.3f);
+            Assert.IsTrue(train.xBatch[3] == 4.4f);
+            Assert.IsTrue(train.xBatch[4] == 5.5f);
+            Assert.IsTrue(train.yBatch[5] == 61.6f);
+            Assert.IsTrue(train.yBatch[7] == 81.8f);
         }
 
         [Test]
@@ -134,13 +133,13 @@ namespace anndotnet.test
             var test = data.validation.GetFullBatch();
 
 
-            Assert.IsTrue(train.xBatch[0].GetValue<float>() == 9.9f);
-            Assert.IsTrue(train.xBatch[1].GetValue<float>() == 2.2f);
-            Assert.IsTrue(train.xBatch[2].GetValue<float>() == 1.1f);
-            Assert.IsTrue(train.xBatch[3].GetValue<float>() == 7.7f);
-            Assert.IsTrue(train.xBatch[4].GetValue<float>() == 6.6f);
-            Assert.IsTrue(test.yBatch[0].GetValue<float>() == 41.4f);
-            Assert.IsTrue(test.yBatch[1].GetValue<float>() == 81.8f);
+            Assert.IsTrue(train.xBatch[0] == 9.9f);
+            Assert.IsTrue(train.xBatch[1] == 2.2f);
+            Assert.IsTrue(train.xBatch[2] == 1.1f);
+            Assert.IsTrue(train.xBatch[3] == 7.7f);
+            Assert.IsTrue(train.xBatch[4] == 6.6f);
+            Assert.IsTrue(test.yBatch[0] == 41.4f);
+            Assert.IsTrue(test.yBatch[1] == 81.8f);
         }
 
 

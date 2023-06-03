@@ -10,19 +10,15 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tensorflow;
-using static Tensorflow.Binding;
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Interface;
-using NumSharp;
 using Anndotnet.Core.Progress;
-using Anndotnet.Core.Entities;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Tensorflow;
+using static Tensorflow.Binding;
+using Tensorflow.NumPy;
 namespace Anndotnet.Core.Trainers
 {
     public class CVTrainer : ITrainer
@@ -45,7 +41,7 @@ namespace Anndotnet.Core.Trainers
             _cvData = new (DataFeed train, DataFeed valid)[_kFold];
             float percentage = 100.0f / _kFold;
             int testSize = (int)((X.shape[0] * percentage) / 100);
-            int trainSize = X.shape[0] - testSize;
+            int trainSize = (int)X.shape[0] - testSize;
 
             //create folds
             for (int i=0; i<_kFold; i++)
@@ -129,13 +125,13 @@ namespace Anndotnet.Core.Trainers
         internal (DataFeed train, DataFeed validation) Split(int trainSize, int testSize, int index)
         {
             //generate indexes
-            var lst = Enumerable.Range(0, X.shape[0]);
+            var lst = Enumerable.Range(0, (int)X.shape[0]);
             var trainIds = lst.Skip(index * testSize).Take(trainSize);
             var testIds = lst.Except(trainIds);
 
             //create ndarrays
-            var trArray = np.array(trainIds);
-            var teArray = np.array(testIds);
+            var trArray = np.array(trainIds.ToArray());
+            var teArray = np.array(testIds.ToArray());
             //
             var trainX = X[trArray];
             var testX = X[teArray];

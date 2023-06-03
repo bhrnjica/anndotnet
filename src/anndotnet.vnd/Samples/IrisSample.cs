@@ -1,20 +1,13 @@
 ﻿using Anndotnet.Core;
-using Anndotnet.Vnd;
-using Anndotnet.Vnd.Layers;
-using Daany;
-using Daany.Ext;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Anndotnet.Core.Extensions;
-using NumSharp;
+using Anndotnet.Vnd.Layers;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Tensorflow.NumPy;
 
 namespace Anndotnet.Vnd.Samples
 {
-   
+
     public  class IrisSample : SampleBase
     {
         

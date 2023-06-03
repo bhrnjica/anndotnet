@@ -12,14 +12,9 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Interface;
-using NumSharp;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Tensorflow;
-
+using Tensorflow.NumPy;
 namespace AnndotnET.Core.Evaluators
 {
     public class Evaluator : IEvaluator

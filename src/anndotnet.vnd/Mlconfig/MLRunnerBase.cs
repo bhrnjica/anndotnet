@@ -10,21 +10,17 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using Anndotnet.Core;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interface;
+using Anndotnet.Core.TensorflowEx;
+using Anndotnet.Vnd.Layers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tensorflow;
-using static Tensorflow.Binding;
-using NumSharp;
-using Anndotnet.Core;
-using Anndotnet.Core.Learners;
-using Anndotnet.Core.Trainers;
-using Anndotnet.Core.Entities;
 using System.IO;
-using Anndotnet.Core.TensorflowEx;
-using Anndotnet.Core.Interface;
-using Anndotnet.Vnd.Layers;
+using Tensorflow;
+using Tensorflow.NumPy;
+using static Tensorflow.Binding;
 
 namespace Anndotnet.Vnd
 {

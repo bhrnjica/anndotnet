@@ -10,16 +10,13 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-
 using Daany;
-using Microsoft.ML;
 using Daany.Ext;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Tensorflow;
+using Tensorflow.NumPy;
 
 namespace Anndotnet.Core.Extensions
 {

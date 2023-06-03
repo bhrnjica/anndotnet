@@ -1,25 +1,13 @@
-﻿using System;
-using System.Linq;
-using Daany;
-using NumSharp;
-using Tensorflow;
-using static Tensorflow.Binding;
-using Daany.Ext;
-using System.Diagnostics;
-using System.IO;
-using System.Collections.Generic;
-using Anndotnet.Core;
+﻿using Anndotnet.Core;
 using Anndotnet.Vnd;
-using Anndotnet.Core.Data;
-using Anndotnet.Core.Learners;
-using Anndotnet.Core.Trainers;
-using Anndotnet.Core.Entities;
-using System.Threading.Tasks;
 using Anndotnet.Vnd.Samples;
+using System;
+using System.Threading.Tasks;
+using Tensorflow.NumPy;
 
 namespace AnnDotNET.Tool
 {
-   
+
     class Program
     {
 

@@ -10,15 +10,9 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using NumSharp;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Tensorflow;
-using Anndotnet.Core;
 using Anndotnet.Core.Interface;
+using System;
+using System.Linq;
 
 namespace Anndotnet.Core.Progress
 {

@@ -10,23 +10,17 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using Anndotnet.Core;
+using Anndotnet.Core.TensorflowEx;
+using Anndotnet.Core.Trainers;
+using Anndotnet.Vnd.Layers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Tensorflow;
-using static Tensorflow.Binding;
-using NumSharp;
-using Anndotnet.Core;
-using Anndotnet.Core.Learners;
-using Anndotnet.Core.Trainers;
-using Anndotnet.Core.Entities;
-using System.IO;
-using Anndotnet.Core.TensorflowEx;
-using Anndotnet.Core.Interface;
-using Anndotnet.Vnd.Layers;
 using System.Threading.Tasks;
-using System.Xml;
+using Tensorflow;
+using Tensorflow.NumPy;
+using static Tensorflow.Binding;
 
 namespace Anndotnet.Vnd
 {
@@ -64,11 +58,11 @@ namespace Anndotnet.Vnd
             List<int> shapeX = new List<int>();
             List<int> shapeY = new List<int>();
             shapeX.Add(-1);//first dimension
-            shapeX.AddRange(X.Shape.Dimensions.Skip(1));
+            shapeX.AddRange((IEnumerable<int>)X.shape.dims.Skip(1));
             shapeY.Add(-1);//first dimension
             //
-            if(Y.Shape.Dimensions.Length > 1)
-                shapeY.AddRange(Y.Shape.Dimensions.Skip(1));
+            if(Y.shape.dims.Length > 1)
+                shapeY.AddRange((IEnumerable<int>)Y.shape.dims.Skip(1));
 
             Session session = null;
             tf.compat.v1.disable_eager_execution();

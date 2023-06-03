@@ -13,9 +13,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NumSharp;
 using Tensorflow;
+using Tensorflow.Training;
 using static Tensorflow.Binding;
 namespace Anndotnet.Core.TensorflowEx
 {
@@ -30,7 +29,7 @@ namespace Anndotnet.Core.TensorflowEx
                 globalStep = new RefVariable(lp.LearningRate, trainable: false, dtype: TF_DataType.TF_FLOAT);
                 float startLr = lp.StartLRate;
                 float endLr = lp.EndLRate;
-                lr = tf.train.polynomial_decay(startLr, globalStep, lp.DecaySteps, endLr, power: lp.DecayPower, false, "polydecay");
+                lr = learning_rate_decay.polynomial_decay(startLr, globalStep, lp.DecaySteps, endLr, power: lp.DecayPower, false, "polydecay");
             }
 
             // We add the training operation, ...
@@ -222,7 +221,7 @@ namespace Anndotnet.Core.TensorflowEx
             Tensor correct = null;
             //check if the output is one hot vectors
             if (y.dims.Last() > 1)
-                correct = tf.equal(tf.cast(tf.argmax(y, 1), tf.int32), tf.cast(tf.argmax(z, 1), tf.int32));
+                correct = tf.equal(tf.cast(tf.math.argmax(y, 1), tf.int32), tf.cast(tf.math.argmax(z, 1), tf.int32));
             else
             {
                 var trasholdT = tf.constant(thrashold);

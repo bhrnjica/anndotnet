@@ -10,17 +10,14 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NumSharp;
 using Anndotnet.Core.Interface;
+using System.Collections.Generic;
+using Tensorflow;
+using Tensorflow.NumPy;
 
 namespace Anndotnet.Core.Data
 {
-   
+
     public class DataFeed : IDataFeed
     {
         NDArray X { get; set; }

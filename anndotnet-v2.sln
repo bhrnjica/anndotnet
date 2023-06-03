@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29326.143
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{88972845-2076-4EC4-9175-49E27255511E}"
 EndProject
@@ -59,14 +59,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.vnd", "src\anndot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xanndotnet.cmd.tool", "src\anndotnet.cmd.tool\xanndotnet.cmd.tool.csproj", "{C6496BD8-C49F-4930-8077-7598D70F5996}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "daany", "daany", "{26E458A0-800D-4D0A-A4BA-E1B40744CBA2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daany.MathStuff", "..\daany\src\daany.mathstuff\Daany.MathStuff.csproj", "{86DB88E8-FEE3-440C-9121-F673B0C819D9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daany.DataFrame", "..\daany\src\daany.df\Daany.DataFrame.csproj", "{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daany.DataFrame.Ext", "..\daany\src\daany.ext\Daany.DataFrame.Ext.csproj", "{06EA42AB-893D-4A95-84BB-3132BF9E2677}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,30 +99,6 @@ Global
 		{C6496BD8-C49F-4930-8077-7598D70F5996}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6496BD8-C49F-4930-8077-7598D70F5996}.Release|x64.ActiveCfg = Release|x64
 		{C6496BD8-C49F-4930-8077-7598D70F5996}.Release|x64.Build.0 = Release|x64
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Debug|x64.ActiveCfg = Debug|x64
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Debug|x64.Build.0 = Debug|x64
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Release|x64.ActiveCfg = Release|x64
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9}.Release|x64.Build.0 = Release|x64
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Debug|x64.ActiveCfg = Debug|x64
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Debug|x64.Build.0 = Debug|x64
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Release|x64.ActiveCfg = Release|x64
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C}.Release|x64.Build.0 = Release|x64
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Debug|x64.ActiveCfg = Debug|x64
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Debug|x64.Build.0 = Debug|x64
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Release|x64.ActiveCfg = Release|x64
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,9 +109,6 @@ Global
 		{C9748022-C33C-4E45-9073-4F9DE69C0932} = {721F6DD8-03B3-4E8D-B7A9-64407D371093}
 		{4A5F6EBF-00A2-4C08-BAA7-688D76E73E6B} = {721F6DD8-03B3-4E8D-B7A9-64407D371093}
 		{C6496BD8-C49F-4930-8077-7598D70F5996} = {721F6DD8-03B3-4E8D-B7A9-64407D371093}
-		{86DB88E8-FEE3-440C-9121-F673B0C819D9} = {26E458A0-800D-4D0A-A4BA-E1B40744CBA2}
-		{ED0268FF-2042-4FAD-9C00-225CB0B3D87C} = {26E458A0-800D-4D0A-A4BA-E1B40744CBA2}
-		{06EA42AB-893D-4A95-84BB-3132BF9E2677} = {26E458A0-800D-4D0A-A4BA-E1B40744CBA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB1329E7-A57C-4356-AA89-7EA38292DAB3}

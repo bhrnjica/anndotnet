@@ -12,7 +12,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Linq;
-using NumSharp;
 using Tensorflow;
 using static Tensorflow.Binding;
 
@@ -27,7 +26,7 @@ namespace Anndotnet.Vnd
             int? random_seed = 1;
             tf_with(tf.variable_scope("FullyConnected"), delegate
             {
-                var initValue = tf.random_uniform(shape: (x.shape.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+                var initValue = tf.random_uniform(shape: (x.shape.dims.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
                 var initValueb = tf.random_uniform(shape: 5, seed: random_seed, dtype: TF_DataType.TF_FLOAT);
 
                 var w1 = tf.Variable<Tensor>(initValue, name: "w1");
@@ -57,7 +56,7 @@ namespace Anndotnet.Vnd
             int? random_seed = 1;
             tf_with(tf.variable_scope("FullyConnected"), delegate
             {
-                var initValue = tf.random_uniform(shape: (x.shape.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+                var initValue = tf.random_uniform(shape: (x.shape.dims.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
                 var initValueb = tf.random_uniform(shape: 5, seed: random_seed, dtype: TF_DataType.TF_FLOAT);
 
                 var w1 = tf.Variable<Tensor>(initValue, name: "w1");
@@ -87,7 +86,7 @@ namespace Anndotnet.Vnd
             int? random_seed = 1;
             tf_with(tf.variable_scope("FullyConnected"), delegate
             {
-                var initValue = tf.random_uniform(shape: (x.shape.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
+                var initValue = tf.random_uniform(shape: (x.shape.dims.Last(), 5), seed: random_seed, dtype: TF_DataType.TF_FLOAT);
                 var initValueb = tf.random_uniform(shape: 5, seed: random_seed, dtype: TF_DataType.TF_FLOAT);
 
                 var w1 = tf.Variable<Tensor>(initValue, name: "w1");

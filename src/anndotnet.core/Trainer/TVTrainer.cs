@@ -10,19 +10,16 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Tensorflow;
-using static Tensorflow.Binding;
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Interface;
 using Anndotnet.Core.Progress;
-using NumSharp;
-using Anndotnet.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using Tensorflow;
+using static Tensorflow.Binding;
+using Tensorflow.NumPy;
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
 namespace Anndotnet.Core.Trainers
@@ -56,18 +53,18 @@ namespace Anndotnet.Core.Trainers
 
         internal (DataFeed train, DataFeed validation) Split(int seed, bool shuffle = false)
         {
-            int testSize = (X.shape[0] * _percentageSplit) / 100;
-            int trainSize = X.shape[0] - testSize;
+            int testSize = (int)((X.shape[0] * _percentageSplit) / 100);
+            int trainSize = (int)X.shape[0] - testSize;
 
             //generate indexes
             var random = new Random(seed);
-            var lst = Enumerable.Range(0, X.shape[0]);
+            var lst = Enumerable.Range(0, (int)X.shape[0]);
             var trainIds = shuffle ? lst.OrderBy(t => random.Next()).ToArray().Take(trainSize) : lst.Take(trainSize);
             var testIds = lst.Except(trainIds);
 
             //create ndarrays
-            var trArray = np.array(trainIds);
-            var teArray = np.array(testIds);
+            var trArray = np.array(trainIds.ToArray());
+            var teArray = np.array(testIds.ToArray());
             //
             var trainX = X[trArray];
             var testX = X[teArray];
@@ -151,7 +148,7 @@ namespace Anndotnet.Core.Trainers
                     }
                 }
 
-                session.close();
+                //session.close();
                 session.Dispose();
                 return true;
             }

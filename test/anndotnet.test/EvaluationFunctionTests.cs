@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
+﻿using Anndotnet.Core.TensorflowEx;
+using NUnit.Framework;
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using NumSharp;
 using Tensorflow;
+using Tensorflow.NumPy;
 using static Tensorflow.Binding;
-using Anndotnet.Core.TensorflowEx;
 
 namespace anndotnet.test
 {
@@ -41,7 +39,7 @@ namespace anndotnet.test
             var mean = tf.reduce_mean(np0,0);
             Assert.IsTrue(mean.ToArray<float>()[0] == 3.5);
 
-            var sum = tf.reduce_sum(new[] { a, b, c });
+            var sum = tf.reduce_sum(new NDArray(new[] { a, b, c }));
             Assert.IsTrue(sum.ToArray<float>()[0] == 10);
 
         }

@@ -11,14 +11,8 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core.Data;
-using NumSharp;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Tensorflow;
-
+using Tensorflow.NumPy;
 namespace Anndotnet.Core.Interface
 {
     public interface IEvaluator

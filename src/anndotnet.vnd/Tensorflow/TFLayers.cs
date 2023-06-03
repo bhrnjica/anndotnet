@@ -10,14 +10,10 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
+using Anndotnet.Core;
 using System.Linq;
-using System.Text;
 using Tensorflow;
 using static Tensorflow.Binding;
-using Anndotnet.Core;
-using NumSharp;
 
 namespace Anndotnet.Vnd
 {
@@ -29,7 +25,7 @@ namespace Anndotnet.Vnd
             Tensor z = null;
             tf_with(tf.variable_scope(name), delegate
             {
-                int inDim = inX.shape.Last();
+                int inDim = (int)inX.shape.dims.Last();
                 int ouDim = outputDim;
 
                 //generate initial values

@@ -20,7 +20,7 @@ namespace Anndotnet.Vnd
 {
     public class TFBase
     {
-        protected Tensor RandomValues(ValueInitializer initValueType, TensorShape shape, TF_DataType type, int seed=1234)
+        protected Tensor RandomValues(ValueInitializer initValueType, Shape shape, TF_DataType type, int seed=1234)
         {
             switch (initValueType)
             {
