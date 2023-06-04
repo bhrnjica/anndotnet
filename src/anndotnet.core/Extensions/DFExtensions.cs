@@ -22,21 +22,21 @@ namespace Anndotnet.Core.Extensions
 {
     public static class DFExtensions
     {
-       public static (NDArray X, NDArray Y)  TransformData(this DataFrame df, List<ColumnInfo> metadata)
+        public static (NDArray X, NDArray Y) TransformData(this DataFrame df, List<ColumnInfo> metadata)
         {
             //extract features and label from DataFrame
-            var feats = metadata.Where(x=>x.MLType == MLColumnType.Feature).ToList();
+            var feats = metadata.Where(x => x.MLType == MLColumnType.Feature).ToList();
             var labelInfo = metadata.Where(x => x.MLType == MLColumnType.Label).ToList();
 
             //transform feature
             var dfF = df[feats.Select(x => x.Name).ToArray()];
             var featureDf = prepareDf(dfF, feats);
 
-            
+
             //transform label
-            var lDf = df.Create((labelInfo.Select(x=>x.Name).FirstOrDefault(), null));
+            var lDf = df.Create((labelInfo.Select(x => x.Name).FirstOrDefault(), null));
             var labelDf = prepareDf(lDf, labelInfo);
-            
+
             //iterate through rows
             var x = featureDf.ToNDArray();
             var y = labelDf.ToNDArray();
@@ -44,13 +44,15 @@ namespace Anndotnet.Core.Extensions
             return (x, y);
         }
 
-       private static DataFrame prepareDf(DataFrame df, List<ColumnInfo> metadata)
+        private static DataFrame prepareDf(DataFrame df, List<ColumnInfo> metadata)
         {
             var cols = df.Columns;
 
             //check id all columns have valid type
             if (df.ColTypes.Any(x => x == ColType.DT))
+            {
                 throw new Exception("DataTime column cannot be directly prepare to ML. Consider to transform it to another type.");
+            }
 
             //string and categorical column should be transformed in to OneHot Encoding
             var finalColumns = new List<String>();
@@ -67,6 +69,7 @@ namespace Anndotnet.Core.Extensions
                 {
                     (var edf, var vVal, var eVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
                     finalDf = finalDf.Append(edf, verticaly: false);
+
                     //store encoded class values to metadata
                     metadata[j].Transformer.ClassValues = eVal;
 
@@ -86,37 +89,45 @@ namespace Anndotnet.Core.Extensions
                 {
                     (var ndf, var nVal, var sVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
                     metadata[j].Transformer.NormalizationValues = nVal;
+
                     finalColumns.Add(cols[j]);
                 }
                 else
-                 finalColumns.Add(cols[j]);
+                    finalColumns.Add(cols[j]);
             }
 
             return finalDf[finalColumns.ToArray()];
         }
 
-       public static NDArray ToNDArray(this DataFrame df)
+        public static NDArray ToNDArray(this DataFrame df)
         {
+            
             var shape = new Shape(df.RowCount(), df.ColCount());
-            var lst = new List<float>();
-            foreach(var r in df.GetRowEnumerator())
-                lst.AddRange(r.Select(x=> Convert.ToSingle(x)).ToList());
-            var arr = lst.ToArray();
+            var lst = new float[shape[0], shape[1]];
+
+            for (int r = 0; r < df.RowCount(); r++)
+            {
+                for (int c = 0; c < df.ColCount(); c++)
+                {
+                   lst[r, c] = Convert.ToSingle(df[r, c]);
+                }
+            }
 
             //
-            var ndArray = new NDArray(arr);
-            
-            //reshape the data if the dimension is greather than 1
-            if(df.ColCount()>0)
-                ndArray = ndArray.reshape(shape);
+            var ndArray = new NDArray(lst);
+
+            if (shape[1] == 1)
+            {
+               ndArray = ndArray.reshape(new Shape(shape[0])); 
+            }
 
             return ndArray;
         }
 
-       public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
+        public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
         {
             List<ColumnInfo> cols = new List<ColumnInfo>();
-            for(int i=0; i < df.ColCount(); i++)
+            for (int i = 0; i < df.ColCount(); i++)
             {
                 var name = df.Columns[i];
                 var type = df.ColTypes[i];
@@ -125,8 +136,8 @@ namespace Anndotnet.Core.Extensions
                 if (name == label)
                 {
                     c.MLType = MLColumnType.Label;
-                    
-                    if (type== ColType.IN || type == ColType.STR)
+
+                    if (type == ColType.IN || type == ColType.STR)
                     {
                         c.ValueColumnType = ColType.IN;
                         c.Transformer.DataNormalization = ColumnTransformer.OneHot;
@@ -140,9 +151,9 @@ namespace Anndotnet.Core.Extensions
                     c.ValueColumnType = type;
                     if (type == ColType.IN)
                         c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
-                    else if(type == ColType.F32 || type == ColType.DD)
+                    else if (type == ColType.F32 || type == ColType.DD)
                         c.Transformer.DataNormalization = ColumnTransformer.Standardizer;
-                    else if(type == ColType.I2)
+                    else if (type == ColType.I2)
                         c.Transformer.DataNormalization = ColumnTransformer.Binary1;
                 }
 
@@ -151,26 +162,26 @@ namespace Anndotnet.Core.Extensions
                 c.Transformer.ClassValues = null;
                 c.MissingValue = Aggregation.None;
                 c.Name = name;
-                
+
                 cols.Add(c);
             }
 
             return cols;
         }
 
-       public static DataFrame HandlingMissingValue(this DataFrame df, List<ColumnInfo> metadata)
-       {
-           foreach(var m in metadata)                
+        public static DataFrame HandlingMissingValue(this DataFrame df, List<ColumnInfo> metadata)
+        {
+            foreach (var m in metadata)
             {
                 df.FillNA(m.Name, m.MissingValue);
             }
-           return df;
-       }
+            return df;
+        }
 
-       public static DataFrame FromDataParser(DataParser parser)
+        public static DataFrame FromDataParser(DataParser parser)
         {
             return DataFrame.FromCsv(filePath: parser.RawDataName, sep: parser.ColumnSeparator, names: parser.Header,
-                            dformat: parser.DateFormat,missingValues: parser.MissingValueSymbol,skipLines: parser.SkipLines );
+                            dformat: parser.DateFormat, missingValues: parser.MissingValueSymbol, skipLines: parser.SkipLines);
         }
     }
 }

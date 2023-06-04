@@ -10,15 +10,15 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System.Collections.Generic;
-using Tensorflow;
-using Tensorflow.NumPy;
+using System;
 
-namespace Anndotnet.Core.Interface
+namespace Anndotnet.Core.Data
 {
-    public interface IDataFeed 
+    internal class ExceptionHelper
     {
-        IEnumerable<(Tensor xBatch, Tensor yBatch)> GetNextBatch(int batchSize);
-        (Tensor xBatch, Tensor yBatch) GetFullBatch();
+        internal static Exception InvalidArgument(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

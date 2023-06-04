@@ -44,14 +44,6 @@ namespace Anndotnet.Vnd
             //data preparation and transformation
             (NDArray xData, NDArray yData) = MLFactory.PrepareData(MLConfig);
 
-            //
-            List<int> shapeX = new List<int>();
-            List<int> shapeY = new List<int>();
-            shapeX.Add(-1);//first dimension
-            shapeX.AddRange((IEnumerable<int>)xData.shape.dims.Skip(1));
-            shapeY.Add(-1);//first dimension
-            shapeY.AddRange((IEnumerable<int>)yData.shape.dims.Skip(1));
-
             Session session = null;
             tf.compat.v1.disable_eager_execution();
 
@@ -65,7 +57,14 @@ namespace Anndotnet.Vnd
             if (session == null)
             {
                 //create graph from machine learning configuration
+                var shapeX = xData.shape;
+                var shapeY = yData.shape;   
+                
+                shapeX[0] = -1;
+                shapeY[0] = -1;
+                
                 var graph = createGraph(shapeX, shapeY);
+
                 session = tf.Session(graph);
 
                 // Initialize the variables (i.e. assign their default value)
@@ -104,7 +103,7 @@ namespace Anndotnet.Vnd
             }
         }      
 
-        protected Graph createGraph(List<int> shapeX, List<int> shapeY)
+        protected Graph createGraph(Shape shapeX, Shape shapeY)
         {
             //create variable
             var graph = new Graph().as_default();

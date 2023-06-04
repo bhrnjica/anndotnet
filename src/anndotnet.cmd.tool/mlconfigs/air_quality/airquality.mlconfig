@@ -7,7 +7,7 @@
     "SkipLine": 0,
     "MissingValueSymbol": null,
     "DescriptionSymbol": "!",
-    "RawDataName": "airquality_rawdata.txt",
+    "RawDataName": "mlconfigs/air_quality/airquality_rawdata.txt",
     "Header": [
       "Date",
       "Time",

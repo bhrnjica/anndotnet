@@ -128,7 +128,7 @@ namespace Anndotnet.Vnd
             }
             return null;
         }
-        protected Graph createGraph(List<LayerBase> net,LearningParameters lParams, List<int> shapeX, List<int> shapeY)
+        protected Graph createGraph(List<LayerBase> net,LearningParameters lParams, Shape shapeX, Shape shapeY)
         {
             //create variable
             var graph = new Graph().as_default();

@@ -30,39 +30,79 @@ namespace Anndotnet.Core.Data
         }
 
         
-        public IEnumerable<(NDArray xBatch, NDArray yBatch)> GetNextBatch(int batchSize)
+        public IEnumerable<(Tensor xBatch, Tensor yBatch)> GetNextBatch(int batchSize)
         {
             int batchPos = 0;
             while(true)
             {
-                Slice slice = GetSlice(batchPos, batchSize);
+                Slice slice = GetSlice(batchPos, batchSize, (int)X.shape[0] );
+
+                var xBatch = GetNextBatch(X, slice );
+                var yBatch = GetNextBatch(Y, slice );    
+
                 batchPos++;
-                var xBatch = X[slice];
-                var yBatch = Y[slice];
+
                 if (xBatch.size == 0 || yBatch.size == 0)
                     break;
 
                 yield return (xBatch, yBatch);
-                //if batch-size is equal to zero
+
+
                 if (batchSize == 0)
                     break;
             }
             
         }
+
+
+        public NDArray GetNextBatch(NDArray data, Slice slice)
+        {
+            switch (data.rank)
+            {
+                case 0:
+                    {
+                        throw ExceptionHelper.InvalidArgument("Input data is not valid.");
+                    }
+                case 1:
+                    {
+                        return data[slice];
+                    }
+                case 2:
+                    {
+                        return data[slice, ":"];
+                    }
+                default:
+                    throw ExceptionHelper.InvalidArgument("Dimension of the input data is not supported.");
+
+            }
+         
+        }
         
-        public (NDArray xBatch, NDArray yBatch) GetFullBatch()
+        public (Tensor xBatch, Tensor yBatch) GetFullBatch()
         {
             return (X, Y);
         }
 
 
-       
-        private Slice GetSlice(int batchIndex, int batchSize)
+        private Slice GetSlice(int batchIndex, int batchSize, int datasize)
         {
             int start = batchIndex * batchSize;
-            int end = batchSize == 0 ? -1 : start + batchSize;           
+
+            int end = batchSize == 0 ? -1 : start + batchSize;
+
+            if (start > datasize)
+            {
+                start = datasize;
+            }
+
+            if (end > datasize)
+            {
+                end = datasize;
+            }
+
             var slice = new Slice(start, end);
             return slice;
+
         }
 
         

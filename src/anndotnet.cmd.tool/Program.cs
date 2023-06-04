@@ -104,7 +104,7 @@ namespace AnnDotNET.Tool
 
         private static void TitanicMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"..\..\..\..\\mlconfigs\titanic\titanic.mlconfig");
+            var mlCOnf = MLFactory.Load(@"mlconfigs\titanic\titanic.mlconfig");
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
@@ -138,12 +138,12 @@ namespace AnnDotNET.Tool
             var r = new MLRunner(net, lParams, tParams, x, y,null);
             r.Run();
 
-            await r.SaveMlConfig(iris.Metadata,iris.Parser, "../../../../mlconfigs/iris/iris.mlconfig");
+            await r.SaveMlConfig(iris.Metadata,iris.Parser, "mlconfigs/iris/iris.mlconfig");
         }
 
         private static void IrisFromMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"../../../../mlconfigs\iris\iris.mlconfig");
+            var mlCOnf = MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
@@ -165,7 +165,7 @@ namespace AnnDotNET.Tool
 
         private static void AirQualityFromMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"../../../../mlconfigs\air_quality\airquality.mlconfig");
+            var mlCOnf = MLFactory.Load(@"mlconfigs\air_quality\airquality.mlconfig");
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //

@@ -38,7 +38,8 @@ namespace Anndotnet.Vnd
         {
             var dateFormat = mlConfig.Metadata.Where(x => x.ValueColumnType == ColType.DT).Select(x => x.ValueFormat).FirstOrDefault();
             //load data into DataFrame
-            var df = Daany.DataFrame.FromCsv(filePath: $"{mlConfig.Paths["MainFolder"]}/{mlConfig.Parser.RawDataName}", sep: mlConfig.Parser.ColumnSeparator, 
+            var df = Daany.DataFrame.FromCsv(filePath: $"{mlConfig.Parser.RawDataName}", 
+                sep: mlConfig.Parser.ColumnSeparator, 
                                                 names: mlConfig.
                                                 Parser.Header, 
                                                 colTypes: mlConfig.Metadata.Select(x=>x.ValueColumnType).ToArray(),
@@ -145,7 +146,7 @@ namespace Anndotnet.Vnd
             return z;
         }
 
-        public static (Tensor x, Tensor y) CreatePlaceholders(List<int> shapeX, List<int> shapeY)
+        public static (Tensor x, Tensor y) CreatePlaceholders(Shape shapeX, Shape shapeY)
         {
 
             Tensor x= null;
@@ -153,8 +154,8 @@ namespace Anndotnet.Vnd
 
             // Placeholders for inputs (x) and outputs(y)
             var plc = new Placeholders();
-            x = plc.Create(shapeX.ToArray(), "X", TF_DataType.TF_FLOAT);
-            y = plc.Create(shapeY.ToArray(), "Y", TF_DataType.TF_FLOAT);
+            x = plc.Create(shapeX, "X", TF_DataType.TF_FLOAT);
+            y = plc.Create(shapeY, "Y", TF_DataType.TF_FLOAT);
 
             return (x, y);
         }

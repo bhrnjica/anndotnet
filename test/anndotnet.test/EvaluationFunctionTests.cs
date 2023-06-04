@@ -40,6 +40,7 @@ namespace anndotnet.test
             Assert.IsTrue(mean.ToArray<float>()[0] == 3.5);
 
             var sum = tf.reduce_sum(new NDArray(new[] { a, b, c }));
+
             Assert.IsTrue(sum.ToArray<float>()[0] == 10);
 
         }
