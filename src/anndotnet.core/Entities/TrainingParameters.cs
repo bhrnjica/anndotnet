@@ -31,6 +31,7 @@ namespace Anndotnet.Core
         public int KFold { get; set; }
 
         public int SplitPercentage { get; set; }
+
         [JsonIgnore]
         public Action<ProgressReport> Progress { get; set; }
         public string LastBestModel { get; set; }

@@ -2,6 +2,8 @@
 using Anndotnet.Vnd;
 using Anndotnet.Vnd.Samples;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Tensorflow.NumPy;
 
@@ -108,7 +110,7 @@ namespace AnnDotNET.Tool
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
-            var mlRunner = new MLConfigRunner(mlConfig1);
+            var mlRunner = new MLRunner(mlConfig1);
             mlRunner.Run();
         }
 
@@ -134,7 +136,10 @@ namespace AnnDotNET.Tool
             (NDArray x, NDArray y) = await iris.GenerateData(); 
             (TrainingParameters tParams, LearningParameters lParams) = iris.GenerateParameters();
             var net = iris.CreateNet();
-
+            var pats = new Dictionary<string, string>();
+            pats.Add("MainFolder","mlconfigs/iris");
+            pats.Add("MLConfig", @"mlconfigs/iris/iris.mlconfig");
+            
             var r = new MLRunner(net, lParams, tParams, x, y,null);
             r.Run();
 
@@ -147,7 +152,7 @@ namespace AnnDotNET.Tool
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
-            var mlRunner = new MLConfigRunner(mlConfig1);
+            var mlRunner = new MLRunner(mlConfig1);
             mlRunner.Run();
         }
 
@@ -169,7 +174,7 @@ namespace AnnDotNET.Tool
             mlCOnf.Wait();
             var mlConfig1 = mlCOnf.Result;
             //
-            var mlRunner = new MLConfigRunner(mlConfig1);
+            var mlRunner = new MLRunner(mlConfig1);
             mlRunner.Run();
         }
         

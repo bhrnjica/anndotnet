@@ -7,10 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="Mlconfig\MLFactory_old.cs" />
+    <Compile Remove="Mlconfig\old\MLConfigRunner.cs" />
+    <Compile Remove="Mlconfig\old\MLFactory_old.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Mlconfig\MLFactory_old.cs" />
+    <None Include="Mlconfig\old\MLConfigRunner.cs" />
+    <None Include="Mlconfig\old\MLFactory_old.cs" />
   </ItemGroup>
 
   <ItemGroup>

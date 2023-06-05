@@ -11,12 +11,16 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core;
+using Anndotnet.Core.Interfaces;
 
 namespace Anndotnet.Vnd.Layers
 {
-    public class ActLayer : LayerBase
+    public class ActLayer : ILayer
     {
         public Activation Activation { get; set; }
+        public string Name { get; set; }
+        public LayerType Type { get;set; }
+
         public ActLayer() => Type = LayerType.Activation;
     }
 }

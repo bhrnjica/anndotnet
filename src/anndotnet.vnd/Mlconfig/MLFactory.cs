@@ -13,6 +13,7 @@
 using Anndotnet.Core;
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Extensions;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Vnd.Layers;
 using Anndotnet.Vnd.Util;
 using Daany;
@@ -50,7 +51,7 @@ namespace Anndotnet.Vnd
             return df.TransformData(mlConfig.Metadata);
         }
 
-        public static Tensor CreateNetwrok(List<LayerBase> layers, Tensor inX, Tensor outY, int seed = 1234)
+        public static Tensor CreateNetwrok(List<ILayer> layers, Tensor inX, Tensor outY, int seed = 1234)
         {
             //
             ValueInitializer init = ValueInitializer.GlorotNormal;

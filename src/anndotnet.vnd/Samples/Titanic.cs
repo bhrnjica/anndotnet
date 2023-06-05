@@ -1,5 +1,6 @@
 ﻿using Anndotnet.Core;
 using Anndotnet.Core.Extensions;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Vnd.Layers;
 using Daany;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Anndotnet.Vnd.Samples
             
             //load titanic data into Daany.DataFrame
             var rawdata = DataFrame.FromCsv("mlconfigs/titanic/titanic_full_raw.csv", ',',missingValues: new char[] { '?' }, colTypes: colTypes);
-            await Task.Delay(1);
+            await Task.CompletedTask;
 
             //remove unnesessary columns
             var data = rawdata["pclass", "sex", "age", "sibsp", "fare", "embarked","survived"];
@@ -66,9 +67,9 @@ namespace Anndotnet.Vnd.Samples
             return (tParams, lParams);
         }
 
-        public  List<LayerBase>  CreateNet()
+        public  List<ILayer>  CreateNet()
         {
-            return new List<LayerBase>()
+            return new List<ILayer>()
             {
                 new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 7 },
                 new ActLayer(){Type= LayerType.Activation, Name="ReLu", Activation=Activation.ReLU},

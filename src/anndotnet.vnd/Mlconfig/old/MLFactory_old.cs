@@ -19,7 +19,7 @@ using System.Text;
 using Tensorflow;
 using static Tensorflow.Binding;
 using Daany;
-using NumSharp;
+
 using Anndotnet.Core;
 using Anndotnet.Core.Data;
 

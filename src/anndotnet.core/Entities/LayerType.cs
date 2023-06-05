@@ -10,14 +10,25 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using Anndotnet.Core;
-
-namespace Anndotnet.Vnd.Layers
+namespace Anndotnet.Core
 {
-    public class LayerBase
+    //available network layer in the library
+    public enum LayerType
     {
-        public string Name { get; set; }
-        public LayerType Type { get; set; }
-    }
-       
+        Normalization,
+        Scale,
+        Dense,
+        Embedding,
+        Drop,
+        LSTM,
+        NALU,
+        Conv1D,
+        Conv2D,
+        Pooling1D,
+        Pooling2D,
+        CudaStackedLSTM,
+        CudaStackedGRU,
+        Custom,
+        Activation
+    }    
 }

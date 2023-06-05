@@ -1,5 +1,6 @@
 ﻿using Anndotnet.Core;
 using Anndotnet.Core.Extensions;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Vnd.Layers;
 using Daany;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Anndotnet.Vnd.Samples
             var data = rawdata["Month", "Hour", "CO(GT)", "PT08.S1(CO)", "NMHC(GT)", "C6H6(GT)", "PT08.S2(NMHC)", "NOx(GT)",
                 "PT08.S3(NOx)", "NO2(GT)", "PT08.S4(NO2)", "PT08.S5(O3)", "T", "RH", "AH", "Quality"];
 
-            await Task.Delay(1);
+            await Task.CompletedTask;
 
             var mData = data.ParseMetadata("Quality");
 
@@ -51,9 +52,9 @@ namespace Anndotnet.Vnd.Samples
             return (tParams, lParams);
         }
 
-        public static List<LayerBase>  CreateNet()
+        public static List<ILayer>  CreateNet()
         {
-            return new List<LayerBase>()
+            return new List<ILayer>()
             {
                 new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 15 },
                 new ActLayer(){Type= LayerType.Activation, Name="ReLuLayer", Activation=Activation.ReLU},

@@ -1,5 +1,7 @@
 ﻿using Anndotnet.Core;
 using Anndotnet.Core.Extensions;
+using Anndotnet.Core.Interface;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Vnd.Layers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,9 +10,11 @@ using Tensorflow.NumPy;
 namespace Anndotnet.Vnd.Samples
 {
 
-    public  class IrisSample : SampleBase
+    public  class IrisSample : ISample
     {
-        
+        public List<ColumnInfo> Metadata { get; set; }
+        public DataParser Parser { get; set; }
+
         public async Task<(NDArray X, NDArray Y)> GenerateData()
         {
             Parser = new DataParser();
@@ -22,7 +26,7 @@ namespace Anndotnet.Vnd.Samples
             //unzip the file
             var rawdata = DFExtensions.FromDataParser(Parser);
 
-            await Task.Delay(1);
+            await Task.CompletedTask;
 
             var mData = rawdata.ParseMetadata("species");
             Metadata = mData;
@@ -53,9 +57,9 @@ namespace Anndotnet.Vnd.Samples
             return (tParams, lParams);
         }
 
-        public  List<LayerBase>  CreateNet()
+        public  List<ILayer>  CreateNet()
         {
-            return new List<LayerBase>()
+            return new List<ILayer>()
             {
                 new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 7 },
                 new ActLayer(){Type= LayerType.Activation, Name="ReLu", Activation=Activation.ReLU},

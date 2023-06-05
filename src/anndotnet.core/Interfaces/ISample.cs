@@ -1,9 +1,9 @@
 ﻿using Anndotnet.Core;
 using System.Collections.Generic;
 
-namespace Anndotnet.Vnd.Samples
+namespace Anndotnet.Core.Interface
 {
-    public class SampleBase
+    public interface ISample
     {
         public List<ColumnInfo> Metadata { get; set; }
         public DataParser Parser { get; set; }

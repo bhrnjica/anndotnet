@@ -13,6 +13,7 @@
 using Anndotnet.Core;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Core.Trainers;
+using Anndotnet.Vnd;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,13 +21,13 @@ using Tensorflow;
 using Tensorflow.NumPy;
 using static Tensorflow.Binding;
 
-namespace Anndotnet.Vnd
+namespace anndotnet.vnd.Mlconfig.old
 {
     public class MLConfigRunner : MLRunnerBase
     {
         MLConfig MLConfig { get; set; }
 
-        public MLConfigRunner(MLConfig mlConfig):base()
+        public MLConfigRunner(MLConfig mlConfig) : base()
         {
             _config = new ConfigProto
             {
@@ -51,25 +52,25 @@ namespace Anndotnet.Vnd
             if (MLConfig.TParameters.Retrain && MLConfig.Paths.ContainsKey("BestModel"))
             {
                 session = loadModelCheckPoint(MLConfig.Paths);
-                
+
             }
             //create network from mlconfig file
             if (session == null)
             {
                 //create graph from machine learning configuration
                 var shapeX = xData.shape;
-                var shapeY = yData.shape;   
-                
+                var shapeY = yData.shape;
+
                 shapeX[0] = -1;
                 shapeY[0] = -1;
-                
+
                 var graph = createGraph(shapeX, shapeY);
 
                 session = tf.Session(graph);
 
                 // Initialize the variables (i.e. assign their default value)
                 _init = tf.global_variables_initializer();
-                
+
                 // Run the initializer
                 session.run(_init);
 
@@ -79,10 +80,10 @@ namespace Anndotnet.Vnd
             Train(xData, yData, session);
 
             //evaluation
-           // Evaluate();
+            // Evaluate();
 
             //prediction
-            
+
             return;
 
         }
@@ -101,7 +102,7 @@ namespace Anndotnet.Vnd
                 var tr = new CVTrainer(xData, yData, MLConfig.TParameters.KFold);
                 tr.Run(session, MLConfig.LParameters, MLConfig.TParameters, processModel);
             }
-        }      
+        }
 
         protected Graph createGraph(Shape shapeX, Shape shapeY)
         {
@@ -116,7 +117,7 @@ namespace Anndotnet.Vnd
                 //create placeholders
                 (x, y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
             });
-                    
+
             //create network
             var z = MLFactory.CreateNetwrok(MLConfig.Network, x, y);
             Tensor loss = null;
@@ -130,15 +131,15 @@ namespace Anndotnet.Vnd
 
                 tf_with(tf.variable_scope("Optimizer"), delegate
                 {
-                   var optimizer = FunctionEx.Optimizer(MLConfig.LParameters, loss);
+                    var optimizer = FunctionEx.Optimizer(MLConfig.LParameters, loss);
                 });
 
-                for(int i=0; i< MLConfig.LParameters.EvaluationFunctions.Count; i++)
+                for (int i = 0; i < MLConfig.LParameters.EvaluationFunctions.Count; i++)
                 {
                     var e = MLConfig.LParameters.EvaluationFunctions[i];
                     tf_with(tf.variable_scope($"Eval{i}"), delegate
                     {
-                        var ev  = FunctionEx.Create(y, z, e);
+                        var ev = FunctionEx.Create(y, z, e);
                     });
                 }
             });
@@ -157,12 +158,12 @@ namespace Anndotnet.Vnd
             else
             {
                 //save only when training is completed.
-                if(tp.ProgressType== ProgressType.Completed)
+                if (tp.ProgressType == ProgressType.Completed)
                 {
                     saveModel(session, MLConfig.Paths);
                     //MLFactory.Save(MLConfig, MLConfig.Paths["MLConfig"]).Wait();
                 }
-              
+
                 return null;
             }
 

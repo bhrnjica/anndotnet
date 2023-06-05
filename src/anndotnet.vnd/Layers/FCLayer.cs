@@ -10,14 +10,19 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+
 using Anndotnet.Core;
+using Anndotnet.Core.Interfaces;
 
 namespace Anndotnet.Vnd.Layers
 {
    
-    public class FCLayer : LayerBase
+    public class FCLayer : ILayer
     {
         public int OutDim { get; set; }
+        public string Name { get; set; }
+        public LayerType Type { get; set; }
+
         public FCLayer() => Type = LayerType.Dense;
     }
     

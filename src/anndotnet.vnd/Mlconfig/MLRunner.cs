@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Core.Trainers;
 using Anndotnet.Vnd.Layers;
@@ -27,13 +28,14 @@ namespace Anndotnet.Vnd
     public class MLRunner : MLRunnerBase
     {
         List<ColumnInfo> Metadata { get; set; }
-        List<LayerBase> Network { get; set; }
+        List<ILayer> Network { get; set; }
         LearningParameters LParameters { get; set; }
         TrainingParameters TParameters { get; set; }
+
         NDArray X;
         NDArray Y;
 
-        public MLRunner(List<LayerBase> network, LearningParameters lParam, TrainingParameters tParam, NDArray xData, NDArray yData, List<ColumnInfo> metadata):base()
+        public MLRunner(List<ILayer> network, LearningParameters lParam, TrainingParameters tParam, NDArray xData, NDArray yData, List<ColumnInfo> metadata):base()
         {
             Network = network;
             LParameters = lParam;
@@ -41,6 +43,26 @@ namespace Anndotnet.Vnd
             X = xData;
             Y = yData;
             Metadata = metadata;
+        }
+
+        public MLRunner(MLConfig mlConfig) : base()
+        {
+            _config = new ConfigProto
+            {
+                IntraOpParallelismThreads = 1,
+                InterOpParallelismThreads = 1,
+                LogDevicePlacement = true,
+            };
+
+            Network = mlConfig.Network;
+            LParameters = mlConfig.LParameters;
+            TParameters = mlConfig.TParameters;
+            Metadata = mlConfig.Metadata;
+
+            //data preparation and transformation
+            (NDArray xData, NDArray yData) = MLFactory.PrepareData(mlConfig);
+            X = xData;
+            Y = yData;
         }
 
         public async Task SaveMlConfig(List<ColumnInfo> metadata, DataParser parser, string filePath)
@@ -57,8 +79,15 @@ namespace Anndotnet.Vnd
             Session session = null;
             tf.compat.v1.disable_eager_execution();
 
+            //load trained model if exists
+            if (TParameters.Retrain && false )
+            {
+                session = loadModelCheckPoint( null );
+
+            }
+
             //create network from network collection
-            if (session == null)
+            if ( session == null )
             {
                 //create graph from machine learning configuration
                 var shapeX = X.shape;
@@ -82,6 +111,7 @@ namespace Anndotnet.Vnd
             Train(X, Y, session);
 
             //evaluation
+            //Evaluate
 
             //prediction
             return;
@@ -154,23 +184,20 @@ namespace Anndotnet.Vnd
         {
             if (session == null)
             {
-                return null;// loadModelCheckPoint();
+                return loadModelCheckPoint(null);
             }
             else
             {
                 //save only when training is completed.
                 if(tp.ProgressType== ProgressType.Completed)
                 {
-                    var paths = new Dictionary<string,string>();
-                    var mlConfig = getMLConfig();
-                    saveModel(session, paths);
+                    saveModel(session, null);
                 }
               
                 return null;
             }
 
         }
-       
         private MLConfig getMLConfig()
         {
             var mlConfig = new MLConfig();
@@ -179,12 +206,11 @@ namespace Anndotnet.Vnd
             mlConfig.TParameters = TParameters;
             mlConfig.Metadata = Metadata;
             mlConfig.Network = Network;
-            mlConfig.Paths = null;
             mlConfig.Parser = new DataParser();
 
             return mlConfig;
         }
 
-    
+
     }
 }

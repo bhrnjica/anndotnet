@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Vnd.Layers;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,13 @@ using System.Text.Json.Serialization;
 namespace Anndotnet.Vnd.Util
 {
 
-    public class JsonLayerConverter : JsonConverter<LayerBase>
+    public class JsonLayerConverter : JsonConverter<ILayer>
     {
 
         public override bool CanConvert(Type typeToConvert) =>
-            typeof(LayerBase).IsAssignableFrom(typeToConvert);
+            typeof(ILayer).IsAssignableFrom(typeToConvert);
 
-        public override LayerBase Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override ILayer Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
@@ -53,7 +54,7 @@ namespace Anndotnet.Vnd.Util
             }
 
             LayerType typeDiscriminator = (LayerType)reader.GetInt32();
-            LayerBase layer = typeDiscriminator switch
+            ILayer layer = typeDiscriminator switch
             {
                 LayerType.Activation => new ActLayer(),
                 LayerType.Dense => new FCLayer(),
@@ -101,7 +102,7 @@ namespace Anndotnet.Vnd.Util
             throw new JsonException();
         }
 
-        public override void Write(Utf8JsonWriter writer, LayerBase layerBase, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, ILayer layerBase, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
@@ -125,6 +126,8 @@ namespace Anndotnet.Vnd.Util
 
             writer.WriteEndObject();
         }
+
+
     }
 }
 

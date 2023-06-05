@@ -26,6 +26,7 @@ namespace Anndotnet.Core.Progress
             var progress = string.Join("", Enumerable.Range(1, n).Select(x => "="));
             var evalT = string.Join(" - ", tp.TrainEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
             var evalV = string.Join(" - ", tp.ValidEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
+            
             Console.WriteLine($"Fold {tp.Fold}/{tp.KFold} \t Epoch {tp.Epoch}/{tp.Epochs} \t[{progress}] \n\r- loss:{Math.Round(tp.TrainLoss, 3)} - {evalT} - val_loss:{Math.Round(tp.ValidLoss, 3)} - {evalV}");
             Console.WriteLine();
         }

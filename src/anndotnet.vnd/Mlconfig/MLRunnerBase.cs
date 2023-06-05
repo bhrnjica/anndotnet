@@ -13,6 +13,7 @@
 using Anndotnet.Core;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interface;
+using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Vnd.Layers;
 using System;
@@ -128,7 +129,7 @@ namespace Anndotnet.Vnd
             }
             return null;
         }
-        protected Graph createGraph(List<LayerBase> net,LearningParameters lParams, Shape shapeX, Shape shapeY)
+        protected Graph createGraph(List<ILayer> net,LearningParameters lParams, Shape shapeX, Shape shapeY)
         {
             //create variable
             var graph = new Graph().as_default();
