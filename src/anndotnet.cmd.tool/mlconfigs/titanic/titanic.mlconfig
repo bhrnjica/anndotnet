@@ -1,0 +1,172 @@
+{
+  "Id": "5ba4060a-ae8c-4e3a-983a-4d466e0d9d81",
+  "Parser": {
+    "RowSeparator": "\r\n",
+    "ColumnSeparator": ";",
+    "HasHeader": false,
+    "SkipLines": 0,
+    "MissingValueSymbol": null,
+    "DescriptionSymbol": "!",
+    "RawDataName": "mlconfigs/titanic/titanic_raw.txt",
+    "Header": [
+      "sex",
+      "age",
+      "sibsp",
+      "parch",
+      "pclass",
+      "survived"
+    ],
+    "DateFormat": null
+  },
+  "Metadata": [
+    {
+      "Id": 0,
+      "Name": "sex",
+      "MLType": "feature",
+      "ValueColumnType": "in",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "Binary1",
+        "ClassValues": [
+          "male",
+          "femaile"
+        ],
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 1,
+      "Name": "age",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          3.0573332,
+          0.4358663
+        ]
+      }
+    },
+    {
+      "Id": 2,
+      "Name": "sibsp",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          3.758,
+          1.7652982
+        ]
+      }
+    },
+    {
+      "Id": 3,
+      "Name": "parch",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          1.1993333,
+          0.76223767
+        ]
+      }
+    },
+    {
+      "Id": 4,
+      "Name": "pclass",
+      "MLType": "feature",
+      "ValueColumnType": "in",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "oneHot",
+        "ClassValues": [
+          "1",
+          "2",
+          "3"
+        ],
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 5,
+      "Name": "survived",
+      "MLType": "label",
+      "ValueColumnType": "in",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "oneHot",
+        "ClassValues": [
+          "no",
+          "yes"
+        ],
+        "NormalizationValues": null
+      }
+    }
+
+  ],
+  "Network": [
+    {
+      "Type": 2,
+      "OutDim": 7,
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": 14,
+      "Activation": 1,
+      "Name": "ReLu"
+    },
+    {
+      "Type": 2,
+      "OutDim": 2,
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": 14,
+      "Activation": 2,
+      "Name": "Softmax"
+    }
+  ],
+  "LParameters": {
+    "LearnerType": "adam",
+    "LossFunction": "cce",
+    "EvaluationFunctions": [
+      "cAcc",
+      "cErr"
+    ],
+    "LearningRate": 0.01,
+    "UsePolyDecay": false,
+    "StartLRate": 0,
+    "EndLRate": 0,
+    "DecayPower": 0,
+    "DecaySteps": 0,
+    "Momentum": 0,
+    "L1Regularizer": 0,
+    "L2Regularizer": 0
+  },
+  "TParameters": {
+    "TrainingType": "tvTraining",
+    "EarlyStopping": "none",
+    "Retrain": true,
+    "Epochs": 500,
+    "ProgressStep": 10,
+    "MinibatchSize": 100,
+    "KFold": 5,
+    "SplitPercentage": 20,
+    "LastBestModel": null
+  },
+  "Paths": null
+}

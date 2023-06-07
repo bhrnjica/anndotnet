@@ -189,7 +189,7 @@ namespace Anndotnet.Vnd
             else
             {
                 //save only when training is completed.
-                if(tp.ProgressType== ProgressType.Completed)
+                if(tp.ProgressType== ProgressType.Completed && false)
                 {
                     saveModel(session, null);
                 }

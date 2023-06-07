@@ -10,7 +10,7 @@ using Tensorflow.NumPy;
 
 namespace Anndotnet.Vnd.Samples
 {
-    public  class SlampTestSample
+    public class SlampTestSample
     {
 
         public List<ColumnInfo> Metadata { get; set; }
@@ -55,9 +55,9 @@ namespace Anndotnet.Vnd.Samples
             (NDArray X, NDArray Y) = data.TransformData(mData);
 
             Metadata = mData;
-            return (X,Y);
+            return (X, Y);
         }
-        public  (TrainingParameters tPArams, LearningParameters lParams) GenerateParameters()
+        public (TrainingParameters tPArams, LearningParameters lParams) GenerateParameters()
         {
             var lParams = new LearningParameters()
 
@@ -70,12 +70,12 @@ namespace Anndotnet.Vnd.Samples
                 LearningRate = 0.01f
             };
 
-            var tParams = new TrainingParameters() { Retrain= false};
+            var tParams = new TrainingParameters() { Retrain = false };
 
             return (tParams, lParams);
         }
 
-        public  List<ILayer>  CreateNet()
+        public List<ILayer> CreateNet()
         {
             return new List<ILayer>()
             {
@@ -84,7 +84,7 @@ namespace Anndotnet.Vnd.Samples
                 new FCLayer(){Type= LayerType.Dense, Name="FCLAyer02", OutDim= 1 },
             };
         }
-       
-    
+
+
     }
 }

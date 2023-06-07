@@ -53,7 +53,7 @@ namespace AnnDotNET.Tool
             }
             else if (key == "3")
             {
-                AirQualityFromMLConfig();
+                await AirQualityFromMLConfig();
             }
             else if (key == "4")
             {
@@ -61,7 +61,7 @@ namespace AnnDotNET.Tool
             }
             else if (key == "5")
             {
-                TitanicMLConfig();
+               await TitanicMLConfig();
             }
             else if (key == "6")
             {
@@ -104,11 +104,12 @@ namespace AnnDotNET.Tool
             throw new NotImplementedException();
         }
 
-        private static void TitanicMLConfig()
+        private static async Task TitanicMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"mlconfigs\titanic\titanic.mlconfig");
-            mlCOnf.Wait();
-            var mlConfig1 = mlCOnf.Result;
+            var mlCOnf = await MLFactory.Load(@"mlconfigs\titanic\titanic.mlconfig");
+        
+            var mlConfig1 = mlCOnf;
+
             //
             var mlRunner = new MLRunner(mlConfig1);
             mlRunner.Run();
@@ -146,11 +147,11 @@ namespace AnnDotNET.Tool
             await r.SaveMlConfig(iris.Metadata,iris.Parser, "mlconfigs/iris/iris.mlconfig");
         }
 
-        private static void IrisFromMLConfig()
+        private static async Task IrisFromMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
-            mlCOnf.Wait();
-            var mlConfig1 = mlCOnf.Result;
+            var mlCOnf = await MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
+           
+            var mlConfig1 = mlCOnf;
             //
             var mlRunner = new MLRunner(mlConfig1);
             mlRunner.Run();
@@ -158,21 +159,24 @@ namespace AnnDotNET.Tool
 
         private static async Task AirQualitiySample()
         {
-            (NDArray x, NDArray y) = await AirQualitySample.generateAirQualityData();
-            (TrainingParameters tParams, LearningParameters lParams) = AirQualitySample.generateParameters();
+            var data = await AirQualitySample.generateAirQualityData();
+
+            var par = AirQualitySample.generateParameters();
+
             var net = AirQualitySample.CreateNet();
             
-            var r = new MLRunner(net, lParams, tParams, x, y, null);
+            var r = new MLRunner(net, par.lParams, par.tParams, data.X, data.Y, null);
+
             r.Run();
 
-            // await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
+           // await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
         }
 
-        private static void AirQualityFromMLConfig()
+        private static async Task AirQualityFromMLConfig()
         {
-            var mlCOnf = MLFactory.Load(@"mlconfigs\air_quality\airquality.mlconfig");
-            mlCOnf.Wait();
-            var mlConfig1 = mlCOnf.Result;
+            var mlCOnf = await MLFactory.Load(@"mlconfigs\air_quality\airquality.mlconfig");
+            
+            var mlConfig1 = mlCOnf;
             //
             var mlRunner = new MLRunner(mlConfig1);
             mlRunner.Run();

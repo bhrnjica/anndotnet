@@ -31,6 +31,9 @@
     <None Update="mlconfigs\iris\iris_raw.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="mlconfigs\titanic\titanic.mlconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="mlconfigs\titanic\titanic_full_raw.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

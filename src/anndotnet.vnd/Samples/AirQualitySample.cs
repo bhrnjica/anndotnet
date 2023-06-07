@@ -34,7 +34,7 @@ namespace Anndotnet.Vnd.Samples
 
             return (X,Y);
         }
-        public static (TrainingParameters tPArams, LearningParameters lParams) generateParameters()
+        public static (TrainingParameters tParams, LearningParameters lParams) generateParameters()
         {
             var lParams = new LearningParameters()
 
