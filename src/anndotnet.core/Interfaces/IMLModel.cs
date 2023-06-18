@@ -10,25 +10,34 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using Anndotnet.Core.Interface;
-using System;
-using System.Linq;
 
-namespace Anndotnet.Core.Progress
+using Tensorflow;
+
+namespace Anndotnet.Core.Interface
 {
-    public class ProgressCVTraining : IProgressTraining
+    public interface IMLModel
     {
-        public void Run(ProgressReport tp)
-        {
-            var n = (int)(((float)tp.Epoch / (float)tp.Epochs) * 100f / 5f);
-            if (n == 0)
-                n = 1;
-            var progress = string.Join("", Enumerable.Range(1, n).Select(x => "="));
-            var evalT = string.Join(" - ", tp.TrainEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
-            var evalV = string.Join(" - ", tp.ValidEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
-            
-            Console.WriteLine($"Fold {tp.Fold}/{tp.KFold} \t Epoch {tp.Epoch}/{tp.Epochs} \t[{progress}] \n\r- loss:{Math.Round(tp.TrainLoss, 3)} - {evalT} - val_loss:{Math.Round(tp.ValidLoss, 3)} - {evalV}");
-            Console.WriteLine();
-        }
+        /// <summary>
+        /// Loads TensofrFlow model from the disk
+        /// </summary>
+        /// <param name="modelPath"></param>
+        /// <returns></returns>
+        Session LoadModel(string modelPath);
+
+        /// <summary>
+        /// Save Tensorflow model to the disk
+        /// </summary>
+        /// <param name="session">Tensorflow session object</param>
+        /// <param name="folderPath">The folder where the models should be stored</param>
+        /// <returns>Returns the model name. Null or empty if the save failes. Otherwize thors the exception.</returns>
+        string SaveModel(Session session, string folderPath);
+
+        /// <summary>
+        /// Create Tensorflow model from the given input and output shape
+        /// </summary>
+        /// <param name="shapeX">Input shape</param>
+        /// <param name="shapeY">Output shape</param>
+        /// <returns>Return Tensorflow graph object, otherwize throws an excepton.</returns>
+        Graph CreateModel(Shape shapeX, Shape shapeY);
     }
 }

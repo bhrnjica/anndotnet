@@ -10,22 +10,25 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using Anndotnet.Core;
 using Anndotnet.Core.Interface;
 using System;
 using System.Linq;
 
-namespace Anndotnet.Core.Progress
+namespace Anndotnet.Tool.Progress
 {
     public class ProgressTVTraining : IProgressTraining
     {
         public void Run(ProgressReport tp)
         {
             var n = (int)(((float)tp.Epoch / (float)tp.Epochs) * 100f/5f);
-            if (n == 0)
-                n = 1;
+            
+            n = n == 0 ? 1 : n;
+            
             var progress = string.Join("", Enumerable.Range(1,n).Select(x=>"="));
             var evalT = string.Join(" - ", tp.TrainEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
             var evalV = string.Join(" - ", tp.ValidEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
+            
             Console.WriteLine($"Epoch {tp.Epoch}/{tp.Epochs} [{progress}] \n\r- loss:{Math.Round(tp.TrainLoss,3)} - {evalT} - val_loss:{Math.Round(tp.TrainLoss, 3)} - {evalV}");
             Console.WriteLine();
 

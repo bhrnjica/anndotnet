@@ -12,6 +12,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using Tensorflow;
+using Tensorflow.NumPy;
 
 namespace Anndotnet.Core.Interface
 {
@@ -19,5 +20,7 @@ namespace Anndotnet.Core.Interface
     {
         bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel);
         // public bool RunOffline(Tensor x, Tensor y, Learner lr, TrainingParameters tr, Dictionary<string,string> modelPaths);
+
+        ProgressReport CreateProgressReport(TrainingParameters tParams, int fold, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs);
     }
 }

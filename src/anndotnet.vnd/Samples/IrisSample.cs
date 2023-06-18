@@ -3,9 +3,11 @@ using Anndotnet.Core.Extensions;
 using Anndotnet.Core.Interface;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Vnd.Layers;
+using Daany;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tensorflow.NumPy;
+using XPlot.Plotly;
 
 namespace Anndotnet.Vnd.Samples
 {
@@ -27,10 +29,9 @@ namespace Anndotnet.Vnd.Samples
             var rawdata = DFExtensions.FromDataParser(Parser);
 
             await Task.CompletedTask;
-
             var mData = rawdata.ParseMetadata("species");
             Metadata = mData;
-            
+
 
             //fix missing values
             rawdata.HandlingMissingValue(mData);

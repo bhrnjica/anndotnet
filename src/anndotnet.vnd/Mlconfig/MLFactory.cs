@@ -38,6 +38,7 @@ namespace Anndotnet.Vnd
         internal static (NDArray xData, NDArray yData) PrepareData(MLConfig mlConfig)
         {
             var dateFormat = mlConfig.Metadata.Where(x => x.ValueColumnType == ColType.DT).Select(x => x.ValueFormat).FirstOrDefault();
+            
             //load data into DataFrame
             var df = Daany.DataFrame.FromCsv(filePath: $"{mlConfig.Parser.RawDataName}", 
                 sep: mlConfig.Parser.ColumnSeparator, 
@@ -188,9 +189,11 @@ namespace Anndotnet.Vnd
             {
                 WriteIndented = true,
             };
+
             //add enum string converters
             options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
             options.Converters.Add(new JsonLayerConverter());
+
             //
             using (FileStream fs = File.OpenRead(filePath))
             {
@@ -216,6 +219,8 @@ namespace Anndotnet.Vnd
                 mlConfig.Paths.Add("MLConfig", new FileInfo(filePath).FullName);
             else
                 mlConfig.Paths["MLConfig"] =new FileInfo(filePath).FullName;
+
+
             return mlConfig;
         }
 

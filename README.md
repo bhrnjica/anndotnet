@@ -6,24 +6,29 @@
 ANNdotNET is an open-source project written in C# that aims to simplify deep 
 learning lifecycle tasks: 
 - model creation, 
-- network architecture, 
+- deep network architecture, 
 - training process, 
 - model validation and testing, and
 - deployment. 
 
-For all above tasks it provides a GUI tool and simple Json MLConfig file wher you can 
+For all above tasks AnndotNet provides a GUI tool that you can create very complex deep learning model in just a few clicks.
+The whole model can be save in MLConfig json file. 
 setup deep netrwork, trainer, optimizes and data proces. 
 
-Unlike verion v1, this verzin implement ML Engine based on Tensorflow, allowing users to perform deep learning operations 
-with ease.
+Unlike version v1 that is based on Microsoft CNTK, the AnndotNET v2 implements 
+ML Engine based on Tensorflow, allowing users to perform deep learning operations 
+with the cutting - edge DL framework.
 
 ## Features
 Graphical user interface for deep learning tasks, eliminating the need for extensive programming knowledge.
 Focus on network development and training process using a classic desktop approach rather than coding.
 Reduced time spent on debugging source code, allowing more focus on exploring different configurations and parameter variants.
 Ideal for engineers and users who are not familiar with programming languages.
-Supports custom model coding and training process through the ANNdotNET CMD, which provides a high level of API for implementation.
-Seamless integration between the GUI tool and CMD tool, allowing configurations to be easily transferred and managed.
+
+- Graphical user interface for easy and intuitive deep learning model creation.
+- Simplified setup of deep network architecture, trainers, optimizers, and data preprocessing.
+- Ability to save the entire model configuration in an MLConfig JSON file for easy replication and sharing.
+- Built on Tensorflow, providing users with a powerful and versatile deep learning framework.
 
 ## Documentation and Resources
 
@@ -32,9 +37,11 @@ Comprehensive project documentation can be found in the project wiki.
 
 ## Pre-Calculated Projects
 
-ANNdotNET includes dozens of pre-calculated projects that are available in the installer. These projects cover various problem domains, such as regression, binary and multi-class classification, image classification, time series analysis, and more. Each project provides examples of different neural network configurations, including feed-forward networks, deep neural networks, LSTM recurrent networks, embedding layers, and drop-out layers.
+ANNdotNET includes dozens of pre-calculated projects that are available in the installer. These projects cover various problem domains, such as regression, binary and multi-class classification, image classification, time series analysis, and more. 
+Each project provides examples of different neural network configurations, including feed-forward networks, deep neural networks, LSTM recurrent networks, embedding layers, and drop-out layers.
 
-Users can open these pre-calculated projects from the Start page or via the CMD tool. They serve as starting points for experimentation and can be modified by adjusting the network configuration, learning parameters, and training settings. Additionally, users can create new machine learning configurations based on these projects.
+Users can open these pre-calculated projects from the Start page or via the CMD tool. 
+They serve as starting points for experimentation and can be modified by adjusting the network configuration, learning parameters, and training settings. Additionally, users can create new machine learning configurations based on these projects.
 
 # Getting Started
 

@@ -277,4 +277,4 @@ __pycache__/
 /src/tool/anndotnet.wnd/Resources/Concrete/ConcreteSlumpProject/FFNModel/models
 /src/tool/anndotnet.wnd/Resources/Titanic/TitanicProject/DNNModel/models
 /src/anndotnet.cmd.tool/mlconfigs/air_quality/Models
-/src/anndotnet.cmd.tool/mlconfigs/iris/Models
+/src/anndotnet.cmd.tool/mlconfigs/iris/models

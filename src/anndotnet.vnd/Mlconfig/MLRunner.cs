@@ -10,13 +10,18 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
+using anndotnet.vnd.Extensions;
 using Anndotnet.Core;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interface;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.TensorflowEx;
 using Anndotnet.Core.Trainers;
 using Anndotnet.Vnd.Layers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Tensorflow;
@@ -27,22 +32,28 @@ namespace Anndotnet.Vnd
 {
     public class MLRunner : MLRunnerBase
     {
-        List<ColumnInfo> Metadata { get; set; }
-        List<ILayer> Network { get; set; }
-        LearningParameters LParameters { get; set; }
-        TrainingParameters TParameters { get; set; }
+        List<ColumnInfo>            _metadata;
+        Dictionary<string, string>  _paths;
 
-        NDArray X;
-        NDArray Y;
-
-        public MLRunner(List<ILayer> network, LearningParameters lParam, TrainingParameters tParam, NDArray xData, NDArray yData, List<ColumnInfo> metadata):base()
+        public MLRunner(List<ILayer> network, LearningParameters lParam, TrainingParameters tParam, 
+                                        NDArray xData, NDArray yData, List<ColumnInfo> metadata, Dictionary<string,string> paths= null):base()
         {
-            Network = network;
-            LParameters = lParam;
-            TParameters = tParam;
-            X = xData;
-            Y = yData;
-            Metadata = metadata;
+            _network = network;
+            _lParameters = lParam;
+            _tParameters = tParam;
+            _x = xData;
+            _y = yData;
+            _metadata = metadata;
+            _paths = paths;
+            checkPaths();
+        }
+
+        private void checkPaths()
+        {
+            if(!_paths.ContainsKey("Root") || !_paths.ContainsKey("Models") || !_paths.ContainsKey("MLConfig"))
+            {
+                throw new Exception("Invalid paths for MLRunner. Root, Models and MLConfig must be defined.");  
+            }
         }
 
         public MLRunner(MLConfig mlConfig) : base()
@@ -54,15 +65,15 @@ namespace Anndotnet.Vnd
                 LogDevicePlacement = true,
             };
 
-            Network = mlConfig.Network;
-            LParameters = mlConfig.LParameters;
-            TParameters = mlConfig.TParameters;
-            Metadata = mlConfig.Metadata;
+            _paths      = mlConfig.Paths;    
+            _network    = mlConfig.Network;
+            _lParameters= mlConfig.LParameters;
+            _tParameters= mlConfig.TParameters;
+            _metadata   = mlConfig.Metadata;
 
             //data preparation and transformation
-            (NDArray xData, NDArray yData) = MLFactory.PrepareData(mlConfig);
-            X = xData;
-            Y = yData;
+            (_x, _y)    = MLFactory.PrepareData(mlConfig);
+
         }
 
         public async Task SaveMlConfig(List<ColumnInfo> metadata, DataParser parser, string filePath)
@@ -74,139 +85,122 @@ namespace Anndotnet.Vnd
             await MLFactory.Save(mlCOnfig, filePath);
         }
 
-        public override void Run()
+        public override void Run(IProgressTraining progress)
         {
-            Session session = null;
-            tf.compat.v1.disable_eager_execution();
-
-            //load trained model if exists
-            if (TParameters.Retrain && false )
-            {
-                session = loadModelCheckPoint( null );
-
-            }
-
-            //create network from network collection
-            if ( session == null )
-            {
-                //create graph from machine learning configuration
-                var shapeX = X.shape;
-                var shapeY = Y.shape;
-
-                shapeX[0] = -1;
-                shapeY[0] = -1;
-
-                var graph = createGraph(shapeX, shapeY);
-
-                session = tf.Session(graph);
-
-                // Initialize the variables (i.e. assign their default value)
-                _init = tf.global_variables_initializer();
-
-                // Run the initializer
-                session.run(_init);
-            }
+            var session = Prepare(_paths);
 
             //Train model
-            Train(X, Y, session);
-
-            //evaluation
-            //Evaluate
+            Train(_x, _y, session, progress );
 
             //prediction
+            Complete();
+
             return;
 
         }
 
+        private void Complete()
+        {
+            var bestLoss = _history.History.Min(x=>x.Loss);
+            var bestModel = _history.History.FirstOrDefault(x => x.Loss == bestLoss);  
+            
+            if(!ReferenceEquals(bestModel, null))
+            {
+                if (_paths.ContainsKey("BestModel"))
+                {
+                    _paths["BestModel"] = bestModel.ModelName;
+                }
+                else
+                {
+                   _paths.Add("BestModel", bestModel.ModelName);
+                }
+            }
+            var root = _paths["Root"].GetPathInCurrentOS();
+            var modelsFolder = _paths["Models"].GetPathInCurrentOS();
+            var path = Path.Combine(root, modelsFolder);    
+            cleanModels(path);
+            
+        }
 
-        protected override void Train(NDArray xData, NDArray yData, Session session)
+        private void cleanModels(string modelsFolder)
+        {
+            var di = new DirectoryInfo(modelsFolder);
+
+            var bestModle = _paths["BestModel"].GetPathInCurrentOS();
+
+            var bestModelName = Path.GetFileName(bestModle).ToLower(); 
+            
+            foreach (var file in di.GetFiles())
+            {
+                var f = Path.GetFileNameWithoutExtension(file.Name).ToLower();
+                if (!string.Equals(bestModelName, f))
+                {
+                    file.Delete();  
+                }
+
+            }
+        }
+
+        protected override void Train(NDArray xData, NDArray yData, Session session, IProgressTraining progress)
         {
             //training process
-            if (TParameters.TrainingType == TrainingType.TVTraining)
+            if (_tParameters.TrainingType == TrainingType.TVTraining)
             {
-                var tr = new TVTrainer(xData, yData, TParameters.SplitPercentage);
-                //tr.Run(x, y, lr, MLConfig.TParameters, History, MLConfig.Paths);
-                tr.Run(session, LParameters, TParameters, processModel);
+                var tr = new TVTrainer(xData, yData,progress, _tParameters.SplitPercentage);
+                
+                tr.Run(session, _lParameters, _tParameters, Evaluate);
             }
             else
             {
-                var tr = new CVTrainer(xData, yData, TParameters.KFold);
-                tr.Run(session, LParameters, TParameters, processModel);
+                var tr = new CVTrainer(xData, yData, progress,_tParameters.KFold);
+                tr.Run(session, _lParameters, _tParameters, Evaluate);
             }
         }
 
-        protected Graph createGraph(Shape shapeX, Shape shapeY)
+        protected override Session Evaluate(Session session, ProgressReport tp)
         {
-            //create variable
-            var graph = new Graph().as_default();
-
-            Tensor x = null;
-            Tensor y = null;
-            tf_with(tf.name_scope("Input"), delegate
+            var iteration = new TrainingEvent()
             {
-                // Placeholders for inputs (x) and outputs(y)
-                //create placeholders
-                (x, y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
-            });
-                    
-            //create network
-            var z = MLFactory.CreateNetwrok(Network, x, y);
-            Tensor loss = null;
-            //define learner
-            tf_with(tf.variable_scope("Train"), delegate
+                Id = (tp.Fold - 1) * tp.Epochs + tp.Epoch,
+                Loss = tp.ValidLoss,
+                Evals = tp.ValidEval,
+                ModelName = "modelname",
+            };
+
+            //save only when training is completed.
+            if (tp.ProgressType == ProgressType.Training || tp.ProgressType == ProgressType.Completed)
             {
-                tf_with(tf.variable_scope("Loss"), delegate
-                {
-                    loss = FunctionEx.Create(y, z, LParameters.LossFunction);
-                });
+                var mainFolder = _paths.ContainsKey("Root") ? _paths["Root"]?.GetPathInCurrentOS() : throw new Exception("Main Folder must be defined.");
+                var modelsFolder = _paths.ContainsKey("Model") ? _paths["Model"]?.GetPathInCurrentOS() : null;
 
-                tf_with(tf.variable_scope("Optimizer"), delegate
+                if (string.IsNullOrEmpty(modelsFolder))
                 {
-                   var optimizer = FunctionEx.Optimizer(LParameters, loss);
-                });
-
-                for(int i=0; i< LParameters.EvaluationFunctions.Count; i++)
-                {
-                    var e = LParameters.EvaluationFunctions[i];
-                    tf_with(tf.variable_scope($"Eval{i}"), delegate
-                    {
-                        var ev  = FunctionEx.Create(y, z, e);
-                    });
+                    modelsFolder = "models";
                 }
-            });
 
-            //
-            return graph;
+                var modelsPath = Path.Combine(mainFolder, modelsFolder);
+                var modelName = saveCheckPoint(session, modelsPath);
+
+                iteration.ModelName = modelName;
+            }
+
+            _history.History.Add(iteration);
+
+            return null;
 
         }
 
-        private Session processModel(Session session, ProgressReport tp)
-        {
-            if (session == null)
-            {
-                return loadModelCheckPoint(null);
-            }
-            else
-            {
-                //save only when training is completed.
-                if(tp.ProgressType== ProgressType.Completed && false)
-                {
-                    saveModel(session, null);
-                }
-              
-                return null;
-            }
 
-        }
         private MLConfig getMLConfig()
         {
             var mlConfig = new MLConfig();
             mlConfig.Id = Guid.NewGuid();
-            mlConfig.LParameters = LParameters;
-            mlConfig.TParameters = TParameters;
-            mlConfig.Metadata = Metadata;
-            mlConfig.Network = Network;
+            mlConfig.LParameters = _lParameters;
+            mlConfig.TParameters = _tParameters;
+            mlConfig.Metadata = _metadata;
+            mlConfig.Network = _network;
             mlConfig.Parser = new DataParser();
+            mlConfig.Paths = _paths;    
 
             return mlConfig;
         }

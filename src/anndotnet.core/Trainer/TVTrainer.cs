@@ -12,7 +12,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Interface;
-using Anndotnet.Core.Progress;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,25 +19,29 @@ using System.Runtime.CompilerServices;
 using Tensorflow;
 using static Tensorflow.Binding;
 using Tensorflow.NumPy;
+using System.Data;
+using XPlot.Plotly;
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
 namespace Anndotnet.Core.Trainers
 {
     public class TVTrainer : ITrainer
     {
-        
+        protected IProgressTraining _progress;
         DataFeed _train;
         DataFeed _valid;
-        NDArray X;
-        NDArray Y;
+        protected NDArray X;
+        protected NDArray Y;
         int _percentageSplit;
 
 
-        public TVTrainer(NDArray x, NDArray y, int percentageSplit = 20, bool shuffle = false, int seed= 1234)
+        public TVTrainer(NDArray x, NDArray y, IProgressTraining progress, int percentageSplit = 20,
+                            bool shuffle = false, int seed= 1234 )
         {
             X = x;
             Y = y;
             _percentageSplit = percentageSplit;
+            _progress = progress; 
             initTrainer(seed,shuffle);
         }
 
@@ -78,18 +81,49 @@ namespace Anndotnet.Core.Trainers
         public bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel)
         {
             //check for progress
-            if (tParams.Progress == null)
+            if(!ReferenceEquals(_progress, null))
             {
-                var pt = new ProgressTVTraining();
-                tParams.Progress = pt.Run;
+                tParams.Progress = _progress.Run;
             }
-
+            
             //get placeholders 
             var x = session.graph.get_tensor_by_name("Input/X:0");
             var y = session.graph.get_tensor_by_name("Input/Y:0");
 
             //get optimizer
             var opt = session.graph.get_operation_by_name($"Train/Optimizer/{lParams.LearnerType}");
+
+            //
+            using (session)
+            {
+                TrainminiBatch(session, lParams, tParams, processModel, x, y, opt, 0, (_train, _valid));
+
+                return true;
+            }
+        }
+
+        protected void TrainminiBatch(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel, Tensor x, Tensor y, Operation opt, int fold, (DataFeed train, DataFeed valid) feed)
+        {
+            // Training cycle
+            foreach (var epoch in Enumerable.Range(1, tParams.Epochs))
+            {
+                // Loop over all batches
+                foreach (var (xTrain, yTrain) in feed.train.GetNextBatch(tParams.MinibatchSize))
+                {
+                    // Run optimization op (backprop)
+                    session.run(opt, (x, xTrain), (y, yTrain));
+                }
+
+
+                evaluate(fold, epoch, tParams, lParams, session, processModel);
+            }
+        }
+
+        protected void evaluate(int fold, int epoch, TrainingParameters tParams, LearningParameters lParams, Session session, Func<Session, ProgressReport, Session> processModel)
+        {
+            //get placeholders 
+            var x = session.graph.get_tensor_by_name("Input/X:0");
+            var y = session.graph.get_tensor_by_name("Input/Y:0");
 
             //create list of loss and evaluation functions
             var funs = new List<Tensor>();
@@ -101,75 +135,53 @@ namespace Anndotnet.Core.Trainers
             {
                 var efun = lParams.EvaluationFunctions[i];
                 var eval = session.graph.get_tensor_by_name($"Train/Eval{i}/{efun.ToString()}:0");
+
                 if (eval == null)
-                    break;
-                funs.Add(eval);
-            }
-            //
-            using (session)
-            {
-                // Training cycle
-                foreach (var epoch in range(1, tParams.Epochs + 1))
                 {
-
-                    int batchCount = 1;
-                    // Loop over all batches
-                    foreach (var (x_in, y_in) in _train.GetNextBatch(tParams.MinibatchSize))
-                    {
-                        // Run optimization op (backprop)
-                        session.run(opt, (x, x_in), (y, y_in));
-                        batchCount++;
-                    }
-                    //Console.WriteLine($"BatchCount {batchCount}");
-
-                    // Display logs per epoch step
-                    if (epoch % tParams.ProgressStep == 0 || epoch == 1 || epoch == tParams.Epochs)
-                    {
-                        var (x_input, y_input) = _train.GetFullBatch();
-                        var (x_inputV, y_inputV) = _valid.GetFullBatch();
-
-                        //evaluate model
-                        var resultsT = session.run(funs.ToArray(), (x, x_input), (y, y_input));
-                        var resultsV = session.run(funs.ToArray(), (x, x_inputV), (y, y_inputV));
-                        var evalFunctions = funs.Skip(1).Select(ev => ev.op.name.Substring(ev.op.name.LastIndexOf("/") + 1)).ToArray();
-
-
-                        var progress = reportProgress(tParams, epoch, resultsT, resultsV, evalFunctions);
-                        tParams.Progress(progress);
-
-                        ////process model
-                        //if (progress.ProgressType == ProgressType.Completed)
-                        //{
-                        //    var W = session.graph.get_tensor_by_name("ReLuLayer/Relu:0");
-                        //    var b = session.graph.get_tensor_by_name("FCLAyer01/b:0");
-                        //    Console.WriteLine($"Training:  W={session.run(W, (x, x_input), (y, y_input))} b={session.run(b, (x, x_input), (y, y_input))}");
-                        //}
-                        processModel(session, progress);
-                    }
+                    throw new Exception($"Evaluation function {efun.ToString()} is not found in the graph.");       
                 }
 
-                //session.close();
-                session.Dispose();
-                return true;
+                funs.Add(eval);
+            }
+
+            // Display logs per epoch step
+            if (epoch % tParams.ProgressStep == 0 || epoch == 1 || epoch == tParams.Epochs)
+            {
+                var (x_input, y_input) = _train.GetFullBatch();
+                var (x_inputV, y_inputV) = _valid.GetFullBatch();
+
+                //evaluate model
+                var resultsT = session.run(funs.ToArray(), (x, x_input), (y, y_input));
+                var resultsV = session.run(funs.ToArray(), (x, x_inputV), (y, y_inputV));
+
+                var evalFunctions = funs.Skip(1).Select(ev => ev.op.name.Substring(ev.op.name.LastIndexOf("/") + 1)).ToArray();
+
+                //report about training process
+                var progress = CreateProgressReport(tParams, fold, epoch, resultsT, resultsV, evalFunctions);
+
+                //report about training process
+                tParams.Progress(progress);
+
+                processModel(session, progress);
             }
         }
 
-        private static ProgressReport reportProgress(TrainingParameters tParams, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs)
+        public ProgressReport CreateProgressReport(TrainingParameters tParams,int fold, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs)
         {
             //report progress
             var pr = new ProgressReport()
             {
-                ProgressType = ProgressType.Training,
+                ProgressType = ((fold==0 || fold== tParams.KFold) && epoch == tParams.Epochs) ? 
+                                                                        ProgressType.Completed :
+                                                                        ProgressType.Training,
+                Fold = fold,
+                KFold = tParams.KFold,
                 Epoch = epoch,
                 Epochs = tParams.Epochs,
                 TrainLoss = resultsT.First(),
                 ValidLoss = resultsV.First(),
             };
 
-            if (epoch == tParams.Epochs)
-                pr.ProgressType = ProgressType.Completed;
-            if(epoch == 1)
-                pr.ProgressType = ProgressType.Initialization;
             //
             var evalsT = resultsT.Skip(1).ToArray();
             var evalsV = resultsV.Skip(1).ToArray();

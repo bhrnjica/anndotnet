@@ -11,10 +11,13 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 
+using Tensorflow.NumPy;
+
 namespace Anndotnet.Core.Interface
 {
     public interface IRunner 
     {
-        void Run();
+        void Run(IProgressTraining progress);
+
     }
 }

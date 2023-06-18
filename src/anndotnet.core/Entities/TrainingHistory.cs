@@ -24,7 +24,7 @@ namespace Anndotnet.Core.Entities
     public class TrainingEvent
     {
         public int Id { get; set; }
-        public string ModelPath { get; set; }
+        public string ModelName { get; set; }
         public float Loss { get; set; }
         public Dictionary<string, float> Evals { get; set; }
     }

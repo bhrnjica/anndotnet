@@ -10,21 +10,28 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using System.Collections.Generic;
+using Anndotnet.Core;
+using Anndotnet.Core.Interface;
+using System;
+using System.Linq;
 
-namespace Anndotnet.Core
+namespace AnnDotNET.Tool.Progress
 {
-    //Statistic for Column
-    public class Statistics
+    public class ProgressCVTraining : IProgressTraining
     {
-        public double Mean;
-        public double Median;
-        public double Mode;
-        public double Random;
-        public double Range;
-        public double Min;
-        public double Max;
-        public double StdDev;
-        public List<string> Categories;
+        public void Run(ProgressReport tp)
+        {
+            var n = (int)(((float)tp.Epoch / (float)tp.Epochs) * 100f / 5f);
+
+            n = n == 0 ? 1 : n; 
+            
+            var progress = string.Join("", Enumerable.Range(1, n).Select(x => "="));
+
+            var evalT = string.Join(" - ", tp.TrainEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
+            var evalV = string.Join(" - ", tp.ValidEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
+            
+            Console.WriteLine($"Fold {tp.Fold}/{tp.KFold} \t Epoch {tp.Epoch}/{tp.Epochs} \t[{progress}] \n\r- loss:{Math.Round(tp.TrainLoss, 3)} - {evalT} - val_loss:{Math.Round(tp.ValidLoss, 3)} - {evalV}");
+            Console.WriteLine();
+        }
     }
 }

@@ -1,5 +1,5 @@
 {
-  "Id": "9cbd25b6-c0ce-4a32-9d01-fda2e64ea94f",
+  "Id": "c15b26ba-2876-4cdd-b97a-02b3fa83944b",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
@@ -150,5 +150,10 @@
     "SplitPercentage": 20,
     "LastBestModel": null
   },
-  "Paths": null
+  "Paths": {
+    "MLConfig": "iris.mlconfig",
+    "Root": "mlconfigs/iris",
+    "Models": "models",
+    "BestModel": "638227190040989949.ckp"
+  }
 }

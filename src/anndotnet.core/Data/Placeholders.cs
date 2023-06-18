@@ -18,19 +18,21 @@ namespace Anndotnet.Core.Data
 {
     public class Placeholders : IPlaceholders
     {
-       public (Tensor X, Tensor Y) Create(Shape input, Shape output, TF_DataType inType= TF_DataType.TF_FLOAT, TF_DataType outType= TF_DataType.TF_FLOAT)
+       public (Tensor X, Tensor Y) Create(Shape shape, Shape output, 
+                                                TF_DataType inType= TF_DataType.TF_FLOAT, 
+                                                TF_DataType outType= TF_DataType.TF_FLOAT)
         {
             //
-            var X = tf.placeholder(inType, shape: input);
+            var X = tf.placeholder(inType, shape: shape);
             var Y = tf.placeholder(outType, shape: output);
             //
             return (X, Y);
         }
 
-        public Tensor Create(Shape input, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
+        public Tensor Create(Shape shape, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
         {
             Tensor X = null;
-            X = tf.placeholder(inType, shape: input, name: name);
+            X = tf.placeholder(inType, shape: shape, name: name);
             return X;
         }
 

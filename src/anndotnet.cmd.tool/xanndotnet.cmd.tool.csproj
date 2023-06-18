@@ -31,6 +31,15 @@
     <None Update="mlconfigs\iris\iris_raw.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="mlconfigs\iris\models\638227190040989949.ckp.data-00000-of-00001">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mlconfigs\iris\models\638227190040989949.ckp.index">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mlconfigs\iris\models\638227190040989949.ckp.meta">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="mlconfigs\titanic\titanic.mlconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

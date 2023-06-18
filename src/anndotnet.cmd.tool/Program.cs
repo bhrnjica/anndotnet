@@ -1,6 +1,9 @@
 ﻿using Anndotnet.Core;
+using Anndotnet.Core.Trainers;
+using Anndotnet.Tool.Progress;
 using Anndotnet.Vnd;
 using Anndotnet.Vnd.Samples;
+using AnnDotNET.Tool.Progress;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,11 +20,12 @@ namespace AnnDotNET.Tool
         {
             var str = @"
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    ******************ANNdotNET 2.0 - deep learning tool on .NET Framework.**********
+    ***************   ANNdotNET 2.0 - deep learning tool on .NET Framework.**********
     *******        Run Deep learning pre-calculated examples               **********
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Select the example to run:
 
+                0. - Multi-class: Iris example with Cross-Validation Training
                 1. - Multi-class: Iris example from MLConfig file.
                 2. - Multi-class: Iris example with data preparation task.
                 3. - Multi-class: AirQuality example from MLConfig file.
@@ -43,13 +47,17 @@ namespace AnnDotNET.Tool
 
         private static  async Task RunExamples(string key)
         {
-            if(key=="1")
+            if (key == "0")
             {
-                IrisFromMLConfig();
+                await IrisFromNetObject(true);
             }
-            else if(key=="2")
+            else if (key == "1")
             {
-                await RunIrisSample();
+                await IrisFromMLConfig();
+            }
+            else if(key == "2")
+            {
+                await IrisFromNetObject(true);
             }
             else if (key == "3")
             {
@@ -94,7 +102,7 @@ namespace AnnDotNET.Tool
             var net = slump.CreateNet();
 
             var r = new MLRunner(net, lParams, tParams, x, y, slump.Metadata);
-            r.Run();
+            r.Run(null);
 
             await r.SaveMlConfig(slump.Metadata, new DataParser(), "slump.mlconifg");
         }
@@ -112,7 +120,7 @@ namespace AnnDotNET.Tool
 
             //
             var mlRunner = new MLRunner(mlConfig1);
-            mlRunner.Run();
+            mlRunner.Run(null);
         }
 
         private static async Task RunTitanicSample()
@@ -124,28 +132,82 @@ namespace AnnDotNET.Tool
             var net = titanic.CreateNet();
 
             var r = new MLRunner(net, lParams, tParams, x, y, titanic.Metadata);
-            r.Run();
+            r.Run(null);
 
            await r.SaveMlConfig(titanic.Metadata,new DataParser(),"titanic.mlconifg");
 
         }
 
-        private static async Task RunIrisSample()
-        {
-            IrisSample iris = new IrisSample();
-           
-            (NDArray x, NDArray y) = await iris.GenerateData(); 
-            (TrainingParameters tParams, LearningParameters lParams) = iris.GenerateParameters();
-            var net = iris.CreateNet();
-            var pats = new Dictionary<string, string>();
-            pats.Add("MainFolder","mlconfigs/iris");
-            pats.Add("MLConfig", @"mlconfigs/iris/iris.mlconfig");
-            
-            var r = new MLRunner(net, lParams, tParams, x, y,null);
-            r.Run();
+        //private static async Task RunCVIrisSample()
+        //{
+        //    IrisSample iris = new IrisSample();
 
-            await r.SaveMlConfig(iris.Metadata,iris.Parser, "mlconfigs/iris/iris.mlconfig");
-        }
+        //    //load the data
+        //    (var x, var y) = await iris.GenerateData();
+
+        //    //training and learning params
+        //    (var tParams, var lParams) = iris.GenerateParameters();
+        //    tParams.KFold = 5;
+        //    tParams.TrainingType = TrainingType.CVTraining;
+
+        //    //ann model
+        //    var net = iris.CreateNet();
+
+        //    //mlconfig paths
+        //    var paths = new Dictionary<string, string>();
+        //    paths.Add("MainFolder", "mlconfigs/iris");
+        //    paths.Add("MLConfig", "iris.mlconfig");
+        //    paths.Add("BestModel", "");
+        //    paths.Add("Models", "models"); 
+
+        //    //run ML
+        //    var r = new MLRunner(net, lParams, tParams, x, y, null,paths);
+        //    r.Run();
+
+        //    //save mlconfig
+        //    await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig");
+        //}
+
+        //private static async Task RunIrisSample()
+        //{
+        //    IrisSample iris = new IrisSample();
+           
+        //    (NDArray x, NDArray y) = await iris.GenerateData(); 
+        //    (TrainingParameters tParams, LearningParameters lParams) = iris.GenerateParameters();
+        //    var net = iris.CreateNet();
+            
+        //    var pats = new Dictionary<string, string>();
+        //    pats.Add("MLConfig", @"iris.mlconfig");
+            
+        //    var r = new MLRunner(net, lParams, tParams, x, y,null);
+        //    r.Run();
+
+        //    await r.SaveMlConfig(iris.Metadata,iris.Parser, "mlconfigs/iris/iris.mlconfig");
+        //}
+
+        private static async Task IrisFromNetObject(bool crossValidation= false)
+        {
+            var iris = new IrisSample();
+
+            var net = iris.CreateNet();
+            var lParams = iris.GenerateParameters().lParams;
+            var tParams = iris.GenerateParameters().tPArams;
+
+            tParams.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
+            
+            var data = await iris.GenerateData();
+
+            var paths = new Dictionary<string, string>() { {"MLConfig", "iris.mlconfig" } };
+            paths.Add("Root", "mlconfigs/iris");
+            paths.Add("Models", "models");  
+            paths.Add("BestModel", "638227190040989949.ckp");
+
+            var r = new MLRunner(net, lParams, tParams, data.X, data.Y, null, paths);
+            
+            r.Run( new ProgressCVTraining());
+
+            await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig"); 
+        }       
 
         private static async Task IrisFromMLConfig()
         {
@@ -154,7 +216,7 @@ namespace AnnDotNET.Tool
             var mlConfig1 = mlCOnf;
             //
             var mlRunner = new MLRunner(mlConfig1);
-            mlRunner.Run();
+            mlRunner.Run(new ProgressTVTraining());
         }
 
         private static async Task AirQualitiySample()
@@ -167,7 +229,7 @@ namespace AnnDotNET.Tool
             
             var r = new MLRunner(net, par.lParams, par.tParams, data.X, data.Y, null);
 
-            r.Run();
+            r.Run(null);
 
            // await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
         }
@@ -179,7 +241,7 @@ namespace AnnDotNET.Tool
             var mlConfig1 = mlCOnf;
             //
             var mlRunner = new MLRunner(mlConfig1);
-            mlRunner.Run();
+            mlRunner.Run(null);
         }
         
     }
