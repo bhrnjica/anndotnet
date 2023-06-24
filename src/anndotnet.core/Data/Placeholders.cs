@@ -29,7 +29,7 @@ namespace Anndotnet.Core.Data
             return (X, Y);
         }
 
-        public Tensor Create(Shape shape, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
+        public Tensor CreatePlaceholder(Shape shape, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
         {
             Tensor X = null;
             X = tf.placeholder(inType, shape: shape, name: name);

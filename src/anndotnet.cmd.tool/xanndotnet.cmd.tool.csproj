@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.11.3" />
+    <PackageReference Include="ShellProgressBar" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>

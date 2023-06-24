@@ -10,18 +10,18 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using anndotnet.vnd.Extensions;
 using Anndotnet.Core;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interface;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.TensorflowEx;
+using Anndotnet.Vnd.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Tensorflow;
-using Tensorflow.Lite;
 using Tensorflow.NumPy;
 using static Tensorflow.Binding;
 
@@ -79,7 +79,7 @@ namespace Anndotnet.Vnd
             tf.compat.v1.disable_eager_execution();
 
             //load trained model if exists
-            if (_tParameters.Retrain && paths.ContainsKey("BestModel"))
+            if (false && _tParameters.Retrain && paths.ContainsKey("BestModel"))
             {
                 var root = paths.ContainsKey("Root") ? paths["Root"].GetPathInCurrentOS() : "";
                 var models= paths.ContainsKey("Models") ? paths["Models"].GetPathInCurrentOS() : "";
@@ -127,59 +127,6 @@ namespace Anndotnet.Vnd
             throw new NotImplementedException();
         }
 
-        protected bool saveModel1(Session session, Dictionary<string, string> paths)
-        {
-            var saver = tf.train.Saver();
-
-            if (!paths.ContainsKey("BestModel"))
-            {
-                paths.Add("BestModel", "");
-            }
-
-            if (!paths.ContainsKey("Models"))
-            {
-                paths.Add("Models", "models");
-            }
-
-            //generate main folder path if it is missing
-            var curDir = Directory.GetCurrentDirectory();
-
-            if (!paths.ContainsKey("MainFolder"))
-            {
-                paths.Add("MainFolder", curDir);
-            }
-
-            // Restore variables from checkpoint
-            var root = $"{paths["MainFolder"]}".GetPathInCurrentOS();
-            
-            Directory.SetCurrentDirectory(root);
-
-            //delete all previous models
-            var path= paths["Models"].GetPathInCurrentOS();   
-            var modelPath = Path.Combine(root, path);
-            var di = new DirectoryInfo(modelPath);
-            if (di.Exists)
-            {
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-            }
-            else
-            {
-                di.Create();
-            }
-
-            var tfModel = Path.Combine(modelPath, $"{DateTime.Now.Ticks}.ckp");
-            var strPath = saver.save(session, tfModel);
-
-            paths["BestModel"] = Path.GetRelativePath(paths["MainFolder"], strPath);
-
-            Directory.SetCurrentDirectory(curDir);
-
-            return true;
-        }
-
         protected Session loadCheckPoint(string modelFilePath)
         {
             if (string.IsNullOrEmpty(modelFilePath))
@@ -223,51 +170,7 @@ namespace Anndotnet.Vnd
            
             return name;
         }
-        protected Graph createGraph2(List<ILayer> net,LearningParameters lParams, Shape shapeX, Shape shapeY)
-        {
-            //create variable
-            var graph = new Graph().as_default();
-
-            Tensor x = null;
-            Tensor y = null;
-            tf_with(tf.name_scope("Input"), delegate
-            {
-                // Placeholders for inputs (x) and outputs(y)
-                //create placeholders
-                (x, y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
-            });
-                    
-            //create network
-            var z = MLFactory.CreateNetwrok(net, x, y);
-
-            //define learner for the network
-            Tensor loss = null;
-            tf_with(tf.variable_scope("Train"), delegate
-            {
-                tf_with(tf.variable_scope("Loss"), delegate
-                {
-                    loss = FunctionEx.Create(y, z, lParams.LossFunction);
-                });
-
-                tf_with(tf.variable_scope("Optimizer"), delegate
-                {
-                   var optimizer = FunctionEx.Optimizer(lParams, loss);
-                });
-
-                for(int i=0; i< lParams.EvaluationFunctions.Count; i++)
-                {
-                    var e = lParams.EvaluationFunctions[i];
-                    tf_with(tf.variable_scope($"Eval{i}"), delegate
-                    {
-                        var ev  = FunctionEx.Create(y, z, e);
-                    });
-                }
-            });
-
-
-            return graph;
-        }
-
+     
 
         #region IMLModel implementation
         public Graph CreateModel(Shape shapeX, Shape shapeY)
@@ -277,10 +180,11 @@ namespace Anndotnet.Vnd
 
             Tensor x = null;
             Tensor y = null;
-            tf_with(tf.name_scope("Input"), delegate
+
+            tf_with(tf.name_scope(TfScopes.Input), delegate
             {
-                // Placeholders for inputs (x) and outputs(y)
-                (x, y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
+                // Placeholders for inputs (x) and output (y)
+                (x,y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
             });
 
             //create network
@@ -289,14 +193,14 @@ namespace Anndotnet.Vnd
             Tensor loss = null;
             
             //define learner
-            tf_with(tf.variable_scope("Train"), delegate
+            tf_with(tf.variable_scope(TfScopes.Train), delegate
             {
-                tf_with(tf.variable_scope("Loss"), delegate
+                tf_with(tf.variable_scope(TfScopes.LossFun), delegate
                 {
                     loss = FunctionEx.Create(y, z, _lParameters.LossFunction);
                 });
 
-                tf_with(tf.variable_scope("Optimizer"), delegate
+                tf_with(tf.variable_scope(TfScopes.Optimizer), delegate
                 {
                     var optimizer = FunctionEx.Optimizer(_lParameters, loss);
                 });
@@ -305,7 +209,7 @@ namespace Anndotnet.Vnd
                 {
                     var e = _lParameters.EvaluationFunctions[i];
 
-                    tf_with(tf.variable_scope($"Eval{i}"), delegate
+                    tf_with(tf.variable_scope($"{TfScopes.Evaluation}{i}"), delegate
                     {
                         var ev = FunctionEx.Create(y, z, e);
                     });
@@ -316,15 +220,40 @@ namespace Anndotnet.Vnd
 
         }
 
-        public Session LoadModel(string modelPath)
-        {
-            throw new NotImplementedException();
-        }
-
         public string SaveModel(Session session, string folderPath)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Tensor> PredictAsync(Session session, Tensor data)
+        {
+            try
+            {
+                //get input placeholder 
+                var x = session.graph.get_tensor_by_name($"{TfScopes.Input}/X:0");
+                
+                //get model output tensor
+                var output = session.graph.get_tensor_by_name($"{TfScopes.OutputLayer}/Y:0").outputs.First();
+
+                //evaluate model
+                var prediction = await Task.Run<Tensor>(() => session.run(output, (x, data)));
+                
+                return prediction;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<Session> LoadModelAsync(string modelPath)
+        {
+            await Task.CompletedTask;
+            return loadCheckPoint(modelPath);   
+        }
+
+
         #endregion
     }
 }

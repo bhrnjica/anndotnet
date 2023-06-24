@@ -145,6 +145,9 @@ namespace Anndotnet.Vnd
                 //}
 
             }
+
+            //add last layer as Output 
+            z = l.Output(z, outY);
             return z;
         }
 
@@ -156,11 +159,22 @@ namespace Anndotnet.Vnd
 
             // Placeholders for inputs (x) and outputs(y)
             var plc = new Placeholders();
-            x = plc.Create(shapeX, "X", TF_DataType.TF_FLOAT);
-            y = plc.Create(shapeY, "Y", TF_DataType.TF_FLOAT);
+            x = plc.CreatePlaceholder(shapeX, "X", TF_DataType.TF_FLOAT);
+            y = plc.CreatePlaceholder(shapeY, "Y", TF_DataType.TF_FLOAT);
 
             return (x, y);
         }
+
+        public static Tensor CreatePlaceholder(Shape shape, string name)
+        {
+
+            // Placeholders for inputs (x) and outputs(y)
+            var plc = new Placeholders();
+            var t = plc.CreatePlaceholder(shape, name, TF_DataType.TF_FLOAT);
+
+            return t;
+        }
+
         public async static Task<bool> Save(MLConfig mlConfig, string filePath)
         {
             var options = new JsonSerializerOptions

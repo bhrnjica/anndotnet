@@ -12,13 +12,25 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core;
 using System.Linq;
+using System.Xml.Linq;
 using Tensorflow;
+using XPlot.Plotly;
 using static Tensorflow.Binding;
 
 namespace Anndotnet.Vnd
 {
     public class TFLayers : TFBase
     {
+        public Tensor Output(Tensor inX, Tensor outY)
+        {
+            Tensor z = null;
+            tf_with(tf.variable_scope(TfScopes.OutputLayer), delegate
+            {
+                z = tf.identity(inX, "Y");
+            });
+
+            return z;
+        }
 
         public Tensor Dense(Tensor inX, int outputDim, ValueInitializer initValueType, string name, int seed= 1234)
         {
@@ -68,8 +80,6 @@ namespace Anndotnet.Vnd
                         z = inX;
                         break;
                 }
-
-                
 
             });
 

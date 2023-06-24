@@ -10,7 +10,6 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using anndotnet.vnd.Extensions;
 using Anndotnet.Core;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interface;
@@ -24,6 +23,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Anndotnet.Vnd.Extensions;
 using Tensorflow;
 using Tensorflow.NumPy;
 using static Tensorflow.Binding;
@@ -205,6 +205,9 @@ namespace Anndotnet.Vnd
             return mlConfig;
         }
 
-
+        public void PredictionMetrics(Tensor predicted, NDArray actual)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -11,6 +11,7 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 
+using System.Threading.Tasks;
 using Tensorflow;
 
 namespace Anndotnet.Core.Interface
@@ -22,7 +23,7 @@ namespace Anndotnet.Core.Interface
         /// </summary>
         /// <param name="modelPath"></param>
         /// <returns></returns>
-        Session LoadModel(string modelPath);
+        Task<Session> LoadModelAsync(string modelPath);
 
         /// <summary>
         /// Save Tensorflow model to the disk
@@ -39,5 +40,13 @@ namespace Anndotnet.Core.Interface
         /// <param name="shapeY">Output shape</param>
         /// <returns>Return Tensorflow graph object, otherwize throws an excepton.</returns>
         Graph CreateModel(Shape shapeX, Shape shapeY);
+
+        /// <summary>
+        /// For input tensor calculated the the output data
+        /// </summary>
+        /// <param name="session">Tensorflow session including trained model.</param>
+        /// <param name="data">Input data to predict</param>
+        /// <returns>Output tensor as the result of the model prediction.</returns>
+        Task<Tensor> PredictAsync(Session session, Tensor data);
     }
 }

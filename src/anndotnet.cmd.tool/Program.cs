@@ -1,4 +1,5 @@
 ﻿using Anndotnet.Core;
+using Anndotnet.Core.Interface;
 using Anndotnet.Core.Trainers;
 using Anndotnet.Tool.Progress;
 using Anndotnet.Vnd;
@@ -25,15 +26,22 @@ namespace AnnDotNET.Tool
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     Select the example to run:
 
-                0. - Multi-class: Iris example with Cross-Validation Training
-                1. - Multi-class: Iris example from MLConfig file.
-                2. - Multi-class: Iris example with data preparation task.
-                3. - Multi-class: AirQuality example from MLConfig file.
-                4. - Multi-class: AirQuality example with data preparation task.
-                5. - Binary-class: Titanic example from MLCOnfig file.
-                6. - Binary-class: Titanic example with data preparation task.
-                7. - Regression: Concrete slump test from MLConfig.
-                8. - Regression: Concrete slump test from MLConfig.
+                10. - Multi-class: Iris example with Tran-Validate Training.
+                11. - Multi-class: Iris example from MLConfig file.
+                12. - Multi-class: Iris example with Cross-Validation Training.
+
+                21. - Multi-class: AirQuality example from MLConfig file.
+                22. - Multi-class: AirQuality example with Tran-Validate Training.
+                23. - Multi-class: AirQuality example with Cross-Validation Training.
+
+                31. - Binary-class: Titanic example from MLCOnfig file.
+                32. - Binary-class: Titanic example with  Tran-Validate Training.
+                33. - Binary-class: Titanic example with Corss-Validation Training.
+
+                41. - Regression: Concrete slump test with Tran-Validate Training.
+                42. - Regression: Concrete slump test from MLConfig.
+                43. - Regression: Concrete slump test with Cross-Validation Training.    
+
                 x. - Exit
                     ";
             Console.WriteLine(str);
@@ -42,44 +50,57 @@ namespace AnnDotNET.Tool
             {
                 var key = Console.ReadLine();
                 await RunExamples(key);
+                Console.WriteLine("Select the example number to run, or 'x' to Exit:");
             }
         }
 
         private static  async Task RunExamples(string key)
         {
-            if (key == "0")
+            if (key == "10")
             {
-                await IrisFromNetObject(true);
+                await IrisFromNetObject(false);
             }
-            else if (key == "1")
+            else if (key == "11")
             {
                 await IrisFromMLConfig();
             }
-            else if(key == "2")
+            else if(key == "12")
             {
                 await IrisFromNetObject(true);
             }
-            else if (key == "3")
+            else if (key == "21")
             {
                 await AirQualityFromMLConfig();
             }
-            else if (key == "4")
+            else if (key == "22")
             {
                 await AirQualitiySample();
             }
-            else if (key == "5")
+            else if (key == "23")
+            {
+                await AirQualitiySample();
+            }
+            else if (key == "31")
             {
                await TitanicMLConfig();
             }
-            else if (key == "6")
+            else if (key == "32")
             {
                await RunTitanicSample();
             }
-            else if (key == "7")
+            else if (key == "33")
+            {
+                await RunTitanicSample();
+            }
+            else if (key == "41")
             {
                 await RunConcreteSlumpSample();
             }
-            else if (key == "8")
+            else if (key == "42")
+            {
+                ConcreteSlumpMLConfig();
+            }
+            else if (key == "43")
             {
                 ConcreteSlumpMLConfig();
             }
@@ -195,6 +216,8 @@ namespace AnnDotNET.Tool
 
             tParams.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
             
+            IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();   
+
             var data = await iris.GenerateData();
 
             var paths = new Dictionary<string, string>() { {"MLConfig", "iris.mlconfig" } };
@@ -204,15 +227,28 @@ namespace AnnDotNET.Tool
 
             var r = new MLRunner(net, lParams, tParams, data.X, data.Y, null, paths);
             
-            r.Run( new ProgressCVTraining());
+            //Training validation
+            r.Run( progress);
 
-            await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig"); 
+            //predict and deploy
+            var predData = await iris.GeneratePredictionData(20);
+
+            var fullModelPath = Path.Combine(paths["Root"],paths["Models"], paths["BestModel"]);
+            var model = await r.LoadModelAsync(fullModelPath);
+
+            var result = await r.PredictAsync(model, predData.X);
+
+            r.PredictionMetrics(result, predData.Y);
+
+            //await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig"); 
         }       
 
         private static async Task IrisFromMLConfig()
         {
             var mlCOnf = await MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
-           
+
+            IProgressTraining progress = mlCOnf.TParameters.TrainingType== TrainingType.CVTraining ? new ProgressCVTraining() : new ProgressTVTraining();
+
             var mlConfig1 = mlCOnf;
             //
             var mlRunner = new MLRunner(mlConfig1);

@@ -104,44 +104,4 @@ public class CVTrainer : TVTrainer
 
         return (new DataFeed(trainX, trainY), new DataFeed(testX, testY));
     }
-
-    //public new ProgressReport CreateProgressReport(TrainingParameters tParams, int fold, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs)
-    //{
-    //    //report progress
-    //    var pr = new ProgressReport()
-    //    {
-    //        ProgressType = (fold==_kFold && epoch == tParams.Epochs)? ProgressType.Completed : ProgressType.Training,
-    //        Epoch = epoch,
-    //        Epochs = tParams.Epochs,
-    //        KFold = tParams.KFold,
-    //        Fold = fold,
-    //        TrainLoss = resultsT.First(),
-    //        ValidLoss = resultsV.First(),
-    //    };
-
-    //    if (epoch == tParams.Epochs)
-    //    {
-    //        pr.ProgressType = ProgressType.Completed;
-    //    }
-
-    //    if (epoch == 1)
-    //    {
-    //        pr.ProgressType = ProgressType.Completed;
-    //    }
-
-    //    //
-    //    var evalsT = resultsT.Skip(1).ToArray();
-    //    var evalsV = resultsV.Skip(1).ToArray();
-
-    //    pr.TrainEval = new Dictionary<string, float>();
-    //    pr.ValidEval = new Dictionary<string, float>();
-    //    //
-    //    for (int i = 0; i < evalsT.Length; i++)
-    //    {
-    //        pr.TrainEval.Add($"{evalFuncs[i]}", evalsT[i]);
-    //        pr.ValidEval.Add($"{evalFuncs[i]}", evalsV[i]);
-    //    }
-
-    //    return pr;
-    //}
 }
