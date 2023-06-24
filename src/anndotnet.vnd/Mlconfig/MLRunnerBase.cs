@@ -170,7 +170,13 @@ namespace Anndotnet.Vnd
            
             return name;
         }
-     
+
+        public void PredictionMetrics(Tensor predicted, NDArray actual)
+        {
+            
+        }
+
+
 
         #region IMLModel implementation
         public Graph CreateModel(Shape shapeX, Shape shapeY)

@@ -205,9 +205,6 @@ namespace Anndotnet.Vnd
             return mlConfig;
         }
 
-        public void PredictionMetrics(Tensor predicted, NDArray actual)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
