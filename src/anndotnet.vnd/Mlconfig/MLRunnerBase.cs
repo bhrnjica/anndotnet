@@ -222,7 +222,7 @@ public class MLRunnerBase : IRunner, IMlModel, IEvaluator
             var predictedClasses = tf.arg_max(predicted, 1).ToArray<long>();
             var actualClasses = tf.arg_max(predicted, 1).ToArray<long>();
 
-            ConfusionMatrix s= new ConfusionMatrix(predictedClasses.Select(x=>(int)x).ToArray(), actualClasses.Select(x => (int)x).ToArray(),labels.Length );
+            ConfusionMatrix s= new ConfusionMatrix(actualClasses.Select(x => (int)x).ToArray(), predictedClasses.Select(x => (int)x).ToArray(), labels.Length );
             
             _printer.ConsolePrintConfusionMatrix(s, labels);
 
