@@ -2,7 +2,7 @@
   "Id": "5ba4060a-ae8c-4e3a-983a-4d466e0d9d81",
   "Parser": {
     "RowSeparator": "\r\n",
-    "ColumnSeparator": ";",
+    "ColumnSeparator": ",",
     "HasHeader": false,
     "SkipLines": 0,
     "MissingValueSymbol": null,
@@ -168,5 +168,10 @@
     "SplitPercentage": 20,
     "LastBestModel": null
   },
-  "Paths": null
+    "Paths": {
+    "MLConfig": "titanic.mlconfig",
+    "Root": "mlconfigs/titanic",
+    "Models": "models",
+    "BestModel": ""
+  }
 }

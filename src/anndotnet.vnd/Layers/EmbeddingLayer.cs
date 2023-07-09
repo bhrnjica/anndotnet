@@ -1,29 +1,25 @@
 ﻿///////////////////////////////////////////////////////////////////////////////
 //               ANNdotNET - Deep Learning Tool on .NET Platform             //
 //                                                                           //
-//            Copyright 2017-2021 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                Created by anndotnet community, anndotnet.com              //
 //                                                                           //
 //                     Licensed under the MIT License                        //
-//             See license section at https://github.com/bhrnjica/anndotnet  //
+//             See license section at https://github.com/anndotnet/anndotnet //
 //                                                                           //
-//             For feedback:https://github.com/bhrnjica/anndotnet/issues     //
+//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
+using AnnDotNet.Core;
+using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Interfaces;
 
-namespace AnnDotNet.Core.Entities;
+namespace AnnDotNet.Vnd.Layers;
 
-//Statistic for Column
-public class Statistics
+public class EmbeddingLayer : ILayer
 {
-    public double Mean;
-    public double Median;
-    public double Mode;
-    public double Random;
-    public double Range;
-    public double Min;
-    public double Max;
-    public double StdDev;
-    public List<string> Categories;
+    public int OutDim { get; set; }
+    public string Name { get; set; }
+    public LayerType Type { get; set; }
+    public EmbeddingLayer() => Type = LayerType.Embedding;
 }

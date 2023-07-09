@@ -10,38 +10,49 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using Anndotnet.Core.Interface;
+
+using AnnDotNet.Core.Interfaces;
+namespace AnnDotNet.Core.Data;
+
+///////////////////////////////////////////////////////////////////////////////
+//               ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                           //
+//            Copyright 2017-2021 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                           //
+//                     Licensed under the MIT License                        //
+//             See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                           //
+//             For feedback:https://github.com/bhrnjica/anndotnet/issues     //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 using Tensorflow;
 using static Tensorflow.Binding;
 
-namespace Anndotnet.Core.Data
+
+public class Placeholders : IPlaceholders
 {
-    public class Placeholders : IPlaceholders
+    public (Tensor X, Tensor Y) Create(Shape shape, Shape output,
+        TF_DataType inType = TF_DataType.TF_FLOAT,
+        TF_DataType outType = TF_DataType.TF_FLOAT)
     {
-       public (Tensor X, Tensor Y) Create(Shape shape, Shape output, 
-                                                TF_DataType inType= TF_DataType.TF_FLOAT, 
-                                                TF_DataType outType= TF_DataType.TF_FLOAT)
-        {
-            //
-            var X = tf.placeholder(inType, shape: shape);
-            var Y = tf.placeholder(outType, shape: output);
-            //
-            return (X, Y);
-        }
+        var xPlaceholder = tf.placeholder(inType, shape: shape);
+        var yPlaceholder = tf.placeholder(outType, shape: output);
+     
+        return (xPlaceholder, yPlaceholder);
+    }
 
-        public Tensor CreatePlaceholder(Shape shape, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
-        {
-            Tensor X = null;
-            X = tf.placeholder(inType, shape: shape, name: name);
-            return X;
-        }
+    public Tensor CreatePlaceholder(Shape shape, string name, TF_DataType inType = TF_DataType.TF_FLOAT)
+    {
+        var placeholder = tf.placeholder(inType, shape: shape, name: name);
 
-        public (Tensor X, Tensor Y) Create(int inDim, int outDim)
-        {
-            Shape input = (-1, inDim);
-            Shape output = (-1, outDim);
-            //
-            return Create(input, output);
-        }
+        return placeholder;
+    }
+
+    public (Tensor X, Tensor Y) Create(int inDim, int outDim)
+    {
+        Shape input = (-1, inDim);
+        Shape output = (-1, outDim);
+        
+        return Create(input, output);
     }
 }

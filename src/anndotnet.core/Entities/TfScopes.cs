@@ -10,19 +10,18 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using AnnDotNet.Core.Interfaces;
-
 namespace AnnDotNet.Core.Entities;
 
-public class MLConfig
+
+public class TfScopes
 {
-    public Guid Id { get; set; }
-    public DataParser Parser { get; set; }
-    public List<ColumnInfo> Metadata { get; set; }
-    public List<ILayer> Network { get; set; }
-    public LearningParameters LParameters { get; set; }
-    public TrainingParameters TParameters { get; set; }
-    public Dictionary<string, string> Paths { get; set; }
+    public static string Input = "Input";
+    public static string Train = "Train";
+    public static string Loss = "Loss";
+    public static string Optimizer = "Optimizer";
+    public static string Evaluation = "Eval";
+
+    public static string OutputLayer = "OutputNetwork";
 }
+
+

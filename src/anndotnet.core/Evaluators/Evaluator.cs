@@ -9,17 +9,26 @@
 //             For feedback:https://github.com/anndotnet/anndotnet/issues    //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
+using AnnDotNet.Core.Data;
+using AnnDotNet.Core.Interfaces;
 using System;
-using AnnDotNet.Core.Entities;
+using System.Threading.Tasks;
 using Tensorflow;
 using Tensorflow.NumPy;
 
-namespace AnnDotNet.Core.Interfaces;
+namespace AnnDotNet.Core.Evaluators;
 
-public interface ITrainer
+public class Evaluator : IEvaluator
 {
-    bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel);
-   
-    ProgressReport CreateProgressReport(TrainingParameters tParams, int fold, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs);
+
+    public bool Evaluate(Tensor model, Tensor y, DataFeed dFeed)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<NDArray> PredictAsync(Session session, Tensor data)
+    {
+        throw new NotImplementedException();
+    }
+
 }

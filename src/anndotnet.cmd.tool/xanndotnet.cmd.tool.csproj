@@ -9,11 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.11.3" />
+    <PackageReference Include="Microsoft.ML" Version="2.0.1" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.11.4" />
     <PackageReference Include="ShellProgressBar" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\daany\src\daany.df\Daany.DataFrame.csproj" />
+    <ProjectReference Include="..\..\..\daany\src\daany.mathstuff\Daany.MathStuff.csproj" />
     <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
     <ProjectReference Include="..\anndotnet.vnd\anndotnet.vnd.csproj" />
   </ItemGroup>
@@ -46,6 +49,9 @@
     </None>
     <None Update="mlconfigs\titanic\titanic_full_raw.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="mlconfigs\titanic\titanic_raw1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="mlconfigs\titanic\titanic_raw.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

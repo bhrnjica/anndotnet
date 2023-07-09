@@ -1,23 +1,50 @@
-﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
-// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
-//                                                                                      //
-// This code is free software under the MIT License                                     //
-// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
-//                                                                                      //
-// Bahrudin Hrnjica                                                                     //
-// bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
-// http://bhrnjica.net                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////
-using Anndotnet.Core.Data;
+﻿///////////////////////////////////////////////////////////////////////////////
+//               ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                           //
+//                Created by anndotnet community, anndotnet.com              //
+//                                                                           //
+//                     Licensed under the MIT License                        //
+//             See license section at https://github.com/anndotnet/anndotnet //
+//                                                                           //
+//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+//               ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                           //
+//                Created by anndotnet community, anndotnet.com              //
+//                                                                           //
+//                     Licensed under the MIT License                        //
+//             See license section at https://github.com/anndotnet/anndotnet //
+//                                                                           //
+//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+using AnnDotNet.Core.Data;
+using System.Threading.Tasks;
 using Tensorflow;
 using Tensorflow.NumPy;
-namespace Anndotnet.Core.Interface
+
+namespace AnnDotNet.Core.Interfaces;
+
+public interface IEvaluator
 {
-    public interface IEvaluator
-    {
-        public bool Evaluate(Tensor model, Tensor y, DataFeed dFeed);
-        public NDArray Predict(Tensor model, NDArray input);
-    }
+    /// <summary>
+    /// Evaluates the model during training process
+    /// </summary>
+    /// <param name="model">Model to be evaluated</param>
+    /// <param name="y"></param>
+    /// <param name="dFeed">Data for the evaluation.</param>
+    /// <returns>returns true if the evaluation process succeeded.</returns>
+    bool Evaluate(Tensor model, Tensor y, DataFeed dFeed);
+
+    /// <summary>
+    /// For input tensor calculated the the output data
+    /// </summary>
+    /// <param name="session">TensorFlow session including trained model.</param>
+    /// <param name="data">Input data to predict</param>
+    /// <returns>Output tensor as the result of the model prediction.</returns>
+    Task<NDArray> PredictAsync(Session session, Tensor data);
 }

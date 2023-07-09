@@ -1,29 +1,26 @@
-﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
-// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
-//                                                                                      //
-// This code is free software under the MIT License                                     //
-// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
-//                                                                                      //
-// Bahrudin Hrnjica                                                                     //
-// bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
-// http://bhrnjica.net                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
+//               ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                           //
+//                Created by anndotnet community, anndotnet.com              //
+//                                                                           //
+//                     Licensed under the MIT License                        //
+//             See license section at https://github.com/anndotnet/anndotnet //
+//                                                                           //
+//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
-using Anndotnet.Core;
-using Anndotnet.Core.Interfaces;
+using AnnDotNet.Core;
+using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Interfaces;
 
-namespace Anndotnet.Vnd.Layers
+namespace AnnDotNet.Vnd.Layers;
+
+public class FCLayer : ILayer
 {
-   
-    public class FCLayer : ILayer
-    {
-        public int OutDim { get; set; }
-        public string Name { get; set; }
-        public LayerType Type { get; set; }
+    public int OutDim { get; set; }
+    public string Name { get; set; }
+    public LayerType Type { get; set; }
 
-        public FCLayer() => Type = LayerType.Dense;
-    }
-    
+    public FCLayer() => Type = LayerType.Dense;
 }

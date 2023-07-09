@@ -10,15 +10,16 @@
 // Bihac, Bosnia and Herzegovina                                                         //
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
-using Anndotnet.Core;
-using Anndotnet.Core.Interface;
+using AnnDotNet.Core;
 using Google.Protobuf.WellKnownTypes;
 using ShellProgressBar;
 using System;
 using System.Linq;
+using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Interfaces;
 using XPlot.Plotly;
 
-namespace Anndotnet.Tool.Progress;
+namespace AnnDotNet.Tool.Progress;
 
 
 public class ProgressTVTraining : IProgressTraining, IDisposable

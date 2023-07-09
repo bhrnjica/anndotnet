@@ -1,14 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿///////////////////////////////////////////////////////////////////////////////
+//               ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                           //
+//                Created by anndotnet community, anndotnet.com              //
+//                                                                           //
+//                     Licensed under the MIT License                        //
+//             See license section at https://github.com/anndotnet/anndotnet //
+//                                                                           //
+//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 
-namespace Anndotnet.Core.Interfaces
+using AnnDotNet.Core.Entities;
+
+namespace AnnDotNet.Core.Interfaces;
+
+/// <summary>
+/// AnnDotNet layer interface
+/// </summary>
+public interface ILayer
 {
-    public interface ILayer
-    {
-        string Name { get; set; }
-        LayerType Type { get; set; }
-    }
+    /// <summary>
+    /// Layer name
+    /// </summary>
+    string Name { get; set; }
+
+    /// <summary>
+    /// Layer type e.g. Dense, Conv2D, etc.
+    /// </summary>
+    LayerType Type { get; set; }
 }

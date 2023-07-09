@@ -1,101 +1,105 @@
-﻿using Anndotnet.Core;
-using Anndotnet.Core.Extensions;
-using Anndotnet.Core.Interface;
-using Anndotnet.Core.Interfaces;
-using Anndotnet.Vnd.Layers;
+﻿///////////////////////////////////////////////////////////////////////////////
+//               ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                           //
+//                Created by anndotnet community, anndotnet.com              //
+//                                                                           //
+//                     Licensed under the MIT License                        //
+//             See license section at https://github.com/anndotnet/anndotnet //
+//                                                                           //
+//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+using AnnDotNet.Core;
 using Daany;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Extensions;
+using AnnDotNet.Core.Interfaces;
 using Tensorflow.NumPy;
 using XPlot.Plotly;
-using Anndotnet.Vnd.Extensions;
-namespace Anndotnet.Vnd.Samples
+using AnnDotNet.Vnd.Extensions;
+using AnnDotNet.Vnd.Layers;
+
+namespace AnnDotNet.Vnd.Samples;
+
+public  class IrisSample : ISample
 {
+    public List<ColumnInfo> Metadata { get; set; }
+    public DataParser Parser { get; set; }
 
-    public  class IrisSample : ISample
+    public IrisSample()
     {
-        public List<ColumnInfo> Metadata { get; set; }
-        public DataParser Parser { get; set; }
+        Parser = new DataParser();
+        Parser.ColumnSeparator = ';';
+        Parser.RawDataName = "mlconfigs/iris/iris_raw.txt";
 
-        public async Task<(NDArray X, NDArray Y)> GenerateData()
+        Parser.Header = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width", "species" };
+    }
+
+    DataFrame loaddata()
+    {
+        //unzip the file
+        var rawdata = DfExtensions.FromDataParser(Parser);
+        var mData = rawdata.ParseMetadata("species");
+        Metadata = mData;
+
+        //fix missing values
+        return rawdata.HandlingMissingValue(mData);
+    }
+
+    public async Task<(NDArray X, NDArray Y)> GenerateData()
+    {
+        await Task.CompletedTask;
+
+        var rawdata = loaddata();   
+
+        (NDArray X, NDArray Y) = rawdata.TransformData(metadata:Metadata);
+
+        return (X,Y);
+    }
+
+    public async Task<(NDArray X, NDArray Y)> GeneratePredictionData(int count)
+    {
+        await Task.CompletedTask;
+
+        var rawdata = loaddata();
+
+        var data = rawdata.TakeRandom(count);
+        
+        (NDArray x, NDArray y) = data.TransformData(Metadata);
+
+        return (x, y);
+    }
+    public  (TrainingParameters tPArams, LearningParameters lParams) GenerateParameters()
+    {
+        var lParams = new LearningParameters()
+
         {
-            Parser = new DataParser();
-            Parser.ColumnSeparator = ';';
-            Parser.RawDataName = "mlconfigs/iris/iris_raw.txt";
+            EvaluationFunctions = new List<Metrics>()
+                { Metrics.CAcc, Metrics.CErr },
 
-            Parser.Header = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width", "species"};
+            LossFunction = Metrics.CCE,
+            LearnerType = LearnerType.Adam,
+            LearningRate = 0.01f
+        };
 
-            //unzip the file
-            var rawdata = DFExtensions.FromDataParser(Parser);
+        var tParams = new TrainingParameters();
 
-            await Task.CompletedTask;
-            var mData = rawdata.ParseMetadata("species");
-            Metadata = mData;
+        return (tParams, lParams);
+    }
 
-
-            //fix missing values
-            rawdata.HandlingMissingValue(mData);
-
-            (NDArray X, NDArray Y) = rawdata.TransformData(mData);
-
-            return (X,Y);
-        }
-
-        public async Task<(NDArray X, NDArray Y)> GeneratePredictionData(int count)
+    public  List<ILayer>  CreateNet()
+    {
+        return new List<ILayer>()
         {
-            Parser = new DataParser();
-            Parser.ColumnSeparator = ';';
-            Parser.RawDataName = "mlconfigs/iris/iris_raw.txt";
-
-            Parser.Header = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width", "species" };
-
-            //unzip the file
-            var rawdata = DFExtensions.FromDataParser(Parser);
-
-            await Task.CompletedTask;
-            var mData = rawdata.ParseMetadata("species");
-            Metadata = mData;
-
-
-            //fix missing values
-            rawdata.HandlingMissingValue(mData);
-
-            var data = rawdata.TakeRandom(count);
-
-
-            (NDArray X, NDArray Y) = data.TransformData(mData);
-
-            return (X, Y);
-        }
-        public  (TrainingParameters tPArams, LearningParameters lParams) GenerateParameters()
-        {
-            var lParams = new LearningParameters()
-
-            {
-                EvaluationFunctions = new List<Metrics>()
-                    { Metrics.CAcc, Metrics.CErr },
-
-                LossFunction = Metrics.CCE,
-                LearnerType = LearnerType.Adam,
-                LearningRate = 0.01f
-            };
-
-            var tParams = new TrainingParameters();
-
-            return (tParams, lParams);
-        }
-
-        public  List<ILayer>  CreateNet()
-        {
-            return new List<ILayer>()
-            {
-                new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 7 },
-                new ActLayer(){Type= LayerType.Activation, Name="ReLu", Activation=Activation.ReLU},
-                new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 3 },
-                new ActLayer(){Type= LayerType.Activation, Name="Softmax", Activation=Activation.Softmax},
-            };
-        }
+            new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 7 },
+            new ActLayer(){Type= LayerType.Activation, Name="ReLu", Activation=Activation.ReLU},
+            new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 3 },
+            new ActLayer(){Type= LayerType.Activation, Name="Softmax", Activation=Activation.Softmax},
+        };
+    }
        
     
-    }
 }
