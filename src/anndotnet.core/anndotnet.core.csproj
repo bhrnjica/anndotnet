@@ -8,12 +8,19 @@
 
   <ItemGroup>
     <PackageReference Include="TensorFlow.NET" Version="0.100.5" />
+    <PackageReference Include="XPlot.Plotly" Version="4.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\daany\src\daany.df\Daany.DataFrame.csproj" />
-    <ProjectReference Include="..\..\..\daany\src\daany.ext\Daany.DataFrame.Ext.csproj" />
-    <ProjectReference Include="..\..\..\daany\src\daany.mathstuff\Daany.MathStuff.csproj" />
+    <Reference Include="Daany.DataFrame">
+      <HintPath>..\..\lib\Daany.DataFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.DataFrame.Ext">
+      <HintPath>..\..\lib\Daany.DataFrame.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.MathStuff">
+      <HintPath>..\..\lib\Daany.MathStuff.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   

@@ -30,4 +30,16 @@
     <ProjectReference Include="..\..\src\anndotnet.vnd\anndotnet.vnd.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Daany.DataFrame">
+      <HintPath>..\..\lib\Daany.DataFrame.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.DataFrame.Ext">
+      <HintPath>..\..\lib\Daany.DataFrame.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="Daany.MathStuff">
+      <HintPath>..\..\lib\Daany.MathStuff.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

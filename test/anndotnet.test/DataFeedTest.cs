@@ -3,7 +3,7 @@ using AnnDotNet.Core.Data;
 using AnnDotNet.Core.Extensions;
 using AnnDotNet.Core.Trainers;
 using AnnDotNet.Vnd;
-using Daany;
+
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
