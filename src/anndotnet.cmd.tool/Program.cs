@@ -1,15 +1,13 @@
 ﻿using AnnDotNet.Core.Entities;
 using AnnDotNet.Core.Interfaces;
 using AnnDotNet.Tool.Progress;
-using AnnDotNet.Vnd.Mlconfig;
-using AnnDotNet.Vnd.Samples;
 using AnnDotNET.Tool.Progress;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AnnDotNet.Tool;
-using Tensorflow.NumPy;
+
 
 namespace AnnDotNET.Tool;
 
@@ -116,16 +114,18 @@ static class Program
     #region SlumpTest Example
     private static async Task RunConcreteSlumpSample()
     {
-        SlampTestSample slump = new SlampTestSample();
-        (NDArray x, NDArray y) = await slump.GenerateData();
+        throw new NotImplementedException();
 
-        (TrainingParameters tParams, LearningParameters lParams) = slump.GenerateParameters();
-        var net = slump.CreateNet();
+        //SlampTestSample slump = new SlampTestSample();
+        //(NDArray x, NDArray y) = await slump.GenerateData();
 
-        var r = new MLRunner(net, lParams, tParams, x, y, slump.Metadata, new ConsoleHelper());
-        r.Run(null);
+        //(TrainingParameters tParams, LearningParameters lParams) = slump.GenerateParameters();
+        //var net = slump.CreateNet();
 
-        await r.SaveMlConfig(slump.Metadata, new DataParser(), "slump.mlconifg");
+        //var r = new MLRunner(net, lParams, tParams, x, y, slump.Metadata, new ConsoleHelper());
+        //r.Run(null);
+
+        //await r.SaveMlConfig(slump.Metadata, new DataParser(), "slump.mlconifg");
     }
 
     private static void ConcreteSlumpMLConfig()
@@ -137,49 +137,53 @@ static class Program
     #region Titanic Example
     private static async Task TitanicMLConfig()
     {
-        var mlCOnf = await MLFactory.Load(@"mlconfigs\titanic\titanic.mlconfig");
-        
-        var mlConfig1 = mlCOnf;
+        throw new NotImplementedException();
 
-        IProgressTraining progress = (mlConfig1.TParameters.TrainingType == TrainingType.CVTraining) ? new ProgressCVTraining() : new ProgressTVTraining();
+        //var mlCOnf = await MLFactory.Load(@"mlconfigs\titanic\titanic.mlconfig");
 
-        //
-        var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
-        mlRunner.Run(progress);
+        //var mlConfig1 = mlCOnf;
+
+        //IProgressTraining progress = (mlConfig1.TParameters.TrainingType == TrainingType.CVTraining) ? new ProgressCVTraining() : new ProgressTVTraining();
+
+        ////
+        //var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
+        //mlRunner.Run(progress);
     }
 
     private static async Task RunTitanicSample(bool crossValidation = false)
     {
-        TitanicSample titanic = new TitanicSample();
-        (NDArray x, NDArray y) = await titanic.GenerateData();
+        throw new NotImplementedException();
 
-        (TrainingParameters tParams, LearningParameters lParams) = titanic.GenerateParameters();
+        //TitanicSample titanic = new TitanicSample();
+        //(NDArray x, NDArray y) = await titanic.GenerateData();
 
-        var net = titanic.CreateNet();
+        //(TrainingParameters tParams, LearningParameters lParams) = titanic.GenerateParameters();
 
-        var paths = new Dictionary<string, string>
-        {
-            { "MLConfig", "titanic.mlconfig" },
-            { "Root", "mlconfigs/titanic" },
-            { "Models", "models" },
-            { "BestModel", "" }
-        };
+        //var net = titanic.CreateNet();
 
-        var mlRunner = new MLRunner(net, lParams, tParams, x, y, titanic.Metadata, new ConsoleHelper(), paths);
+        //var paths = new Dictionary<string, string>
+        //{
+        //    { "MLConfig", "titanic.mlconfig" },
+        //    { "Root", "mlconfigs/titanic" },
+        //    { "Models", "models" },
+        //    { "BestModel", "" }
+        //};
 
-        IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();
+        //var mlRunner = new MLRunner(net, lParams, tParams, x, y, titanic.Metadata, new ConsoleHelper(), paths);
 
-        mlRunner.Run(progress);
+        //IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();
 
-        //predict and deploy
-        var predData = await titanic.GeneratePredictionData(20);
+        //mlRunner.Run(progress);
 
-        var fullModelPath = Path.Combine(paths["Root"], paths["Models"], paths["BestModel"]);
-        var model = await mlRunner.LoadModelAsync(fullModelPath);
+        ////predict and deploy
+        //var predData = await titanic.GeneratePredictionData(20);
 
-        var result = await mlRunner.PredictAsync(model, predData.X);
+        //var fullModelPath = Path.Combine(paths["Root"], paths["Models"], paths["BestModel"]);
+        //var model = await mlRunner.LoadModelAsync(fullModelPath);
 
-        mlRunner.PredictionMetrics(result, predData.Y, titanic.Metadata);
+        //var result = await mlRunner.PredictAsync(model, predData.X);
+
+        //mlRunner.PredictionMetrics(result, predData.Y, titanic.Metadata);
 
     }
     #endregion
@@ -187,80 +191,88 @@ static class Program
     #region Iris Example
     private static async Task IrisFromNetObject(bool crossValidation= false)
     {
-        var iris = new IrisSample();
-        var net = iris.CreateNet();
-        var lParams = iris.GenerateParameters().lParams;
-        var tParams = iris.GenerateParameters().tPArams;
+        throw new NotImplementedException();
 
-        tParams.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
-            
-        IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();   
+        //var iris = new IrisSample();
+        //var net = iris.CreateNet();
+        //var lParams = iris.GenerateParameters().lParams;
+        //var tParams = iris.GenerateParameters().tPArams;
 
-        var (X, Y) = await iris.GenerateData();
+        //tParams.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
 
-        var paths = new Dictionary<string, string>
-        {
-            { "MLConfig", "iris.mlconfig" },
-            { "Root", "mlconfigs/iris" },
-            { "Models", "models" },
-            { "BestModel", "638227190040989949.ckp" }
-        };
+        //IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();   
 
-        var mlRunner = new MLRunner(net, lParams, tParams, X, Y, null, new ConsoleHelper(), paths );
-            
-        //Training validation
-        mlRunner.Run( progress);
+        //var (X, Y) = await iris.GenerateData();
 
-        //predict and deploy
-        var predData = await iris.GeneratePredictionData(20);
+        //var paths = new Dictionary<string, string>
+        //{
+        //    { "MLConfig", "iris.mlconfig" },
+        //    { "Root", "mlconfigs/iris" },
+        //    { "Models", "models" },
+        //    { "BestModel", "638227190040989949.ckp" }
+        //};
 
-        var fullModelPath = Path.Combine(paths["Root"],paths["Models"], paths["BestModel"]);
-        var model = await mlRunner.LoadModelAsync(fullModelPath);
+        //var mlRunner = new MLRunner(net, lParams, tParams, X, Y, null, new ConsoleHelper(), paths );
 
-        var result = await mlRunner.PredictAsync(model, predData.X);
+        ////Training validation
+        //mlRunner.Run( progress);
 
-        mlRunner.PredictionMetrics(result, predData.Y, iris.Metadata);
+        ////predict and deploy
+        //var predData = await iris.GeneratePredictionData(20);
 
-        //await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig"); 
+        //var fullModelPath = Path.Combine(paths["Root"],paths["Models"], paths["BestModel"]);
+        //var model = await mlRunner.LoadModelAsync(fullModelPath);
+
+        //var result = await mlRunner.PredictAsync(model, predData.X);
+
+        //mlRunner.PredictionMetrics(result, predData.Y, iris.Metadata);
+
+        ////await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig"); 
     }       
 
     private static async Task IrisFromMLConfig()
     {
-        var mlCOnf = await MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
+        throw new NotImplementedException();
 
-        IProgressTraining progress = mlCOnf.TParameters.TrainingType== TrainingType.CVTraining ? new ProgressCVTraining() : new ProgressTVTraining();
+        //var mlCOnf = await MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
 
-        var mlConfig1 = mlCOnf;
-        //
-        var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
-        mlRunner.Run(new ProgressTVTraining());
+        //IProgressTraining progress = mlCOnf.TParameters.TrainingType== TrainingType.CVTraining ? new ProgressCVTraining() : new ProgressTVTraining();
+
+        //var mlConfig1 = mlCOnf;
+        ////
+        //var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
+        //mlRunner.Run(new ProgressTVTraining());
     }
     #endregion
 
     #region AirQuality Example
     private static async Task AirQualitiySample()
     {
-        var data = await AirQualitySample.generateAirQualityData();
+        throw new NotImplementedException();
 
-        var par = AirQualitySample.generateParameters();
+        //var data = await AirQualitySample.generateAirQualityData();
 
-        var net = AirQualitySample.CreateNet();
-            
-        var r = new MLRunner(net, par.lParams, par.tParams, data.X, data.Y, null, new ConsoleHelper());
+        //var par = AirQualitySample.generateParameters();
 
-        r.Run(null);
+        //var net = AirQualitySample.CreateNet();
 
-        // await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
+        //var r = new MLRunner(net, par.lParams, par.tParams, data.X, data.Y, null, new ConsoleHelper());
+
+        //r.Run(null);
+
+        //// await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
     }
 
     private static async Task AirQualityFromMLConfig()
     {
-        var mlCOnf = await MLFactory.Load(@"mlconfigs\air_quality\airquality.mlconfig");
-            
-        var mlConfig1 = mlCOnf;
-        //
-        var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
-        mlRunner.Run(null);
+        throw new NotImplementedException();
+
+        //var mlCOnf = await MLFactory.Load(@"mlconfigs\air_quality\airquality.mlconfig");
+
+        //var mlConfig1 = mlCOnf;
+        ////
+        //var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
+        //mlRunner.Run(null);
     }
     #endregion
 }

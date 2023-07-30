@@ -7,8 +7,7 @@ using AnnDotNet.Core.Interfaces;
 using static TorchSharp.torch.nn;
 using static TorchSharp.torch;
 using TorchSharp;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Vnd.Layers;
+
 
 namespace Anndotnet.Core.Model
 {
