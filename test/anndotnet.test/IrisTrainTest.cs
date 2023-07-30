@@ -110,7 +110,8 @@ public class IrisTrain_Test
                 testLoss += output.ToSingle();
 
                 var pred = prediction.argmax(1);
-                correct += pred.eq(data.yBatch).sum().ToInt32();
+                var actual = data.yBatch.argmax(1);
+                correct += pred.eq(actual).sum().ToInt32();
 
                 d.DisposeEverything();
             }
