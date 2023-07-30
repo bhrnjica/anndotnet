@@ -86,7 +86,7 @@ public class DataFeedTests
         int batchIndex = 0;
 
         // act
-        var totalSamples = data.shape[1];
+        var totalSamples = data.shape[0];
            
         // assert
         foreach (var d in feed.GetNextBatch(batchSize))
@@ -144,7 +144,7 @@ public class DataFeedTests
         int batchIndex = 0;
 
         // act
-        var totalSamples = data.shape[1];
+        var totalSamples = data.shape[0];
 
         // assert
         foreach (var d in feed.GetNextBatch(batchSize))
@@ -230,7 +230,7 @@ public class DataFeedTests
         int batchIndex = 0;
 
         // act
-        var totalSamples = data.shape[1];
+        var totalSamples = data.shape[0];
 
         // assert
         foreach (var d in feed.GetNextBatch(batchSize))
@@ -450,20 +450,20 @@ public class DataFeedTests
         int batchIndex = 0;
 
         // act
-        var totalSamples = data.shape[1];
+        var totalSamples = data.shape[0];
 
         // assert
         foreach (var d in feed.GetNextBatch(batchSize))
         {
             if (batchIndex == 0)
             {
-                Assert.AreEqual(d.xBatch.shape[1], batchSize);
+                Assert.AreEqual(d.xBatch.shape[0], batchSize);
 
                 Assert.AreEqual((float)d.xBatch[0, 0], 1.0f);
-                Assert.AreEqual((float)d.xBatch[1, 0], 11.0f);
+                Assert.AreEqual((float)d.xBatch[0, 1], 11.0f);
 
-                Assert.AreEqual((float)d.xBatch[0, batchSize - 1], 4.0f);
-                Assert.AreEqual((float)d.xBatch[1, batchSize - 1], 14.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1, 0], 4.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1, 1], 14.0f);
 
 
                 Assert.AreEqual((float)d.yBatch[0], 1);
@@ -471,13 +471,13 @@ public class DataFeedTests
             }
             else if (batchIndex == 1)
             {
-                Assert.AreEqual(d.xBatch.shape[1], batchSize);
+                Assert.AreEqual(d.xBatch.shape[0], batchSize);
 
                 Assert.AreEqual((float)d.xBatch[0, 0], 5.0f);
-                Assert.AreEqual((float)d.xBatch[1, 0], 15.0f);
+                Assert.AreEqual((float)d.xBatch[0, 1], 15.0f);
 
-                Assert.AreEqual((float)d.xBatch[0, batchSize - 1], 8.0f);
-                Assert.AreEqual((float)d.xBatch[1, batchSize - 1], 18.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1,0], 8.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1,1], 18.0f);
 
 
                 Assert.AreEqual((float)d.yBatch[0], 1);
@@ -485,10 +485,13 @@ public class DataFeedTests
             }
             else
             {
-                Assert.AreEqual(d.xBatch.shape[1], 2);
+                Assert.AreEqual(d.xBatch.shape[0], 2);
 
                 Assert.AreEqual((float)d.xBatch[0, 0], 9.0f);
-                Assert.AreEqual((float)d.xBatch[1, 2 - 1], 20.0f);
+                Assert.AreEqual((float)d.xBatch[0,1], 19.0f);
+
+                Assert.AreEqual((float)d.xBatch[2-1, 0], 10.0f);
+                Assert.AreEqual((float)d.xBatch[2-1, 1], 20.0f);
 
                 Assert.AreEqual((float)d.yBatch[0], 0);
                 Assert.AreEqual((float)d.yBatch[2 - 1], 1);
@@ -510,56 +513,50 @@ public class DataFeedTests
         int batchIndex = 0;
 
         // act
-        var totalSamples = data.shape[1];
+        var totalSamples = data.shape[0];
 
         // assert
         foreach (var d in feed.GetNextBatch(batchSize))
         {
             if (batchIndex == 0)
             {
-                Assert.AreEqual(d.xBatch.shape[1], batchSize);
+                Assert.AreEqual(d.xBatch.shape[0], batchSize);
 
                 Assert.AreEqual((float)d.xBatch[0, 0], 1.0f);
-                Assert.AreEqual((float)d.xBatch[1, 0], 11.0f);
+                Assert.AreEqual((float)d.xBatch[0, 1], 11.0f);
 
-                Assert.AreEqual((float)d.xBatch[0, batchSize - 1], 4.0f);
-                Assert.AreEqual((float)d.xBatch[1, batchSize - 1], 14.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1, 0], 4.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1, 1], 14.0f);
 
 
-                Assert.AreEqual((float)d.yBatch[0, 0], 1);
-                Assert.AreEqual((float)d.yBatch[1,0], 0);
-                Assert.AreEqual((float)d.yBatch[0, batchSize - 1], 0);
-                Assert.AreEqual((float)d.yBatch[1, batchSize - 1], 0);
+                Assert.AreEqual((float)d.yBatch[0], 1);
+                Assert.AreEqual((float)d.yBatch[batchSize - 1], -1);
             }
             else if (batchIndex == 1)
             {
-                Assert.AreEqual(d.xBatch.shape[1], batchSize);
+                Assert.AreEqual(d.xBatch.shape[0], batchSize);
 
                 Assert.AreEqual((float)d.xBatch[0, 0], 5.0f);
-                Assert.AreEqual((float)d.xBatch[1, 0], 15.0f);
+                Assert.AreEqual((float)d.xBatch[0, 1], 15.0f);
 
-                Assert.AreEqual((float)d.xBatch[0, batchSize - 1], 8.0f);
-                Assert.AreEqual((float)d.xBatch[1, batchSize - 1], 18.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1, 0], 8.0f);
+                Assert.AreEqual((float)d.xBatch[batchSize - 1, 1], 18.0f);
 
 
 
-                Assert.AreEqual((float)d.yBatch[0, 0], 1);
-                Assert.AreEqual((float)d.yBatch[1, 0], 0);
-                Assert.AreEqual((float)d.yBatch[0, batchSize - 1], 0);
-                Assert.AreEqual((float)d.yBatch[1, batchSize - 1], 0);
+                Assert.AreEqual((float)d.yBatch[0], 1);
+                Assert.AreEqual((float)d.yBatch[batchSize - 1], -1);
             }
             else
             {
-                Assert.AreEqual(d.xBatch.shape[1], 2);
+                Assert.AreEqual(d.xBatch.shape[0], 2);
 
                 Assert.AreEqual((float)d.xBatch[0, 0], 9.0f);
-                Assert.AreEqual((float)d.xBatch[1, 2 - 1], 20.0f);
+                Assert.AreEqual((float)d.xBatch[2 - 1, 1], 20.0f);
 
 
-                Assert.AreEqual((float)d.yBatch[0, 0], 1);
-                Assert.AreEqual((float)d.yBatch[1, 0], 0);
-                Assert.AreEqual((float)d.yBatch[0, 2 - 1], 0);
-                Assert.AreEqual((float)d.yBatch[1, 2 - 1], 0);
+                Assert.AreEqual((float)d.yBatch[0], -1);
+                Assert.AreEqual((float)d.yBatch[2 - 1], 1);
             }
 
             batchIndex++;
