@@ -12,14 +12,13 @@
 
 using System;
 using AnnDotNet.Core.Entities;
-using Tensorflow;
-using Tensorflow.NumPy;
+using static TorchSharp.torch;
 
 namespace AnnDotNet.Core.Interfaces;
 
 public interface ITrainer
 {
-    bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel);
+   // bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel);
    
-    ProgressReport CreateProgressReport(TrainingParameters tParams, int fold, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs);
+   // ProgressReport CreateProgressReport(TrainingParameters tParams, int fold, int epoch, NDArray[] resultsT, NDArray[] resultsV, string[] evalFuncs);
 }

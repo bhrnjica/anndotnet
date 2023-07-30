@@ -15,14 +15,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AnnDotNet.Core.Entities;
-using Tensorflow;
-using Tensorflow.NumPy;
+
+using TorchSharp;
+using static TorchSharp.torch;
 
 namespace AnnDotNet.Core.Extensions;
 
 public static class DfExtensions
 {
-    public static (NDArray X, NDArray Y) TransformData(this DataFrame df, List<ColumnInfo> metadata)
+    public static (Tensor X, Tensor Y) TransformData(this DataFrame df, List<ColumnInfo> metadata)
     {
         //extract features and label from DataFrame
         var feats = metadata.Where(x => x.MLType == MLColumnType.Feature).ToList();
@@ -30,26 +31,24 @@ public static class DfExtensions
 
         //transform feature
         var dfF = df[feats.Select(x => x.Name).ToArray()];
-        var featureDf = prepareDf(dfF, feats);
-
+        var featureDf = PrepareDf(dfF, feats);
 
         //transform label
         var lDf = df.Create((labelInfo.Select(x => x.Name).FirstOrDefault(), null));
-        var labelDf = prepareDf(lDf, labelInfo);
+        var labelDf = PrepareDf(lDf, labelInfo);
 
         //iterate through rows
-        var x = featureDf.ToNDArray(metadata.Where(x=>x.MLType==MLColumnType.Feature).ToList());
-        var y = labelDf.ToNDArray(metadata.Where(x => x.MLType == MLColumnType.Label).ToList());
+        var x = featureDf.ToTensor(metadata.Where(x=>x.MLType==MLColumnType.Feature).ToList());
+        var y = labelDf.ToTensor(metadata.Where(x => x.MLType == MLColumnType.Label).ToList());
 
-        //
         return (x, y);
     }
 
-    private static DataFrame prepareDf(DataFrame df, List<ColumnInfo> metadata)
+    private static DataFrame PrepareDf(DataFrame df, List<ColumnInfo> metadata)
     {
         var cols = df.Columns;
 
-        //check id all columns have valid type
+        //check if all columns have valid type
         if (df.ColTypes.Any(x => x == ColType.DT))
         {
             throw new Exception("DataTime column cannot be directly prepare to ML. Consider to transform it to another type.");
@@ -59,7 +58,7 @@ public static class DfExtensions
         var finalColumns = new List<String>();
         var finalDf = df[df.Columns.ToArray()];
 
-        for (int j = 0; j < df.ColCount(); j++)
+        for (var j = 0; j < df.ColCount(); j++)
         {
             //categorical data encoding
             if (metadata[j].Transformer.DataNormalization == ColumnTransformer.Binary1 ||
@@ -104,34 +103,22 @@ public static class DfExtensions
         return finalDf[finalColumns.ToArray()];
     }
 
-    public static NDArray ToNDArray(this DataFrame df, List<ColumnInfo> metadata)
+    public static Tensor ToTensor(this DataFrame df, List<ColumnInfo> metadata)
     {
-            
-        var shape = new Shape(df.RowCount(), df.ColCount());
-        var lst = new float[shape[0], shape[1]];
+        (var row, var col) = (df.RowCount(), df.ColCount());
 
-        for (int r = 0; r < df.RowCount(); r++)
-        {
-            for (int c = 0; c < df.ColCount(); c++)
-            {
-                lst[r, c] = Convert.ToSingle(df[r, c]);
-            }
-        }
+        var lstValues = df.Values.Select(x=>Convert.ToSingle(x)).ToList();
+        var dataTensor =torch.tensor(lstValues);
 
-        //
-        var ndArray = new NDArray(lst);
+        dataTensor = col == 1 ? torch.reshape(dataTensor, row) : torch.reshape(dataTensor, row, col);
 
-        if (shape[1] == 1 && metadata.Last().ValueColumnType != ColType.IN)
-        {
-            ndArray = ndArray.reshape(new Shape(shape[0])); 
-        }
-
-        return ndArray;
+        return dataTensor;
     }
 
     public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
     {
-        List<ColumnInfo> cols = new List<ColumnInfo>();
+        var cols = new List<ColumnInfo>();
+
         for (int i = 0; i < df.ColCount(); i++)
         {
             var name = df.Columns[i];

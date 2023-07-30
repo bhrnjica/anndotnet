@@ -11,7 +11,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using System.Collections.Generic;
-using Tensorflow;
+using static TorchSharp.torch;
 
 namespace AnnDotNet.Core.Interfaces;
 
@@ -23,13 +23,13 @@ public interface IDataFeed
     /// <summary>
     /// Get next batch of data for training process.
     /// </summary>
-    /// <param name="batchSize">Tehe size of the batch g.e. row number, image number</param>
-    /// <returns>The feed that containing of the input and outpu/labeled data</returns>
+    /// <param name="batchSize">The size of the batch g.e. row number, image number</param>
+    /// <returns>The feed that containing of the input and output/labeled data</returns>
     IEnumerable<(Tensor xBatch, Tensor yBatch)> GetNextBatch(int batchSize);
 
     /// <summary>
-    /// returns the whole data set.
+    /// Returns whole data set.
     /// </summary>
-    /// <returns>Returns the whole data set converted</returns>
+    /// <returns>Returns whole data set</returns>
     (Tensor xBatch, Tensor yBatch) GetFullBatch();
 }

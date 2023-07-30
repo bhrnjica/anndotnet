@@ -7,24 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AnnDotNet.Core.Entities;
-using Tensorflow.NumPy;
+using static TorchSharp.torch;
+using TorchSharp;
 
 namespace AnnDotNet.test;
 
 public class TestDataProvider
 {
-    public static (NDArray x, NDArray y) Prepare1DData()
+    public static (Tensor x, Tensor y) Prepare1DData()
     {
-        var x = np.array(1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f, 8.8f, 9.9f, 10.10f);
-        var y = np.array(11.1f, 21.2f, 31.3f, 41.4f, 51.5f, 61.6f, 71.7f, 81.8f, 91.9f, 101.10f);
+        var x = torch.tensor(new float[] {1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f, 8.8f, 9.9f, 10.10f});
+        var y = torch.tensor(new float[] { 11.1f, 21.2f, 31.3f, 41.4f, 51.5f, 61.6f, 71.7f, 81.8f, 91.9f, 101.10f});
 
         return (x, y);
     }
 
-    public static (NDArray, NDArray) PrepareIrisData()
+    public static (Tensor, Tensor) PrepareIrisData()
     {
-
-        //prepare the data
         var cols = new List<ColumnInfo>()
         {
             new ColumnInfo(){ Id=1, Name= "sepal_length", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
@@ -39,18 +38,14 @@ public class TestDataProvider
         colTypes.RemoveAt(colTypes.Count - 1);
         colTypes.Add(ColType.STR);
 
-        //read the iris data and create DataFrame object
         var df = DataFrame.FromCsv("files/iris.txt", colTypes: colTypes.ToArray(), sep: '\t');
 
-        //
         return df.TransformData(cols);
 
     }
 
-    public static (NDArray, NDArray) PrepareIrisDataOrdinal()
+    public static (Tensor, Tensor) PrepareIrisDataOrdinal()
     {
-
-        //prepare the data
         var cols = new List<ColumnInfo>()
         {
             new ColumnInfo(){ Id=1, Name= "sepal_length", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
@@ -65,18 +60,15 @@ public class TestDataProvider
         colTypes.RemoveAt(colTypes.Count - 1);
         colTypes.Add(ColType.STR);
 
-        //read the iris data and create DataFrame object
         var df = DataFrame.FromCsv("files/iris.txt", colTypes: colTypes.ToArray(), sep: '\t');
 
-        //
         return df.TransformData(cols);
 
     }
 
-    public static (NDArray, NDArray) PrepareIrisDataDummy()
+    public static (Tensor, Tensor) PrepareIrisDataDummy()
     {
 
-        //prepare the data
         var cols = new List<ColumnInfo>()
         {
             new ColumnInfo(){ Id=1, Name= "sepal_length", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
@@ -92,15 +84,12 @@ public class TestDataProvider
         colTypes.RemoveAt(colTypes.Count - 1);
         colTypes.Add(ColType.STR);
 
-        //read the iris data and create DataFrame object
         var df = DataFrame.FromCsv("files/iris.txt", colTypes: colTypes.ToArray(), sep: '\t');
 
-        //
         return df.TransformData(cols);
-
     }
 
-    public static (NDArray, NDArray) Prepare2DData()
+    public static (Tensor, Tensor) Prepare2DData()
     {
         var array = new float[10, 2]
         { 
@@ -116,21 +105,20 @@ public class TestDataProvider
             { 10f, 20f } 
         };
 
-        //create 2D array (2x10)
-        var X = new NDArray(array);
+        var x = torch.tensor(array);
 
-        var Y = new NDArray(new float[]
+        var y = torch.tensor(new float[]
             {
                 21f, 22f, 23f, 24f, 25f, 26f, 27f, 28f, 29f, 30f
             }
         );
 
-        return (X, Y);
+        return (x, y);
     }
 
-    public static (NDArray, NDArray) Prepare2DData_binary_label()
+    public static (Tensor, Tensor) Prepare2DData_binary_label()
     {
-        var X = new float[10, 2]
+        var x = torch.tensor( new float[10, 2]
         {
             { 1f, 11f },
             { 2f, 12f },
@@ -142,20 +130,19 @@ public class TestDataProvider
             { 8f, 18f },
             { 9f, 19f },
             { 10f, 20f }
-        };
+        });
 
-        var Y = new NDArray(new bool[]
+        var y = torch.tensor(new bool[]
             {
                 true, false, true, false, true, false, true, false, false, true
             }
         );
 
-        return (X, Y);
+        return (x, y);
     }
 
-    public static (NDArray, NDArray) Prepare2DData_binary1_encoding()
+    public static (Tensor, Tensor) Prepare2DData_binary1_encoding()
     {
-        //create 3D array (3x6x5)
         var dic = new Dictionary<string, List<object>>
         {
             {"col1", new List<object>{  1.0f,  2f,  3f,  4f,  5f,  6f,  7f,  8f,  9f, 10f} },
@@ -163,10 +150,8 @@ public class TestDataProvider
             {"lab", new List<object> { true, false, true, false, true, false, true, false, false, true} }
         };
 
-        //read the iris data and create DataFrame object
         var df = new DataFrame(dic);
 
-        //prepare the data
         var cols = new List<ColumnInfo>()
         {
             new ColumnInfo(){ Id=1, Name= "col1", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
@@ -175,14 +160,11 @@ public class TestDataProvider
                 Transformer= new DataTransformer(){ DataNormalization = ColumnTransformer.Binary1 } },
         };
 
-        //
         return df.TransformData(cols);
-            
     }
 
-    public static (NDArray, NDArray) Prepare2DData_binary2_encoding()
+    public static (Tensor, Tensor) Prepare2DData_binary2_encoding()
     {
-        //create 3D array (3x6x5)
         var dic = new Dictionary<string, List<object>>
         {
             {"col1", new List<object>{  1.0f,  2f,  3f,  4f,  5f,  6f,  7f,  8f,  9f, 10f} },
@@ -190,10 +172,8 @@ public class TestDataProvider
             {"lab", new List<object> { true, false, true, false, true, false, true, false, false, true} }
         };
 
-        //read the iris data and create DataFrame object
         var df = new DataFrame(dic);
 
-        //prepare the data
         var cols = new List<ColumnInfo>()
         {
             new ColumnInfo(){ Id=1, Name= "col1", MLType=MLColumnType.Feature, ValueColumnType= ColType.F32 },
@@ -202,14 +182,12 @@ public class TestDataProvider
                 Transformer= new DataTransformer(){ DataNormalization = ColumnTransformer.Binary2 } },
         };
 
-        //
         return df.TransformData(cols);
-
     }
 
-    public static (NDArray, NDArray) Prepare2DData_binary_label_one_hot()
+    public static (Tensor, Tensor) Prepare2DData_binary_label_one_hot()
     {
-        var X = new float[10, 2]
+        var x = torch.tensor( new float[10, 2]
         {
             { 1f, 11f },
             { 2f, 12f },
@@ -221,9 +199,9 @@ public class TestDataProvider
             { 8f, 18f },
             { 9f, 19f },
             { 10f, 20f }
-        };
+        });
 
-        var Y = new NDArray(new float[10,2]
+        var y = torch.tensor(new float[10,2]
             {
                 {0,1}, 
                 {0,1}, 
@@ -238,12 +216,12 @@ public class TestDataProvider
             }
         );
 
-        return (X, Y);
+        return (x, y);
     }
 
-    public static (NDArray, NDArray) Prepare2DData_multiclass_label()
+    public static (Tensor, Tensor) Prepare2DData_multiclass_label()
     {
-        var X = new float[10, 2]
+        var x = torch.tensor( new float[10, 2]
         {
             { 1f, 11f },
             { 2f, 12f },
@@ -255,21 +233,21 @@ public class TestDataProvider
             { 8f, 18f },
             { 9f, 19f },
             { 10f, 20f }
-        };
+        });
 
-        var Y = new NDArray(new float[,]
+        var y = torch.tensor(new float[,]
             {
                 {0,1,0}, {0,0,1}, {0,0,1}, {1,0,0}, {0,0,1}, {1,0,0}, {0,1,1}, {0,1,0}, {0,0,1}, {1,0,0}
             }
         );
 
-        return (X, Y);
+        return (x, y);
     }
 
-    public static (NDArray, NDArray) PrepareSimple3DData()
+    public static (Tensor, Tensor) PrepareSimple3DData()
     {
         //create 3D array (3x6x5)
-        var X = new NDArray(new float[,,]
+        var x = torch.tensor(new float[,,]
         {
             {
                 { 1, 2, 3, 4, 5 , 1},
@@ -295,9 +273,8 @@ public class TestDataProvider
         });
 
 
-        var Y = new NDArray(new float[] { 1, 2, 3, 4, 5, 6 });
+        var y = torch.tensor(new float[] { 1, 2, 3, 4, 5, 6 });
 
-        return (X, Y);
-
+        return (x, y);
     }
 }

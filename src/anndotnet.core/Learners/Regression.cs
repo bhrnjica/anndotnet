@@ -14,8 +14,7 @@ using System;
 using AnnDotNet.Core.Entities;
 using AnnDotNet.Core.Interfaces;
 using AnnDotNet.Core.TensorflowEx;
-using Tensorflow;
-using static Tensorflow.Binding;
+using static TorchSharp.torch;
 
 namespace AnnDotNet.Core.Learners;
 

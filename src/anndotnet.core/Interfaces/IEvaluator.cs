@@ -24,8 +24,7 @@
 
 using AnnDotNet.Core.Data;
 using System.Threading.Tasks;
-using Tensorflow;
-using Tensorflow.NumPy;
+using static TorchSharp.torch;
 
 namespace AnnDotNet.Core.Interfaces;
 
@@ -43,8 +42,7 @@ public interface IEvaluator
     /// <summary>
     /// For input tensor calculated the the output data
     /// </summary>
-    /// <param name="session">TensorFlow session including trained model.</param>
     /// <param name="data">Input data to predict</param>
     /// <returns>Output tensor as the result of the model prediction.</returns>
-    Task<NDArray> PredictAsync(Session session, Tensor data);
+    Task<Tensor> PredictAsync(Tensor data);
 }

@@ -13,36 +13,44 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using AnnDotNet.Core.Interfaces;
-using Tensorflow;
-using Tensorflow.NumPy;
+
+
+using static TorchSharp.torch;
+ 
 
 namespace AnnDotNet.Core.Data;
 
 public class DataFeed : IDataFeed
 {
-    private readonly NDArray _x;
-    private readonly NDArray _y;
+    private readonly Tensor _x;
+    private readonly Tensor _y;
+    private readonly string _name;
         
-    public DataFeed(NDArray x, NDArray y)
+    public DataFeed(string name, Tensor x, Tensor y )
     {
         _x = x;
         _y = y;
+        _name = name;
     }
 
-        
+    public int Count => (int)_x.shape[0];
+
+    public string Name => _name;
+
     public IEnumerable<(Tensor xBatch, Tensor yBatch)> GetNextBatch(int batchSize)
     {
         int batchPos = 0;
+
         while(true)
         {
-            Slice slice = GetSlice(batchPos, batchSize, (int)_x.shape[0] );
+            TensorIndex slice = GetSlice(batchPos, batchSize, (int)_x.shape[0]);
 
-            var xBatch = getNextBatch(_x, slice );
-            var yBatch = getNextBatch(_y, slice );    
+            var xBatch = GetNextBatch(_x, slice );
+            var yBatch = GetNextBatch(_y, slice );    
 
             batchPos++;
 
-            if (xBatch.size == 0 || yBatch.size == 0)
+            if (xBatch.numel() <= 0 || yBatch.numel() <= 0)
                 break;
 
             yield return (xBatch, yBatch);
@@ -55,9 +63,9 @@ public class DataFeed : IDataFeed
     }
 
 
-    private NDArray getNextBatch(NDArray data, Slice slice)
+    private Tensor GetNextBatch(Tensor data, TensorIndex slice)
     {
-        switch (data.rank)
+        switch (data.ndim)
         {
             case 0:
             {
@@ -69,7 +77,7 @@ public class DataFeed : IDataFeed
             }
             case 2:
             {
-                return data[slice, ":"];
+                return data[slice];//data[slice, ":"];
             }
             default:
                 throw new InvalidEnumArgumentException("Dimension of the input data is not supported.");
@@ -84,23 +92,23 @@ public class DataFeed : IDataFeed
     }
 
 
-    private static Slice GetSlice(int batchIndex, int batchSize, int dataSize)
+    private static TensorIndex GetSlice(int batchIndex, int batchSize, int rowCount)
     {
-        int start = batchIndex * batchSize;
+        long start = batchIndex * batchSize;
 
-        int end = batchSize == 0 ? -1 : start + batchSize;
+        long end = batchSize == 0 ? -1 : start + batchSize;
 
-        if (start > dataSize)
+        if (start > rowCount)
         {
-            start = dataSize;
+            start = rowCount;
         }
 
-        if (end > dataSize)
+        if (end > rowCount)
         {
-            end = dataSize;
+            end = rowCount;
         }
 
-        var slice = new Slice(start, end);
+        var slice = TensorIndex.Slice(start, end);
         return slice;
     }
 }

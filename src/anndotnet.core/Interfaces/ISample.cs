@@ -13,7 +13,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AnnDotNet.Core.Entities;
-using Tensorflow.NumPy;
+using static TorchSharp.torch;
 
 namespace AnnDotNet.Core.Interfaces;
 
@@ -22,9 +22,9 @@ public interface ISample
     List<ColumnInfo> Metadata { get; set; }
     DataParser Parser { get; set; }
 
-    Task<(NDArray X, NDArray Y)> GenerateData();    
+    Task<(Tensor X, Tensor Y)> GenerateData();    
 
-    Task<(NDArray X, NDArray Y)> GeneratePredictionData(int rowCount);
+    Task<(Tensor X, Tensor Y)> GeneratePredictionData(int rowCount);
 
     List<ILayer> CreateNet();
 

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\daany\src\daany.mathstuff\Daany.MathStuff.csproj" />
     <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
   </ItemGroup>
 

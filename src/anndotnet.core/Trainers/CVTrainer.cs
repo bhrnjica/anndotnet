@@ -16,24 +16,12 @@ using System.Linq;
 using AnnDotNet.Core.Data;
 using AnnDotNet.Core.Entities;
 using AnnDotNet.Core.Interfaces;
-using Tensorflow;
-using static Tensorflow.Binding;
-using Tensorflow.NumPy;
+
 namespace AnnDotNet.Core.Trainers;
 
 public class CVTrainer : TVTrainer
 {
-    (DataFeed train, DataFeed valid)[] _cvData;
-    int _kFold;
-    public CVTrainer(NDArray x, NDArray y, IProgressTraining progress, int percentageSplit = 20,
-                            bool shuffle = false, int seed = 1234, int kFold = 5)
-                            :base(x,y,progress,percentageSplit,shuffle, seed)
-    {
-        
-        _kFold = kFold;
-
-        initTrainer();
-    }
+   
 
     private void initTrainer()
     {

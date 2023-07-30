@@ -10,8 +10,6 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-using Tensorflow.NumPy;
-
 namespace AnnDotNet.Core.Interfaces;
 
 public interface IRunner 
