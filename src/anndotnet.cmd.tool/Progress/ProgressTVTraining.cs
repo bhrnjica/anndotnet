@@ -45,15 +45,7 @@ public class ProgressTVTraining : IProgressTraining, IDisposable
     }
     public void Run(ProgressReport tp)
     {
-       /* if (pbar == null)
-        {
-            pbar = new ProgressBar(tp.Epochs, "Training-Validation Training", options);    
-        }
-        pbar.Tick(); //will advance pbar to 1 out of 10.
-                     //we can also advance and update the progressbar text
-        pbar.Tick($"Epoch {tp.Epoch} of {tp.Epochs}");
 
-        */
         var n = (int)(((float)tp.Epoch / (float)tp.Epochs) * 100f/5f);
         
         n = n == 0 ? 1 : n;
@@ -64,9 +56,6 @@ public class ProgressTVTraining : IProgressTraining, IDisposable
         
         Console.WriteLine($"Epoch {tp.Epoch}/{tp.Epochs} [{progress}] \n\r- loss:{Math.Round(tp.TrainLoss,3)} - {evalT} - val_loss:{Math.Round(tp.TrainLoss, 3)} - {evalV}");
         Console.WriteLine();
-
-
-
     }
 
 

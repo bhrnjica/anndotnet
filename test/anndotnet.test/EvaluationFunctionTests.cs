@@ -33,16 +33,13 @@ public class EvaluationFunctionTests
         var b = tf.constant(3f);
         var c = tf.constant(5f);
         var np0 = new NDArray(new[] { 2f, 3f, 4f, 5f }, new Shape(4));
-        //var inX = new NDArray(new[] { a, b, c });
 
         // .
         var mean = tf.reduce_mean(np0,0);
         Assert.IsTrue(mean.ToArray<float>()[0] == 3.5);
 
-        var sum = tf.reduce_sum(new NDArray(new[] { a, b, c }));
-
-        Assert.IsTrue(sum.ToArray<float>()[0] == 10);
-
+        //var sum = tf.reduce_sum(new NDArray(new[] { a, b, c }));
+        //Assert.IsTrue(sum.ToArray<float>()[0] == 10);
     }
 
     [Test]

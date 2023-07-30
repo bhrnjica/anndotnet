@@ -116,7 +116,6 @@ public class TVTrainer : ITrainer
                 session.run(opt, (x, xTrain), (y, yTrain));
             }
 
-
             evaluate(x, y, fold, epoch, funs, tParams, lParams, session, processModel);
         }
     }

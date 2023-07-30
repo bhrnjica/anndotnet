@@ -121,7 +121,7 @@ public static class DfExtensions
         //
         var ndArray = new NDArray(lst);
 
-        if (shape[1] == 1 && metadata.Last().ValueColumnType != ColType.IN)
+        if (shape[1] == 1 /*&& metadata.Last().ValueColumnType != ColType.IN*/)
         {
             ndArray = ndArray.reshape(new Shape(shape[0])); 
         }
