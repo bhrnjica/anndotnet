@@ -10,23 +10,15 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+using AnnDotNet.Core;
 using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Interfaces;
 
-namespace AnnDotNet.Core.Interfaces;
+namespace AnnDotNet.Core.Layers;
 
-/// <summary>
-/// AnnDotNet layer interface
-/// </summary>
-public interface ILayer
+public record Base : ILayer
 {
-    /// <summary>
-    /// Layer name
-    /// </summary>
-    string Name { get; set; }
+    public string Name { get; set; }
 
-    /// <summary>
-    /// Layer type e.g. Dense, Conv2D, etc.
-    /// </summary>
-    LayerType Type { get; set; }
-
+    public LayerType Type { get; set; }
 }

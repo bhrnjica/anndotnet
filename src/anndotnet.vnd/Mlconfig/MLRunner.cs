@@ -53,7 +53,7 @@ public class MLRunner : MLRunnerBase
         }
     }
 
-    public MLRunner(MLConfig mlConfig, IPrintResults printer) : base(printer)
+    public MLRunner(MlConfig mlConfig, IPrintResults printer) : base(printer)
     {
         _config = new ConfigProto
         {
@@ -64,12 +64,12 @@ public class MLRunner : MLRunnerBase
 
         _paths      = mlConfig.Paths;    
         _network    = mlConfig.Network;
-        _lParameters= mlConfig.LParameters;
-        _tParameters= mlConfig.TParameters;
+        _lParameters= mlConfig.LearningParameters;
+        _tParameters= mlConfig.TrainingParameters;
         _metadata   = mlConfig.Metadata;
 
         //data preparation and transformation
-        (_x, _y)    = MLFactory.PrepareData(mlConfig);
+        (_x, _y)    = MlFactory.PrepareData(mlConfig);
 
     }
 
@@ -79,7 +79,7 @@ public class MLRunner : MLRunnerBase
         mlCOnfig.Metadata = metadata;
         mlCOnfig.Parser = parser;
             
-        await MLFactory.Save(mlCOnfig, filePath);
+        await MlFactory.Save(mlCOnfig, filePath);
     }
 
     public override void Run(IProgressTraining progress)
@@ -185,12 +185,12 @@ public class MLRunner : MLRunnerBase
     }
 
 
-    private MLConfig getMLConfig()
+    private MlConfig getMLConfig()
     {
-        var mlConfig = new MLConfig();
+        var mlConfig = new MlConfig();
         mlConfig.Id = Guid.NewGuid();
-        mlConfig.LParameters = _lParameters;
-        mlConfig.TParameters = _tParameters;
+        mlConfig.LearningParameters = _lParameters;
+        mlConfig.TrainingParameters = _tParameters;
         mlConfig.Metadata = _metadata;
         mlConfig.Network = _network;
         mlConfig.Parser = new DataParser();

@@ -10,24 +10,28 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+using System.ComponentModel;
+
 namespace AnnDotNet.Core.Entities;
 
 //available network layer in the library
 public enum LayerType
 {
-    Normalization,
-    Scale,
-    Dense,
-    Embedding,
-    Drop,
-    LSTM,
-    NALU,
-    Conv1D,
-    Conv2D,
-    Pooling1D,
-    Pooling2D,
-    CudaStackedLSTM,
-    CudaStackedGRU,
-    Custom,
-    Activation
+
+    Normalization=1,
+    Scale=2,
+
+    Dense =3,
+    Embedding=4,
+    Dropout =5,
+    LSTM=6,
+    NALU=7,
+    Conv1D=8,
+    Conv2D=9,
+    Pooling1D=10,
+    Pooling2D=11,
+    CudaStackedLSTM=12,
+    CudaStackedGRU=13,
+    Custom=14,
+    Activation=15
 }

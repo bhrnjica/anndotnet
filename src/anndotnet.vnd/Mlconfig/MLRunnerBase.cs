@@ -245,11 +245,11 @@ public class MLRunnerBase : IRunner, IMlModel, IEvaluator
         tf_with(tf.name_scope(TfScopes.Input), delegate
         {
             // Placeholders for inputs (x) and output (y)
-            (x,y) = MLFactory.CreatePlaceholders(shapeX, shapeY);
+            (x,y) = MlFactory.CreatePlaceholders(shapeX, shapeY);
         });
 
         //create network
-        var z = MLFactory.CreateNetwork(_network, x, y);
+        var z = MlFactory.CreateNetwork(_network, x, y);
 
         Tensor loss = null;
             

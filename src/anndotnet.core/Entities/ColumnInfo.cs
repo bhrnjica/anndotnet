@@ -33,5 +33,16 @@ public class DataTransformer
     public Daany.ColumnTransformer DataNormalization { get; set; }
     public string[] ClassValues { get; set; }
     public float[] NormalizationValues { get; set; }
-      
+
+    public DataTransformer()
+    {
+
+    }
+    public DataTransformer(Daany.ColumnTransformer colTransformer, string[] classValues, float[] normalizationValues)
+    {
+        DataNormalization = colTransformer;
+        ClassValues = classValues;
+        NormalizationValues = normalizationValues;
+    }
+
 }

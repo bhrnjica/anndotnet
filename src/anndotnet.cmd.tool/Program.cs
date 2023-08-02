@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AnnDotNet.Tool;
+using AnnDotNet.Vnd.Samples;
 
 
 namespace AnnDotNET.Tool;
@@ -191,28 +192,25 @@ static class Program
     #region Iris Example
     private static async Task IrisFromNetObject(bool crossValidation= false)
     {
-        throw new NotImplementedException();
+        var iris = new IrisSample();
+        var net = iris.CreateNet();
+        var lParams = iris.GenerateParameters().lParams;
+        var tParams = iris.GenerateParameters().tPArams;
+        
+        tParams.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
+        IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();   
 
-        //var iris = new IrisSample();
-        //var net = iris.CreateNet();
-        //var lParams = iris.GenerateParameters().lParams;
-        //var tParams = iris.GenerateParameters().tPArams;
+        var (x, y) = await iris.GenerateData();
 
-        //tParams.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
+        var paths = new Dictionary<string, string>
+        {
+            { "MLConfig", "iris.mlconfig" },
+            { "Root", "mlconfigs/iris" },
+            { "Models", "models" },
+            { "BestModel", "" }
+        };
 
-        //IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();   
-
-        //var (X, Y) = await iris.GenerateData();
-
-        //var paths = new Dictionary<string, string>
-        //{
-        //    { "MLConfig", "iris.mlconfig" },
-        //    { "Root", "mlconfigs/iris" },
-        //    { "Models", "models" },
-        //    { "BestModel", "638227190040989949.ckp" }
-        //};
-
-        //var mlRunner = new MLRunner(net, lParams, tParams, X, Y, null, new ConsoleHelper(), paths );
+       // var mlRunner = new MLRunner(net, lParams, tParams, X, Y, null, new ConsoleHelper(), paths );
 
         ////Training validation
         //mlRunner.Run( progress);

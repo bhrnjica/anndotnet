@@ -10,23 +10,18 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+using AnnDotNet.Core;
 using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Interfaces;
 
-namespace AnnDotNet.Core.Interfaces;
+namespace AnnDotNet.Core.Layers;
 
-/// <summary>
-/// AnnDotNet layer interface
-/// </summary>
-public interface ILayer
+public record Dropout : Base
 {
-    /// <summary>
-    /// Layer name
-    /// </summary>
-    string Name { get; set; }
+    public float Rate { get; set; }
 
-    /// <summary>
-    /// Layer type e.g. Dense, Conv2D, etc.
-    /// </summary>
-    LayerType Type { get; set; }
-
+    public Dropout()
+    {
+        Type = LayerType.Dropout;
+    }
 }
