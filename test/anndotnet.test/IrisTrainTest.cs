@@ -55,7 +55,7 @@ public class IrisTrain_Test
 
     }
 
-    private static void Train(IrisModel model, Optimizer optimizer,Loss<Tensor, Tensor, Tensor> loss, IDataFeed dataFeed, int epoch, int size)
+    private static void Train(IrisModel model, Optimizer optimizer,Loss<Tensor, Tensor, Tensor> loss, IDataFeed dataFeed, int epoch, long size)
     {
         model.train();
 

@@ -26,3 +26,17 @@ public enum Metrics
     CCE,//classification cross entropy
 
 }
+
+//https://neptune.ai/blog/pytorch-loss-functions
+public enum LossFunction
+{
+    AE,//absolute error (torch.nn.L1Loss)
+    MSE,//mean squared error (torch.nn.MSELoss)
+
+    //Used only on models with the softmax function as an output activation layer.
+    NLLLoss,//Negative Log-Likelihood Loss Function  (torch.nn.NLLLoss)
+
+    BCE,//Binary Cross Entropy Loss Function (torch.nn.BCELoss)
+
+    CCE,//Cross Entropy Loss Function (torch.nn.CrossEntropyLoss)
+}

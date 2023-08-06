@@ -17,7 +17,7 @@ namespace AnnDotNet.Core.Entities;
 public class LearningParameters
 {
     public LearnerType LearnerType { get; set; }
-    public Metrics LossFunction { get; set; }
+    public LossFunction LossFunction { get; set; }
     public List<Metrics> EvaluationFunctions { get; set; }
     public float LearningRate { get; set; }
     public bool UsePolyDecay { get; set; }
@@ -28,4 +28,10 @@ public class LearningParameters
     public double Momentum { get; set; }
     public double L1Regularizer { get; set; }
     public double L2Regularizer { get; set; }
+    public double Alpha { get; set; }
+    public double Eps { get; set; }
+    public double Beta1 { get; set; }
+    public double Beta2 { get; set; }
+    public double WeightDecay { get; set; }
+    public double Rho { get; set; }
 }

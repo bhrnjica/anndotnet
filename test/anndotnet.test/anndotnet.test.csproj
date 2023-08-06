@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IrisTrainTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="files\iris.txt" />
   </ItemGroup>
 
@@ -16,6 +20,10 @@
     <Content Include="files\iris.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="IrisTrainTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

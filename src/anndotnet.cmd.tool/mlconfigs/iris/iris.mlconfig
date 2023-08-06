@@ -147,7 +147,7 @@
     "ProgressStep": 10,
     "MinibatchSize": 100,
     "KFold": 5,
-    "SplitPercentage": 20,
+    "SplitPercentage": 80,
     "LastBestModel": null
   },
   "Paths": {

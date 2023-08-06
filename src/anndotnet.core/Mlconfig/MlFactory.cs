@@ -27,13 +27,6 @@ using Anndotnet.Core.Model;
 
 using AnnDotNet.Core.Util;
 
-using TorchSharp;
-using static TorchSharp.torch;
-using static TorchSharp.torch.optim;
-using static TorchSharp.torch.nn;
-
-
-
 namespace AnnDotNet.Core;
 
 public class MlFactory
@@ -53,10 +46,10 @@ public class MlFactory
         return df.TransformData(mlConfig.Metadata);
     }
 
-    public static AnnModel CreateNetwork(List<ILayer> layers, int inputDim, int outputDim, string name, int seed = 1234)
+    public static AnnModel CreateNetwork(string name, List<ILayer> layers, int inputDim, int outputDim, Device device, int seed = 1234)
     {
-
-        return new AnnModel(name, layers, inputDim, outputDim);
+        torch.random.manual_seed(seed);
+        return new AnnModel(name, layers, inputDim, outputDim, device);
     }
 
     public static (Tensor x, Tensor y) CreatePlaceholders(long[] shapeX, long[] shapeY)
@@ -72,7 +65,6 @@ public class MlFactory
 
         return (x, y);
     }
-
 
     public static async Task<bool> SaveToFile(MlConfig mlConfig, string filePath)
     {
@@ -159,7 +151,51 @@ public class MlFactory
 
     public static MlConfig CreatEmptyMlConfig(string guid)
     {
-        var mlConfig = new MlConfig(guid);
+        var mlConfig = new MlConfig(guid, "empty");
         return mlConfig;
+    }
+
+    public static torch.optim.Optimizer CreateOptimizer(Module<Tensor, Tensor> model, LearningParameters lParams)
+    {
+        switch (lParams.LearnerType)
+        {
+            case LearnerType.SGD:
+                return torch.optim.SGD(model.parameters(), lParams.LearningRate);
+            case LearnerType.MomentumSGD:
+                return torch.optim.SGD(model.parameters(), lParams.LearningRate, lParams.Momentum, 0D,lParams.WeightDecay);
+            case LearnerType.RMSProp:
+                return torch.optim.RMSProp(model.parameters(), lParams.LearningRate, lParams.Alpha, lParams.Eps,
+                    lParams.DecayPower, lParams.Momentum);
+            case LearnerType.FSAdaGrad:
+            case LearnerType.AdaGrad:
+                return torch.optim.Adagrad(model.parameters(), lParams.LearningRate, lParams.Eps, lParams.DecayPower);
+            case LearnerType.Adam:
+                return torch.optim.Adam(model.parameters(), lParams.LearningRate, lParams.Beta1, lParams.Beta2,
+                                       lParams.Eps, lParams.WeightDecay);
+            case LearnerType.AdaDelta:
+                return torch.optim.Adadelta(model.parameters(), lParams.LearningRate, lParams.Rho, lParams.Eps,
+                                                               lParams.WeightDecay);
+            default:
+                return torch.optim.SGD(model.parameters(), lParams.LearningRate);
+        }
+    }
+
+    public static Loss<Tensor,Tensor,Tensor> CreateLoss(LossFunction lossFunction)
+    {
+        switch (lossFunction)
+        {
+            case LossFunction.AE:
+                return torch.nn.L1Loss();
+            case LossFunction.MSE: 
+                return torch.nn.MSELoss();
+            case LossFunction.BCE:  
+                return torch.nn.BCELoss();
+            case LossFunction.CCE:
+                return torch.nn.CrossEntropyLoss();
+            case LossFunction.NLLLoss:
+                return torch.nn.NLLLoss();
+            default:
+                return torch.nn.MSELoss();
+        }
     }
 }

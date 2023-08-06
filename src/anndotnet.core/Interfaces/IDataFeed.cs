@@ -32,4 +32,7 @@ public interface IDataFeed
     /// </summary>
     /// <returns>Returns whole data set</returns>
     (Tensor xBatch, Tensor yBatch) GetFullBatch();
+
+    long InputDimension { get;}
+    long OutputDimension { get;}
 }

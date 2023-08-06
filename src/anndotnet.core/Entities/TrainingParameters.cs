@@ -22,6 +22,7 @@ public class TrainingParameters
     public EarlyStopping EarlyStopping { get; set; }
 
     public bool Retrain { get; set; }
+
     public int Epochs { get; set; }
 
     public int ProgressStep { get; set; }
@@ -32,20 +33,21 @@ public class TrainingParameters
 
     public int SplitPercentage { get; set; }
 
-    [JsonIgnore]
-    public Action<ProgressReport> Progress { get; set; }
+    public bool ShuffleWhenTraining{ get; set; }
     public string LastBestModel { get; set; }
+    public bool ShuffleWhenSplit { get; set; }
 
-    public TrainingParameters()
+public TrainingParameters()
     {
-        Progress = null;
         TrainingType = TrainingType.TVTraining;
         EarlyStopping = EarlyStopping.None;
         Epochs = 500;
         ProgressStep = 10;
         MiniBatchSize = 100;
         KFold = 5;
-        SplitPercentage = 20;
+        SplitPercentage = 80;
+        ShuffleWhenTraining= true;
+        ShuffleWhenSplit = false;
         Retrain = true;
     }
 }

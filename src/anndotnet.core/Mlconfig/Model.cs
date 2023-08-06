@@ -16,7 +16,7 @@ namespace Anndotnet.Core.Model
 {
     public class AnnModel : Module<Tensor, Tensor>
     {
-        private readonly List<Module<Tensor, Tensor>> _layers;
+        private readonly List<Module<Tensor, Tensor>> _layers= new List<Module<Tensor, Tensor>>();
         private readonly int _inputDim;
         private readonly int _outputDim;
 
@@ -42,9 +42,11 @@ namespace Anndotnet.Core.Model
 
         public AnnModel(string name, List<ILayer> layers, int inputDim, int outputDim, Device device = null) : base(name)
         {
+            
             _inputDim = inputDim;
             _outputDim = outputDim;
-            
+
+            _layers.Clear();
             ToTorchLayers(layers);
 
             RegisterComponents();

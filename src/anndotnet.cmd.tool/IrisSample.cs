@@ -80,7 +80,7 @@ public  class IrisSample : ISample
             EvaluationFunctions = new List<Metrics>()
                 { Metrics.CAcc, Metrics.CErr },
 
-            LossFunction = Metrics.CCE,
+            LossFunction = LossFunction.CCE,
             LearnerType = LearnerType.Adam,
             LearningRate = 0.01f
         };
@@ -92,14 +92,12 @@ public  class IrisSample : ISample
 
     public  List<ILayer>  CreateNet()
     {
-        throw new NotImplementedException();
-        //return new List<ILayer>()
-        //{
-        //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 7 },
-        //    new ActLayer(){Type= LayerType.Activation, Name="ReLu", Activation=Activation.ReLU},
-        //    new FCLayer(){Type= LayerType.Dense, Name="FCLAyer01", OutDim= 3 },
-        //    new ActLayer(){Type= LayerType.Activation, Name="Softmax", Activation=Activation.Softmax},
-        //};
+
+        return new List<ILayer>()
+        {
+            new Dense{Type= LayerType.Dense, Name="FCLAyer01", OutputDim = 7, HasBias = true, Activation = Activation.ReLU},
+            new Dense{Type= LayerType.Dense, Name="FCLAyer02", OutputDim = 3, HasBias = true, Activation = Activation.Softmax},
+        };
     }
        
     

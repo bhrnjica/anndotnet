@@ -290,7 +290,7 @@ public class SerializationTests
         mlConfig.LearningParameters = new LearningParameters()
         {
             LearnerType = LearnerType.Adam,
-            LossFunction = Metrics.CCE,
+            LossFunction = LossFunction.CCE,
             EvaluationFunctions = new List<Metrics>() { Metrics.CAcc,Metrics.CErr },
             LearningRate = 0.01f,
             UsePolyDecay = false,

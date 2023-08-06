@@ -25,10 +25,12 @@ public class MlConfig
     public LearningParameters LearningParameters { get; set; }
     public TrainingParameters TrainingParameters { get; set; }
     public Dictionary<string, string> Paths { get; set; }
+    public string Name { get; set; }
 
-    public MlConfig(string guid)
+    public MlConfig(string guid, string name)
     {
         Id = Guid.Parse(guid);
+        Name = name;
         Metadata = new List<ColumnInfo>();
         Network = new List<ILayer>();
         LearningParameters = new LearningParameters();

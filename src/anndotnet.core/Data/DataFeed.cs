@@ -12,15 +12,15 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using Anndotnet.Core.Util;
 using AnnDotNet.Core.Interfaces;
-
-
+using Daany.MathStuff.Random;
 using static TorchSharp.torch;
  
 
 namespace AnnDotNet.Core.Data;
 
-public class DataFeed : IDataFeed
+public class DataFeed : TorchSharp.torch.utils.data.Dataset, IDataFeed
 {
     private readonly Tensor _x;
     private readonly Tensor _y;
@@ -33,7 +33,16 @@ public class DataFeed : IDataFeed
         _name = name;
     }
 
-    public int Count => (int)_x.shape[0];
+    public override long Count => _x.shape.First();
+
+    public override Dictionary<string, Tensor> GetTensor(long index)
+    {
+        return new Dictionary<string, Tensor>()
+        {
+            { "X", _x[index] },
+            { "y", _y[index] }
+        };
+    }
 
     public string Name => _name;
 
@@ -91,6 +100,9 @@ public class DataFeed : IDataFeed
         return (_x, _y);
     }
 
+    public long InputDimension => _x.shape[1];
+    public long OutputDimension => _y.shape[1];
+
 
     private static TensorIndex GetSlice(int batchIndex, int batchSize, int rowCount)
     {
@@ -111,4 +123,5 @@ public class DataFeed : IDataFeed
         var slice = TensorIndex.Slice(start, end);
         return slice;
     }
+
 }
