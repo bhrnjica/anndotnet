@@ -1,5 +1,6 @@
 {
   "Id": "c15b26ba-2876-4cdd-b97a-02b3fa83944b",
+  "Name": "IrisMLConfig",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
@@ -137,7 +138,14 @@
     "DecaySteps": 0,
     "Momentum": 0,
     "L1Regularizer": 0,
-    "L2Regularizer": 0
+    "L2Regularizer": 0,
+    "Alpha": 0.0,
+    "Eps": 0.0,
+    "Beta1": 0.0,
+    "Beta2": 0.0,
+    "WeightDecay": 0.0,
+    "Rho": 0.0
+
   },
   "TrainingParameters": {
     "TrainingType": "tvTraining",
@@ -145,10 +153,12 @@
     "Retrain": true,
     "Epochs": 500,
     "ProgressStep": 10,
-    "MinibatchSize": 100,
+    "MiniBatchSize": 100,
     "KFold": 5,
     "SplitPercentage": 80,
-    "LastBestModel": null
+    "LastBestModel": null,
+    "ShuffleWhenSplit": false,
+    "ShuffleWhenTraining": false
   },
   "Paths": {
     "MLConfig": "iris.mlconfig",

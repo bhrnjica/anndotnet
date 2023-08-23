@@ -12,19 +12,18 @@
 
 namespace AnnDotNet.Core.Entities;
 
-public enum Metrics
+public enum EvalFunction
 {
     AE,//absolute error
-    RMSE,//root mean squared error
+    MAE,//Mean absolute error
+    SE,//squared error
     MSE,//mean squared error
+    RMSE,//root mean squared error
     CAcc,//Classification accuracy
     CErr,//classification error
-    Precision,//precision
-    Recall,//recall
-    SE,//squared error
-    BCE,//binary cross entropy
-    CCE,//classification cross entropy
-
+    BAcc,//binary accuracy
+    BErr,//binary error
+    
 }
 
 //https://neptune.ai/blog/pytorch-loss-functions

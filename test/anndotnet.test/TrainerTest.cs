@@ -9,10 +9,11 @@ using AnnDotNet.Core.Trainers;
 using Daany;
 using TorchSharp.Modules;
 using Xunit;
+using Anndotnet.Core.Util;
 
-using static TorchSharp.torch;
 using Dropout = AnnDotNet.Core.Layers.Dropout;
-
+using static TorchSharp.torch;
+using TorchSharp;
 
 namespace AnnDotNet.test;
 
@@ -31,7 +32,7 @@ public class Trainertest
         var data = TestDataProvider.Prepare1DData();
         var ds = new DataFeed(mlConfig.Name, data.x,data.y);
 
-        var trainer = new TVTrainer(null,ds,mlConfig.TrainingParameters,mlConfig.LearningParameters,null);
+        var trainer = new TvTrainer(null,ds,mlConfig.TrainingParameters,mlConfig.LearningParameters,null);
 
         var (train, valid) = trainer.Split(ds, 1234);
 
@@ -62,7 +63,7 @@ public class Trainertest
         var data = TestDataProvider.Prepare1DData();
         var ds = new DataFeed(mlConfig.Name, data.x, data.y);
 
-        var trainer = new TVTrainer(null, ds, mlConfig.TrainingParameters, mlConfig.LearningParameters, null);
+        var trainer = new TvTrainer(null, ds, mlConfig.TrainingParameters, mlConfig.LearningParameters, null);
 
         var (train, valid) = trainer.Split(ds, 1234);
 
@@ -84,5 +85,26 @@ public class Trainertest
         }
     }
 
+
+    //[Fact]
+    //public void TorchMetrcs_Accuracy_test()
+    //{
+    //    // Sample data
+    //    var actualData = new float[] { 1, 0, 1, 0, 1 };
+    //    var predictedData = new float[] { 0.2f, 0.7f, 0.6f, 0.4f, 0.9f };
+
+    //    // Convert data to Torch tensors
+    //    var actual = torch.tensor(actualData);
+    //    var predicted = torch.tensor(predictedData);
+
+    //    // Calculate accuracy
+    //    TorchMetrics metrics = new TorchMetrics();
+    //    var accuracy = metrics.Accuracy_Binary(actual, predicted);
+
+    //    Console.WriteLine($"Accuracy: {accuracy:P}");
+    //}
+
+
+    
 
 }

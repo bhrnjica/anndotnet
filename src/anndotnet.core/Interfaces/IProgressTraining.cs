@@ -11,10 +11,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Trainers;
 
 namespace AnnDotNet.Core.Interfaces;
 
 public interface IProgressTraining
 {
     void Run(ProgressReport tp);
+
 }

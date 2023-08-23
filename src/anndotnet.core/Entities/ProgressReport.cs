@@ -17,13 +17,16 @@ namespace AnnDotNet.Core.Entities;
 public class ProgressReport
 {
     public ProgressType ProgressType { get; set; }
+    
     public int Fold { get; set; }
     public int KFold { get; set; }
+    
     public int Epoch { get; set; }
     public int Epochs { get; set; }
+    
     public float TrainLoss { get; set; }
-    public Dictionary<string, float> TrainEval { get; set; }
     public float ValidLoss { get; set; }
-    public Dictionary<string, float> ValidEval { get; set; }
 
+    public Dictionary<string, float> TrainEval { get; set; }
+    public Dictionary<string, float> ValidEval { get; set; }
 }

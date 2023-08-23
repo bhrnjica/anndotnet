@@ -291,7 +291,7 @@ public class SerializationTests
         {
             LearnerType = LearnerType.Adam,
             LossFunction = LossFunction.CCE,
-            EvaluationFunctions = new List<Metrics>() { Metrics.CAcc,Metrics.CErr },
+            EvaluationFunctions = new List<EvalFunction>() { EvalFunction.CAcc,EvalFunction.CErr },
             LearningRate = 0.01f,
             UsePolyDecay = false,
             StartLRate = 0,
@@ -305,7 +305,7 @@ public class SerializationTests
         
         mlConfig.TrainingParameters = new TrainingParameters()
         {
-            TrainingType = TrainingType.TVTraining,
+            TrainingType = TrainingType.TvTraining,
             EarlyStopping = EarlyStopping.None,
             Retrain = true,
             Epochs = 500,

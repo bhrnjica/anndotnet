@@ -22,7 +22,9 @@ using AnnDotNet.Core.Data;
 using static TorchSharp.torch.utils;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Data;
+using Anndotnet.Core.Mlconfig;
 using AnnDotNet.Core.Trainers;
+using Anndotnet.cmd.tool.Progress;
 
 namespace AnnDotNET.Tool;
 
@@ -31,7 +33,8 @@ static class Program
 
     static async Task Main(string[] args)
     {
-        await IrisFromNetObject(false);
+        await IrisFromNetObject(true);
+        //await IrisFromMLConfig();
         return;
         var str = @"
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -211,9 +214,9 @@ static class Program
         var iris = new IrisSample();
         var mlConfig = new MlConfig(Guid.NewGuid().ToString(), "Iris");
 
-
-        mlConfig.LearningParameters = iris.GenerateParameters().lParams;
-        mlConfig.TrainingParameters = iris.GenerateParameters().tPArams;
+        var (tParams, lParams) = iris.GenerateParameters();
+        mlConfig.LearningParameters = lParams;
+        mlConfig.TrainingParameters = tParams;
         mlConfig.Metadata = iris.Metadata;
         mlConfig.Parser = iris.Parser;
         mlConfig.Network = iris.CreateNet();
@@ -226,18 +229,21 @@ static class Program
         };
 
         //setup training type
-        mlConfig.TrainingParameters.TrainingType = crossValidation ? TrainingType.CVTraining : TrainingType.TVTraining;  
+        mlConfig.TrainingParameters.TrainingType = crossValidation ? TrainingType.CvTraining : TrainingType.TvTraining;  
         
-        //define progress report
-        IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();   
+        
 
         //obtain data
         var (x, y) = await iris.GenerateData();
+        var irisData = new DataFeed("Iris", x, y);
 
-        
+        //run trainer
         var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
 
-        await mlRunner.TrainAsync(new DataFeed("Iris",x,y),  progress);
+        //define progress report
+        IProgressTraining progress = crossValidation ? new ProgressCvTraining() : new ProgressTvTraining();
+        
+        await mlRunner.TrainAsync(irisData,  progress);
 
 
 
@@ -261,16 +267,22 @@ static class Program
 
     private static async Task IrisFromMLConfig()
     {
-        throw new NotImplementedException();
+        var mlConfig = await MlFactory.LoadfromFileAsync(@"mlconfigs\iris\iris.mlconfig");
+        //run trainer
+        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
 
-        //var mlCOnf = await MLFactory.Load(@"mlconfigs\iris\iris.mlconfig");
+        //define progress report
+        IProgressTraining progress = mlConfig.TrainingParameters.TrainingType== TrainingType.CvTraining ? new ProgressCvTraining() : new ProgressTvTraining();
 
-        //IProgressTraining progress = mlCOnf.TParameters.TrainingType== TrainingType.CVTraining ? new ProgressCVTraining() : new ProgressTVTraining();
+        //obtain data
+        var iris = new IrisSample();
+        var (x, y) = await iris.GenerateData();
+        var irisData = new DataFeed("Iris", x, y);
 
-        //var mlConfig1 = mlCOnf;
-        ////
-        //var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
-        //mlRunner.Run(new ProgressTVTraining());
+
+        await mlRunner.TrainAsync(irisData, progress);
+
+       
     }
     #endregion
 
@@ -306,36 +318,3 @@ static class Program
     #endregion
 }
 
-internal class MLRunner
-{
-    private readonly MlConfig _mlConfig;
-    private readonly IPrintResults _reportProgress;
-
-    public MLRunner(MlConfig mlConfig, IPrintResults reportProgress)
-    {
-        _mlConfig = mlConfig;
-        _reportProgress = reportProgress;
-    }
-
-    public async Task TrainAsync(DataFeed trainData, IProgressTraining progress, Device device = null)
-    {
-
-        //create a model
-        int inputDim = (int) trainData.InputDimension;
-        int outputDim = (int) trainData.OutputDimension;
-
-        var model =  MlFactory.CreateNetwork(_mlConfig.Name, _mlConfig.Network, inputDim, outputDim,device);
-        var optimizer = MlFactory.CreateOptimizer(model, _mlConfig.LearningParameters);
-        var loss = MlFactory.CreateLoss(_mlConfig.LearningParameters.LossFunction);
-
-        //early stopping
-        var scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1, 0.75);
-
-        //train 
-        var trainer = new TVTrainer(model, trainData, _mlConfig.TrainingParameters,_mlConfig.LearningParameters, new ProgressCVTraining());
-
-        await trainer.RunAsync();
-
-    }
-
-}

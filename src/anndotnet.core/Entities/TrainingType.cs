@@ -14,6 +14,6 @@ namespace AnnDotNet.Core.Entities;
 
 public enum TrainingType
 {
-    TVTraining,//Test Validation Training
-    CVTraining,//Cross validation Training
+    TvTraining,//Test Validation Training
+    CvTraining,//Cross validation Training
 }

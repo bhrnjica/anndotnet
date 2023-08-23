@@ -77,15 +77,29 @@ public  class IrisSample : ISample
         var lParams = new LearningParameters()
 
         {
-            EvaluationFunctions = new List<Metrics>()
-                { Metrics.CAcc, Metrics.CErr },
+            EvaluationFunctions = new List<EvalFunction>()
+                { EvalFunction.CAcc,EvalFunction.CErr },
 
-            LossFunction = LossFunction.CCE,
-            LearnerType = LearnerType.Adam,
-            LearningRate = 0.01f
+            LossFunction = LossFunction.NLLLoss,
+            LearnerType = LearnerType.MomentumSGD,
+            LearningRate = 0.01f,
+            Momentum = 0.9f,
+            
         };
 
-        var tParams = new TrainingParameters();
+        var tParams = new TrainingParameters()
+        {
+            TrainingType = TrainingType.TvTraining,
+            EarlyStopping = EarlyStopping.None,
+            Epochs = 500,
+            ProgressStep = 1,
+            MiniBatchSize = 70,
+            KFold = 5,
+            SplitPercentage = 80,
+            ShuffleWhenTraining = false,
+            ShuffleWhenSplit = true,
+            Retrain = true,
+        };
 
         return (tParams, lParams);
     }
@@ -95,7 +109,7 @@ public  class IrisSample : ISample
 
         return new List<ILayer>()
         {
-            new Dense{Type= LayerType.Dense, Name="FCLAyer01", OutputDim = 7, HasBias = true, Activation = Activation.ReLU},
+            new Dense{Type= LayerType.Dense, Name="FCLAyer01", OutputDim = 5, HasBias = true, Activation = Activation.TanH},
             new Dense{Type= LayerType.Dense, Name="FCLAyer02", OutputDim = 3, HasBias = true, Activation = Activation.Softmax},
         };
     }

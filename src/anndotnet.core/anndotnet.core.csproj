@@ -10,13 +10,11 @@
 	<ItemGroup>
 		<Compile Remove="Learners\Classification.cs" />
 		<Compile Remove="Learners\Regression.cs" />
-		<Compile Remove="Trainers\CVTrainer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="Learners\Classification.cs" />
 		<None Include="Learners\Regression.cs" />
-		<None Include="Trainers\CVTrainer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

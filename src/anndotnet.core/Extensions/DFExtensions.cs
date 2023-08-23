@@ -105,14 +105,16 @@ public static class DfExtensions
 
     public static Tensor ToTensor(this DataFrame df, List<ColumnInfo> metadata)
     {
-        (var row, var col) = (df.RowCount(), df.ColCount());
+        var (row, col) = (df.RowCount(), df.ColCount());
 
-        var lstValues = df.Values.Select(x=>Convert.ToSingle(x)).ToList();
-        var dataTensor =torch.tensor(lstValues);
+        var lstValues = df.Values.Select(x => (x is int i) ? i: (float)x).ToList();
 
-        dataTensor = col == 1 ? torch.reshape(dataTensor, row) : torch.reshape(dataTensor, row, col);
+        //all columns in the DF must be same type, otherwise cannot be converted into tensor
+        var tensorType = df.ColTypes.First() == ColType.I32 ? ScalarType.Int32 : ScalarType.Float32;
 
-        return dataTensor;
+        return col == 1 ?
+            //create 1D tensor                      //create multi-dim (2D) tensor
+            torch.tensor(lstValues, tensorType) : torch.tensor(lstValues, row, col, tensorType);
     }
 
     public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)

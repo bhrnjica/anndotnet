@@ -11,26 +11,19 @@
 // http://bhrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AnnDotNet.Core.Entities;
 using AnnDotNet.Core.Interfaces;
+using AnnDotNet.Core.Trainers;
+using Daany.MathStuff.Stats;
 using XPlot.Plotly;
 
 namespace AnnDotNet.Tool.Progress;
 
 
-public class ProgressTVTraining : IProgressTraining, IDisposable
+public class ProgressTvTraining : IProgressTraining
 {
-    const int totalTicks = 10;
-    public ProgressTVTraining()
-    {
-
-    }
-
-    public void Dispose()
-    {
-
-    }
     public void Run(ProgressReport tp)
     {
         var n = (int)(((float)tp.Epoch / (float)tp.Epochs) * 100f/5f);
@@ -41,10 +34,7 @@ public class ProgressTVTraining : IProgressTraining, IDisposable
         var evalT = string.Join(" - ", tp.TrainEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
         var evalV = string.Join(" - ", tp.ValidEval.Select(x => $"{x.Key}: {Math.Round(x.Value, 3)}"));
         
-        Console.WriteLine($"Epoch {tp.Epoch}/{tp.Epochs} [{progress}] \n\r- loss:{Math.Round(tp.TrainLoss,3)} - {evalT} - val_loss:{Math.Round(tp.TrainLoss, 3)} - {evalV}");
+        Console.WriteLine($"Epoch {tp.Epoch}/{tp.Epochs} [{progress}] \n\r- Training(loss:{Math.Round(tp.TrainLoss,3)} - {evalT}) - Validation(loss:{Math.Round(tp.ValidLoss, 3)} - {evalV})");
         Console.WriteLine();
     }
-
-
-
 }

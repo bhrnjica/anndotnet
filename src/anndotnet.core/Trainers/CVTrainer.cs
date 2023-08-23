@@ -13,84 +13,80 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Anndotnet.Core.Util;
 using AnnDotNet.Core.Data;
 using AnnDotNet.Core.Entities;
 using AnnDotNet.Core.Interfaces;
 
+[assembly: InternalsVisibleTo("anndotnet.test")]
 namespace AnnDotNet.Core.Trainers;
 
-public class CVTrainer : TVTrainer
+public class CvTrainer : ITrainer, IProgressTraining
 {
-   
+    private int _currentFold;
+    private readonly int _kFold;
+    private readonly ITrainer[] _tvTrainer;
+    private readonly IProgressTraining _progress;
+    private readonly (DataLoader train, DataLoader validation)[] _cvData;
 
-    private void initTrainer()
+    public CvTrainer(Module<Tensor, Tensor> model, DataFeed trainData, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed = 1234)
     {
-        //
-        _cvData = new (DataFeed train, DataFeed valid)[_kFold];
+        _kFold = tParams.KFold;
+        _progress = progress;
+       
+        _cvData = new (DataLoader train, DataLoader validation)[_kFold];
+        CreateFolds(trainData, tParams.MiniBatchSize);
 
-        float percentage = 100.0f / _kFold;
-
-        int testSize = (int)((_x.shape[0] * percentage) / 100);
-        int trainSize = (int)_x.shape[0] - testSize;
-
-        //create folds
-        for (int i=0; i < _kFold; i++)
+        _tvTrainer = new TvTrainer[_kFold];
+        for (int i = 0; i < _kFold; i++)
         {
-          _cvData[i] = Split(trainSize, testSize, i);
+            _tvTrainer[i] = new TvTrainer(model, _cvData[i].train, _cvData[i].validation, tParams, lParams, this, seed);
+
         }
 
     }
-
-    public new bool Run(Session session, LearningParameters lParams, TrainingParameters tParams, Func<Session, ProgressReport, Session> processModel)
+    private void CreateFolds(DataFeed trainData,int batchSize)
     {
-        //check for progress
-        if (!ReferenceEquals(Progress, null))
+        float percentage = 100.0f / _kFold;
+
+        int testSize = (int)(trainData.Count * percentage / 100.0f);
+        int trainSize = (int)trainData.Count - testSize;
+
+        //create folds
+        for (int i = 0; i < _kFold; i++)
         {
-            tParams.Progress = Progress.Run;
+            _cvData[i] = Split(trainData,batchSize ,trainSize, testSize, i);
         }
 
-        //set KFold
-        tParams.KFold = _kFold; 
+    }
+    private (DataLoader train, DataLoader validation) Split(DataFeed data, int batchSize, int trainSize, int testSize, int index)
+    {
+        //generate indexes
+        var lst = LongEnumerable.Range(0, data.Count);
+        var trainIds = lst.Skip(index * testSize).Take(trainSize);
+        var testIds = lst.Except(trainIds);
 
-        //get placeholders 
-        var x = session.graph.get_tensor_by_name("Input/X:0");
-        var y = session.graph.get_tensor_by_name("Input/Y:0");
+        var train = new DataLoader(data, batchSize, trainIds);
+        var valid = new DataLoader(data, batchSize, testIds);
+       
+        return (train, valid);
+    }
 
-        //get optimizer
-        var opt = session.graph.get_operation_by_name($"Train/Optimizer/{lParams.LearnerType}");
-
-        //
-        using (session)
+    public async Task<bool> RunAsync()
+    {
+        for (int i = 0; i < _kFold; i++)
         {
-            for (int fold = 1; fold <= _cvData.Length; fold++)
-            {
-                var feed = _cvData[fold - 1];
-
-                TrainMiniBatch(session, lParams, tParams, processModel, x, y, opt, fold, feed);
-            }
-
+            _currentFold = i;
+           await _tvTrainer[i].RunAsync();
         }
         return true;
     }
 
-    
-
-    internal (DataFeed train, DataFeed validation) Split(int trainSize, int testSize, int index)
+    public void Run(ProgressReport tp)
     {
-        //generate indexes
-        var lst = Enumerable.Range(0, (int)_x.shape[0]);
-        var trainIds = lst.Skip(index * testSize).Take(trainSize);
-        var testIds = lst.Except(trainIds);
-
-        //create ndarrays
-        var trArray = np.array(trainIds.ToArray());
-        var teArray = np.array(testIds.ToArray());
-        //
-        var trainX = _x[trArray];
-        var testX = _x[teArray];
-        var trainY = _y[trArray];
-        var testY = _y[teArray];
-
-        return (new DataFeed(trainX, trainY), new DataFeed(testX, testY));
+        tp.Fold = _currentFold;
+        tp.KFold = _kFold;
+        _progress.Run(tp);
     }
 }

@@ -11,12 +11,12 @@ using ConfusionMatrix = Daany.MathStuff.Stats.ConfusionMatrix;
 using System.Diagnostics.Contracts;
 using System.Text;
 
-namespace AnnDotNet.Tool
+namespace Anndotnet.cmd.tool.Progress
 {
     /// <summary>
     /// This class is taken from ML.NET (github.com/dotnet/machinelearning)
     /// </summary>
-    public class ConsoleHelper:IPrintResults
+    public class ConsoleHelper : IPrintResults
     {
         public void PrintPrediction(string prediction)
         {
@@ -33,7 +33,7 @@ namespace AnnDotNet.Tool
             Console.WriteLine($"-------------------------------------------------");
         }
 
-        public void PrintRegressionMetrics(string name, Anndotnet.Core.Entities.RegressionMetrics metrics)
+        public void PrintRegressionMetrics(string name, Core.Entities.RegressionMetrics metrics)
         {
             Console.WriteLine($"*************************************************");
             Console.WriteLine($"*       Metrics for {name} regression model      ");
@@ -156,7 +156,7 @@ namespace AnnDotNet.Tool
 
         public double CalculateConfidenceInterval95(IEnumerable<double> values)
         {
-            double confidenceInterval95 = 1.96 * CalculateStandardDeviation(values) / Math.Sqrt((values.Count() - 1));
+            double confidenceInterval95 = 1.96 * CalculateStandardDeviation(values) / Math.Sqrt(values.Count() - 1);
             return confidenceInterval95;
         }
 
@@ -170,7 +170,7 @@ namespace AnnDotNet.Tool
             Console.WriteLine($"*************************************************");
         }
 
-       
+
         public void ConsolePrintConfusionMatrix(ConfusionMatrix confusionMatrix, string[] labels)
         {
             var defaultColor = Console.ForegroundColor;

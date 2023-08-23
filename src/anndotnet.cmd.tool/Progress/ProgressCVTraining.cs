@@ -15,10 +15,11 @@ using AnnDotNet.Core.Interfaces;
 using System;
 using System.Linq;
 using AnnDotNet.Core.Entities;
+using AnnDotNet.Core.Trainers;
 
 namespace AnnDotNET.Tool.Progress;
 
-public class ProgressCVTraining : IProgressTraining
+public class ProgressCvTraining : IProgressTraining
 {
     public void Run(ProgressReport tp)
     {
@@ -34,4 +35,5 @@ public class ProgressCVTraining : IProgressTraining
         Console.WriteLine($"Fold {tp.Fold}/{tp.KFold} \t Epoch {tp.Epoch}/{tp.Epochs} \t[{progress}] \n\r- loss:{Math.Round(tp.TrainLoss, 3)} - {evalT} - val_loss:{Math.Round(tp.ValidLoss, 3)} - {evalV}");
         Console.WriteLine();
     }
+
 }

@@ -18,7 +18,8 @@ public enum Activation
     ReLU = 1,
     Sigmoid = 2,
     Softmax = 3,
-    TanH = 4,
-    Max = 5,
-    Avg = 6
+    LogSoftmax = 4,
+    TanH = 5,
+    Max = 6,
+    Avg = 7
 }

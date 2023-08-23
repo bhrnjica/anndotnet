@@ -33,21 +33,21 @@ public class TrainingParameters
 
     public int SplitPercentage { get; set; }
 
-    public bool ShuffleWhenTraining{ get; set; }
     public string LastBestModel { get; set; }
     public bool ShuffleWhenSplit { get; set; }
+    public bool ShuffleWhenTraining{ get; set; }
 
 public TrainingParameters()
     {
-        TrainingType = TrainingType.TVTraining;
+        TrainingType = TrainingType.TvTraining;
         EarlyStopping = EarlyStopping.None;
         Epochs = 500;
-        ProgressStep = 10;
-        MiniBatchSize = 100;
+        ProgressStep = 1;
+        MiniBatchSize = 70;
         KFold = 5;
         SplitPercentage = 80;
-        ShuffleWhenTraining= true;
-        ShuffleWhenSplit = false;
+        ShuffleWhenTraining= false;
+        ShuffleWhenSplit = true;
         Retrain = true;
     }
 }

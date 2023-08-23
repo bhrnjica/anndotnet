@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AnnDotNet.Core.Data;
 using AnnDotNet.Core.Entities;
@@ -52,20 +53,7 @@ public class MlFactory
         return new AnnModel(name, layers, inputDim, outputDim, device);
     }
 
-    public static (Tensor x, Tensor y) CreatePlaceholders(long[] shapeX, long[] shapeY)
-    {
-
-        Tensor x= null;
-        Tensor y = null;
-
-        // Placeholders for inputs (x) and outputs(y)
-        //var plc = new Placeholders();
-        //x = plc.CreatePlaceholder(shapeX, "X", TF_DataType.TF_FLOAT);
-        //y = plc.CreatePlaceholder(shapeY, "Y", TF_DataType.TF_FLOAT);
-
-        return (x, y);
-    }
-
+    
     public static async Task<bool> SaveToFile(MlConfig mlConfig, string filePath)
     {
         var options = JsonSerializerOptions();
@@ -198,4 +186,21 @@ public class MlFactory
                 return torch.nn.MSELoss();
         }
     }
+
+
+    public static float Evaluate(Tensor actual, Tensor predicted, EvalFunction fun)
+    {
+        //var evaluator = new Evaluator();
+
+        var actualData = actual.data<float>();
+        var predictedData = predicted.data<float>();
+        switch (fun)    
+        {
+            case EvalFunction.CAcc:
+                return 0;
+        }
+
+        return 0;
+    }
 }
+

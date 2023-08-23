@@ -18,7 +18,7 @@ public class LearningParameters
 {
     public LearnerType LearnerType { get; set; }
     public LossFunction LossFunction { get; set; }
-    public List<Metrics> EvaluationFunctions { get; set; }
+    public List<EvalFunction> EvaluationFunctions { get; set; }
     public float LearningRate { get; set; }
     public bool UsePolyDecay { get; set; }
     public float StartLRate { get; set; }
