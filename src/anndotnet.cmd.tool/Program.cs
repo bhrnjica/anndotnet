@@ -238,6 +238,7 @@ static class Program
         var irisData = new DataFeed("Iris", x, y);
 
         //run trainer
+        var  json = MlFactory.SaveToString(mlConfig);
         var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
 
         //define progress report

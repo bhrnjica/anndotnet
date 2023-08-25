@@ -27,6 +27,16 @@ public class MlConfig
     public Dictionary<string, string> Paths { get; set; }
     public string Name { get; set; }
 
+    public MlConfig()
+    {
+        Id = Guid.NewGuid();
+        Name = "mlConfig";
+        Metadata = new List<ColumnInfo>();
+        Network = new List<ILayer>();
+        LearningParameters = new LearningParameters();
+        TrainingParameters = new TrainingParameters();
+        Paths = new Dictionary<string, string>();
+    }
     public MlConfig(string guid, string name)
     {
         Id = Guid.Parse(guid);

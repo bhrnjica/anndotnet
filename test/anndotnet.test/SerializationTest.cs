@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AnnDotNet.Core;
 using AnnDotNet.Core.Data;
 using AnnDotNet.Core.Entities;
 using AnnDotNet.Core.Layers;
+using AnnDotNet.Core.Util;
 using Daany;
 using TorchSharp.Modules;
 using Xunit;
@@ -36,7 +40,7 @@ public class SerializationTests
             ],
             "DateFormat": null
           },
-          "Metadata": [
+           "Metadata": [
             {
               "Id": 0,
               "Name": "sepal_length",
@@ -141,8 +145,8 @@ public class SerializationTests
             }
           ],
           "LearningParameters": {
-            "LearnerType": "adam",
-            "LossFunction": "cce",
+            "LearnerType": "momentumSGD",
+            "LossFunction": "nllLoss",
             "EvaluationFunctions": [
               "cAcc",
               "cErr"
@@ -155,7 +159,13 @@ public class SerializationTests
             "DecaySteps": 0,
             "Momentum": 0,
             "L1Regularizer": 0,
-            "L2Regularizer": 0
+            "L2Regularizer": 0,
+            "Alpha": 0,
+            "Eps": 0,
+            "Beta1": 0,
+            "Beta2": 0,
+            "WeightDecay": 0,
+            "Rho": 0
           },
           "TrainingParameters": {
             "TrainingType": "tvTraining",
@@ -166,14 +176,17 @@ public class SerializationTests
             "MiniBatchSize": 100,
             "KFold": 5,
             "SplitPercentage": 20,
-            "LastBestModel": null
+            "LastBestModel": null,
+            "ShuffleWhenSplit": false,
+            "ShuffleWhenTraining": false
           },
           "Paths": {
             "MLConfig": "iris.mlconfig",
             "Root": "mlconfigs/iris",
             "Models": "models",
             "BestModel": "638227190040989949.ckp"
-          }
+          },
+          "Name": "empty"
         }
         """;
     [Fact]
@@ -187,7 +200,7 @@ public class SerializationTests
 
         Assert.True(mlConfig.Metadata.Count==5);
 
-        Assert.Equal("CCE",mlConfig.LearningParameters.LossFunction.ToString());
+        Assert.Equal("NLLLoss", mlConfig.LearningParameters.LossFunction.ToString());
 
         Assert.True(mlConfig.TrainingParameters.Epochs==500);   
 
@@ -196,6 +209,10 @@ public class SerializationTests
         Assert.True(mlConfig.Paths["Models"]=="models");   
 
     }
+
+    
+
+
 
 
     [Fact]
@@ -289,8 +306,8 @@ public class SerializationTests
 
         mlConfig.LearningParameters = new LearningParameters()
         {
-            LearnerType = LearnerType.Adam,
-            LossFunction = LossFunction.CCE,
+            LearnerType = LearnerType.MomentumSGD,
+            LossFunction = LossFunction.NLLLoss,
             EvaluationFunctions = new List<EvalFunction>() { EvalFunction.CAcc,EvalFunction.CErr },
             LearningRate = 0.01f,
             UsePolyDecay = false,
@@ -300,7 +317,13 @@ public class SerializationTests
             DecaySteps = 0,
             Momentum = 0,
             L1Regularizer = 0,
-            L2Regularizer = 0
+            L2Regularizer = 0,
+            Alpha = 0.0,
+            Eps = 0.0,
+            Beta1 = 0.0,
+            Beta2 = 0.0,
+            WeightDecay = 0.0,
+            Rho = 0.0
         }; 
         
         mlConfig.TrainingParameters = new TrainingParameters()
@@ -313,7 +336,9 @@ public class SerializationTests
             MiniBatchSize = 100,
             KFold = 5,
             SplitPercentage = 20,
-            LastBestModel = null
+            LastBestModel = null,
+            ShuffleWhenSplit = false,
+            ShuffleWhenTraining = false
         };
 
         mlConfig.Paths = new Dictionary<string, string>()
@@ -330,7 +355,7 @@ public class SerializationTests
         var str1 = strJson.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
         var str2 = ml_file.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
-        for (int i = 0; i < str1.Length; i++)
+        for (int i = 0; i < str2.Length; i++)
         {
             Assert.Equal(str1[i].Trim(), str2[i].Trim());
         }

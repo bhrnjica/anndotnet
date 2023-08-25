@@ -155,7 +155,7 @@
     "ProgressStep": 10,
     "MiniBatchSize": 100,
     "KFold": 5,
-    "SplitPercentage": 80,
+    "SplitPercentage": 20,
     "LastBestModel": null,
     "ShuffleWhenSplit": false,
     "ShuffleWhenTraining": false
