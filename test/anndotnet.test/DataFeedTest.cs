@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.Linq;
 using AnnDotNet.Core.Data;
 using Xunit;
 
@@ -536,6 +539,44 @@ public class DataFeedTests
 
     }
 
+
+    [Fact]
+    public void CrossValidation_Sets_test()
+    {
+        int kFold = 5;
+
+        float[] data = new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        int trainSize = 8;
+        int testSize = 2;
+
+        int n = 3; // Number of elements to take
+        int k = 2; // Number of elements to skip
+
+        for(int fold = 0; fold< kFold; fold++)
+        {
+            n = fold * testSize; // Number of elements to take
+            k = testSize; // Number of elements to skip
+
+            var result = data.Take(n)
+                .Concat(data.Skip(n + k).Take(data.Length - n - k))
+                .ToArray();
+
+            Trace.WriteLine("");
+            Trace.WriteLine($"FOLD:({fold})");
+            Trace.WriteLine("TrainSet:");
+            foreach (var element in result)
+            {
+                Trace.Write(element + " ");
+            }
+
+            Trace.WriteLine("TestSet:");
+            foreach (var element in data.Except(result))
+            {
+                Trace.Write(element + " ");
+            }
+        }
+        
+    }
        
 
 }

@@ -63,8 +63,13 @@ public class CvTrainer : ITrainer, IProgressTraining
     private (DataLoader train, DataLoader validation) Split(DataFeed data, int batchSize, int trainSize, int testSize, int index)
     {
         //generate indexes
-        var lst = LongEnumerable.Range(0, data.Count);
-        var trainIds = lst.Skip(index * testSize).Take(trainSize);
+        var lst = LongEnumerable.Range(0, data.Count).ToList();
+        var n = index * testSize;
+
+        var trainIds = lst.Take(n)
+                .Concat(lst.Skip(n + testSize)
+                .Take(lst.Count() - n - testSize)).ToList();
+
         var testIds = lst.Except(trainIds);
 
         var train = new DataLoader(data, batchSize, trainIds);

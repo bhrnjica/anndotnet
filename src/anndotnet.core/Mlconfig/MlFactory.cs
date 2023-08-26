@@ -27,6 +27,7 @@ using AnnDotNet.Core.Interfaces;
 using Anndotnet.Core.Model;
 
 using AnnDotNet.Core.Util;
+using XPlot.Plotly;
 
 namespace AnnDotNet.Core;
 
@@ -202,5 +203,21 @@ public class MlFactory
 
         return 0;
     }
+
+    public static (Tensor x, Tensor y) LoadData(MlConfig mlConfig)
+    {
+        var dateFormat = mlConfig.Metadata.Where(x => x.ValueColumnType == ColType.DT)
+            .Select(x => x.ValueFormat).FirstOrDefault();
+
+        //load data into DataFrame
+        var df = DataFrame.FromCsv(filePath: $"{mlConfig.Parser.RawDataName}", sep: mlConfig.Parser.ColumnSeparator,
+            names: mlConfig.Parser.Header, colTypes: mlConfig.Metadata.Select(x => x.ValueColumnType).ToArray(),
+            missingValues: mlConfig.Parser.MissingValueSymbol, skipLines: mlConfig.Parser.SkipLines, dformat: dateFormat);
+
+        return df.TransformData(mlConfig.Metadata);
+    }
+
+    
+
 }
 

@@ -104,28 +104,27 @@
   "Network": [
     {
       "Type": "Dense",
-      "OutputDim": 7,
+      "OutputDim": 5,
       "Name": "Dense01",
-      "Activation": "ReLU",
-      "HasBias": "true"
+      "Activation": "TanH",
+      "HasBias": true
     },
     {
       "Type": "Dropout",
       "Name": "Dropout01",
-      "Rate": "0.5"
+      "Rate": 0.05
     },
     {
       "Type": "Dense",
       "OutputDim": 3,
       "Name": "Dense02",
       "Activation": "Softmax",
-      "HasBias": true,
-      "
+      "HasBias": true
     }
   ],
   "LearningParameters": {
-    "LearnerType": "adam",
-    "LossFunction": "cce",
+    "LearnerType": "SGD",
+    "LossFunction": "nllLoss",
     "EvaluationFunctions": [
       "cAcc",
       "cErr"
@@ -148,7 +147,7 @@
 
   },
   "TrainingParameters": {
-    "TrainingType": "tvTraining",
+    "TrainingType": "cvTraining",
     "EarlyStopping": "none",
     "Retrain": true,
     "Epochs": 500,

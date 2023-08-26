@@ -33,8 +33,8 @@ static class Program
 
     static async Task Main(string[] args)
     {
-        await IrisFromNetObject(true);
-        //await IrisFromMLConfig();
+        //await IrisFromNetObject(true);
+        await IrisFromMLConfig();
         return;
         var str = @"
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -276,8 +276,7 @@ static class Program
         IProgressTraining progress = mlConfig.TrainingParameters.TrainingType== TrainingType.CvTraining ? new ProgressCvTraining() : new ProgressTvTraining();
 
         //obtain data
-        var iris = new IrisSample();
-        var (x, y) = await iris.GenerateData();
+        var (x, y) = MlFactory.LoadData(mlConfig);
         var irisData = new DataFeed("Iris", x, y);
 
 
