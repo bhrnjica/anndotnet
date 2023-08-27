@@ -26,6 +26,10 @@ public class TvTrainer : ITrainer, IEvaluator
 {
     private readonly float _minLR = 0.000001f;
     private readonly Module<Tensor, Tensor> _model;
+    private readonly Optimizer _optimizer;
+
+
+
     private readonly DataLoader _train;
     private readonly DataLoader _valid;
     private readonly TrainingParameters _tParams;
@@ -33,10 +37,10 @@ public class TvTrainer : ITrainer, IEvaluator
     private readonly IProgressTraining _progress;
     private readonly Loss<Tensor, Tensor, Tensor> _loss;
 
-    public TvTrainer(Module<Tensor, Tensor> model, DataLoader train, DataLoader valid, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed = 1234)
+    public TvTrainer(Module<Tensor, Tensor> model, Optimizer optimizer, DataLoader train, DataLoader valid, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed = 1234)
     {
         _model = model;
-
+        _optimizer = optimizer;
         _tParams = tParams;
         _lParams = lParams;
         _progress = progress;
@@ -49,7 +53,7 @@ public class TvTrainer : ITrainer, IEvaluator
     public TvTrainer(Module<Tensor, Tensor> model, DataFeed trainData, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed= 1234 )
     {
         _model = model;
-        
+        _optimizer = MlFactory.CreateOptimizer(model, lParams);
         _tParams = tParams;
         _lParams = lParams;
         _progress = progress;
@@ -78,8 +82,6 @@ public class TvTrainer : ITrainer, IEvaluator
 
     public virtual async Task<bool> RunAsync()
     {
-        var optimizer = MlFactory.CreateOptimizer(_model, _lParams);
-
         //early stopping
         //var scheduler = torch.optim.lr_scheduler.LinearLR(optimizer,last_epoch:_tParams.Epochs, verbose:true);
 
@@ -87,9 +89,9 @@ public class TvTrainer : ITrainer, IEvaluator
         {
             using var d = torch.NewDisposeScope();
 
-            var (trainLoss, trainMetrics) = TrainMiniBatch(optimizer,  _train, epoch);
+            var (trainLoss, trainMetrics) = TrainMiniBatch(_train, epoch);
 
-            var (evalLoss, validMetrics) = EvaluateModel<float>( optimizer,  _valid);
+            var (evalLoss, validMetrics) = EvaluateModel<float>(_valid);
 
             //scheduler.step(trainLoss);
             
@@ -116,7 +118,7 @@ public class TvTrainer : ITrainer, IEvaluator
         return true;
     }
 
-    private (float loss, Dictionary<string, float> metrics) TrainMiniBatch(Optimizer optimizer, DataLoader trainData, int epoch)
+    private (float loss, Dictionary<string, float> metrics) TrainMiniBatch(DataLoader trainData, int epoch)
     {
         _model.train();
         
@@ -129,7 +131,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
             foreach (var data in trainData)
             {
-                optimizer.zero_grad();
+                _optimizer.zero_grad();
 
                 var predicted = _model.forward(data["X"]);
 
@@ -145,7 +147,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
                 loss.backward();
 
-                optimizer.step();
+                _optimizer.step();
 
                 trainingLoss += loss.ToSingle();
 
@@ -168,7 +170,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
     }
 
-    private (float eval_loss, Dictionary<string, float> metrics) EvaluateModel<T>( Optimizer optimizer, DataLoader evalData) where T : unmanaged
+    private (float eval_loss, Dictionary<string, float> metrics) EvaluateModel<T>(DataLoader evalData) where T : unmanaged
     {
         _model.eval();
         

@@ -39,9 +39,11 @@ public class CvTrainer : ITrainer, IProgressTraining
         CreateFolds(trainData, tParams.MiniBatchSize);
 
         _tvTrainer = new TvTrainer[_kFold];
+        var optimizer = MlFactory.CreateOptimizer(model, lParams);
+
         for (int i = 0; i < _kFold; i++)
         {
-            _tvTrainer[i] = new TvTrainer(model, _cvData[i].train, _cvData[i].validation, tParams, lParams, this, seed);
+            _tvTrainer[i] = new TvTrainer(model, optimizer, _cvData[i].train, _cvData[i].validation, tParams, lParams, this, seed);
 
         }
 

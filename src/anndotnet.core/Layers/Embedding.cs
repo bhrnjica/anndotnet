@@ -16,11 +16,19 @@ using AnnDotNet.Core.Interfaces;
 
 namespace AnnDotNet.Core.Layers;
 
-public record Base : ILayer
+public record Embedding : Base
 {
-    public string Name { get; set; }
-
-    public LayerType Type { get; set; }
-
+    public int OutputDim { get; set; }
+    public double MaxNorm { get; set; }
     
+    //1 - linear norm, 2 euklidian norma etc p parameter of the norm
+    public double NormType { get; set; }
+
+    public long? PaddingIdX { get; set; }
+
+    public Embedding()
+    {
+        Type = LayerType.Embedding;
+    }
+
 }

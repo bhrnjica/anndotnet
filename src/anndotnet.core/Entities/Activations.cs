@@ -16,10 +16,18 @@ public enum Activation
 {
     None = 0,
     ReLU = 1,
-    Sigmoid = 2,
-    Softmax = 3,
-    LogSoftmax = 4,
-    TanH = 5,
-    Max = 6,
-    Avg = 7
+    ELU = 2,
+
+    TanH = 20,
+    Tanhshrink=21,
+    //Threshold =22,
+
+
+    Sigmoid = 50,
+    Softmax = 51,
+    LogSoftmax = 52,
+    
+
+    Max = 80,
+    Avg = 61
 }

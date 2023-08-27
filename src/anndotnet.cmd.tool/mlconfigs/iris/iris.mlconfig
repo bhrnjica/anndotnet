@@ -123,7 +123,7 @@
     }
   ],
   "LearningParameters": {
-    "LearnerType": "SGD",
+    "LearnerType": "MomentumSGD",
     "LossFunction": "nllLoss",
     "EvaluationFunctions": [
       "cAcc",
@@ -147,7 +147,7 @@
 
   },
   "TrainingParameters": {
-    "TrainingType": "cvTraining",
+    "TrainingType": "tvTraining",
     "EarlyStopping": "none",
     "Retrain": true,
     "Epochs": 500,

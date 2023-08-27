@@ -72,6 +72,20 @@ namespace Anndotnet.Core.Model
 
                     inputDim = l.OutputDim;
                 }
+                if (layer is Embedding)
+                {
+                    var l = (Embedding)layer;
+                    var linear = Embedding(l.OutputDim,inputDim, padding_idx:l.PaddingIdX, max_norm:l.MaxNorm,norm_type:l.NormType);
+                    _layers.Add(linear);
+
+                    inputDim = l.OutputDim;
+                }
+                else if (layer is Lstm)
+                {
+                    var l = (Lstm)layer;
+                    var drop = LSTM(l.InputSize, l.HiddenSize,l.Layers, l.HasBias,l.BatchFirst, l.DropRate, l.Bidirectional);
+                   
+                }
                 else if (layer is Dropout)
                 {
                     var l = (Dropout)layer;
@@ -91,10 +105,16 @@ namespace Anndotnet.Core.Model
             {
                 Activation.None => Identity(),
                 Activation.ReLU => ReLU(),
+                Activation.ELU => ELU(),
+
+                Activation.TanH => Tanh(),
+                Activation.Tanhshrink => Tanhshrink(),
+
+
+
                 Activation.Sigmoid => Sigmoid(),
                 Activation.Softmax => Softmax(dim:1),
                 Activation.LogSoftmax => LogSoftmax(dim: 1),
-                Activation.TanH => Tanh(),
                 _ => Identity()
             };
         }

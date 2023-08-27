@@ -16,11 +16,21 @@ using AnnDotNet.Core.Interfaces;
 
 namespace AnnDotNet.Core.Layers;
 
-public record Base : ILayer
+public record Lstm : Base
 {
-    public string Name { get; set; }
+    public int OutputDim { get; set; }
 
-    public LayerType Type { get; set; }
+    public long InputSize { get; set; }
+    public long HiddenSize { get; set; }
+    public long Layers { get; set; }
+    public bool HasBias { get; set; }
+    public bool BatchFirst { get; set; }
+    public double DropRate { get; set; }
+    public bool Bidirectional { get; set; }
 
-    
+    public Lstm()
+    {
+        Type = LayerType.Embedding;
+    }
+
 }
