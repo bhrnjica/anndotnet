@@ -46,6 +46,8 @@ namespace Anndotnet.cmd.tool.Progress
             Console.WriteLine($"*************************************************");
         }
 
+
+
         public void PrintBinaryClassificationMetrics(string name, BinaryClassificationMetrics metrics)
         {
             Console.WriteLine($"************************************************************");
@@ -74,18 +76,19 @@ namespace Anndotnet.cmd.tool.Progress
         //    Console.WriteLine($"************************************************************");
         //}
 
-        public void PrintMultiClassClassificationMetrics(string name, MulticlassClassificationMetrics metrics)
+        public void PrintMultiClassClassificationMetrics(string name, ConfusionMatrix matrix)
         {
             Console.WriteLine($"************************************************************");
             Console.WriteLine($"*    Metrics for {name} multi-class classification model   ");
             Console.WriteLine($"*-----------------------------------------------------------");
-            Console.WriteLine($"    AccuracyMacro = {metrics.MacroAccuracy:0.####}, a value between 0 and 1, the closer to 1, the better");
-            Console.WriteLine($"    AccuracyMicro = {metrics.MicroAccuracy:0.####}, a value between 0 and 1, the closer to 1, the better");
-            Console.WriteLine($"    LogLoss = {metrics.LogLoss:0.####}, the closer to 0, the better");
-            Console.WriteLine($"    LogLoss for class 1 = {metrics.PerClassLogLoss[0]:0.####}, the closer to 0, the better");
-            Console.WriteLine($"    LogLoss for class 2 = {metrics.PerClassLogLoss[1]:0.####}, the closer to 0, the better");
-            if (metrics.PerClassLogLoss.Count > 2)
-                Console.WriteLine($"    LogLoss for class 3 = {metrics.PerClassLogLoss[2]:0.####}, the closer to 0, the better");
+            Console.WriteLine($"    AccuracyMacro = {ConfusionMatrix.MacroAccuracy(matrix.Matrix):0.####}, a value between 0 and 1, the closer to 1, the better");
+            Console.WriteLine($"    AccuracyMicro = {ConfusionMatrix.MicroAccuracy(matrix.Matrix) :0.####}, a value between 0 and 1, the closer to 1, the better");
+            //Console.WriteLine($"    LogLoss = {matrix.LogLoss:0.####}, the closer to 0, the better");
+            //Console.WriteLine($"    LogLoss for class 1 = {matrix.PerClassLogLoss[0]:0.####}, the closer to 0, the better");
+            //Console.WriteLine($"    LogLoss for class 2 = {matrix.PerClassLogLoss[1]:0.####}, the closer to 0, the better");
+
+            //if (matrix.PerClassLogLoss.Count > 2)
+            //    Console.WriteLine($"    LogLoss for class 3 = {matrix.PerClassLogLoss[2]:0.####}, the closer to 0, the better");
             Console.WriteLine($"************************************************************");
         }
 
@@ -171,12 +174,13 @@ namespace Anndotnet.cmd.tool.Progress
         }
 
 
-        public void ConsolePrintConfusionMatrix(ConfusionMatrix confusionMatrix, string[] labels)
+        public void ConsolePrintConfusionMatrix(string name, ConfusionMatrix confusionMatrix, string[] labels)
         {
             var defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(" ");
             string cm = GetFormattedConfusionTable(confusionMatrix, labels);
+            Console.WriteLine(name);
             Console.Write(cm);
 
             Console.ForegroundColor = defaultColor;

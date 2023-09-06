@@ -72,7 +72,7 @@ namespace Anndotnet.Core.Model
 
                     inputDim = l.OutputDim;
                 }
-                if (layer is Embedding)
+                else if (layer is Embedding)
                 {
                     var l = (Embedding)layer;
                     var linear = Embedding(l.OutputDim,inputDim, padding_idx:l.PaddingIdX, max_norm:l.MaxNorm,norm_type:l.NormType);

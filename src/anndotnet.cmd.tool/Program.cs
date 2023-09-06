@@ -33,8 +33,8 @@ static class Program
 
     static async Task Main(string[] args)
     {
-        //await IrisFromNetObject(true);
-        await IrisFromMLConfig();
+        await IrisFromNetObject(false);
+        //await IrisFromMLConfig();
         return;
         var str = @"
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -217,7 +217,6 @@ static class Program
         var (tParams, lParams) = iris.GenerateParameters();
         mlConfig.LearningParameters = lParams;
         mlConfig.TrainingParameters = tParams;
-        mlConfig.Metadata = iris.Metadata;
         mlConfig.Parser = iris.Parser;
         mlConfig.Network = iris.CreateNet();
         mlConfig.Paths = new Dictionary<string, string>
@@ -235,6 +234,7 @@ static class Program
 
         //obtain data
         var (x, y) = await iris.GenerateData();
+        mlConfig.Metadata = iris.Metadata;
         var irisData = new DataFeed("Iris", x, y);
 
         //run trainer
@@ -247,6 +247,7 @@ static class Program
         await mlRunner.TrainAsync(irisData,  progress);
 
 
+        mlRunner.CalculatePerformance();
 
         // var mlRunner = new MLRunner(net, lParams, tParams, X, Y, null, new ConsoleHelper(), paths );
 
@@ -264,7 +265,9 @@ static class Program
         //mlRunner.PredictionMetrics(result, predData.Y, iris.Metadata);
 
         ////await r.SaveMlConfig(iris.Metadata, iris.Parser, "mlconfigs/iris/iris.mlconfig"); 
-    }       
+    }
+
+
 
     private static async Task IrisFromMLConfig()
     {

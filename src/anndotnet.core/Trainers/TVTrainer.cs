@@ -50,6 +50,19 @@ public class TvTrainer : ITrainer, IEvaluator
 
     }
 
+    public TvTrainer(Module<Tensor, Tensor> model, DataLoader train, DataLoader valid, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed = 1234)
+    {
+        _model = model;
+        _optimizer = MlFactory.CreateOptimizer(_model,lParams);
+        _tParams = tParams;
+        _lParams = lParams;
+        _progress = progress;
+        _train = train;
+        _valid = valid;
+        _loss = MlFactory.CreateLoss(_lParams.LossFunction);
+
+    }
+
     public TvTrainer(Module<Tensor, Tensor> model, DataFeed trainData, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed= 1234 )
     {
         _model = model;

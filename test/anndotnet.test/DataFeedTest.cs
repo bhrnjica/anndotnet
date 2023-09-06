@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using AnnDotNet.Core.Data;
+using TorchSharp;
 using Xunit;
 
 using static TorchSharp.torch;
@@ -577,6 +578,29 @@ public class DataFeedTests
         }
         
     }
-       
+
+    [Fact]
+    void EnumerateBatch()
+    {
+        // Create a 30x4 tensor (example data)
+        var tensor = torch.rand(new long[] { 30, 4 });
+
+        // Extract the first two columns and the last two columns
+        var firstColumns = tensor.narrow(1, 0, 2);
+        var lastColumns = tensor.narrow(1, 2, 2);
+
+        
+
+        // Perform element-wise multiplication on corresponding columns
+        var result = firstColumns * lastColumns;
+
+        // Print the original tensor
+        Trace.WriteLine("Original Tensor:");
+        Trace.WriteLine(tensor);
+
+        // Print the result tensor
+        Trace.WriteLine("\nResult Tensor:");
+        Trace.WriteLine(result);
+    }
 
 }

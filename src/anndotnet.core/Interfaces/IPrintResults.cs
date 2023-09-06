@@ -13,6 +13,9 @@ namespace Anndotnet.Core.Interfaces
         void PrintPrediction(string prediction);
         void PrintRegressionPredictionVersusObserved(string predictionCount, string observedCount);
         void PrintRegressionMetrics(string name, RegressionMetrics metrics);
-        void ConsolePrintConfusionMatrix(ConfusionMatrix confusionMatrix, string[] labels);
+        void ConsolePrintConfusionMatrix(string name, ConfusionMatrix confusionMatrix, string[] labels);
+
+        void PrintMultiClassClassificationMetrics(string name, ConfusionMatrix matrix);
+        void PrintBinaryClassificationMetrics(string name, BinaryClassificationMetrics metrics);
     }
 }

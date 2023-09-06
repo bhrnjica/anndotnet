@@ -21,14 +21,34 @@ namespace Anndotnet.Core.Entities
         public string PositiveRecall { get; set; }
         public string NegativePrecision { get; set; }
         public string NegativeRecall { get; set; }
-
-
         public ConfusionMatrix ConfusionMatrix { get; }
+
+
+
+        public BinaryClassificationMetrics(IList<float> predicted, IList<float> target)
+        {
+            ConfusionMatrix = new ConfusionMatrix(predicted.Select(x => Convert.ToInt32(x)).ToArray(),
+                target.Select(x => Convert.ToInt32(x)).ToArray(), 3);
+
+            initProperties();
+
+        }
+
+        private void initProperties()
+        {
+            Accuracy = ConfusionMatrix.AAC(ConfusionMatrix.Matrix).ToString("0.00");
+            F1Score = ConfusionMatrix.Fscore(ConfusionMatrix.Matrix).ToString("0.00");
+            PositivePrecision = ConfusionMatrix.Precision(ConfusionMatrix.Matrix, 0).ToString("0.00");
+            PositiveRecall = ConfusionMatrix.Recall(ConfusionMatrix.Matrix, 0).ToString("0.00");
+            
+        }
+
 
         public BinaryClassificationMetrics(ConfusionMatrix cm)
         {
-            Accuracy = ConfusionMatrix.AAC(cm.Matrix).ToString("0.00");
-            F1Score = ConfusionMatrix.Fscore(cm.Matrix).ToString("0.00");
+            ConfusionMatrix= cm;
+
+            initProperties();
         }
 
         private double calculateAUC(ConfusionMatrix[] cm)
