@@ -18,11 +18,13 @@ using AnnDotNet.Core.Entities;
 
 using TorchSharp;
 using static TorchSharp.torch;
+using Daany.MathStuff.Stats;
 
 namespace AnnDotNet.Core.Extensions;
 
 public static class DfExtensions
 {
+
     public static (Tensor X, Tensor Y) TransformData(this DataFrame df, List<ColumnInfo> metadata)
     {
         //extract features and label from DataFrame
@@ -37,9 +39,9 @@ public static class DfExtensions
         var lDf = df.Create((labelInfo.Select(x => x.Name).FirstOrDefault(), null));
         var labelDf = PrepareDf(lDf, labelInfo);
 
-        //iterate through rows
-        var x = featureDf.ToTensor(metadata.Where(x=>x.MLType==MLColumnType.Feature).ToList());
-        var y = labelDf.ToTensor(metadata.Where(x => x.MLType == MLColumnType.Label).ToList());
+        //dataFrame to tensor
+        var x = featureDf.ToTensor(metadata.Where(x=>x.MLType==MLColumnType.Feature).ToList(), true);
+        var y = labelDf.ToTensor(metadata.Where(x => x.MLType == MLColumnType.Label).ToList(), false);
 
         return (x, y);
     }
@@ -67,7 +69,7 @@ public static class DfExtensions
                 metadata[j].Transformer.DataNormalization == ColumnTransformer.OneHot ||
                 metadata[j].Transformer.DataNormalization == ColumnTransformer.Ordinal)
             {
-                (var edf, var vVal, var eVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
+                var (edf, vVal, eVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
                 finalDf = finalDf.Append(edf, verticaly: false);
 
                 //store encoded class values to metadata
@@ -87,7 +89,7 @@ public static class DfExtensions
             else if (metadata[j].Transformer.DataNormalization == ColumnTransformer.MinMax ||
                      metadata[j].Transformer.DataNormalization == ColumnTransformer.Standardizer)
             {
-                (var ndf, var nVal, var sVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
+                var (ndf, nVal, sVal) = df.TransformColumn(cols[j], metadata[j].Transformer.DataNormalization, true);
                 metadata[j].Transformer.NormalizationValues = nVal;
 
                 finalColumns.Add(cols[j]);
@@ -103,18 +105,27 @@ public static class DfExtensions
         return finalDf[finalColumns.ToArray()];
     }
 
-    public static Tensor ToTensor(this DataFrame df, List<ColumnInfo> metadata)
+    public static Tensor ToTensor(this DataFrame df, List<ColumnInfo> metadata, bool isFeatureTensor)
     {
         var (row, col) = (df.RowCount(), df.ColCount());
 
-        var lstValues = df.Values.Select(x => (x is int i) ? i: (float)x).ToList();
+        //features 
+        var lstValues = df.Values.Select(x => (x is int i) ? i: Convert.ToSingle(x)).ToList();
 
         //all columns in the DF must be same type, otherwise cannot be converted into tensor
-        var tensorType = df.ColTypes.First() == ColType.I32 ? ScalarType.Int32 : ScalarType.Float32;
+        var tensorType =  df.ColTypes.First() == ColType.I32 ? ScalarType.Int32 : ScalarType.Float32;
 
-        return col == 1 ?
-            //create 1D tensor                      //create multi-dim (2D) tensor
-            torch.tensor(lstValues, tensorType) : torch.tensor(lstValues, row, col, tensorType);
+        //Feature tensor must be float type
+        if (isFeatureTensor)
+        {
+            tensorType = ScalarType.Float32;
+        }
+
+
+        return torch.tensor(lstValues, row, col, tensorType);
+        //return col == 1 ?
+        //    //create 1D tensor                      //create multi-dim (2D) tensor
+        //    torch.tensor(lstValues, tensorType) : torch.tensor(lstValues, row, col, tensorType);
     }
 
     public static List<ColumnInfo> ParseMetadata(this DataFrame df, string label)
@@ -127,33 +138,74 @@ public static class DfExtensions
             var type = df.ColTypes[i];
 
             var c = new ColumnInfo();
-            if (name == label)
+            if (name == label && type != ColType.STR)
             {
                 c.MLType = MLColumnType.Label;
-
-                if (type == ColType.IN || type == ColType.STR)
-                {
-                    c.ValueColumnType = ColType.IN;
-                    c.Transformer.DataNormalization = ColumnTransformer.OneHot;
-                }
-                else
-                    c.ValueColumnType = type;
             }
-            else
+            else if(name != label && type != ColType.STR )
             {
                 c.MLType = MLColumnType.Feature;
-                c.ValueColumnType = type;
-                if (type == ColType.IN)
-                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
-                else if (type == ColType.F32 || type == ColType.DD)
-                    c.Transformer.DataNormalization = ColumnTransformer.Standardizer;
-                else if (type == ColType.I2)
-                    c.Transformer.DataNormalization = ColumnTransformer.Binary1;
             }
+            else//string columns are excluded from parsing by default
+            {
+                c.MLType = MLColumnType.None;
+            }
+
+            //categorical column
+            if (type == ColType.IN && c.MLType != MLColumnType.None)
+            {
+                c.ValueColumnType = ColType.IN;
+
+                c.Transformer.ClassValues = df[name].Distinct().Select(x => x.ToString()).ToArray();
+                
+                if (c.MLType != MLColumnType.Label)
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                }
+                else if (c.MLType == MLColumnType.Label && c.Transformer.ClassValues.Length == 2)
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Binary1;
+                }
+                else
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.OneHot;
+                }
+
+            }
+            else if (type == ColType.I2 && c.MLType != MLColumnType.None)
+            {
+                c.ValueColumnType = ColType.I2;
+
+                if (c.MLType == MLColumnType.Label)
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Binary1;
+                }
+                else
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                }
+
+                c.Transformer.ClassValues = df[name].Distinct().Select(x => x.ToString()).ToArray();
+            }
+            else if (c.MLType != MLColumnType.None)
+            {
+                c.ValueColumnType = ColType.F32;
+
+                c.Transformer.DataNormalization = ColumnTransformer.Standardizer;
+
+                var col = df[name].Select(x => Convert.ToSingle(x)).ToList();
+
+                c.Transformer.NormalizationValues = new float[]
+                                                    {
+                                                        Metrics.Mean<float, float>( col ),
+                                                        Metrics.Stdev<float, float>( col )
+                                                    };
+            }
+
+
 
             //
             c.Id = i;
-            c.Transformer.ClassValues = null;
             c.MissingValue = Aggregation.None;
             c.Name = name;
 

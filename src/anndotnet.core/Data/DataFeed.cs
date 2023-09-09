@@ -101,7 +101,7 @@ public class DataFeed : TorchSharp.torch.utils.data.Dataset, IDataFeed
     }
 
     public long InputDimension => _x.shape[1];
-    public long OutputDimension => _y.shape[1];
+    public long OutputDimension => _y.shape.Length > 1 ? _y.shape[1] : 1 ;
 
 
     private static TensorIndex GetSlice(int batchIndex, int batchSize, int rowCount)

@@ -28,7 +28,7 @@ namespace Anndotnet.Core.Entities
         public BinaryClassificationMetrics(IList<float> predicted, IList<float> target)
         {
             ConfusionMatrix = new ConfusionMatrix(predicted.Select(x => Convert.ToInt32(x)).ToArray(),
-                target.Select(x => Convert.ToInt32(x)).ToArray(), 3);
+                target.Select(x => Convert.ToInt32(x)).ToArray(), 2);
 
             initProperties();
 

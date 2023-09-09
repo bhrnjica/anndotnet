@@ -104,7 +104,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
             var (trainLoss, trainMetrics) = TrainMiniBatch(_train, epoch);
 
-            var (evalLoss, validMetrics) = EvaluateModel<float>(_valid);
+            var (evalLoss, validMetrics) = EvaluateModel(_valid);
 
             //scheduler.step(trainLoss);
             
@@ -148,13 +148,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
                 var predicted = _model.forward(data["X"]);
 
-                var target = data["y"];
-                //this is MCC problem with SoftMax or LogSoftMax
-                if (_lParams.LossFunction == LossFunction.NLLLoss)
-                {
-                    //target data is multidimensional one hot encoding tensor
-                    target = target.argmax(dim: 1);
-                }
+                var target = TargetTransform(data["y"], _lParams.LossFunction);
 
                 var loss = CalculateLoss(predicted, target);
 
@@ -164,69 +158,85 @@ public class TvTrainer : ITrainer, IEvaluator
 
                 trainingLoss += loss.ToSingle();
 
-                if (ReferenceEquals(totPredicted, null))
-                {
-                    totPredicted = predicted;
-                    totTarget = target;
-                }
-                else
-                {
-                    totPredicted = torch.cat(new List<Tensor>{totPredicted, predicted}, 0);
-                    totTarget = torch.cat(new List<Tensor> { totTarget, target }, 0);
-                }
-
-              //  d.DisposeEverything();
+                AccumulateResults(predicted, ref totPredicted, target, ref totTarget);
             }
+
             var result = CalculateMetrics(_lParams.EvaluationFunctions, totPredicted, totTarget);
             return (trainingLoss, result);
         }
 
     }
 
-    private (float eval_loss, Dictionary<string, float> metrics) EvaluateModel<T>(DataLoader evalData) where T : unmanaged
+    private (float eval_loss, Dictionary<string, float> metrics) EvaluateModel(DataLoader evalData) 
     {
         _model.eval();
         
         using (var d = torch.NewDisposeScope())
         {
-            Tensor totPredicted = null;
+            Tensor totPredicted =null;
             Tensor totTarget = null;
             float validLoss = 0;
 
             foreach (var data in evalData)
             {
                 var predicted = _model.forward(data["X"]);
-                var target = data["y"];
-
-                //this is MCC problem with SoftMax or LogSoftMax
-                if (_lParams.LossFunction == LossFunction.NLLLoss)
-                {
-                    //target data is multidimensional one hot encoding tensor
-                    target = target.argmax(dim: 1);
-                }
-
+ 
+                var target = TargetTransform(data["y"], _lParams.LossFunction);
+                 
                 var loss = CalculateLoss(predicted, target);
 
                 validLoss += loss.ToSingle();
 
-
-                if (ReferenceEquals(totPredicted, null))
-                {
-                    totPredicted = predicted;
-                    totTarget = target;
-                }
-                else
-                {
-                    totPredicted = torch.cat(new List<Tensor> { totPredicted, predicted }, 0);
-                    totTarget = torch.cat(new List<Tensor> { totTarget, target }, 0);
-                }
+                AccumulateResults(predicted, ref totPredicted, target, ref totTarget);
             }
 
             var metrics = CalculateMetrics(_lParams.EvaluationFunctions, totPredicted, totTarget);
             return ( validLoss, metrics);
         }
     }
-    
+
+    internal static Tensor TargetTransform(Tensor targetData, LossFunction loss)
+    {
+        //this is MCC problem with SoftMax or LogSoftMax
+        if (loss == LossFunction.NLLLoss)
+        {
+            //target data is multidimensional one hot encoding tensor
+            return targetData.argmax(dim: 1);
+        }
+        else if (loss == LossFunction.BCE)
+        {
+            return targetData.to_type(ScalarType.Float32);
+        }
+
+        return targetData;
+    }
+
+    internal static void AccumulateResults(Tensor predicted,ref Tensor totPredicted, Tensor target, ref Tensor totTarget)
+    {
+        //if (predicted.shape.Length == 2 && predicted.shape[1] == 1)
+        //{
+        //    predicted = predicted.flatten();
+        //}
+
+        //if (target.shape.Length == 2 && target.shape[1] == 1)
+        //{
+        //    target = target.flatten();
+        //}
+
+        if (ReferenceEquals(totPredicted, null))
+        {
+            totPredicted = torch.clone(predicted);
+            totTarget = torch.clone(target); 
+        }
+        else
+        {
+            totPredicted = torch.cat(new List<Tensor> { totPredicted, predicted }, 0);
+            totTarget = torch.cat(new List<Tensor> { totTarget, target },          0);
+        }
+
+        return;
+    }
+
     public Dictionary<string, float> CalculateMetrics(List<EvalFunction> evalFunctions, Tensor predicted, Tensor target)
     {
         var metrics = new Dictionary<string, float>();

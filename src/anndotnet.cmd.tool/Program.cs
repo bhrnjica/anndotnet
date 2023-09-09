@@ -11,7 +11,7 @@ using AnnDotNet.Core;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.Model;
 using AnnDotNet.Tool;
-using AnnDotNet.Vnd.Samples;
+
 
 using static TorchSharp.torch;
 using static TorchSharp.torch.optim;
@@ -25,6 +25,7 @@ using System.Data;
 using Anndotnet.Core.Mlconfig;
 using AnnDotNet.Core.Trainers;
 using Anndotnet.cmd.tool.Progress;
+using Anndotnet.cmd.tool.Samples;
 
 namespace AnnDotNET.Tool;
 
@@ -33,7 +34,9 @@ static class Program
 
     static async Task Main(string[] args)
     {
-        await IrisFromNetObject(false);
+        await RunTitanicSample();
+        //await SlumpTestFromNetObjects();
+        //await IrisFromNetObject(false);
         //await IrisFromMLConfig();
         return;
         var str = @"
@@ -99,7 +102,7 @@ static class Program
         }
         else if (key == "31")
         {
-            await TitanicMLConfig();
+            await TitanicMlConfig();
         }
         else if (key == "32")
         {
@@ -111,7 +114,7 @@ static class Program
         }
         else if (key == "41")
         {
-            await RunConcreteSlumpSample();
+            await SlumpTestFromNetObjects();
         }
         else if (key == "42")
         {
@@ -132,20 +135,45 @@ static class Program
     }
 
     #region SlumpTest Example
-    private static async Task RunConcreteSlumpSample()
+    private static async Task SlumpTestFromNetObjects(bool crossValidation= false)
     {
-        throw new NotImplementedException();
+        var slamp = new SlampTestSample();
+        var mlConfig = new MlConfig(Guid.NewGuid().ToString(), "SlampTest");
 
-        //SlampTestSample slump = new SlampTestSample();
-        //(NDArray x, NDArray y) = await slump.GenerateData();
+        var (tParams, lParams) = slamp.GenerateParameters();
+        mlConfig.LearningParameters = lParams;
+        mlConfig.TrainingParameters = tParams;
+        mlConfig.Parser = slamp.Parser;
+        mlConfig.Network = slamp.CreateNet();
+        mlConfig.Paths = new Dictionary<string, string>
+                         {
+                             { "MLConfig", "slamp.mlconfig" },
+                             { "Root", "mlconfigs/slamptest" },
+                             { "Models", "models" },
+                             { "BestModel", "" }
+                         };
 
-        //(TrainingParameters tParams, LearningParameters lParams) = slump.GenerateParameters();
-        //var net = slump.CreateNet();
+        //setup training type
+        mlConfig.TrainingParameters.TrainingType = crossValidation ? TrainingType.CvTraining : TrainingType.TvTraining;
 
-        //var r = new MLRunner(net, lParams, tParams, x, y, slump.Metadata, new ConsoleHelper());
-        //r.Run(null);
 
-        //await r.SaveMlConfig(slump.Metadata, new DataParser(), "slump.mlconifg");
+
+        //obtain data
+        var (x, y) = await slamp.GenerateData();
+        mlConfig.Metadata = slamp.Metadata;
+        var slampData = new DataFeed("SlampTest", x, y);
+
+        //run trainer
+        var json = MlFactory.SaveToString(mlConfig);
+        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+
+        //define progress report
+        IProgressTraining progress = crossValidation ? new ProgressCvTraining() : new ProgressTvTraining();
+
+        await mlRunner.TrainAsync(slampData, progress);
+
+
+        mlRunner.CalculatePerformance();
     }
 
     private static void ConcreteSlumpMLConfig()
@@ -155,24 +183,66 @@ static class Program
     #endregion
 
     #region Titanic Example
-    private static async Task TitanicMLConfig()
+    private static async Task TitanicMlConfig()
     {
-        throw new NotImplementedException();
+        var mlConfig = await MlFactory.LoadfromFileAsync(@"mlconfigs\titanic\titanic.mlconfig");
+        //run trainer
+        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
 
-        //var mlCOnf = await MLFactory.Load(@"mlconfigs\titanic\titanic.mlconfig");
+        //define progress report
+        IProgressTraining progress = mlConfig.TrainingParameters.TrainingType == TrainingType.CvTraining ? new ProgressCvTraining() : new ProgressTvTraining();
 
-        //var mlConfig1 = mlCOnf;
+        //obtain data
+        var (x, y) = MlFactory.LoadData(mlConfig);
+        var irisData = new DataFeed("Titanic", x, y);
 
-        //IProgressTraining progress = (mlConfig1.TParameters.TrainingType == TrainingType.CVTraining) ? new ProgressCVTraining() : new ProgressTVTraining();
 
-        ////
-        //var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
-        //mlRunner.Run(progress);
+        await mlRunner.TrainAsync(irisData, progress);
+
+
     }
 
     private static async Task RunTitanicSample(bool crossValidation = false)
     {
-        throw new NotImplementedException();
+        var titanic = new TitanicSample();
+        var mlConfig = new MlConfig(Guid.NewGuid().ToString(), "Titanic");
+
+        var (tParams, lParams) = titanic.GenerateParameters();
+        mlConfig.LearningParameters = lParams;
+        mlConfig.TrainingParameters = tParams;
+        mlConfig.Parser = titanic.Parser;
+        mlConfig.Network = titanic.CreateNet();
+        mlConfig.Paths = new Dictionary<string, string>
+                         {
+                             { "MLConfig", "iris.mlconfig" },
+                             { "Root", "mlconfigs/iris" },
+                             { "Models", "models" },
+                             { "BestModel", "" }
+                         };
+
+        //setup training type
+        mlConfig.TrainingParameters.TrainingType = crossValidation ? TrainingType.CvTraining : TrainingType.TvTraining;
+
+
+
+        //obtain data
+        var (x, y) = await titanic.GenerateData();
+        mlConfig.Metadata = titanic.Metadata;
+        var data = new DataFeed("Titanic", x, y);
+
+        //run trainer
+        var json = MlFactory.SaveToString(mlConfig);
+        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+
+        //define progress report
+        IProgressTraining progress = crossValidation ? new ProgressCvTraining() : new ProgressTvTraining();
+
+        await mlRunner.TrainAsync(data, progress);
+
+
+        mlRunner.CalculatePerformance();
+
+
 
         //TitanicSample titanic = new TitanicSample();
         //(NDArray x, NDArray y) = await titanic.GenerateData();

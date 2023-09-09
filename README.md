@@ -11,12 +11,11 @@ ANNdotNET is an open-source project written in C# that aims to simplify deep lea
 - model validation and testing, and
 - deployment. 
 
-For all above tasks AnndotNet provides a GUI tool that you can create very complex deep learning model in just a few clicks.
-The whole model can be save in MLConfig json file.  
-
 Unlike version v1 that is based on Microsoft CNTK, the AnndotNET v2 implements 
-ML Engine based on Tensorflow, allowing users to perform deep learning operations 
-with the cutting - edge DL framework.
+ML Engine based on TorchSharp, allowing users to perform deep learning operations 
+with the cutting - edge DL framework. 
+
+The project is still in development phase.
 
 ![image](https://github.com/bhrnjica/anndotnet/assets/1240016/9f18b2ad-f36d-42b1-80f3-3d0a1c20ac59)
 

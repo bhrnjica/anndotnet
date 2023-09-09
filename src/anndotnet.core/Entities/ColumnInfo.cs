@@ -18,8 +18,13 @@ public class ColumnInfo
     public string Name { get; set; }
     public MLColumnType MLType { get; set; }
     public Daany.ColType ValueColumnType { get; set; }
+
     public string ValueFormat { get; set; }
+
+    //Missing Value Handler
     public Daany.Aggregation MissingValue { get; set; }
+
+    //Information how the column can be transformed
     public DataTransformer Transformer { get; set; }
 
     public ColumnInfo()

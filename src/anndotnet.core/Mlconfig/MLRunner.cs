@@ -59,9 +59,10 @@ namespace Anndotnet.Core.Mlconfig
 
             await trainer.RunAsync();
         }
+        
         public void CalculatePerformance()
         {
-          var tresult =   EvaluateModel(_mlConfig.LearningParameters.LossFunction,true );
+          var tresult = EvaluateModel(_mlConfig.LearningParameters.LossFunction,true );
           var vresult = EvaluateModel(_mlConfig.LearningParameters.LossFunction, false);
 
           //multiclass
@@ -102,10 +103,11 @@ namespace Anndotnet.Core.Mlconfig
         public (List<float> predicted, List<float> target) EvaluateModel(LossFunction loss, bool isTrainingData)
         {
            _model.eval();
+
            var totPredicted = new List<float>();
            var totTarget = new List<float>();
 
-            using (var d = torch.NewDisposeScope())
+           using (var d = torch.NewDisposeScope())
            {
                var evData = isTrainingData ? _train : _val;
 
@@ -113,23 +115,19 @@ namespace Anndotnet.Core.Mlconfig
                {
                    var predicted = _model.forward(data["X"]);
 
-                   var target = data["y"];
-                  
-                   if (loss == LossFunction.NLLLoss)
-                   {
-                       //target data is multidimensional one hot encoding tensor
-                       target = target.argmax(dim: 1);
-                       var prediction = predicted.argmax(1);
+                    var target = TvTrainer.TargetTransform(data["y"], _mlConfig.LearningParameters.LossFunction);
 
-                       totPredicted.AddRange(prediction.data<long>().ToList().Select(p=>Convert.ToSingle(p)));
-                       totTarget.AddRange(target.data<long>().ToList().Select(t => Convert.ToSingle(t)));
-                   }
-                   else
-                   {
-                       totPredicted.AddRange(predicted.data<float>().ToList());
-                       totTarget.AddRange(target.data<float>().ToList());
 
-                   }
+                    totPredicted.AddRange(predicted.data<float>().ToList());
+                    if (target.dtype == ScalarType.Int64 || target.dtype == ScalarType.Int32)
+                    {
+                        totTarget.AddRange(target.data<long>().ToList().Select(t => Convert.ToSingle(t)));
+                    }
+                    else
+                    {
+                        totTarget.AddRange(target.data<float>().ToList());
+                    }
+
                }
 
                return (totPredicted, totTarget);

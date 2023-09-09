@@ -15,6 +15,41 @@ namespace Anndotnet.Core.Util
                 yield return start + i;
             }
         }
+
+        public static Type GetdotnetType(this Tensor tensor)
+        {
+            switch (tensor.dtype)
+            {
+                case ScalarType.Byte:
+                  //  break;
+                case ScalarType.Int8:
+                  //  break;
+                case ScalarType.Int16:
+                  //  break;
+                case ScalarType.Int32:
+                    return typeof(int);
+                case ScalarType.Int64:
+                    return typeof(long);
+                case ScalarType.Float16:
+                    
+                case ScalarType.Float32:
+                    return typeof(float);
+                case ScalarType.Float64:
+                    return typeof(double);
+                case ScalarType.ComplexFloat32:
+                    break;
+                case ScalarType.ComplexFloat64:
+                    break;
+                case ScalarType.Bool:
+                    break;
+                case ScalarType.BFloat16:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            throw new ArgumentOutOfRangeException();
+
+        }
     }
 
 }
