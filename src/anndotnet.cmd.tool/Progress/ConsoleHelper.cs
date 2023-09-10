@@ -24,7 +24,7 @@ using Anndotnet.Core.MlMetrics;
 namespace Anndotnet.Tool.Progress
 {
     /// <summary>
-    /// This class is taken from ML.NET (github.com/dotnet/machinelearning)
+    /// This class is taken from ML.NET (github.com/dotnet/machinelearning) and modified
     /// </summary>
     public class ConsoleHelper : IPrintResults
     {
@@ -49,11 +49,12 @@ namespace Anndotnet.Tool.Progress
             Console.WriteLine($"*************************************************");
             Console.WriteLine($"*       Metrics for {name} regression model      ");
             Console.WriteLine($"*------------------------------------------------");
-            Console.WriteLine($"*       LossFn:        {metrics.LossFunction:0.##}");
-            Console.WriteLine($"*       R2 Score:      {metrics.RSquared:0.##}");
-            Console.WriteLine($"*       Absolute loss: {metrics.MeanAbsoluteError:#.##}");
-            Console.WriteLine($"*       Squared loss:  {metrics.MeanSquaredError:#.##}");
-            Console.WriteLine($"*       RMS loss:      {metrics.RootMeanSquaredError:#.##}");
+            Console.WriteLine($"*       MA error:   {metrics.MAE:0.##}");
+            Console.WriteLine($"*       MS error:   {metrics.MSE:0.##}");
+            Console.WriteLine($"*       RMS error:  {metrics.RMSE:0.##}");
+            Console.WriteLine($"*       R2 score:   {metrics.R2:#.##}");
+            Console.WriteLine($"*       NNSE Score: {metrics.NNSE:#.##}");
+            Console.WriteLine($"*       Spearman score: {metrics.SP:#.##}");
             Console.WriteLine($"*************************************************");
         }
 
@@ -64,16 +65,16 @@ namespace Anndotnet.Tool.Progress
             Console.WriteLine($"************************************************************");
             Console.WriteLine($"*       Metrics for {name} binary classification model      ");
             Console.WriteLine($"*-----------------------------------------------------------");
-            Console.WriteLine($"*       Accuracy: {metrics.Accuracy:P2}");
-            Console.WriteLine($"*       Area Under Curve:      {metrics.AreaUnderRocCurve:P2}");
-            Console.WriteLine($"*       Area under Precision recall Curve:  {metrics.AreaUnderPrecisionRecallCurve:P2}");
-            Console.WriteLine($"*       F1Score:  {metrics.F1Score:P2}");
-            Console.WriteLine($"*       LogLoss:  {metrics.LogLoss:#.##}");
-            Console.WriteLine($"*       LogLossReduction:  {metrics.LogLossReduction:#.##}");
-            Console.WriteLine($"*       PositivePrecision:  {metrics.PositivePrecision:#.##}");
-            Console.WriteLine($"*       PositiveRecall:  {metrics.PositiveRecall:#.##}");
-            Console.WriteLine($"*       NegativePrecision:  {metrics.NegativePrecision:#.##}");
-            Console.WriteLine($"*       NegativeRecall:  {metrics.NegativeRecall:P2}");
+            Console.WriteLine($"*       Accuracy: {metrics.Acc:#.##}");
+            Console.WriteLine($"*       Area Under Curve:      {metrics.Auc:#.##}");
+            Console.WriteLine($"*       Area under Precision recall Curve:  {metrics.Auc:#.##}");
+            Console.WriteLine($"*       Precision:  {metrics.Precision:#.##}");
+            Console.WriteLine($"*       Recall:  {metrics.Recall:#.##}");
+            Console.WriteLine($"*       F1Score:  {metrics.F1Score:#.##}");
+            //Console.WriteLine($"*       TP:  {metrics.TP:#.##}");
+            //Console.WriteLine($"*       FP:  {metrics.FP:#.##}");
+            //Console.WriteLine($"*       FN:  {metrics.FN:#.##}");
+            //Console.WriteLine($"*       TN:  {metrics.TN:#.##}");
             Console.WriteLine($"************************************************************");
         }
 

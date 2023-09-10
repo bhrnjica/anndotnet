@@ -161,13 +161,17 @@ public static class DfExtensions
                 {
                     c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
                 }
-                else if (c.MLType == MLColumnType.Label && c.Transformer.ClassValues.Length == 2)
+                else if (c.MLType == MLColumnType.Label && c.Transformer.ClassValues.Length == 2)//binary label
                 {
                     c.Transformer.DataNormalization = ColumnTransformer.Binary1;
                 }
+                else if(c.MLType == MLColumnType.Label) //multi class label
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                }
                 else
                 {
-                    c.Transformer.DataNormalization = ColumnTransformer.OneHot;
+                    new NotSupportedException("This code should neve be called.");
                 }
 
             }
@@ -226,6 +230,6 @@ public static class DfExtensions
     public static DataFrame FromDataParser(DataParser parser)
     {
         return DataFrame.FromCsv(filePath: parser.RawDataName, sep: parser.ColumnSeparator, names: parser.Header,
-            dformat: parser.DateFormat, missingValues: parser.MissingValueSymbol, skipLines: parser.SkipLines);
+            dformat: parser.DateFormat, missingValues: parser.MissingValueSymbol,colTypes:parser.ColTypes, skipLines: parser.SkipLines);
     }
 }

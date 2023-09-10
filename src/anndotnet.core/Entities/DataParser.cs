@@ -8,6 +8,8 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
+using Daany;
+
 namespace Anndotnet.Core.Entities;
 
 public class DataParser
@@ -21,5 +23,6 @@ public class DataParser
     public string RawDataName { get; set; }
     public string[] Header { get; set; }
     public string DateFormat { get; set; }
+    public ColType[] ColTypes { get; set; } 
         
 }

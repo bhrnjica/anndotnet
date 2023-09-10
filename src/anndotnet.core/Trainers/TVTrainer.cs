@@ -200,7 +200,7 @@ public class TvTrainer : ITrainer
         if (loss == LossFunction.NLLLoss)
         {
             //target data is multidimensional one hot encoding tensor
-            return targetData.argmax(dim: 1);
+            return targetData.flatten().to_type(ScalarType.Int64); //.argmax(dim: 1);
         }
         else if (loss == LossFunction.BCE)
         {

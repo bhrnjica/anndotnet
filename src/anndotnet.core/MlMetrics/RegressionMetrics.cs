@@ -9,24 +9,28 @@
 ///////////////////////////////////////////////////////////////////////////
 /// 
 using Anndotnet.Core.Interfaces;
+using Daany.MathStuff;
 
 namespace Anndotnet.Core.MlMetrics;
 public class RegressionMetrics : IMetrics
 {
     public RegressionMetrics(IList<float> predicted, IList<float> target)
     {
-        LossFunction = 0;
-        RootMeanSquaredError = Daany.MathStuff.Stats.Metrics.RMSE<float, float>(predicted, target);
-        MeanAbsoluteError = Daany.MathStuff.Stats.Metrics.MSE<float, float>(predicted, target);
-        MeanSquaredError = Daany.MathStuff.Stats.Metrics.MSE<float, float>(predicted,  target);
-        RSquared = Daany.MathStuff.Stats.Metrics.RSquared<float, float>(predicted, target);
-
+        MAE = Daany.MathStuff.Stats.Metrics.MAE<float, float>(predicted,  target);
+        MSE = Daany.MathStuff.Stats.Metrics.MSE<float, float>(predicted, target);
+        RMSE = Daany.MathStuff.Stats.Metrics.RMSE<float, float>(predicted, target);
+        R2 = Daany.MathStuff.Stats.Metrics.RSquared<float, float>(predicted,   target);
+        NNSE = Daany.MathStuff.Stats.Metrics.NNSE<float, float>(predicted, target);
+        SP = float.NaN;// Daany.MathStuff.Stats.Metrics.SP<float, float>(predicted,   target);
     }
-    public float MeanAbsoluteError    { get; set; }
-    public float MeanSquaredError     { get; set; }
-    public float RootMeanSquaredError { get; set; }
-    public float LossFunction         { get; set; }
-    public float RSquared             { get; set; }
+    public float MAE { get; set; }
+    public float MSE { get; set; }
+    public float RMSE { get; set; }
+    public float R2  { get; set; }
+    public float NNSE { get; set; }
+
+    public float SP { get; set; }
+
     public void foo()
     {
         throw new NotImplementedException();

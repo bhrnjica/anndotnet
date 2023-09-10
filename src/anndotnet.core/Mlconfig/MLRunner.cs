@@ -94,6 +94,7 @@ namespace Anndotnet.Core.Mlconfig
 
              Console.WriteLine("Train data:");
              _reportProgress.ConsolePrintConfusionMatrix(_mlConfig.Name + "_Train",cm, classes);
+
              Console.WriteLine("Valid data:");
              _reportProgress.ConsolePrintConfusionMatrix(_mlConfig.Name + "_Test", cmTest,classes);
 
@@ -102,8 +103,9 @@ namespace Anndotnet.Core.Mlconfig
 
           else if (classes != null && classes.Length == 2)
           {
-              var rm = new BinaryClassificationMetrics(validPrediction, validTarget);
+              var rm = new BinaryClassificationMetrics(validPrediction, validTarget, classes);
               _reportProgress.PrintBinaryClassificationMetrics(_mlConfig.Name, rm);
+              _reportProgress.ConsolePrintConfusionMatrix(_mlConfig.Name,rm.ConfusionMatrix, rm.Classes);
           }
           else
           {
@@ -141,7 +143,16 @@ namespace Anndotnet.Core.Mlconfig
         private static void AccumulateResults(List<float> totPredicted, Tensor predicted, Tensor target, List<float> totTarget)
         {
             //predicted output is always of float type
-            totPredicted.AddRange(predicted.data<float>().ToList());
+            if (predicted.shape.Last() > 2)
+            {
+                totPredicted.AddRange(predicted.argmax(1).to_type(ScalarType.Float32).data<float>().ToList());
+            }
+            else
+            {
+                totPredicted.AddRange(predicted.data<float>().ToList());
+                
+
+            }
 
             //target data type can be long or float depending of the ML problem type
             // for classification problems target is int or long

@@ -26,9 +26,9 @@ static class Program
 
     static async Task Main(string[] args)
     {
-        await RunTitanicSample();
+       // await RunTitanicSample();
         //await SlumpTestFromNetObjects();
-        //await IrisFromNetObject(false);
+        await IrisFromNetObject(false);
         //await IrisFromMLConfig();
         return;
         var str = @"

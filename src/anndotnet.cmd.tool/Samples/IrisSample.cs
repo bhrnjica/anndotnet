@@ -30,7 +30,7 @@ public class IrisSample : ISample
         Parser = new DataParser();
         Parser.ColumnSeparator = ';';
         Parser.RawDataName = "mlconfigs/iris/iris_raw.txt";
-
+        Parser.ColTypes = new ColType[] { ColType.F32, ColType.F32, ColType.F32, ColType.F32, ColType.IN };
         Parser.Header = new string[] { "sepal_length", "sepal_width", "petal_length", "petal_width", "species" };
     }
 

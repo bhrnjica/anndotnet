@@ -11,6 +11,9 @@
 using Anndotnet.Core.Data;
 using Anndotnet.Core.Mlconfig;
 using Anndotnet.Core.Trainers;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace AnnDotNet.test;
@@ -84,25 +87,27 @@ public class Trainertest
     }
 
 
-    //[Fact]
-    //public void TorchMetrcs_Accuracy_test()
-    //{
-    //    // Sample data
-    //    var actualData = new float[] { 1, 0, 1, 0, 1 };
-    //    var predictedData = new float[] { 0.2f, 0.7f, 0.6f, 0.4f, 0.9f };
+    [Fact]
+    public void TorchMetrcs_Accuracy_test()
+    {
+        // Sample color data
+       var colors = new List<string> { "red", "green", "blue", "green", "red" };
 
-    //    // Convert data to Torch tensors
-    //    var actual = torch.tensor(actualData);
-    //    var predicted = torch.tensor(predictedData);
+        // Create a dictionary to map color names to ordinal values
+        Dictionary<string, int> colorMapping = colors.Distinct().Select((color, index) => new { Color = color, Index = index }).ToDictionary(x => x.Color, x => x.Index);
 
-    //    // Calculate accuracy
-    //    TorchMetrics metrics = new TorchMetrics();
-    //    var accuracy = metrics.Accuracy_Binary(actual, predicted);
+        // Encode the colors
+        List<int> encodedColors = colors.Select(color => colorMapping[color]).ToList();
 
-    //    Console.WriteLine($"Accuracy: {accuracy:P}");
-    //}
+        // Print the encoded values
+        Console.WriteLine("Ordinal Encoded Colors:");
+        foreach (int encodedColor in encodedColors)
+        {
+            Console.WriteLine(encodedColor);
+        }
+    }
 
 
-    
+
 
 }
