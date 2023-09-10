@@ -8,10 +8,20 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
+namespace Anndotnet.Core.MlMetrics;
 
-namespace Anndotnet.Core.Interfaces;
-
-public interface ITrainer
+public sealed class CrossValidationResult<T> where T : class
 {
-    Task<bool>                                      RunAsync();
+    /// <summary>Metrics for this cross-validation fold.</summary>
+    public readonly T Metrics;
+
+    /// <summary>Model trained during cross-validation fold.</summary>
+    public readonly object Model;
+
+    /// <summary>The scored hold-out set for this fold.</summary>
+    public readonly object ScoredHoldOutSet;
+
+    /// <summary>Fold number.</summary>
+    public readonly int Fold;
 }
+

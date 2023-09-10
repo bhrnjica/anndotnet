@@ -1,25 +1,20 @@
-﻿//////////////////////////////////////////////////////////////////////////////////////////
-// ANNdotNET - Deep Learning Tool on .NET Platform                                     //
-// Copyright 2017-2020 Bahrudin Hrnjica                                                 //
-//                                                                                      //
-// This code is free software under the MIT License                                     //
-// See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md  //
-//                                                                                      //
-// Bahrudin Hrnjica                                                                     //
-// bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                         //
-// http://bhrnjica.net                                                                  //
-//////////////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
-using AnnDotNet.Core.Trainers;
-using Daany.MathStuff.Stats;
-using XPlot.Plotly;
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
-namespace AnnDotNet.Tool.Progress;
+
+using System;
+using System.Linq;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interfaces;
+
+namespace Anndotnet.Tool.Progress;
 
 
 public class ProgressTvTraining : IProgressTraining

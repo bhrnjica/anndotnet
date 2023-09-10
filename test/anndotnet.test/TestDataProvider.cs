@@ -1,12 +1,21 @@
-﻿using AnnDotNet.Core;
-using AnnDotNet.Core.Extensions;
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
 using Daany;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AnnDotNet.Core.Entities;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Extensions;
 using static TorchSharp.torch;
 using TorchSharp;
 

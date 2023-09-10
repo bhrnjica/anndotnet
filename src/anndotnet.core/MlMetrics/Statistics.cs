@@ -8,10 +8,20 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 
-namespace Anndotnet.Core.Interfaces;
+namespace Anndotnet.Core.MlMetrics;
 
-public interface ITrainer
+//Statistic for Column
+public class Statistics
 {
-    Task<bool>                                      RunAsync();
+    public double Mean;
+    public double Median;
+    public double Mode;
+    public double Random;
+    public double Range;
+    public double Min;
+    public double Max;
+    public double StdDev;
+    public List<string> Categories;
 }

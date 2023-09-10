@@ -1,39 +1,38 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//                Created by anndotnet community, anndotnet.com              //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/anndotnet/anndotnet //
-//                                                                           //
-//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
 using Anndotnet.Core.Util;
-using AnnDotNet.Core.Data;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
 using Daany.MathStuff.Random;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
+using Anndotnet.Core.Data;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.Mlconfig;
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
-namespace AnnDotNet.Core.Trainers;
+namespace Anndotnet.Core.Trainers;
 
 
-public class TvTrainer : ITrainer, IEvaluator
+public class TvTrainer : ITrainer
 {
     private readonly float _minLR = 0.000001f;
     private readonly Module<Tensor, Tensor> _model;
     private readonly Optimizer _optimizer;
 
-
-
     private readonly DataLoader _train;
     private readonly DataLoader _valid;
+
     private readonly TrainingParameters _tParams;
     private readonly LearningParameters _lParams;
+
     private readonly IProgressTraining _progress;
     private readonly Loss<Tensor, Tensor, Tensor> _loss;
 
@@ -93,7 +92,7 @@ public class TvTrainer : ITrainer, IEvaluator
         return (train, valid);
     }
 
-    public virtual async Task<bool> RunAsync()
+    public async Task<bool> RunAsync()
     {
         //early stopping
         //var scheduler = torch.optim.lr_scheduler.LinearLR(optimizer,last_epoch:_tParams.Epochs, verbose:true);
@@ -104,7 +103,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
             var (trainLoss, trainMetrics) = TrainMiniBatch(_train, epoch);
 
-            var (evalLoss, validMetrics) = EvaluateModel(_valid);
+            var (evalLoss, validMetrics) = EvaluateEpoch(_valid);
 
             //scheduler.step(trainLoss);
             
@@ -167,7 +166,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
     }
 
-    private (float eval_loss, Dictionary<string, float> metrics) EvaluateModel(DataLoader evalData) 
+    private (float eval_loss, Dictionary<string, float> metrics) EvaluateEpoch(DataLoader evalData) 
     {
         _model.eval();
         
@@ -237,7 +236,7 @@ public class TvTrainer : ITrainer, IEvaluator
         return;
     }
 
-    public Dictionary<string, float> CalculateMetrics(List<EvalFunction> evalFunctions, Tensor predicted, Tensor target)
+    private Dictionary<string, float> CalculateMetrics(List<EvalFunction> evalFunctions, Tensor predicted, Tensor target)
     {
         var metrics = new Dictionary<string, float>();
 
@@ -249,7 +248,7 @@ public class TvTrainer : ITrainer, IEvaluator
 
         return metrics;
     }
-    public Tensor CalculateLoss(Tensor predicted, Tensor actual)
+    private Tensor CalculateLoss(Tensor predicted, Tensor actual)
     {
         Tensor retVal = _loss.forward(predicted, actual);
 

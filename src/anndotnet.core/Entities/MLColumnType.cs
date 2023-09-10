@@ -1,20 +1,17 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//            Copyright 2017-2021 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/bhrnjica/anndotnet  //
-//                                                                           //
-//             For feedback:https://github.com/bhrnjica/anndotnet/issues     //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
 using System.ComponentModel;
 
-namespace AnnDotNet.Core.Entities;
+namespace Anndotnet.Core.Entities;
 
-//Variable type
 public enum MLColumnType
 {
     [Description("None")]

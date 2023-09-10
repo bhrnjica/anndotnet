@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Anndotnet.Core.Entities;
-using ConfusionMatrix = Daany.MathStuff.Stats.ConfusionMatrix;
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+using Daany.MathStuff.Stats;
+using Anndotnet.Core.MlMetrics;
+
 
 namespace Anndotnet.Core.Interfaces
 {

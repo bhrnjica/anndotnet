@@ -1,24 +1,18 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//            Copyright 2017-2021 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/bhrnjica/anndotnet  //
-//                                                                           //
-//             For feedback:https://github.com/bhrnjica/anndotnet/issues     //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.ComponentModel;
-using Anndotnet.Core.Util;
-using AnnDotNet.Core.Interfaces;
-using Daany.MathStuff.Random;
-using static TorchSharp.torch;
- 
+using Anndotnet.Core.Interfaces;
 
-namespace AnnDotNet.Core.Data;
+
+namespace Anndotnet.Core.Data;
 
 public class DataFeed : TorchSharp.torch.utils.data.Dataset, IDataFeed
 {

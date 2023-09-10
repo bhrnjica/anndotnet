@@ -1,19 +1,16 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//                Created by anndotnet community, anndotnet.com              //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/anndotnet/anndotnet //
-//                                                                           //
-//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
-
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 using System.Collections.Generic;
 using static TorchSharp.torch;
 
-namespace AnnDotNet.Core.Interfaces;
+namespace Anndotnet.Core.Interfaces;
 
 /// <summary>
 /// Interface for data feed used in training process.

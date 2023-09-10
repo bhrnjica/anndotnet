@@ -1,27 +1,40 @@
-﻿using System.Xml;
-using AnnDotNet.Core;
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+using Anndotnet.Core.Data;
 using Anndotnet.Core.Util;
-using AnnDotNet.Core.Data;
+
 using Anndotnet.Core.Entities;
-using Anndotnet.Core.Model;
+
 using Daany.MathStuff.Random;
-using AnnDotNet.Core.Trainers;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
+using Anndotnet.Core.Trainers;
+
 using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.MlMetrics;
+
 using Daany;
 using Daany.MathStuff.Stats;
 
 namespace Anndotnet.Core.Mlconfig
 {
-    public class MLRunner : IDisposable
+    public class MlRunner :IRunner,IDataSplitter,IEvaluator, IDisposable
     {
-        private readonly MlConfig _mlConfig;
-        private readonly IPrintResults _reportProgress;
         private AnnModel _model;
+
         private DataLoader _train;
         private DataLoader _val;
-        public MLRunner(MlConfig mlConfig, IPrintResults reportProgress)
+
+        private readonly MlConfig _mlConfig;
+        private readonly IPrintResults _reportProgress;
+
+        public MlRunner(MlConfig mlConfig, IPrintResults reportProgress)
         {
             _mlConfig = mlConfig;
             _reportProgress = reportProgress;
@@ -62,8 +75,8 @@ namespace Anndotnet.Core.Mlconfig
         
         public void CalculatePerformance()
         {
-          var tresult = EvaluateModel(_mlConfig.LearningParameters.LossFunction,true );
-          var vresult = EvaluateModel(_mlConfig.LearningParameters.LossFunction, false);
+          var (trainPrediction, trainTarget) = EvaluateModel(_mlConfig.LearningParameters.LossFunction, true );
+          var (validPrediction, validTarget) = EvaluateModel(_mlConfig.LearningParameters.LossFunction, false);
 
           //multiclass
           var col = _mlConfig.Metadata.First(x => x.MLType == MLColumnType.Label);
@@ -72,11 +85,11 @@ namespace Anndotnet.Core.Mlconfig
           
           if (classes!= null && classes.Length > 2)
           {
-             var cm = new ConfusionMatrix(tresult.predicted.Select(x=>Convert.ToInt32(x)).ToArray(),
-                                tresult.target.Select(x => Convert.ToInt32(x)).ToArray(), 3 );
+                var cm = new ConfusionMatrix(trainPrediction.Select(x => Convert.ToInt32(x)).ToArray(),
+                                          trainTarget.Select(x => Convert.ToInt32(x)).ToArray(), 3);
 
-             var cmTest = new ConfusionMatrix(vresult.predicted.Select(x => Convert.ToInt32(x)).ToArray(),
-                 vresult.target.Select(x => Convert.ToInt32(x)).ToArray(), 3);
+             var cmTest = new ConfusionMatrix(validPrediction.Select(Convert.ToInt32).ToArray(),
+                                              validTarget.Select(Convert.ToInt32).ToArray(), 3);
 
 
              Console.WriteLine("Train data:");
@@ -89,12 +102,12 @@ namespace Anndotnet.Core.Mlconfig
 
           else if (classes != null && classes.Length == 2)
           {
-              var rm = new BinaryClassificationMetrics(tresult.predicted, tresult.target);
+              var rm = new BinaryClassificationMetrics(validPrediction, validTarget);
               _reportProgress.PrintBinaryClassificationMetrics(_mlConfig.Name, rm);
           }
           else
           {
-              var rm = new RegressionMetrics(tresult.predicted, tresult.target);
+              var rm = new RegressionMetrics(validPrediction, validTarget);
               _reportProgress.PrintRegressionMetrics(_mlConfig.Name,rm);
           }
 
@@ -117,22 +130,30 @@ namespace Anndotnet.Core.Mlconfig
 
                     var target = TvTrainer.TargetTransform(data["y"], _mlConfig.LearningParameters.LossFunction);
 
-
-                    totPredicted.AddRange(predicted.data<float>().ToList());
-                    if (target.dtype == ScalarType.Int64 || target.dtype == ScalarType.Int32)
-                    {
-                        totTarget.AddRange(target.data<long>().ToList().Select(t => Convert.ToSingle(t)));
-                    }
-                    else
-                    {
-                        totTarget.AddRange(target.data<float>().ToList());
-                    }
-
+                    AccumulateResults(totPredicted, predicted, target, totTarget);
                }
 
                return (totPredicted, totTarget);
            }
 
+        }
+
+        private static void AccumulateResults(List<float> totPredicted, Tensor predicted, Tensor target, List<float> totTarget)
+        {
+            //predicted output is always of float type
+            totPredicted.AddRange(predicted.data<float>().ToList());
+
+            //target data type can be long or float depending of the ML problem type
+            // for classification problems target is int or long
+            // for regression is float
+            if (target.dtype == ScalarType.Int64 || target.dtype == ScalarType.Int32)
+            {
+                totTarget.AddRange(target.data<long>().ToList().Select(t => Convert.ToSingle(t)));
+            }
+            else
+            {
+                totTarget.AddRange(target.data<float>().ToList());
+            }
         }
 
         public (DataLoader train, DataLoader validation) Split(DataFeed data,int testPercentage, bool shuffle, int batchSize, int seed = 1234)

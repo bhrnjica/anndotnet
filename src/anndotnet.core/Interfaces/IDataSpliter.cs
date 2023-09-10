@@ -7,11 +7,12 @@
 //         See license section at https://github.com/bhrnjica/anndotnet  //
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
-
+using Anndotnet.Core.Data;
 
 namespace Anndotnet.Core.Interfaces;
 
-public interface ITrainer
+public interface IDataSplitter
 {
-    Task<bool>                                      RunAsync();
+
+    (DataLoader train, DataLoader validation) Split(DataFeed data, int testPercentage, bool shuffle, int batchSize, int seed = 1234);
 }

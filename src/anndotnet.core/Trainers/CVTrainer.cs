@@ -1,26 +1,26 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//                Created by anndotnet community, anndotnet.com              //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/anndotnet/anndotnet //
-//                                                                           //
-//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Anndotnet.Core.Util;
-using AnnDotNet.Core.Data;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
+using Anndotnet.Core.Data;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.Mlconfig;
+
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
-namespace AnnDotNet.Core.Trainers;
+namespace Anndotnet.Core.Trainers;
 
 public class CvTrainer : ITrainer, IProgressTraining
 {

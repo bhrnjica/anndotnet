@@ -1,17 +1,27 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.ML.Data;
 using Microsoft.ML;
 using System.Diagnostics;
 using Anndotnet.Core.Interfaces;
-using Anndotnet.Core.Entities;
-using BinaryClassificationMetrics = Anndotnet.Core.Entities.BinaryClassificationMetrics;
+using BinaryClassificationMetrics = Anndotnet.Core.MlMetrics.BinaryClassificationMetrics;
 using ConfusionMatrix = Daany.MathStuff.Stats.ConfusionMatrix;
 using System.Diagnostics.Contracts;
 using System.Text;
+using Anndotnet.Core.MlMetrics;
 
-namespace Anndotnet.cmd.tool.Progress
+namespace Anndotnet.Tool.Progress
 {
     /// <summary>
     /// This class is taken from ML.NET (github.com/dotnet/machinelearning)
@@ -20,6 +30,7 @@ namespace Anndotnet.cmd.tool.Progress
     {
         public void PrintPrediction(string prediction)
         {
+            
             Console.WriteLine($"*************************************************");
             Console.WriteLine($"Predicted : {prediction}");
             Console.WriteLine($"*************************************************");
@@ -33,7 +44,7 @@ namespace Anndotnet.cmd.tool.Progress
             Console.WriteLine($"-------------------------------------------------");
         }
 
-        public void PrintRegressionMetrics(string name, Core.Entities.RegressionMetrics metrics)
+        public void PrintRegressionMetrics(string name, Core.MlMetrics.RegressionMetrics metrics)
         {
             Console.WriteLine($"*************************************************");
             Console.WriteLine($"*       Metrics for {name} regression model      ");

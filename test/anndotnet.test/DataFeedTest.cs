@@ -1,7 +1,17 @@
+////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
 using System;
 using System.Diagnostics;
 using System.Linq;
-using AnnDotNet.Core.Data;
+using Anndotnet.Core.Data;
 using TorchSharp;
 using Xunit;
 
@@ -547,7 +557,7 @@ public class DataFeedTests
         int kFold = 5;
 
         float[] data = new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        int trainSize = 8;
+        //int trainSize = 8;
         int testSize = 2;
 
         int n = 3; // Number of elements to take

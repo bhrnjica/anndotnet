@@ -1,20 +1,18 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//            Copyright 2017-2021 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/bhrnjica/anndotnet  //
-//                                                                           //
-//             For feedback:https://github.com/bhrnjica/anndotnet/issues     //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
 using System;
 using System.Collections.Generic;
-using AnnDotNet.Core.Interfaces;
+using Anndotnet.Core.Interfaces;
 
-namespace AnnDotNet.Core.Entities;
+namespace Anndotnet.Core.Entities;
 
 public class MlConfig
 {

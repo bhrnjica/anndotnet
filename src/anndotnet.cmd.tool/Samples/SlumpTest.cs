@@ -1,29 +1,25 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//                Created by anndotnet community, anndotnet.com              //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/anndotnet/anndotnet //
-//                                                                           //
-//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
-using AnnDotNet.Core;
-using AnnDotNet.Core.Extensions;
 using Daany;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
-
-using AnnDotNet.Core.Layers;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Extensions;
+using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.Layers;
 using Daany.MathStuff.Stats;
 using TorchSharp;
 
-namespace Anndotnet.cmd.tool.Samples;
+namespace Anndotnet.Tool.Samples;
 
 public class SlampTestSample :ISample
 {

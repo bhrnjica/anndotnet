@@ -1,35 +1,23 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//                Created by anndotnet community, anndotnet.com              //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/anndotnet/anndotnet //
-//                                                                           //
-//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
 
 using Daany;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AnnDotNet.Core.Data;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Extensions;
-using AnnDotNet.Core.Interfaces;
-using Anndotnet.Core.Model;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Extensions;
+using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.Util;
 
-using AnnDotNet.Core.Util;
-using XPlot.Plotly;
-
-namespace AnnDotNet.Core;
+namespace Anndotnet.Core.Mlconfig;
 
 public class MlFactory
 {

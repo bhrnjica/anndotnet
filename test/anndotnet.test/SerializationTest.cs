@@ -1,19 +1,27 @@
+////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AnnDotNet.Core;
-using AnnDotNet.Core.Data;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Layers;
-using AnnDotNet.Core.Util;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Layers;
+using Anndotnet.Core.Mlconfig;
 using Daany;
 using TorchSharp.Modules;
 using Xunit;
 
 using static TorchSharp.torch;
-using Dropout = AnnDotNet.Core.Layers.Dropout;
+using Dropout = Anndotnet.Core.Layers.Dropout;
 
 
 namespace AnnDotNet.test;

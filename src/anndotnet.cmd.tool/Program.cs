@@ -1,33 +1,25 @@
-﻿using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
-using AnnDotNet.Tool.Progress;
-using AnnDotNET.Tool.Progress;
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+using Anndotnet.Core.Entities;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using AnnDotNet.Core;
+
 using Anndotnet.Core.Interfaces;
-using Anndotnet.Core.Model;
-using AnnDotNet.Tool;
-
-
-using static TorchSharp.torch;
-using static TorchSharp.torch.optim;
-using static TorchSharp.torch.nn;
-using TorchSharp;
-using static TorchSharp.torch.utils.data;
-using AnnDotNet.Core.Data;
-using static TorchSharp.torch.utils;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Data;
 using Anndotnet.Core.Mlconfig;
-using AnnDotNet.Core.Trainers;
-using Anndotnet.cmd.tool.Progress;
-using Anndotnet.cmd.tool.Samples;
+using Anndotnet.Core.Data;
+using Anndotnet.Tool.Progress;
+using Anndotnet.Tool.Samples;
 
-namespace AnnDotNET.Tool;
+namespace Anndotnet.Tool;
 
 static class Program
 {
@@ -50,17 +42,13 @@ static class Program
                 11. - Multi-class: Iris example from MLConfig file.
                 12. - Multi-class: Iris example with Cross-Validation Training.
 
-                21. - Multi-class: AirQuality example from MLConfig file.
-                22. - Multi-class: AirQuality example with Tran-Validate Training.
-                23. - Multi-class: AirQuality example with Cross-Validation Training.
+                21. - Binary-class: Titanic example from MLConfig file.
+                22. - Binary-class: Titanic example with  Tran-Validate Training.
+                23. - Binary-class: Titanic example with Cross-Validation Training.
 
-                31. - Binary-class: Titanic example from MLConfig file.
-                32. - Binary-class: Titanic example with  Tran-Validate Training.
-                33. - Binary-class: Titanic example with Cross-Validation Training.
-
-                41. - Regression: Concrete slump test with Tran-Validate Training.
-                42. - Regression: Concrete slump test from MLConfig.
-                43. - Regression: Concrete slump test with Cross-Validation Training.    
+                31. - Regression: Concrete slump test with Tran-Validate Training.
+                32. - Regression: Concrete slump test from MLConfig.
+                33. - Regression: Concrete slump test with Cross-Validation Training.    
 
                 x. - Exit
                     ";
@@ -90,39 +78,27 @@ static class Program
         }
         else if (key == "21")
         {
-            await AirQualityFromMLConfig();
+            await TitanicMlConfig();
         }
         else if (key == "22")
         {
-            await AirQualitiySample();
+            await RunTitanicSample(false);
         }
         else if (key == "23")
         {
-            await AirQualitiySample();
+            await RunTitanicSample(true);
         }
         else if (key == "31")
         {
-            await TitanicMlConfig();
+            await SlumpTestFromNetObjects();
         }
         else if (key == "32")
         {
-            await RunTitanicSample(false);
+            ConcreteSlumpMlConfig();
         }
         else if (key == "33")
         {
-            await RunTitanicSample(true);
-        }
-        else if (key == "41")
-        {
-            await SlumpTestFromNetObjects();
-        }
-        else if (key == "42")
-        {
-            ConcreteSlumpMLConfig();
-        }
-        else if (key == "43")
-        {
-            ConcreteSlumpMLConfig();
+            ConcreteSlumpMlConfig();
         }
         else if(key == "x")
         {
@@ -165,7 +141,7 @@ static class Program
 
         //run trainer
         var json = MlFactory.SaveToString(mlConfig);
-        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+        var mlRunner = new MlRunner(mlConfig, new ConsoleHelper());
 
         //define progress report
         IProgressTraining progress = crossValidation ? new ProgressCvTraining() : new ProgressTvTraining();
@@ -176,7 +152,7 @@ static class Program
         mlRunner.CalculatePerformance();
     }
 
-    private static void ConcreteSlumpMLConfig()
+    private static void ConcreteSlumpMlConfig()
     {
         throw new NotImplementedException();
     }
@@ -187,7 +163,7 @@ static class Program
     {
         var mlConfig = await MlFactory.LoadfromFileAsync(@"mlconfigs\titanic\titanic.mlconfig");
         //run trainer
-        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+        var mlRunner = new MlRunner(mlConfig, new ConsoleHelper());
 
         //define progress report
         IProgressTraining progress = mlConfig.TrainingParameters.TrainingType == TrainingType.CvTraining ? new ProgressCvTraining() : new ProgressTvTraining();
@@ -224,7 +200,6 @@ static class Program
         mlConfig.TrainingParameters.TrainingType = crossValidation ? TrainingType.CvTraining : TrainingType.TvTraining;
 
 
-
         //obtain data
         var (x, y) = await titanic.GenerateData();
         mlConfig.Metadata = titanic.Metadata;
@@ -232,7 +207,7 @@ static class Program
 
         //run trainer
         var json = MlFactory.SaveToString(mlConfig);
-        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+        var mlRunner = new MlRunner(mlConfig, new ConsoleHelper());
 
         //define progress report
         IProgressTraining progress = crossValidation ? new ProgressCvTraining() : new ProgressTvTraining();
@@ -242,38 +217,10 @@ static class Program
 
         mlRunner.CalculatePerformance();
 
-
-
-        //TitanicSample titanic = new TitanicSample();
-        //(NDArray x, NDArray y) = await titanic.GenerateData();
-
-        //(TrainingParameters tParams, LearningParameters lParams) = titanic.GenerateParameters();
-
-        //var net = titanic.CreateNet();
-
-        //var paths = new Dictionary<string, string>
-        //{
-        //    { "MLConfig", "titanic.mlconfig" },
-        //    { "Root", "mlconfigs/titanic" },
-        //    { "Models", "models" },
-        //    { "BestModel", "" }
-        //};
-
-        //var mlRunner = new MLRunner(net, lParams, tParams, x, y, titanic.Metadata, new ConsoleHelper(), paths);
-
-        //IProgressTraining progress = crossValidation ? new ProgressCVTraining() : new ProgressTVTraining();
-
-        //mlRunner.Run(progress);
-
         ////predict and deploy
         //var predData = await titanic.GeneratePredictionData(20);
 
-        //var fullModelPath = Path.Combine(paths["Root"], paths["Models"], paths["BestModel"]);
-        //var model = await mlRunner.LoadModelAsync(fullModelPath);
 
-        //var result = await mlRunner.PredictAsync(model, predData.X);
-
-        //mlRunner.PredictionMetrics(result, predData.Y, titanic.Metadata);
 
     }
     #endregion
@@ -309,7 +256,7 @@ static class Program
 
         //run trainer
         var  json = MlFactory.SaveToString(mlConfig);
-        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+        var mlRunner = new MlRunner(mlConfig, new ConsoleHelper());
 
         //define progress report
         IProgressTraining progress = crossValidation ? new ProgressCvTraining() : new ProgressTvTraining();
@@ -343,7 +290,7 @@ static class Program
     {
         var mlConfig = await MlFactory.LoadfromFileAsync(@"mlconfigs\iris\iris.mlconfig");
         //run trainer
-        var mlRunner = new MLRunner(mlConfig, new ConsoleHelper());
+        var mlRunner = new MlRunner(mlConfig, new ConsoleHelper());
 
         //define progress report
         IProgressTraining progress = mlConfig.TrainingParameters.TrainingType== TrainingType.CvTraining ? new ProgressCvTraining() : new ProgressTvTraining();
@@ -359,35 +306,6 @@ static class Program
     }
     #endregion
 
-    #region AirQuality Example
-    private static async Task AirQualitiySample()
-    {
-        throw new NotImplementedException();
-
-        //var data = await AirQualitySample.generateAirQualityData();
-
-        //var par = AirQualitySample.generateParameters();
-
-        //var net = AirQualitySample.CreateNet();
-
-        //var r = new MLRunner(net, par.lParams, par.tParams, data.X, data.Y, null, new ConsoleHelper());
-
-        //r.Run(null);
-
-        //// await r.SaveMlConfig(iris.Metadata, "..\..\..\..\\mlconfigs\air_quality\airquality.mlconfig");
-    }
-
-    private static async Task AirQualityFromMLConfig()
-    {
-        throw new NotImplementedException();
-
-        //var mlCOnf = await MLFactory.Load(@"mlconfigs\air_quality\airquality.mlconfig");
-
-        //var mlConfig1 = mlCOnf;
-        ////
-        //var mlRunner = new MLRunner(mlConfig1, new ConsoleHelper());
-        //mlRunner.Run(null);
-    }
-    #endregion
+    
 }
 

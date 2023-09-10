@@ -1,28 +1,22 @@
-﻿///////////////////////////////////////////////////////////////////////////////
-//               ANNdotNET - Deep Learning Tool on .NET Platform             //
-//                                                                           //
-//                Created by anndotnet community, anndotnet.com              //
-//                                                                           //
-//                     Licensed under the MIT License                        //
-//             See license section at https://github.com/anndotnet/anndotnet //
-//                                                                           //
-//             For feedback:https://github.com/anndotnet/anndotnet/issues    //
-//                                                                           //
-///////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
 
-using AnnDotNet.Core;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Text;
+
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AnnDotNet.Core.Entities;
-using AnnDotNet.Core.Interfaces;
-using AnnDotNet.Core.Layers;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.Layers;
 
 
-namespace AnnDotNet.Core.Util;
+namespace Anndotnet.Core.Util;
 
 public class LayerConverter : JsonConverter<ILayer>
 {
