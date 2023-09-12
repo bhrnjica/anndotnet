@@ -92,7 +92,7 @@
       "ValueFormat": null,
       "MissingValue": "none",
       "Transformer": {
-        "DataNormalization": "oneHot",
+        "DataNormalization": "ordinal",
         "ClassValues": [
           "1",
           "2",
@@ -109,7 +109,7 @@
       "ValueFormat": null,
       "MissingValue": "none",
       "Transformer": {
-        "DataNormalization": "oneHot",
+        "DataNormalization": "ordinal",
         "ClassValues": [
           "no",
           "yes"
@@ -121,24 +121,18 @@
   ],
   "Network": [
     {
-      "Type": 2,
-      "OutDim": 7,
-      "Name": "FCLAyer01"
+      "Type": "Dense",
+      "OutputDim": 7,
+      "Name": "Dense01",
+      "Activation": "ReLU",
+      "HasBias": true
     },
     {
-      "Type": 14,
-      "Activation": 1,
-      "Name": "ReLu"
-    },
-    {
-      "Type": 2,
-      "OutDim": 2,
-      "Name": "FCLAyer01"
-    },
-    {
-      "Type": 14,
-      "Activation": 2,
-      "Name": "Softmax"
+      "Type": "Dense",
+      "OutputDim": 1,
+      "Name": "Dense01",
+      "Activation": "Sigmoid",
+      "HasBias": true
     }
   ],
   "LearningParameters": {

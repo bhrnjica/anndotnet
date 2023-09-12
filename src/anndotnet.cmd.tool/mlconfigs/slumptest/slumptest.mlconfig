@@ -1,0 +1,237 @@
+﻿{
+  "Id": "584cc0c2-00e0-463c-8ded-56fc6fa781b4",
+  "Parser": {
+    "RowSeparator": "\r\n",
+    "ColumnSeparator": ";",
+    "HasHeader": true,
+    "SkipLines": 0,
+    "MissingValueSymbol": null,
+    "DescriptionSymbol": "!",
+    "RawDataName": "mlconfigs/slumptest/slump.txt",
+    "Header": null,
+    "DateFormat": null,
+    "ColTypes": null
+  },
+  "Metadata": [
+    {
+      "Id": 1,
+      "Name": "Id",
+      "MLType": "none",
+      "ValueColumnType": "i32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "none",
+        "ClassValues": null,
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 2,
+      "Name": "Cement",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 3,
+      "Name": "Slag",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          77.973785,
+          60.461365
+        ]
+      }
+    },
+    {
+      "Id": 4,
+      "Name": "Fly_ash",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          149.01456,
+          85.418076
+        ]
+      }
+    },
+    {
+      "Id": 5,
+      "Name": "Water",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          197.16795,
+          20.208158
+        ]
+      }
+    },
+    {
+      "Id": 6,
+      "Name": "SP",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          8.539805,
+          2.8075297
+        ]
+      }
+    },
+    {
+      "Id": 7,
+      "Name": "Coarse_Aggr",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          883.97864,
+          88.391396
+        ]
+      }
+    },
+    {
+      "Id": 8,
+      "Name": "Fine_Aggr",
+      "MLType": "none",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 9,
+      "Name": "SLUMP_cm_",
+      "MLType": "none",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 10,
+      "Name": "Flow_cm",
+      "MLType": "none",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": null
+      }
+    },
+    {
+      "Id": 11,
+      "Name": "Strength",
+      "MLType": "label",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          36.039417,
+          7.8382316
+        ]
+      }
+    }
+  ],
+  "Network": [
+    {
+      "Type": "Dense",
+      "HasBias": true,
+      "OutputDim": 7,
+      "Activation": "None",
+      "Name": "FCLAyer01"
+    },
+    {
+      "Type": "Dense",
+      "HasBias": true,
+      "OutputDim": 1,
+      "Activation": "None",
+      "Name": "FCLAyer02"
+    }
+  ],
+  "LearningParameters": {
+    "LearnerType": "rmsProp",
+    "LossFunction": "mse",
+    "EvaluationFunctions": [
+      "rmse",
+      "mse"
+    ],
+    "LearningRate": 0.01,
+    "UsePolyDecay": false,
+    "StartLRate": 0,
+    "EndLRate": 0,
+    "DecayPower": 0,
+    "DecaySteps": 0,
+    "Momentum": 0.8999999761581421,
+    "L1Regularizer": 0,
+    "L2Regularizer": 0,
+    "Alpha": 0,
+    "Eps": 0,
+    "Beta1": 0,
+    "Beta2": 0,
+    "WeightDecay": 0,
+    "Rho": 0
+  },
+  "TrainingParameters": {
+    "TrainingType": "tvTraining",
+    "EarlyStopping": "none",
+    "Retrain": true,
+    "Epochs": 500,
+    "ProgressStep": 1,
+    "MiniBatchSize": 70,
+    "KFold": 5,
+    "SplitPercentage": 80,
+    "LastBestModel": null,
+    "ShuffleWhenSplit": true,
+    "ShuffleWhenTraining": false
+  },
+  "Paths": {
+    "MLConfig": "slamp.mlconfig",
+    "Root": "mlconfigs/slamptest",
+    "Models": "models",
+    "BestModel": ""
+  },
+  "Name": "SlampTest"
+}

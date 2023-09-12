@@ -150,13 +150,8 @@ namespace Anndotnet.Core.Mlconfig
             else
             {
                 totPredicted.AddRange(predicted.data<float>().ToList());
-                
-
             }
 
-            //target data type can be long or float depending of the ML problem type
-            // for classification problems target is int or long
-            // for regression is float
             if (target.dtype == ScalarType.Int64 || target.dtype == ScalarType.Int32)
             {
                 totTarget.AddRange(target.data<long>().ToList().Select(t => Convert.ToSingle(t)));

@@ -120,8 +120,11 @@ public static class DfExtensions
             tensorType = ScalarType.Float32;
         }
 
+        //as_tensor doesnt create an new data it shares the data already created,
+        var t=  torch.as_tensor(lstValues, tensorType);
+        var tt = t.reshape(row, col);
+        return tt;
 
-        return torch.tensor(lstValues, row, col, tensorType);
         //return col == 1 ?
         //    //create 1D tensor                      //create multi-dim (2D) tensor
         //    torch.tensor(lstValues, tensorType) : torch.tensor(lstValues, row, col, tensorType);

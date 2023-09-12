@@ -91,7 +91,7 @@
       "ValueFormat": null,
       "MissingValue": "none",
       "Transformer": {
-        "DataNormalization": "oneHot",
+        "DataNormalization": "ordinal",
         "ClassValues": [
           "setosa",
           "versicolor",

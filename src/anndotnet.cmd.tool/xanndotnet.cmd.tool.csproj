@@ -36,6 +36,9 @@
     <None Update="mlconfigs\iris\models\638227190040989949.ckp.meta">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="mlconfigs\slumptest\slumptest.mlconfig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="mlconfigs\titanic\titanic.mlconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

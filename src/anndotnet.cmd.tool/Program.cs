@@ -26,11 +26,12 @@ static class Program
 
     static async Task Main(string[] args)
     {
-       // await RunTitanicSample();
-        //await SlumpTestFromNetObjects();
-        await IrisFromNetObject(false);
+        //await RunTitanicSample();
+       // await SlumpTestFromNetObjects();
+        //await IrisFromNetObject(false);
         //await IrisFromMLConfig();
-        return;
+        //return;
+
         var str = @"
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     ***************   ANNdotNET 2.0 - deep learning tool on .NET Framework.**********
@@ -42,8 +43,8 @@ static class Program
                 11. - Multi-class: Iris example from MLConfig file.
                 12. - Multi-class: Iris example with Cross-Validation Training.
 
-                21. - Binary-class: Titanic example from MLConfig file.
-                22. - Binary-class: Titanic example with  Tran-Validate Training.
+                21. - Binary-class: Titanic example with  Tran-Validate Training.
+                22. - Binary-class: Titanic example from MLConfig file.
                 23. - Binary-class: Titanic example with Cross-Validation Training.
 
                 31. - Regression: Concrete slump test with Tran-Validate Training.
@@ -78,11 +79,11 @@ static class Program
         }
         else if (key == "21")
         {
-            await TitanicMlConfig();
+            await RunTitanicSample(false);
         }
         else if (key == "22")
         {
-            await RunTitanicSample(false);
+            await TitanicMlConfig();
         }
         else if (key == "23")
         {
@@ -94,11 +95,11 @@ static class Program
         }
         else if (key == "32")
         {
-            ConcreteSlumpMlConfig();
+            await ConcreteSlumpMlConfig();
         }
         else if (key == "33")
         {
-            ConcreteSlumpMlConfig();
+            await SlumpTestFromNetObjects(true);
         }
         else if(key == "x")
         {
@@ -152,9 +153,21 @@ static class Program
         mlRunner.CalculatePerformance();
     }
 
-    private static void ConcreteSlumpMlConfig()
+    private static async Task ConcreteSlumpMlConfig()
     {
-        throw new NotImplementedException();
+        var mlConfig = await MlFactory.LoadfromFileAsync(@"mlconfigs\slumptest\slumptest.mlconfig");
+        //run trainer
+        var mlRunner = new MlRunner(mlConfig, new ConsoleHelper());
+
+        //define progress report
+        IProgressTraining progress = mlConfig.TrainingParameters.TrainingType == TrainingType.CvTraining ? new ProgressCvTraining() : new ProgressTvTraining();
+
+        //obtain data
+        var (x, y) = MlFactory.LoadData(mlConfig);
+        var irisData = new DataFeed("SlumpTest", x, y);
+
+
+        await mlRunner.TrainAsync(irisData, progress);
     }
     #endregion
 
