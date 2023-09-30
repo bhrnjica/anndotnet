@@ -94,42 +94,5 @@ namespace Anndotnet.Core.Util
                 _ => throw new ArgumentOutOfRangeException(),
             };
         }
-
-        /*
-         *
-         * switch (eval)
-             {
-                 case EvalFunction.AE:
-                     return new KeyValuePair<string,float>(EvalFunction.CAcc.ToString(), TorchMetrics.AbsoluteError(predicted, target))
-                     metrics.Add(EvalFunction.CAcc.ToString(), TorchMetrics.AbsoluteError(predicted, target));
-                     break;
-                 case EvalFunction.MAE:
-                     metrics.Add(EvalFunction.MAE.ToString(), TorchMetrics.MeanAbsoluteError(predicted, target));
-                     break;
-                 case EvalFunction.SE:
-                     metrics.Add(EvalFunction.SE.ToString(), TorchMetrics.SquaredError(predicted, target));
-                     break;
-                 case EvalFunction.MSE:
-                     metrics.Add(EvalFunction.MSE.ToString(), TorchMetrics.MeanSquaredError(predicted, target));
-                     break;
-                 case EvalFunction.RMSE:
-                     metrics.Add(EvalFunction.RMSE.ToString(), TorchMetrics.RootMeanSquaredError(predicted, target));
-                     break;
-                 case EvalFunction.CAcc:
-                     metrics.Add(EvalFunction.CAcc.ToString(), TorchMetrics.MCAccuracy(predicted, target));
-                     break;
-                 case EvalFunction.CErr:
-                     metrics.Add(EvalFunction.CErr.ToString(), TorchMetrics.MCError(predicted, target));
-                     break;
-                 case EvalFunction.BAcc:
-                     metrics.Add(EvalFunction.BAcc.ToString(), TorchMetrics.BIAccuracy(predicted, target));
-                     break;
-                 case EvalFunction.BErr:
-                     metrics.Add(EvalFunction.BErr.ToString(), TorchMetrics.BIError(predicted, target));
-                     break;
-                 default:
-                     throw new ArgumentOutOfRangeException();
-             }
-         */
     }
 }
