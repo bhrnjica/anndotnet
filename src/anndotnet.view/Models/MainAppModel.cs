@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Anndotnet.App.Models;
@@ -6,7 +7,7 @@ namespace Anndotnet.App.Models;
 public partial class MainAppModel:ObservableObject
 {
     [ObservableProperty]
-    private List<NavigationItem>? _navigationItems;
+    private ObservableCollection<NavigationItem>? _navigationItems;
 
     [ObservableProperty]
     private NavigationItem? _selectedItem;

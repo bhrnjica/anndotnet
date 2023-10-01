@@ -7,17 +7,17 @@
 
 @inject NavigationManager NavigationManager
 
-@inherits MvvmComponentBase<MainViewModel>
+@inherits  MvvmComponentBase<NavigationViewModel>
 
 
 <MudNavMenu>
-    @if (ViewModel != null && ViewModel.NavigationItems.Any())
+    @if (ViewModel.NavigationItems.Any())
     {
         <MudNavLink Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All" Href="">@ViewModel.NavigationItems.First().Name</MudNavLink>
 
         @foreach (var item in ViewModel.NavigationItems.Skip(0))
         {
-            if(item.SubItems!=null && item.SubItems.Count > 0)
+            if (item.SubItems.Count > 0)
             {
                 <MudNavGroup DisableRipple="true" Expanded="true" ExpandedChanged="expand" HideExpandIcon="true" Icon="@Icons.Material.Filled.Attractions" Title="@item.Name" @onclick="()=>onSelect(item)">
 

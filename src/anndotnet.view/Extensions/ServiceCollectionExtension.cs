@@ -6,7 +6,8 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
-        services.AddTransient<MainViewModel>();
+        services.AddSingleton<NavigationViewModel>();
+        services.AddSingleton<MainViewModel>();
 
         return services;
     }

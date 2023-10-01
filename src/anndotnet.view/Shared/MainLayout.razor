@@ -1,27 +1,35 @@
 ﻿@inherits LayoutComponentBase
 
+@inject NavigationViewModel ViewModel
+
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
+
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.Home" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+        <MudIconButton Icon="@_icons[0]" Color="Color.Inherit" Link="" OnClick="AddModel" Target="_blank"/>
+        <MudSpacer/>
+
+        <MudSpacer/>
+
+        <MudIconButton Icon="@_icons[1]" Color="Color.Inherit" Link="https://github.com/bhrnjica/anndotnet/" Target="_blank"/>
     </MudAppBar>
+
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">ANNdotNET v2.0</MudText>
         </MudDrawerHeader>
-        <NavMenu />
+        <NavMenu/>
     </MudDrawer>
+
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
             @Body
         </MudContainer>
     </MudMainContent>
+
 </MudLayout>
 
 @code {
@@ -31,4 +39,43 @@
     {
         _drawerOpen = !_drawerOpen;
     }
+
+    void AddModel()
+    {
+        var iris = new NavigationItem()
+                   {
+                       Name = "Iris",
+    //Icon = "@Icons.Material.Filled.Attractions",
+                       Link = "model-data",
+                       IsExpanded = true,
+                       SubItems = new List<NavigationItem>()
+                                  {
+                                      new NavigationItem()
+                                      {
+                                          Name = "FF3-6-3",
+    //Icon = "@Icons.Material.Filled.AutoMode",
+                                          Link = "model",
+                                      },
+                                      new NavigationItem()
+                                      {
+                                          Name = "Conv-6-3",
+    // Icon = "@Icons.Material.Filled.AutoAwesomeMosaic",
+                                          Link = "model",
+                                      }
+                                  }
+                   };
+
+        ViewModel.NavigationItems.Add(iris);
+    }
+
+    private readonly string[] _icons = {AppIcon, Icons.Custom.Brands.GitHub };
+
+
+  // <ellipse style=""stroke: rgb(255, 255, 255); fill: none;"" cx=""11.981"" cy=""12.009"" rx=""11.524"" ry=""11.657""></ellipse>
+    const string AppIcon = @"<svg style=""width:24px;height:24px"" viewBox=""0 0 24 24"">
+  <text style=""fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 11.4px; font-weight: 700; white-space: pre;"" transform=""matrix(1.382871, -0.013626, 0, 1.130447, -111.633186, -65.632652)"" x=""80.948"" y=""71.137"">A</text>
+  <text style=""fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 11.4px; font-weight: 700; white-space: pre;"" transform=""matrix(1.631759, 0, 0, 1.173942, -209.074936, -140.579468)"" x=""131.234"" y=""139.411"">N</text>
+  <text style=""fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 11.4px; font-weight: 700; paint-order: fill; white-space: pre;"" transform=""matrix(1.522053, 0, 0, 1.116822, -189.459473, -142.117065)"" x=""131.234"" y=""139.411"">N</text>
+    </svg>";
 }
+

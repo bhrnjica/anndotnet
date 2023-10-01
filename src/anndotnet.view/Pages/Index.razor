@@ -1,7 +1,128 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<div class="d-flex justify-center">
+    <MudImage Height="150" Src="img/annLogo_start2.png" Alt="ANNdotNET v2.0" Elevation="0" Class="rounded-lg" />
+</div>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
-<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+<MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true">Precomputed Examples</MudText>
+
+<MudText Align="Align.Center">Here are four examples of how to utilize ANNdotNET across main machine learning paradigms.</MudText>
+<MudGrid Class="mt-5">
+    <MudItem xs="12" sm="6" md="4">
+
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText  Typo="Typo.h5" Align="Align.Center">Regression</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <div class="d-flex justify-center">
+                    <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href= "https://archive.ics.uci.edu/dataset/182/concrete+slump+test" Target="_blank">Concrete Slump Test</MudLink>
+                </div>
+                <MudList Class="mx-auto mt-1" Style="width:250px;">
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Continuous output
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                       Squared Error Loss
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Adam optimizer
+                    </MudListItem>
+                </MudList>
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Binary Classification</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <div class="d-flex justify-center">
+                    <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://www.kaggle.com/datasets/sooyoungher/smoking-drinking-dataset/data" Target="_blank">Smokers prediction</MudLink>
+                </div>
+                <MudList Class="mx-auto mt-1" Style="width:250px;">
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Binary output
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Binary Loss 
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Adam optimizer
+                    </MudListItem>
+                </MudList>
+                
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="12" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Multi-class Classification</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+
+            <div class="d-flex justify-center">
+                <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://archive.ics.uci.edu/dataset/53/iris" Target="_blank">Iris type prediction</MudLink>
+            </div>
+            <MudList Class="mx-auto mt-1" Style="width:250px;">
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Bnary output
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    MultiClass Loss 
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Adam optimizer
+                </MudListItem>
+            </MudList>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" sm="12" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Image Classification</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <div class="d-flex justify-center">
+                <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://archive.ics.uci.edu/dataset/683/mnist+database+of+handwritten+digits" Target="_blank">Handwritten Digit Recognition</MudLink>
+            </div>
+            <MudList Class="mx-auto mt-1" Style="width:250px;">
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Bnary output
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    MultiClass Loss
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Adam optimizer
+                </MudListItem>
+            </MudList>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+   
+
+</MudGrid>
+
