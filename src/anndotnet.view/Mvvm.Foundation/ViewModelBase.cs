@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Anndotnet.App.ViewModels;
+namespace Anndotnet.App.Mvvm.Foundation;
 
 public abstract partial class ViewModelBase : ObservableObject, IViewModelBase
 {

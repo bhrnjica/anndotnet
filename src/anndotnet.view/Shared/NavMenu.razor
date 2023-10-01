@@ -1,10 +1,4 @@
 ﻿
-@* <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
-</MudNavMenu> *@
-
 @inject NavigationManager NavigationManager
 
 @inherits  MvvmComponentBase<NavigationViewModel>
@@ -13,17 +7,21 @@
 <MudNavMenu>
     @if (ViewModel.NavigationItems.Any())
     {
-        <MudNavLink Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All" Href="">@ViewModel.NavigationItems.First().Name</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All" 
+                    Href="">@ViewModel.NavigationItems.First().Name</MudNavLink>
 
         @foreach (var item in ViewModel.NavigationItems.Skip(0))
         {
             if (item.SubItems.Count > 0)
             {
-                <MudNavGroup DisableRipple="true" Expanded="true" ExpandedChanged="expand" HideExpandIcon="true" Icon="@Icons.Material.Filled.Attractions" Title="@item.Name" @onclick="()=>onSelect(item)">
+                <MudNavGroup DisableRipple="true" Expanded="true" HideExpandIcon="true" 
+                             Icon="@Icons.Material.Filled.Attractions" Title="@item.Name"
+                             @onclick="()=>Navigate(item)">
 
                     @foreach (var subItem in item.SubItems)
                     {
-                        <MudNavLink Icon="@Icons.Material.Filled.Coronavirus" Match="NavLinkMatch.Prefix" Href="@subItem.Link">@subItem.Name</MudNavLink>
+                        <MudNavLink Icon="@Icons.Material.Filled.Coronavirus" Match="NavLinkMatch.Prefix" 
+                                    Href="@subItem.Link">@subItem.Name</MudNavLink>
                     }
 
                 </MudNavGroup>
@@ -36,43 +34,9 @@
 
 @code {
 
-
-    // private List<NavigationItem> _navList = new List<NavigationItem>();
-
-    private void expand()
-    {
-        
-    }
-    private void onSelect(NavigationItem item)
+    private void Navigate(NavigationItem item)
     {
         NavigationManager.NavigateTo($"/{item.Link}");
     }
-    // protected override void OnInitialized()
-    // {
-    //     var iris = new NavigationItem()
-    //         {
-    //             Name = "Iris",
-    //             //Icon = "@Icons.Material.Filled.Attractions",
-    //             Link = "model-data",
-    //             IsExpanded = true,
-    //             SubItems = new List<NavigationItem>()
-    //             {
-    //                 new NavigationItem()
-    //                 {
-    //                     Name = "FF3-6-3",
-    //                     //Icon = "@Icons.Material.Filled.AutoMode",
-    //                     Link = "model",                        
-    //                 },
-    //                 new NavigationItem()
-    //                 {
-    //                     Name = "Conv-6-3",
-    //                    // Icon = "@Icons.Material.Filled.AutoAwesomeMosaic",
-    //                     Link = "model",
-    //                 }
-    //             }
-    //         };
-    //     _navList.Add(iris);
-
-    // }
 
 }

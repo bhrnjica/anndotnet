@@ -1,9 +1,8 @@
 ﻿
-using Anndotnet.App.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Anndotnet.App.Shared;
+namespace Anndotnet.App.Mvvm.Foundation;
 
 public abstract class MvvmComponentBase<TViewModel> : ComponentBase
     where TViewModel : IViewModelBase
@@ -11,7 +10,7 @@ public abstract class MvvmComponentBase<TViewModel> : ComponentBase
     [Inject]
     [NotNull]
 #pragma warning disable CS8618
-    protected TViewModel ViewModel { get; set;}
+    protected TViewModel ViewModel { get; set; }
 #pragma warning restore CS8618
 
     protected override void OnInitialized()

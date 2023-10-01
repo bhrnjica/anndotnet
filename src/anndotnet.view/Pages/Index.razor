@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Anndotnet.App.Messages
+@inherits MvvmComponentBase<StartPageViewModel>
 
 <div class="d-flex justify-center">
     <MudImage Height="150" Src="img/annLogo_start2.png" Alt="ANNdotNET v2.0" Elevation="0" Class="rounded-lg" />
@@ -33,7 +35,8 @@
                 </MudList>
             </MudCardContent>
             <MudCardActions Class="d-flex justify-center">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;">Run Example</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;" 
+                           @onclick="async () => await ViewModel.RunExampleCommand.ExecuteAsync(Examples.Slump)">Run Example</MudButton>
             </MudCardActions>
         </MudCard>
     </MudItem>
@@ -108,7 +111,7 @@
             </div>
             <MudList Class="mx-auto mt-1" Style="width:250px;">
                 <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
-                    Bnary output
+                    Binary output
                 </MudListItem>
                 <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
                     MultiClass Loss
@@ -126,3 +129,8 @@
 
 </MudGrid>
 
+@code 
+{
+   
+
+}

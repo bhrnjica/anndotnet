@@ -1,34 +1,34 @@
-﻿
-
+﻿using System.Collections.ObjectModel;
+using Anndotnet.App.Messages;
 using Anndotnet.App.Models;
+using Anndotnet.App.Mvvm.Foundation;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.AspNetCore.Components;
 
 namespace Anndotnet.App.ViewModels;
 
-public partial class NavigationViewModel : ViewModelBase
+public partial class NavigationViewModel : RecipientViewModelBase <RunExampleMessage >
 {
     [ObservableProperty]
-    private ObservableCollection<NavigationItem> _navigationItems= new();
+    private ObservableCollection<NavigationItem> _navigationItems = new();
 
     public override async Task Loaded()
     {
         NavigationItems.CollectionChanged += NavigationItems_CollectionChanged;
-        var home = new NavigationItem()
-        {
-            Name = "Start Page",
-            //Icon = "@Icons.Material.Filled.Attractions",
-            Link = "", 
-            SubItems = new List<NavigationItem>(),
-        };
 
-        NavigationItems.Add(home);
-        
         await Task.CompletedTask;
+    }
+
+    public override void Receive(RunExampleMessage message)
+    {
+        
     }
 
     private void NavigationItems_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-       OnPropertyChanged(nameof(NavigationItems));
+        OnPropertyChanged(nameof(NavigationItems));
     }
+
+   
 }
