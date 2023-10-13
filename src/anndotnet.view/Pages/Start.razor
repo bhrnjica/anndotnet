@@ -1,0 +1,193 @@
+﻿@page "/start"
+@using Anndotnet.App.Messages
+@inherits MvvmComponentBase<StartPageViewModel>
+
+<div class="d-flex justify-center">
+    <MudImage Height="150" Src="img/annLogo_start2.png" Alt="ANNdotNET v2.0" Elevation="0" Class="rounded-lg" />
+</div>
+
+<MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true">Precomputed Examples</MudText>
+
+<MudText Align="Align.Center">Here are four examples of how to utilize ANNdotNET across main machine learning paradigms.</MudText>
+<MudGrid Class="mt-5">
+    <MudItem xs="12" sm="6" md="4">
+
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText  Typo="Typo.h5" Align="Align.Center">Regression</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <div class="d-flex justify-center">
+                    <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href= "https://archive.ics.uci.edu/dataset/182/concrete+slump+test" Target="_blank">Concrete Slump Test</MudLink>
+                </div>
+                <MudList Class="mx-auto mt-1" Style="width:250px;">
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Continuous output
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                       Squared Error Loss
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Adam optimizer
+                    </MudListItem>
+                </MudList>
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;" 
+                           @onclick="() => ViewModel.RunExampleCommand.Execute(Examples.Slump)">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Binary Classification</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <div class="d-flex justify-center">
+                    <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://www.kaggle.com/datasets/sooyoungher/smoking-drinking-dataset/data" Target="_blank">Smokers prediction</MudLink>
+                </div>
+                <MudList Class="mx-auto mt-1" Style="width:250px;">
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Binary output
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Binary Loss 
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                        Adam optimizer
+                    </MudListItem>
+                </MudList>
+                
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;"
+                           @onclick="() => ViewModel.RunExampleCommand.Execute(Examples.Titanic)">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" sm="12" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Multi-class Classification</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+
+            <div class="d-flex justify-center">
+                <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://archive.ics.uci.edu/dataset/53/iris" Target="_blank">Iris type prediction</MudLink>
+            </div>
+            <MudList Class="mx-auto mt-1" Style="width:250px;">
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Binary output
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    MultiClass Loss 
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Adam optimizer
+                </MudListItem>
+            </MudList>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;"
+                           @onclick="() => ViewModel.RunExampleCommand.Execute(Examples.Iris)">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" sm="12" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Image Classification</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <div class="d-flex justify-center">
+                <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://archive.ics.uci.edu/dataset/683/mnist+database+of+handwritten+digits" Target="_blank">Handwritten Digit Recognition</MudLink>
+            </div>
+            <MudList Class="mx-auto mt-1" Style="width:250px;">
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Binary output
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    MultiClass Loss
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Adam optimizer
+                </MudListItem>
+            </MudList>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;"
+                           @onclick="() => ViewModel.RunExampleCommand.Execute(Examples.Mnist)">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    
+    <MudItem xs="12" sm="12" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">New model</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <div class="d-flex justify-center">
+                <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://archive.ics.uci.edu/dataset/683/mnist+database+of+handwritten+digits" Target="_blank">Create new example</MudLink>
+            </div>
+            <MudList Class="mx-auto mt-1" Style="width:250px;">
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Binary output
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    MultiClass Loss
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Adam optimizer
+                </MudListItem>
+            </MudList>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;"
+                           @onclick="() => ViewModel.RunExampleCommand.Execute(Examples.New)">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" sm="12" md="4">
+        <MudCard Elevation="25" Class="rounded-lg pb-4">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Open Existing</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <div class="d-flex justify-center">
+                <MudLink Typo="Typo.h5" Class="ml-1 mt-1" Color="Color.Tertiary" Href="https://archive.ics.uci.edu/dataset/683/mnist+database+of+handwritten+digits" Target="_blank">Open from disk</MudLink>
+            </div>
+            <MudList Class="mx-auto mt-1" Style="width:250px;">
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Binary output
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    MultiClass Loss
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.CheckCircleOutline">
+                    Adam optimizer
+                </MudListItem>
+            </MudList>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="width:50%;"
+                           @onclick="() => ViewModel.RunExampleCommand.Execute(Examples.Open)">Run Example</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+
+</MudGrid>
+
+@code 
+{
+   
+
+}

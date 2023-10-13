@@ -15,6 +15,14 @@ public partial class MainViewModel : ViewModelBase
 {
     private readonly NavigationViewModel _navViewModel;
     private readonly StartPageViewModel  _startPageViewModel;
+
+    [ObservableProperty]
+    private AnndotnetModel _currentModel;
+
+    [ObservableProperty] 
+    private ObservableCollection<AnndotnetModel> _availableModels;
+
+
     public MainViewModel(NavigationViewModel navViewModel, StartPageViewModel startPageViewModel)
     {
         _navViewModel = navViewModel;
@@ -23,6 +31,7 @@ public partial class MainViewModel : ViewModelBase
 
     public override async Task Loaded()
     {
+        
         await this.CreateStartPageCommand.ExecuteAsync(null);
         await Task.CompletedTask;
     }
@@ -34,7 +43,7 @@ public partial class MainViewModel : ViewModelBase
                    {
                        Name = "Start Page",
                        Icon = "@Icons.Material.Filled.Home",
-                       Link = "",
+                       Link = "start",
                        SubItems = new List<NavigationItem>(),
                    };
 

@@ -1,6 +1,5 @@
 ﻿@inherits LayoutComponentBase
 
-@inject NavigationViewModel ViewModel
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -9,7 +8,7 @@
 <MudLayout>
 
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@_icons[0]" Color="Color.Inherit" Link="" OnClick="AddModel" Target="_blank"/>
+        <MudIconButton Icon="@_icons[0]" Color="Color.Inherit" Link="" Target="_blank"/>
         <MudSpacer/>
 
         <MudSpacer/>
@@ -28,11 +27,13 @@
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-3">
             @Body
         </MudContainer>
+
     </MudMainContent>
 
 </MudLayout>
 
-@code {
+@code 
+{
     bool _drawerOpen = true;
 
     void DrawerToggle()
@@ -40,33 +41,7 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    void AddModel()
-    {
-        var iris = new NavigationItem()
-                   {
-                       Name = "Iris",
-    //Icon = "@Icons.Material.Filled.Attractions",
-                       Link = "model-data",
-                       IsExpanded = true,
-                       SubItems = new List<NavigationItem>()
-                                  {
-                                      new NavigationItem()
-                                      {
-                                          Name = "FF3-6-3",
-    //Icon = "@Icons.Material.Filled.AutoMode",
-                                          Link = "model",
-                                      },
-                                      new NavigationItem()
-                                      {
-                                          Name = "Conv-6-3",
-    // Icon = "@Icons.Material.Filled.AutoAwesomeMosaic",
-                                          Link = "model",
-                                      }
-                                  }
-                   };
 
-        ViewModel.NavigationItems.Add(iris);
-    }
 
     private readonly string[] _icons = {AppIcon, Icons.Custom.Brands.GitHub };
 

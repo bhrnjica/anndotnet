@@ -1,4 +1,5 @@
-﻿using Anndotnet.App.Messages;
+﻿using System.ComponentModel;
+using Anndotnet.App.Messages;
 using Anndotnet.App.Mvvm.Foundation;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -8,9 +9,17 @@ namespace Anndotnet.App.ViewModels;
 
 public enum Examples
 {
+    [Description("Slump")]
     Slump,
+    [Description("Iris")]
     Iris,
+    [Description("Titanic")]
+    Titanic,
+    [Description("Mnist")]
+    Mnist,
+    [Description("New")]
     New,
+    [Description("Open")]
     Open,
     Close
 }
@@ -36,17 +45,42 @@ public partial class StartPageViewModel : RecipientViewModelBase <CreatePageMess
     }
 
     [RelayCommand]
-    public virtual Task RunExample(Examples example)
+    public virtual void RunExample(Examples example)
     {
 
         switch (example)
         {
             case Examples.Slump:
                 
-                Messenger.Send(new RunExampleMessage("Slump"));
+                Messenger.Send(new RunExampleMessage(Examples.Slump.ToString()));
+
+                break;
+            case Examples.Titanic:
+
+                Messenger.Send(new RunExampleMessage(Examples.Titanic.ToString()));
+
+                break;
+            case Examples.Iris:
+
+                Messenger.Send(new RunExampleMessage(Examples.Iris.ToString()));
+
+                break;
+            case Examples.Mnist:
+
+                Messenger.Send(new RunExampleMessage(Examples.Mnist.ToString()));
+
+                break;
+            case Examples.New:
+
+                Messenger.Send(new RunExampleMessage(Examples.New.ToString()));
+
+                break;
+            case Examples.Open:
+
+                Messenger.Send(new RunExampleMessage(Examples.Open.ToString()));
 
                 break;
         }
-       return Task.CompletedTask;
+       return;
     }
 }
