@@ -246,9 +246,9 @@ public class DataFeedTests
                 Assert.Equal(4.9f, (float)d.xBatch[batchSize - 1, 2]);
                 Assert.Equal(1.8f, (float)d.xBatch[batchSize - 1, 3]);
 
-                Assert.Equal(1, (float)d.yBatch[0]);
+                Assert.Equal(0, (float)d.yBatch[0]);
 
-                Assert.Equal(1, (float)d.yBatch[batchSize - 1]);
+                Assert.Equal(0, (float)d.yBatch[batchSize - 1]);
             }
             else if (batchIndex == 1)
             {
@@ -264,9 +264,9 @@ public class DataFeedTests
                 Assert.Equal(1.7f, (float)d.xBatch[batchSize - 1, 2]);
                 Assert.Equal(0.5f, (float)d.xBatch[batchSize - 1, 3]);
 
-                Assert.Equal(2, (float)d.yBatch[0]);
+                Assert.Equal(1, (float)d.yBatch[0]);
 
-                Assert.Equal(3, (float)d.yBatch[batchSize - 1]);
+                Assert.Equal(2, (float)d.yBatch[batchSize - 1]);
             }
             else
             {
@@ -282,9 +282,9 @@ public class DataFeedTests
                 Assert.Equal(1.4f, (float)d.xBatch[(int)d.xBatch.shape[0] - 1, 2]);
                 Assert.Equal(0.1f, (float)d.xBatch[(int)d.xBatch.shape[0] - 1, 3]);
 
-                Assert.Equal(1, (float)d.yBatch[0]);
+                Assert.Equal(0, (float)d.yBatch[0]);
 
-                Assert.Equal(3, (float)d.yBatch[(int)d.yBatch.shape[0] - 1]);
+                Assert.Equal(2, (float)d.yBatch[(int)d.yBatch.shape[0] - 1]);
             }
 
             batchIndex++;

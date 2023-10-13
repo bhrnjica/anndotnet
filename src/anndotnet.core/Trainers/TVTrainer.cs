@@ -65,7 +65,7 @@ public class TvTrainer : ITrainer
     public TvTrainer(Module<Tensor, Tensor> model, DataFeed trainData, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed= 1234 )
     {
         _model = model;
-        _optimizer = MlFactory.CreateOptimizer(model, lParams);
+        _optimizer = model != null ? MlFactory.CreateOptimizer(model, lParams) : null;
         _tParams = tParams;
         _lParams = lParams;
         _progress = progress;

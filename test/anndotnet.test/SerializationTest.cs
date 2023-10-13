@@ -46,7 +46,8 @@ public class SerializationTests
               "petal_width",
               "species"
             ],
-            "DateFormat": null
+            "DateFormat": null,
+            "ColTypes": null
           },
            "Metadata": [
             {

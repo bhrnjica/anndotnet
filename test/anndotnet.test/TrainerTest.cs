@@ -25,16 +25,14 @@ public class Trainertest
     public void SplitTraininegData_NoShuffling_test()
     {
         var mlConfig = MlFactory.CreatEmptyMlConfig("c15b26ba-2876-4cdd-b97a-02b3fa83944b");
-        mlConfig.TrainingParameters.ShuffleWhenTraining = false;
-
-
+        mlConfig.TrainingParameters.ShuffleWhenSplit = false;
 
         var model = new AnnModel(mlConfig.Name, mlConfig.Network, 1, 1);
         var data = TestDataProvider.Prepare1DData();
         var ds = new DataFeed(mlConfig.Name, data.x,data.y);
 
         var trainer = new TvTrainer(null,ds,mlConfig.TrainingParameters,mlConfig.LearningParameters,null);
-
+         
         var (train, valid) = trainer.Split(ds, 1234);
 
         foreach (var d in train)
