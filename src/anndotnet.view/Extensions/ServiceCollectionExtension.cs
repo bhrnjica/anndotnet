@@ -8,7 +8,16 @@ public static class ServiceCollectionExtension
     {
         services.AddSingleton<NavigationViewModel>();
         services.AddSingleton<StartPageViewModel>();
-        services.AddSingleton<MainViewModel>(); 
+        services.AddSingleton<MainViewModel>();
+
+        services.AddTransient<ModelDataViewModel>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddModels(this IServiceCollection services)
+    {
+       //create model here
 
         return services;
     }

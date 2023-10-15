@@ -113,7 +113,7 @@ public class MlFactory
         return mlConfig;
     }
 
-    private static JsonSerializerOptions JsonSerializerOptions()
+    public static JsonSerializerOptions JsonSerializerOptions()
     {
         var options = new JsonSerializerOptions
         {

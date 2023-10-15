@@ -1,7 +1,202 @@
 ﻿@page "/model-data"
+@inherits MvvmComponentBase<ModelDataViewModel>
+
+@using System.Net.Http.Json
+@using ValueType = Anndotnet.App.Models.ColValueType
+
+<style type="text/css">
+    .mud-table-head .header-centered th {
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    .mud-table-foot .bold-text .mud-table-cell {
+        font-weight: 500;
+    }
+
+
+    .right-align {
+        text-align: right; /* This will right-align the content in the column */
+    }
+
+    .center-align {
+        text-align: center; /* This will right-align the content in the column */
+    }
+
+    /* YourComponent.razor.css or a global CSS file */
+    .cell-grey-bcgrd {
+        background-color: #CCCCCC; /* Set your custom background color */
+        /* Redefine any other custom styles here, keeping the default styles */
+        
+    }    
+</style>
 
 <h3>ModelData</h3>
 
-@code {
-
+@if (!ViewModel.MetaData.Any())
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
 }
+else
+{
+
+    <MudTable Items="@Elements.Take(4)" 
+              Dense="true" MultiSelection="false" Hover="true" Breakpoint="Breakpoint.Sm" Striped="true" Bordered="true" Outlined="true"
+              CustomHeader="true" CustomFooter="true" HeaderClass="table-head-bordered" FooterClass="table-foot-bordered"
+              
+              >
+        <HeaderContent>
+
+            <MudTHeadRow IsCheckable="false">
+                <MudTh Class="cell-grey-bcgrd">Columns:</MudTh>
+
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh Class="center-align cell-grey-bcgrd">@col.Title</MudTh>
+                }
+
+            </MudTHeadRow>
+
+            <MudTHeadRow IsCheckable="true">
+                <MudTh Style="width: 140px;" Class="cell-grey-bcgrd">Column Type:</MudTh>
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh Class="right-align">
+                        @col.ValueType
+
+                        <MudMenu Size="Size.Small" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">
+                            @foreach (ValueType vType in Enum.GetValues(typeof(ValueType)))
+                            {
+                                <MudMenuItem  OnClick="() => ViewModel.OnColumnTypeChanged(col, vType)">@vType</MudMenuItem>
+                            }
+                        </MudMenu>
+                    </MudTh>
+                }
+
+            </MudTHeadRow>
+            <MudTHeadRow IsCheckable="true">
+                <MudTh Class="cell-grey-bcgrd">ML Type:</MudTh>
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh Class="right-align">
+                        @col.MlDataType
+                        
+                        <MudMenu Size="Size.Small" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">
+                            @foreach (ColMlDataType mlType in Enum.GetValues(typeof(ColMlDataType)))
+                            {
+                                <MudMenuItem OnClick="() => ViewModel.OnMlDataTypeChanged(col, mlType)">@mlType</MudMenuItem>
+                            }
+                        </MudMenu>
+                    </MudTh>
+                }
+
+            </MudTHeadRow>
+            <MudTHeadRow IsCheckable="true">
+                <MudTh Class="cell-grey-bcgrd">Missing Value</MudTh>
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh Class="right-align">
+                        @col.MissingValue
+                        
+                        <MudMenu Size="Size.Small" Icon="@Icons.Material.Filled.Settings" Color="Color.Primary">
+                            @foreach (ColMissingValue missValue in Enum.GetValues(typeof(ColMissingValue)))
+                            {
+                                <MudMenuItem OnClick="() => ViewModel.OnMissingValueChanged(col, missValue)">@missValue</MudMenuItem>
+                            }
+                        </MudMenu>
+                    </MudTh>
+                }
+
+            </MudTHeadRow>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nr" Class="cell-grey-bcgrd">@context.Number</MudTd>
+            <MudTd DataLabel="Nr">@context.Number</MudTd>
+            <MudTd DataLabel="Sign">@context.Sign</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Position" >@context.Position</MudTd>
+            <MudTd DataLabel="Molar mass">@context.Molar</MudTd>
+        </RowTemplate>
+       
+        <FooterContent>
+            <MudTFootRow Class="center-align">
+
+                <MudTh Class="cell-grey-bcgrd">...</MudTh>
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh> ... </MudTh>
+                }
+            </MudTFootRow>
+                
+               
+            <MudTFootRow >
+                <MudTh Class="cell-grey-bcgrd">Rows:</MudTh>
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh> 0 </MudTh>
+                }
+                
+            </MudTFootRow>
+
+            <MudTFootRow >
+                <MudTh Class="cell-grey-bcgrd">Distinct</MudTh>
+
+                @foreach (var col in ViewModel.MetaData)
+                {
+                    <MudTh> 0 </MudTh>
+                }
+            </MudTFootRow>
+
+        </FooterContent>
+    </MudTable>
+   @*  <MudSwitch @bind-Checked="_hidePosition">Hide <b>position</b> when Breakpoint=Xs</MudSwitch> *@
+}
+@code 
+{
+
+    private IEnumerable<DataGridElement> Elements = new List<DataGridElement>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = new List<DataGridElement>
+                   {
+                        new DataGridElement { Number = 1, Sign = "H", Name = "Hydrogen", Position = 1, Molar = 1.00794 },
+                        new DataGridElement { Number = 2, Sign = "He", Name = "Helium", Position = 18, Molar = 4.002602 },
+                        new DataGridElement { Number = 3, Sign = "Li", Name = "Lithium", Position = 1, Molar = 6.941 },
+                        new DataGridElement { Number = 4, Sign = "Be", Name = "Beryllium", Position = 2, Molar = 9.012182 },
+                        new DataGridElement { Number = 5, Sign = "B", Name = "Boron", Position = 13, Molar = 10.811 },
+                        new DataGridElement { Number = 6, Sign = "C", Name = "Carbon", Position = 14, Molar = 12.0107 },
+                        new DataGridElement { Number = 7, Sign = "N", Name = "Nitrogen", Position = 15, Molar = 14.0067 },
+                        new DataGridElement { Number = 8, Sign = "O", Name = "Oxygen", Position = 16, Molar = 15.9994 },
+                        new DataGridElement { Number = 9, Sign = "F", Name = "Fluorine", Position = 17, Molar = 18.9984032 },
+                        new DataGridElement { Number = 10, Sign = "Ne", Name = "Neon", Position = 18, Molar = 20.1797 },
+                        new DataGridElement { Number = 11, Sign = "Na", Name = "Sodium", Position = 1, Molar = 22.98976928 },
+                        new DataGridElement { Number = 12, Sign = "Mg", Name = "Magnesium", Position = 2, Molar = 24.305 },
+                        new DataGridElement { Number = 13, Sign = "Al", Name = "Aluminium", Position = 13, Molar = 26.9815386 },
+                        new DataGridElement { Number = 14, Sign = "Si", Name = "Silicon",  Position = 13, Molar = 26.9815386}
+                   };
+         await Task.CompletedTask;
+    }   
+
+    public class DataGridElement
+    {
+        public int Number { get; set; }
+        public string Sign { get; set; }
+        public string Name { get; set; }
+        public int Position { get; set; }
+        public double Molar { get; set; }   
+    }
+
+    // Other code
+
+    private void ShowContextMenu(ModelDataMetaData col)
+    {
+        // var icon = e.Target as IJSObjectReference;
+        // icon.InvokeVoidAsync("showContextMenu", col.Id);
+    }
+
+    // Rest of your component code
+
+    
+}
+

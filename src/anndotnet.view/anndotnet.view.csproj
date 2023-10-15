@@ -6,17 +6,63 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 		<RootNamespace>Anndotnet.App</RootNamespace>
+		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.2.23480.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-rc.2.23480.2" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
 		<PackageReference Include="MudBlazor" Version="6.11.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Update="wwwroot\sample-data\iris\iris.mlconfig">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\iris\iris_raw.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\iris\models\638227190040989949.ckp.data-00000-of-00001">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\iris\models\638227190040989949.ckp.index">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\iris\models\638227190040989949.ckp.meta">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\slumptest\slump.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\slumptest\slumptest.mlconfig">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\titanic\titanic.mlconfig">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\titanic\titanic_full_raw.csv">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\titanic\titanic_raw.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\sample-data\titanic\titanic_raw1.txt">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>

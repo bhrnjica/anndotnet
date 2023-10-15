@@ -8,9 +8,6 @@
 <MudNavMenu>
     @if (ViewModel.NavigationItems.Any())
     {
-        @* <MudNavLink Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All" 
-                    Href="">@ViewModel.NavigationItems.First().Name</MudNavLink> *@
-
         @foreach (var item in ViewModel.NavigationItems.Skip(0))
         {
             if (item.SubItems.Count > 0)
@@ -34,14 +31,19 @@
             }
 
         }
+
+        
     }
 </MudNavMenu>
 
 
-@code {
+@code 
+{
+
 
     private void Navigate(NavigationItem item)
     {
+        
         NavigationManager.NavigateTo($"/{item.Link}");
     }
 

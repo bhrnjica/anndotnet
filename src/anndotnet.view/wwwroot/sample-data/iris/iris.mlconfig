@@ -1,0 +1,168 @@
+{
+  "Id": "c15b26ba-2876-4cdd-b97a-02b3fa83944b",
+  "Name": "IrisMLConfig",
+  "Parser": {
+    "RowSeparator": "\r\n",
+    "ColumnSeparator": ";",
+    "HasHeader": false,
+    "SkipLines": 0,
+    "MissingValueSymbol": null,
+    "DescriptionSymbol": "!",
+    "RawDataName": "mlconfigs/iris/iris_raw.txt",
+    "Header": [
+      "sepal_length",
+      "sepal_width",
+      "petal_length",
+      "petal_width",
+      "species"
+    ],
+    "DateFormat": null
+  },
+  "Metadata": [
+    {
+      "Id": 0,
+      "Name": "sepal_length",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          5.8433332,
+          0.8280661
+        ]
+      }
+    },
+    {
+      "Id": 1,
+      "Name": "sepal_width",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          3.0573332,
+          0.4358663
+        ]
+      }
+    },
+    {
+      "Id": 2,
+      "Name": "petal_length",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          3.758,
+          1.7652982
+        ]
+      }
+    },
+    {
+      "Id": 3,
+      "Name": "petal_width",
+      "MLType": "feature",
+      "ValueColumnType": "f32",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "standardizer",
+        "ClassValues": null,
+        "NormalizationValues": [
+          1.1993333,
+          0.76223767
+        ]
+      }
+    },
+    {
+      "Id": 4,
+      "Name": "species",
+      "MLType": "label",
+      "ValueColumnType": "in",
+      "ValueFormat": null,
+      "MissingValue": "none",
+      "Transformer": {
+        "DataNormalization": "ordinal",
+        "ClassValues": [
+          "setosa",
+          "versicolor",
+          "virginica"
+        ],
+        "NormalizationValues": null
+      }
+    }
+  ],
+  "Network": [
+    {
+      "Type": "Dense",
+      "OutputDim": 5,
+      "Name": "Dense01",
+      "Activation": "TanH",
+      "HasBias": true
+    },
+    {
+      "Type": "Dropout",
+      "Name": "Dropout01",
+      "Rate": 0.05
+    },
+    {
+      "Type": "Dense",
+      "OutputDim": 3,
+      "Name": "Dense02",
+      "Activation": "Softmax",
+      "HasBias": true
+    }
+  ],
+  "LearningParameters": {
+    "LearnerType": "MomentumSGD",
+    "LossFunction": "nllLoss",
+    "EvaluationFunctions": [
+      "cAcc",
+      "cErr"
+    ],
+    "LearningRate": 0.01,
+    "UsePolyDecay": false,
+    "StartLRate": 0,
+    "EndLRate": 0,
+    "DecayPower": 0,
+    "DecaySteps": 0,
+    "Momentum": 0,
+    "L1Regularizer": 0,
+    "L2Regularizer": 0,
+    "Alpha": 0.0,
+    "Eps": 0.0,
+    "Beta1": 0.0,
+    "Beta2": 0.0,
+    "WeightDecay": 0.0,
+    "Rho": 0.0
+
+  },
+  "TrainingParameters": {
+    "TrainingType": "tvTraining",
+    "EarlyStopping": "none",
+    "Retrain": true,
+    "Epochs": 500,
+    "ProgressStep": 10,
+    "MiniBatchSize": 100,
+    "KFold": 5,
+    "SplitPercentage": 20,
+    "LastBestModel": null,
+    "ShuffleWhenSplit": false,
+    "ShuffleWhenTraining": false
+  },
+  "Paths": {
+    "MLConfig": "iris.mlconfig",
+    "Root": "mlconfigs/iris",
+    "Models": "models",
+    "BestModel": "638227190040989949.ckp"
+  }
+}

@@ -4,25 +4,11 @@ using Anndotnet.App.Mvvm.Foundation;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Xml.Linq;
+using Anndotnet.App.Models;
 
 namespace Anndotnet.App.ViewModels;
 
-public enum Examples
-{
-    [Description("Slump")]
-    Slump,
-    [Description("Iris")]
-    Iris,
-    [Description("Titanic")]
-    Titanic,
-    [Description("Mnist")]
-    Mnist,
-    [Description("New")]
-    New,
-    [Description("Open")]
-    Open,
-    Close
-}
+
 
 
 public partial class StartPageViewModel : RecipientViewModelBase <CreatePageMessage>
