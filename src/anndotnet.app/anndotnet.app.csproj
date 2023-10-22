@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<DefaultNamespace>Anndotnet.App</DefaultNamespace>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>AnyCPU;x64</Platforms>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	</PropertyGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="assets\**" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.3" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
+		<PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.2" />
+		<PackageReference Include="Avalonia.Xaml.Interactions.Events" Version="11.0.2" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.2.23479.6" />
+		<PackageReference Include="Svg.Skia" Version="1.0.0.3" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Reference Include="Avalonia.Controls">
+	    <HintPath>..\..\..\..\..\.nuget\packages\avalonia\11.0.5\lib\net6.0\Avalonia.Controls.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Compile Update="View\MlModelView.axaml.cs">
+	    <DependentUpon>MlModelView.axaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+</Project>

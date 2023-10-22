@@ -9,23 +9,49 @@ using Anndotnet.App.Models;
 using Anndotnet.Core.Entities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Anndotnet.App.Extensions;
+using Daany;
 
 namespace Anndotnet.App.ViewModels;
 
 
 public partial class ModelDataViewModel : ViewModelBase
 {
+    private readonly HttpClient _httpClient;
+
     [ObservableProperty]
     private ObservableCollection<ModelDataMetaData> _metaData;
 
     [ObservableProperty]
+    private DataFrame? _dataFrame; 
+
+
+    [ObservableProperty]
     private AnndotnetModel _annModel;
 
-    public ModelDataViewModel(MainViewModel mainViewModel)
+    public ModelDataViewModel(MainViewModel mainViewModel, HttpClient httpClient)
     {
+        _httpClient = httpClient;
         AnnModel = mainViewModel.CurrentModel;
         MetaData = CreateMetaData(AnnModel.MlConfig.Metadata);
-        //MetaData = LoadRandomMetaData();
+
+        LoadData();
+
+    }
+
+    private void LoadData()
+    {
+        var p = AnnModel.MlConfig.Parser;
+
+        if (p == null)
+        {
+            return; 
+        }
+
+       var path = Path.Combine("sample-data", p.RawDataName);
+       var strData =  _httpClient.GetStringAsync(path);
+       strData.Wait();
+       DataFrame = DataFrame.FromText(strData.Result, p.ColumnSeparator,p.Header,p.DateFormat, p.ColTypes, p.MissingValueSymbol, -1, p.SkipLines );
+
     }
 
     private ObservableCollection<ModelDataMetaData> CreateMetaData(List<ColumnInfo> mlConfigMetadata)
@@ -50,8 +76,10 @@ public partial class ModelDataViewModel : ViewModelBase
 
     public override async Task Loaded()
     {
-       //var model = _mainViewModel.CurrentModel;
-       await Task.CompletedTask;
+       
+        LoadData();   
+        //var model = _mainViewModel.CurrentModel;
+        await Task.CompletedTask;
     }
 
     

@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:Anndotnet.App.ViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Anndotnet.App.ProjectView"
+             x:DataType="viewModel:ProjectViewModel"
+             >
+
+    <Interaction.Behaviors>
+                <EventTriggerBehavior EventName="Loaded">
+                    <CallMethodAction TargetObject="{Binding}"
+                                      MethodName="OnLoadedAsync" />
+                </EventTriggerBehavior>
+                <EventTriggerBehavior EventName="Unloaded">
+                    <CallMethodAction TargetObject="{Binding}"
+                                      MethodName="OnUnLoadedAsync" />
+                </EventTriggerBehavior>
+    </Interaction.Behaviors>
+
+    Anndotnet.App.ProjectView!
+</UserControl>

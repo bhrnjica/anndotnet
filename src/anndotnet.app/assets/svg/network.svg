@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="800px" height="800px" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 3px;" x1="48.858" y1="54.707" x2="11.623" y2="15.932"/>
+  <line style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 3px;" x1="49.329" y1="30.941" x2="49.8" y2="8.427"/>
+  <path style="stroke: rgb(0, 0, 0); stroke-width: 3px;" d="M 49.8 53.038 L 48.858 30.941 L 12.565 16.346 L 49.8 8.01"/>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 3px;" cx="11.83" cy="15.97" rx="6.844" ry="5.811"/>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 3px;" cx="49.066" cy="8.114" rx="6.844" ry="5.811"/>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 3px;" cx="48.828" cy="30.901" rx="6.844" ry="5.811"/>
+  <ellipse style="stroke: rgb(0, 0, 0); fill: rgb(255, 255, 255); stroke-width: 3px;" cx="49.125" cy="53.425" rx="6.844" ry="5.811"/>
+</svg>

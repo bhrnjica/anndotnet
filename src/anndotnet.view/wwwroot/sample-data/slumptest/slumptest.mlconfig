@@ -7,7 +7,7 @@
     "SkipLines": 0,
     "MissingValueSymbol": null,
     "DescriptionSymbol": "!",
-    "RawDataName": "mlconfigs/slumptest/slump.txt",
+    "RawDataName": "slumptest/slump.txt",
     "Header": null,
     "DateFormat": null,
     "ColTypes": null

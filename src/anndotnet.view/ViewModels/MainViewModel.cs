@@ -29,8 +29,6 @@ public partial class MainViewModel : RecipientViewModelBase <RunExampleMessage >
     [ObservableProperty] 
     private ObservableCollection<AnndotnetModel> _availableModels;
 
-    private ObservableCollection<NavigationItem> _availableNavigationItems;
-
     public MainViewModel(NavigationViewModel navViewModel, StartPageViewModel startPageViewModel, NavigationManager navManager, HttpClient http, HttpClient httpClient)
     {
         _navViewModel = navViewModel;

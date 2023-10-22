@@ -8,7 +8,7 @@
     "SkipLines": 0,
     "MissingValueSymbol": null,
     "DescriptionSymbol": "!",
-    "RawDataName": "mlconfigs/iris/iris_raw.txt",
+    "RawDataName": "iris/iris_raw.txt",
     "Header": [
       "sepal_length",
       "sepal_width",

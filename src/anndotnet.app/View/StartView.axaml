@@ -1,0 +1,151 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:viewModel="clr-namespace:Anndotnet.App.ViewModel"
+			 xmlns:model="clr-namespace:Anndotnet.App.Model"
+             mc:Ignorable="d" 
+             d:DesignWidth="800" 
+             d:DesignHeight="450" 
+             x:Class="Anndotnet.App.StartView">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10"/>
+			<ColumnDefinition Width="175"/>
+			<ColumnDefinition Width="175"/>
+			<ColumnDefinition Width="27"/>
+			<ColumnDefinition Width="39"/>
+			<ColumnDefinition Width="130"/>
+			<ColumnDefinition Width="117"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="10"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="26"/>
+			<RowDefinition Height="26"/>
+			<RowDefinition Height="26"/>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="28"/>
+			<RowDefinition Height="5"/>
+			<RowDefinition Height="26"/>
+			<RowDefinition Height="28"/>
+			<RowDefinition Height="26"/>
+			<RowDefinition Height="26"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="10"/>
+		</Grid.RowDefinitions>
+		<!--<Svg Grid.Column="1" Grid.Row="1" Grid.RowSpan="6" Grid.ColumnSpan="2" 
+             Source="/assets/svg/home.svg" Stretch="Fill" StretchDirection="UpOnly" />-->
+
+       
+		<Image Grid.Column="1" Grid.Row="1" Source="/assets/images/ANNLogo_350x134pix.png" Grid.RowSpan="6" Margin="0,0,0,34" Stretch="Fill" StretchDirection="UpOnly" Grid.ColumnSpan="2"/>
+		<Label Content="Links" Grid.Column="3" Grid.Row="1" FontSize="14" FontWeight="Bold" Foreground="DarkViolet" Grid.ColumnSpan="2"/>
+		<Image Grid.Column="4" Grid.Row="2" Source="/assets/images/hyperlink_32.png"/>
+		<Image Grid.Column="4" Grid.Row="3" Source="/assets/images/hyperlink_32.png"/>
+		<Image Grid.Column="4" Grid.Row="4" Source="/assets/images/hyperlink_32.png"/>
+		<Label Grid.Column="5" Grid.Row="2"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2" >
+			<!--<Hyperlink NavigateUri="https://github.com/bhrnjica/anndotnet" RequestNavigate="Hyperlink_RequestNavigate">
+				ANNdotNET GitHub
+			</Hyperlink>-->
+            ANNdotNET GitHub
+		</Label>
+		<Label Grid.Column="5" Grid.Row="3"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2"  >
+			<!--<Hyperlink NavigateUri="https://bhrnjica.net/bhrnjica/anndotnet" RequestNavigate="Hyperlink_RequestNavigate">
+				ANNdotNET Blog
+			</Hyperlink>-->
+            ANNdotNET Blog
+		</Label>
+		<Label Grid.Column="5" Grid.Row="4"   FontSize="13" FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="2"  >
+            ANNdotNET Project Page
+			<!--<Hyperlink NavigateUri="https://github.com/bhrnjica/anndotnet/wiki" RequestNavigate="Hyperlink_RequestNavigate">
+				ANNdotNET Project Page
+			</Hyperlink>-->
+		</Label>
+
+		<Label Content="MODELLING AND PREDICTION" Grid.Column="1" Grid.Row="6" FontSize="14" Foreground="DarkViolet" Grid.ColumnSpan="2" FontWeight="Bold"/>
+		<Label Content="Regression" Grid.Column="1" Grid.Row="7" FontSize="14" Foreground="DarkViolet"   FontWeight="Bold"/>
+		<Label Content="Binary Classification" Grid.Column="2" Grid.Row="7" FontSize="14" Foreground="DarkViolet"  FontWeight="Bold"/>
+		<Label Content="Multi-class Classification" Grid.Column="3" Grid.Row="7" FontSize="14" Foreground="DarkViolet" Grid.ColumnSpan="3"  FontWeight="Bold"/>
+		<Label Content="Time Series" Grid.Column="6" Grid.Row="7" FontSize="14" Foreground="DarkViolet" Grid.ColumnSpan="2"   FontWeight="Bold"/>
+		<Label  Grid.Column="1" Grid.Row="9" FontSize="13" FontWeight="Normal" Foreground="Blue"  >
+			<!--<Hyperlink NavigateUri="Resources\Concrete\ConcreteSlumpProject.ann" RequestNavigate="Hyperlink_RequestOpenExample">
+				Concrete Slump Test
+			</Hyperlink>-->
+            Concrete Slump Test
+		</Label>
+		<Label  Grid.Column="1" Grid.Row="10"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
+            Bike Sharing
+		</Label>
+		<Label  Grid.Column="2" Grid.Row="9"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
+            Breast Cancer Wisconis
+		</Label>
+		<Label  Grid.Column="2" Grid.Row="10"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
+            Titanic
+		</Label>
+		<Label  Grid.Column="2" Grid.Row="11"  FontSize="13" FontWeight="Normal" Foreground="Blue"  >
+            Mushroom
+		</Label>
+		<Label  Grid.Column="3" Grid.Row="9"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="3"    >
+            Iris Flower Identification
+		</Label>
+		<Label  Grid.Column="3" Grid.Row="10"  FontSize="13"  FontWeight="Normal" Foreground="Blue" Grid.ColumnSpan="3" >
+            Glass Identification
+		</Label>
+		<Label  Grid.Column="6" Grid.Row="9"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
+            Air Quality
+		</Label>
+		<Label Content="Image Classification" Grid.Column="6" Grid.Row="10" FontSize="14" FontWeight="Bold" Foreground="DarkViolet" Grid.ColumnSpan="2" />
+		<Label  Grid.Column="6" Grid.Row="11"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
+            MNIST
+		</Label>
+		<Label  Grid.Column="6" Grid.Row="12"  FontSize="13"  FontWeight="Normal" Foreground="Blue"  >
+            Cat and Dog
+		</Label>
+        <Label Content="ANNdotNET Feed" Grid.Column="1" Grid.Row="13" FontSize="14" 
+               Foreground="DarkViolet" VerticalAlignment="Center"  FontWeight="Bold" 
+               Grid.ColumnSpan="2"/>
+        <ListBox Grid.Column="1"  Grid.Row="14" Grid.ColumnSpan="7" 
+                 Background="Transparent" FontSize="12" FontWeight="Normal" 
+                 Foreground="DarkViolet"
+                 >
+            <ListBox.Template>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="2"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">Column 1</Label>
+                            <Label Grid.Column="1">Column 2</Label>
+                            <Label Grid.Column="2">Column 3</Label>
+                            <Label Grid.Column="3">Column 4</Label>
+                        </Grid>
+                        <ItemsPresenter></ItemsPresenter>
+                    </DockPanel>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                            <ColumnDefinition Width="2"></ColumnDefinition>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Binding Title"></TextBlock>
+                        <TextBox Text="Binding Uw" Grid.Column="1"></TextBox>
+                        <TextBox Text="Binding Partner" Grid.Column="3"></TextBox>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>
