@@ -14,7 +14,7 @@ namespace Anndotnet.App.Service
             throw new NotImplementedException();
         }
 
-        public ProjectItem LoadStartPage()
+        public NavigationItem LoadStartPage()
         {
             return new()
                    {
@@ -26,7 +26,7 @@ namespace Anndotnet.App.Service
                    };
         }
 
-        public ProjectItem LoadIrisProject()
+        public NavigationItem LoadIrisProject()
         {
             return new()
                    {

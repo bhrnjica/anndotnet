@@ -103,7 +103,7 @@
                 </TreeView.ItemTemplate>
                 <TreeView.Styles>
                     <Style Selector="TreeViewItem">
-                        <Setter Property="IsExpanded" x:DataType="model:ProjectItem" Value="{Binding IsExpandedEx}" />
+                        <Setter Property="IsExpanded" x:DataType="model:NavigationItem" Value="{Binding IsExpandedEx}" />
                     </Style>
                 </TreeView.Styles>
                

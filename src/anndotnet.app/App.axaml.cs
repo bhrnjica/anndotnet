@@ -14,7 +14,7 @@ namespace Anndotnet.App;
 public partial class App : Application
 {
     public IServiceCollection? ServiceCollection { get; }      = new ServiceCollection();
-    public IServiceProvider?   ServiceProvider   { get; set; }
+    public IServiceProvider?   ServiceProvider   { get; private set; }
 
     public App()
     {
@@ -30,6 +30,12 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             ServiceProvider = ConfigureServices();
+
+            if (ServiceProvider == null)
+            {
+                throw new Exception("Service provider is null");
+            }
+            // Get the main window
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
 
             // Set the MainWindow

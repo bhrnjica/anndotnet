@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anndotnet.App.Message;
 using Anndotnet.App.Model;
 using Anndotnet.App.Service;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -19,10 +21,10 @@ public partial class MainViewModel : BaseViewModel
     private readonly IProjectService _projectService;  
 
     [ObservableProperty]
-    private ObservableCollection<ProjectItem> _treeNavigationItems = new ();
+    private ObservableCollection<NavigationItem> _treeNavigationItems = new ();
 
     [ObservableProperty]
-    private ProjectItem _selectedItem;
+    private NavigationItem _selectedItem;
 
     [ObservableProperty]
     private bool _isExpanded = true;
@@ -33,23 +35,48 @@ public partial class MainViewModel : BaseViewModel
     public MainViewModel(IProjectService projectService)
     {
         _projectService = projectService;
+        WeakReferenceMessenger.Default.Register<InsertNavigationItemMessage>(this, (r, m) =>
+        {
+            OnInsertNavigationItem(m.Value);
+        });
+
+        LoadStartPageAsync().Wait();
 
     }
 
     public async Task OnLoadedAsync()
     {
-       await LoadStartPageAsync();
-       await LoadIrisProject();
-       SelectedItem = TreeNavigationItems.Skip(1).FirstOrDefault();
+      
+
     }
 
-    partial void OnSelectedItemChanged(ProjectItem value)
+    private void OnInsertNavigationItem(NavigationItem itm)
+    {
+        var navItm = TreeNavigationItems.FirstOrDefault(x => string.Equals(x.Name, itm.Name));
+
+        if (navItm == null)
+        {
+            TreeNavigationItems.Add(itm);
+            navItm = TreeNavigationItems.Last();
+        }
+
+        SelectedItem = itm;
+    }
+
+    partial void OnSelectedItemChanged(NavigationItem value)
     {
         var app = Avalonia.Application.Current as Anndotnet.App.App;
+        if (app == null)
+        {
+            throw new Exception("Application is null");
+        }
+        if (app.ServiceProvider == null)
+        {
+            throw new Exception("Service provider is null");
+        }
 
         if (value.ItemType == ItemType.Start)
         {
-
             Content = app.ServiceProvider.GetRequiredService<StartView>();
         }
         else if (value.ItemType == ItemType.Project)
@@ -69,9 +96,9 @@ public partial class MainViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadStartPageAsync()
     {
+
         var startPage = _projectService.LoadStartPage();
-        TreeNavigationItems.Add(startPage);
-        await Task.CompletedTask;
+        OnInsertNavigationItem(startPage);
     }
 
     [RelayCommand]

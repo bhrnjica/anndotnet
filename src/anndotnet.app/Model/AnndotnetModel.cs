@@ -11,7 +11,7 @@ public record AnndotnetModel
 
     public MlConfig? MlConfig { get; set; }
 
-    public ProjectItem? NavigationItem { get; set; }  
+    public NavigationItem? NavigationItem { get; set; }  
 }
 
 

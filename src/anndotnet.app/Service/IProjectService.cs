@@ -10,7 +10,7 @@ namespace Anndotnet.App.Service
     public interface IProjectService
     {
         void        Run();
-        ProjectItem LoadStartPage();
-        ProjectItem LoadIrisProject();
+        NavigationItem LoadStartPage();
+        NavigationItem LoadIrisProject();
     }
 }

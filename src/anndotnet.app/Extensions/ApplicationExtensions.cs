@@ -26,9 +26,10 @@ namespace Anndotnet.App.Extensions
 
         public static void AddViewModels(this IServiceCollection services)
         {
-            services.AddSingleton<MainViewModel>();
-            services.AddSingleton<MlModelViewModel>();
+            services.AddSingleton<StartViewModel>();
             services.AddSingleton<ProjectViewModel>();
+            services.AddSingleton<ProjectViewModel>();
+            services.AddSingleton<MainViewModel>();
         }
 
         public static void AddModels(this IServiceCollection services)

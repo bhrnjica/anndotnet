@@ -7,8 +7,8 @@ namespace Anndotnet.App.Model;
 public partial class MainAppModel:ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<ProjectItem>? _navigationItems;
+    private ObservableCollection<NavigationItem>? _navigationItems;
 
     [ObservableProperty]
-    private ProjectItem? _selectedItem;
+    private NavigationItem? _selectedItem;
 }
