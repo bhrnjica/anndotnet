@@ -22,7 +22,6 @@ namespace Anndotnet.App.ViewModel
     /// </summary>
     public partial class AppViewModel : ObservableObject
     {
-        CancellationTokenSource?  m_TokenSource;
         public Action<Exception>? ReportException { get; internal set; }
 
         public AppViewModel()

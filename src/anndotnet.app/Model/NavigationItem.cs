@@ -20,6 +20,11 @@ public class NavigationItem : IEquatable<NavigationItem>
 
     public bool Equals(NavigationItem? other)
     {
+        if(other == null)
+        {
+            return false;
+        } 
+        
         if (string.Equals(Name, other.Name))
         {
             return true;

@@ -13,6 +13,9 @@
 		<AvaloniaResource Include="assets\**" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="11.0.5" />
@@ -29,22 +32,4 @@
 		<PackageReference Include="Svg.Skia" Version="1.0.0.3" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-		<ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Reference Include="Avalonia.Controls">
-	    <HintPath>..\..\..\..\..\.nuget\packages\avalonia\11.0.5\lib\net6.0\Avalonia.Controls.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Compile Update="View\MlModelView.axaml.cs">
-	    <DependentUpon>MlModelView.axaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
 </Project>

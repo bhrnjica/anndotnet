@@ -1,12 +1,6 @@
-﻿using Avalonia;
-using System;
+﻿using System;
+using Avalonia;
 using Microsoft.Extensions.DependencyInjection;
-using Anndotnet.App.Service;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.ApplicationLifetimes;
-using Microsoft.Extensions.DependencyInjection;
-using static Anndotnet.App.Extensions.ApplicationExtensions;
-using Google.Protobuf.WellKnownTypes;
 
 namespace Anndotnet.App;
 

@@ -24,13 +24,13 @@ public partial class MainViewModel : BaseViewModel
     private ObservableCollection<NavigationItem> _treeNavigationItems = new ();
 
     [ObservableProperty]
-    private NavigationItem _selectedItem;
+    private NavigationItem? _selectedItem;
 
     [ObservableProperty]
     private bool _isExpanded = true;
 
     [ObservableProperty]
-    private Control _content;
+    private Control? _content;
 
     public MainViewModel(IProjectService projectService)
     {
@@ -46,8 +46,8 @@ public partial class MainViewModel : BaseViewModel
 
     public async Task OnLoadedAsync()
     {
-      
 
+        await Task.CompletedTask;
     }
 
     private void OnInsertNavigationItem(NavigationItem itm)
@@ -63,7 +63,7 @@ public partial class MainViewModel : BaseViewModel
         SelectedItem = itm;
     }
 
-    partial void OnSelectedItemChanged(NavigationItem value)
+    partial void OnSelectedItemChanged(NavigationItem? value)
     {
         var app = Avalonia.Application.Current as Anndotnet.App.App;
         if (app == null)
@@ -75,6 +75,10 @@ public partial class MainViewModel : BaseViewModel
             throw new Exception("Service provider is null");
         }
 
+        if (value == null)
+        {
+            throw new Exception("'value' cannot be null");
+        }
         if (value.ItemType == ItemType.Start)
         {
             Content = app.ServiceProvider.GetRequiredService<StartView>();
@@ -99,6 +103,7 @@ public partial class MainViewModel : BaseViewModel
 
         var startPage = _projectService.LoadStartPage();
         OnInsertNavigationItem(startPage);
+        await Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -106,6 +111,7 @@ public partial class MainViewModel : BaseViewModel
     {
         var irisProject = _projectService.LoadIrisProject();
         TreeNavigationItems.Add(irisProject);
+        await Task.CompletedTask;
     }
 
 

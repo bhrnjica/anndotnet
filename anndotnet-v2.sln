@@ -65,7 +65,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daany.DataFrame", "..\daany
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daany.DataFrame.Ext", "..\daany\src\daany.ext\Daany.DataFrame.Ext.csproj", "{3302FC42-F918-4A67-B044-88F0805DC4FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anndotnet.app", "src\anndotnet.app\anndotnet.app.csproj", "{0DE39F6B-CC5F-46D7-89AC-964D1C7CC14D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xanndotnet.app", "src\anndotnet.app\xanndotnet.app.csproj", "{0DE39F6B-CC5F-46D7-89AC-964D1C7CC14D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
