@@ -1,7 +1,9 @@
 {
   "Id": "c15b26ba-2876-4cdd-b97a-02b3fa83944b",
   "Name": "Iris",
-  "Description":"Iris flower identification",
+  "Path": "assets-projects/iris/iris.ann",
+  
+  "Description": "Iris flower identification",
   "Parser": {
     "RowSeparator": "\r\n",
     "ColumnSeparator": ";",
@@ -9,7 +11,7 @@
     "SkipLines": 0,
     "MissingValueSymbol": null,
     "DescriptionSymbol": "!",
-    "RawDataName": "iris_raw.txt",
+    "DataPath": "assets-projects/iris/iris_raw.txt",
     "Header": [
       "sepal_length",
       "sepal_width",
@@ -23,10 +25,10 @@
     {
       "Id": 0,
       "Name": "sepal_length",
-      "MLType": "feature",
-      "ValueColumnType": "f32",
+      "MLType": "Feature",
+      "ValueColumnType": "Float",
       "ValueFormat": null,
-      "MissingValue": "none",
+      "MissingValue": "None",
       "Transformer": {
         "DataNormalization": "standardizer",
         "ClassValues": null,
@@ -39,10 +41,10 @@
     {
       "Id": 1,
       "Name": "sepal_width",
-      "MLType": "feature",
-      "ValueColumnType": "f32",
+      "MLType": "Feature",
+      "ValueColumnType": "Float",
       "ValueFormat": null,
-      "MissingValue": "none",
+      "MissingValue": "Average",
       "Transformer": {
         "DataNormalization": "standardizer",
         "ClassValues": null,
@@ -55,10 +57,10 @@
     {
       "Id": 2,
       "Name": "petal_length",
-      "MLType": "feature",
-      "ValueColumnType": "f32",
+      "MLType": "Feature",
+      "ValueColumnType": "Float",
       "ValueFormat": null,
-      "MissingValue": "none",
+      "MissingValue": "None",
       "Transformer": {
         "DataNormalization": "standardizer",
         "ClassValues": null,
@@ -71,10 +73,10 @@
     {
       "Id": 3,
       "Name": "petal_width",
-      "MLType": "feature",
-      "ValueColumnType": "f32",
+      "MLType": "Feature",
+      "ValueColumnType": "Float",
       "ValueFormat": null,
-      "MissingValue": "none",
+      "MissingValue": "None",
       "Transformer": {
         "DataNormalization": "standardizer",
         "ClassValues": null,
@@ -87,10 +89,10 @@
     {
       "Id": 4,
       "Name": "species",
-      "MLType": "label",
-      "ValueColumnType": "in",
+      "MLType": "Label",
+      "ValueColumnType": "Categorical",
       "ValueFormat": null,
-      "MissingValue": "none",
+      "MissingValue": "Random",
       "Transformer": {
         "DataNormalization": "ordinal",
         "ClassValues": [
@@ -112,4 +114,4 @@
       "Path": "iris01.mlconfig"
     }
   ]
-  }
+}

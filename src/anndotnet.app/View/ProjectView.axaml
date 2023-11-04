@@ -3,12 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:Anndotnet.App.ViewModel"
+             xmlns:converters="clr-namespace:Anndotnet.App.Converter"
              xmlns:model="clr-namespace:Anndotnet.App.Model"
+             xmlns:entities="clr-namespace:Anndotnet.Shared.Entities;assembly=anndotnet.shared"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Anndotnet.App.ProjectView"
              x:DataType="viewModel:ProjectViewModel"
              >
-
+	<UserControl.Resources>
+		<converters:MissingValueToSelectedIndex x:Key="MissingValueToSelectedIndex"/>
+		<converters:MlTypeToSelectedIndex x:Key="MlTypeToSelectedIndex"/>
+		<converters:TypeToSelectedIndex x:Key="TypeToSelectedIndex"/>
+	</UserControl.Resources>
     <Interaction.Behaviors>
                 <EventTriggerBehavior EventName="Loaded">
                     <CallMethodAction TargetObject="{Binding}"
@@ -32,57 +38,56 @@
             <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
 		</StackPanel>
 
-        <!--<ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
-			<ItemsControl Name="data" x:DataType="model:MlConfig" ItemsSource="{Binding Header}">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			<ItemsControl Name="data" ItemsSource="{Binding Metadata}">
 				<ItemsControl.ItemsPanel >
 					<ItemsPanelTemplate >
-						<StackPanel Orientation="Horizontal" Spacing="2"></StackPanel>
+						<StackPanel Orientation="Horizontal" Spacing="1"></StackPanel>
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
 
 				<ItemsControl.ItemTemplate>
-					<DataTemplate x:DataType="local:Header">
-						<Border Margin="0,10,0,0"
-								Padding="5"
-								Background="AntiqueWhite">
-
-							<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-
-								<Label FontWeight="Bold"
+					<DataTemplate >
+						<Border Margin="0,0,0,0"
+								Padding="1"
+								Background="BlueViolet">
+							<StackPanel Orientation="Vertical" Spacing="2" HorizontalAlignment="Center">
+								<Label FontWeight="Bold" 
 									   HorizontalAlignment="Center"
 									   Content="{Binding Name}"/>
 
-								<StackPanel Orientation="Vertical"
-											Background="Bisque" >
-									<ComboBox PlaceholderText="Column type"
-											  HorizontalAlignment="Stretch"
-											  FontStyle="Normal"
-											  FontSize="10"
-											  SelectedValue="{Binding Type, Mode=TwoWay}"
-											  ItemsSource="">
-										<ComboBoxItem>Numeric</ComboBoxItem>
-										<ComboBoxItem>Categorical</ComboBoxItem>
-										<ComboBoxItem>String</ComboBoxItem>
-									</ComboBox>
-									<ComboBox PlaceholderText="Ml Column type"
-											  SelectedItem="{Binding MlType}"
-											  FontSize="10">
-										<ComboBoxItem>Ignored</ComboBoxItem>
-										<ComboBoxItem>Feature</ComboBoxItem>
-										<ComboBoxItem>Label</ComboBoxItem>
-									</ComboBox>
-									<ComboBox PlaceholderText="Missing value handler"
-											  SelectedItem="{Binding MissingValue}">
+								<StackPanel Orientation="Vertical">
+									<ComboBox SelectedIndex="{Binding ValueColumnType, Converter={StaticResource TypeToSelectedIndex}}">
+                                        <ComboBoxItem>Integer</ComboBoxItem>
+                                        <ComboBoxItem>Float</ComboBoxItem>
+                                        <ComboBoxItem>Categorical</ComboBoxItem>
+                                        <ComboBoxItem>String</ComboBoxItem>
+                                    </ComboBox>
+									<ComboBox SelectedIndex="{Binding MlType, Converter={StaticResource MlTypeToSelectedIndex}}">
+                                        <ComboBoxItem>Ignore</ComboBoxItem>
+                                        <ComboBoxItem>Feature</ComboBoxItem>
+                                        <ComboBoxItem>Label</ComboBoxItem>
+                                    </ComboBox>
+									<ComboBox SelectedIndex="{Binding MissingValue, Converter={StaticResource MissingValueToSelectedIndex}}">
 										<ComboBoxItem>None</ComboBoxItem>
 										<ComboBoxItem>Average</ComboBoxItem>
 										<ComboBoxItem>Random</ComboBoxItem>
 									</ComboBox>
 								</StackPanel>
 
-								<ListBox ItemsSource="{Binding Data}" >
-									<ListBox.ItemTemplate>
+								<ListBox ItemsSource="{Binding Data}" BorderThickness="1" BorderBrush="Black" SelectionMode="Single" Background="Transparent" HorizontalAlignment="Stretch"  >
+                                    <ListBox.Styles>
+                                        <Style Selector="ListBoxItem">
+											<Setter Property="Padding" Value="2,2"/>
+                                            <Setter Property="Margin" Value="0,0,0,-1"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="BorderBrush" Value="Black"/>
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ListBox.Styles>
+                                    <ListBox.ItemTemplate>
 										<DataTemplate>
-											<TextBlock Text="{Binding }"></TextBlock>
+                                            <TextBlock Text="{Binding}" TextAlignment="Center"/>
 										</DataTemplate>
 									</ListBox.ItemTemplate>
 								</ListBox>
@@ -93,7 +98,7 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-		</ScrollViewer>-->
+		</ScrollViewer>
 	</Grid>
     
 </UserControl>

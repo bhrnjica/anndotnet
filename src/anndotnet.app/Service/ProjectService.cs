@@ -8,8 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anndotnet.App.Model;
 using Anndotnet.Core.Mlconfig;
+using Anndotnet.Shared.Entities;
 using Avalonia;
-using Avalonia.Platform;
+using Avalonia.Controls.Shapes;
+using Daany;
 using ExCSS;
 using Newtonsoft.Json;
 using XPlot.Plotly;
@@ -22,7 +24,7 @@ namespace Anndotnet.App.Service
 
         public ProjectModel LoadProject(string path)
         {
-            string fullPath = Path.Combine(Environment.CurrentDirectory, path);
+            string fullPath = System.IO.Path.Combine(Environment.CurrentDirectory, path);
             var projectFile = Directory.GetFiles(fullPath,"*.ann").FirstOrDefault();
             if (projectFile == null)
             {
@@ -36,9 +38,9 @@ namespace Anndotnet.App.Service
 
         public MlModel  LoadMlModel(string path)
         {
-            string fullPath = Path.Combine(Environment.CurrentDirectory, path + ".mlconfig");
+            string fullPath = System.IO.Path.Combine(Environment.CurrentDirectory, path + ".mlconfig");
 
-            if (!Path.Exists(fullPath))
+            if (!System.IO.Path.Exists(fullPath))
             {
                 throw new Exception("Selected model cannot be found.");
             }   
@@ -50,6 +52,14 @@ namespace Anndotnet.App.Service
             mlModel.Description = "description";
             mlModel.Path = path;    
             return mlModel;
+        }
+
+        public DataFrame FromDataParser(DataParser? parser)
+        {
+            string fullPath = System.IO.Path.Combine(Environment.CurrentDirectory, parser?.DataPath);
+
+            return DataFrame.FromCsv(filePath: fullPath, sep: parser.ColumnSeparator, names: parser.Header,
+                dformat: parser.DateFormat, missingValues: parser.MissingValueSymbol, colTypes: null, skipLines: parser.SkipLines);
         }
     }
 }

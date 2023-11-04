@@ -23,7 +23,7 @@ public record DataParser
     public int       SkipLines          { get; set; } = 0;
     public char[]?   MissingValueSymbol { get; set; }
     public char      DescriptionSymbol  { get; set; } = '!';
-    public string?   RawDataName        { get; set; }
+    public string?   DataPath        { get; set; }
     public string[]? Header             { get; set; }
     public string?   DateFormat         { get; set; }
 }
@@ -31,14 +31,16 @@ public class HeaderInfo
 {
     public int           Id              { get; set; }
     public string?        Name            { get; set; }
-    public ColMlDataType? MlType          { get; set; }
-    public Daany.ColType ValueColumnType { get; set; }
+    public string? MlType          { get; set; }
+    public string ValueColumnType { get; set; }
 
     public string? ValueFormat { get; set; }
 
     public ColMissingValue? MissingValue { get; set; }
 
     public DataTransformer? Transformer { get; set; }
+
+    public List<string>? Data { get; set; }
 
 }
 public class DataTransformer
