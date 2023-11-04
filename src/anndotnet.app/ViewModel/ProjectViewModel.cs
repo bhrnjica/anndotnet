@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anndotnet.App.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Anndotnet.App.ViewModel;
@@ -10,6 +12,9 @@ namespace Anndotnet.App.ViewModel;
 public partial class ProjectViewModel : BaseViewModel
 {
 
+    [ObservableProperty] private ProjectModel? _project;
+
+    [ObservableProperty] private ObservableCollection<MlConfig>? _mlConfigFiles;
     public async Task OnLoadedAsync()
     {
         await Task.CompletedTask;
@@ -21,4 +26,5 @@ public partial class ProjectViewModel : BaseViewModel
         return;
     }
 }
+
 

@@ -17,6 +17,7 @@ using Anndotnet.Core.Data;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.Mlconfig;
+using TorchSharp.Modules;
 
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
@@ -74,8 +75,8 @@ public class CvTrainer : ITrainer, IProgressTraining
 
         var testIds = lst.Except(trainIds);
 
-        var train = new DataLoader(data, batchSize, trainIds);
-        var valid = new DataLoader(data, batchSize, testIds);
+        var train = DataLoader(data, batchSize, trainIds);
+        var valid = DataLoader(data, batchSize, testIds);
        
         return (train, valid);
     }

@@ -1,54 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Anndotnet.App.Model;
+using Anndotnet.Core.Mlconfig;
+using Avalonia;
+using Avalonia.Platform;
+using ExCSS;
+using Newtonsoft.Json;
+using XPlot.Plotly;
 
 namespace Anndotnet.App.Service
 {
     internal class ProjectService : IProjectService
     {
-        public void Run()
+        private static readonly string? Assembly = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+
+        public ProjectModel LoadProject(string path)
         {
-            throw new NotImplementedException();
+            string fullPath = Path.Combine(Environment.CurrentDirectory, path);
+            var projectFile = Directory.GetFiles(fullPath,"*.ann").FirstOrDefault();
+            if (projectFile == null)
+            {
+                throw new Exception("Selected project cannot be found.");
+            }
+            var project = JsonConvert.DeserializeObject<ProjectModel>(File.ReadAllText(projectFile));
+             
+            return project;
+            
         }
 
-        public NavigationItem LoadStartPage()
+        public MlModel  LoadMlModel(string path)
         {
-            return new()
-                   {
-                       Name = "Home", 
-                       Icon = "/assets/images/start.png", 
-                       Link = "Home",
-                       ItemType= ItemType.Start
-                       
-                   };
-        }
+            string fullPath = Path.Combine(Environment.CurrentDirectory, path + ".mlconfig");
 
-        public NavigationItem LoadIrisProject()
-        {
-            return new()
-                   {
-                       Name = "Iris",
-                       Link = "Iris",
-                       IsExpandedEx = true,
-                       
-                       ItemType = ItemType.Project,
+            if (!Path.Exists(fullPath))
+            {
+                throw new Exception("Selected model cannot be found.");
+            }   
+            var mlConfig= MlFactory.LoadfromFile(fullPath);
+           
 
-                       Icon = "/assets/images/experiment.png",
-
-                       ModelItems = new()
-                                    {
-                                        new ()
-                                        {
-                                            Name="Model 1", 
-                                            Link="Model 1",
-                                            ItemType= ItemType.Model,
-                                            Icon="/assets/images/model.png"
-                                        }
-                                    }
-                   };
+            MlModel mlModel = new MlModel();
+            mlModel.Name= mlConfig.Name;
+            mlModel.Description = "description";
+            mlModel.Path = path;    
+            return mlModel;
         }
     }
 }

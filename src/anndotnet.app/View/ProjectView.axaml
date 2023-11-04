@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:Anndotnet.App.ViewModel"
+             xmlns:model="clr-namespace:Anndotnet.App.Model"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Anndotnet.App.ProjectView"
              x:DataType="viewModel:ProjectViewModel"
@@ -17,7 +18,82 @@
                     <CallMethodAction TargetObject="{Binding}"
                                       MethodName="OnUnLoadedAsync" />
                 </EventTriggerBehavior>
+                <EventTriggerBehavior EventName="DetachedFromVisualTree">
+                    <CallMethodAction TargetObject="{Binding}"
+                                      MethodName="OnUnLoadedAsync" />
+                </EventTriggerBehavior>
     </Interaction.Behaviors>
 
-    Anndotnet.App.ProjectView!
+	<Grid RowDefinitions="50,*,50" ColumnDefinitions="150,*,150">
+
+		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+            <Button Command="{Binding NewProjectCommand}" Content="New" Width="100" Height="30" Margin="5"/>	
+			<TextBlock Text="{Binding Project.Name}" FontSize="20" Margin="5"/>
+            <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
+		</StackPanel>
+
+        <!--<ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+			<ItemsControl Name="data" x:DataType="model:MlConfig" ItemsSource="{Binding Header}">
+				<ItemsControl.ItemsPanel >
+					<ItemsPanelTemplate >
+						<StackPanel Orientation="Horizontal" Spacing="2"></StackPanel>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+
+				<ItemsControl.ItemTemplate>
+					<DataTemplate x:DataType="local:Header">
+						<Border Margin="0,10,0,0"
+								Padding="5"
+								Background="AntiqueWhite">
+
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
+								<Label FontWeight="Bold"
+									   HorizontalAlignment="Center"
+									   Content="{Binding Name}"/>
+
+								<StackPanel Orientation="Vertical"
+											Background="Bisque" >
+									<ComboBox PlaceholderText="Column type"
+											  HorizontalAlignment="Stretch"
+											  FontStyle="Normal"
+											  FontSize="10"
+											  SelectedValue="{Binding Type, Mode=TwoWay}"
+											  ItemsSource="">
+										<ComboBoxItem>Numeric</ComboBoxItem>
+										<ComboBoxItem>Categorical</ComboBoxItem>
+										<ComboBoxItem>String</ComboBoxItem>
+									</ComboBox>
+									<ComboBox PlaceholderText="Ml Column type"
+											  SelectedItem="{Binding MlType}"
+											  FontSize="10">
+										<ComboBoxItem>Ignored</ComboBoxItem>
+										<ComboBoxItem>Feature</ComboBoxItem>
+										<ComboBoxItem>Label</ComboBoxItem>
+									</ComboBox>
+									<ComboBox PlaceholderText="Missing value handler"
+											  SelectedItem="{Binding MissingValue}">
+										<ComboBoxItem>None</ComboBoxItem>
+										<ComboBoxItem>Average</ComboBoxItem>
+										<ComboBoxItem>Random</ComboBoxItem>
+									</ComboBox>
+								</StackPanel>
+
+								<ListBox ItemsSource="{Binding Data}" >
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding }"></TextBlock>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+							</StackPanel>
+
+
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>-->
+	</Grid>
+    
 </UserControl>

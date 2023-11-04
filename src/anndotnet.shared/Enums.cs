@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Anndotnet.App.Model;
+namespace Anndotnet.Shared.Entities;
 
 public enum Examples
 {

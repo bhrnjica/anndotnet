@@ -18,9 +18,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="TorchAudio" Version="0.100.6" />
-		<PackageReference Include="TorchSharp" Version="0.100.6" />
-		<PackageReference Include="TorchVision" Version="0.100.6" />
+		<PackageReference Include="TorchAudio" Version="0.100.7" />
+		<PackageReference Include="TorchSharp" Version="0.100.7" />
+		<PackageReference Include="TorchVision" Version="0.100.7" />
 	</ItemGroup>
 
 	<PropertyGroup>

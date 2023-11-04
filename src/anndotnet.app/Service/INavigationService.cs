@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Anndotnet.App.Service
 {
-    public interface IProjectService
+    public interface INavigationService
     {
-       
-        ProjectModel LoadProject(string path);
-        MlModel LoadMlModel(string path);
+        NavigationItem StartPageItem();
+        NavigationItem IrisItem();
     }
 }

@@ -14,7 +14,7 @@
         Icon="/assets/anndotnet.ico"
         x:DataType="viewModel:MainViewModel"
         x:CompileBindings="True"
-        
+        Margin="2,2"
         Title="ANNdotNET v2.0">
 	<Interaction.Behaviors>
         <EventTriggerBehavior EventName="Loaded">
@@ -35,26 +35,26 @@
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <StackPanel Background="AntiqueWhite" Spacing="2" Grid.Row="0" Orientation="Horizontal">
-            <Button Width="70">
+        <StackPanel Spacing="2" Grid.Row="0" Orientation="Horizontal">
+            <Button Width="70" Command="{Binding CreateNewProjectCommand}">
                 <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
                     <Image Height="32" Source="{SvgImage /assets/svg/new.svg}" />
                     <TextBlock Text="New"></TextBlock>
                 </StackPanel>
             </Button>
-            <Button Width="70">
+            <Button Width="70"  Command="{Binding OpenExistingProjectCommand}">
                 <StackPanel Orientation="Vertical">
                     <Image Height="32" Source="{SvgImage /assets/svg/open.svg}" />
                     <TextBlock Text="Open"></TextBlock>
                 </StackPanel>
             </Button>
-            <Button Width="70">
+            <Button Width="70"  Command="{Binding SaveCurrentProjectCommand}">
                 <StackPanel Orientation="Vertical">
                     <Image Height="32" Source="{SvgImage /assets/svg/save.svg}" />
                     <TextBlock Text="Save"></TextBlock>
                 </StackPanel>
             </Button>
-            <Button Width="70" IsEnabled="False">
+            <Button Width="70"  Command="{Binding CloseCurrentProjectCommand}">
                 <StackPanel Orientation="Vertical">
                     <Image Height="32" Source="{SvgImage /assets/svg/close.svg}" />
                     <TextBlock Text="Close"></TextBlock>
@@ -87,7 +87,8 @@
 
             <TreeView Width="300" Grid.Column="0"
                       ItemsSource="{Binding TreeNavigationItems}" 
-                      Background="AliceBlue" 
+                      BorderThickness="2"
+                         
                       Margin="2,0,2,0" 
                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                       SelectionMode="Single"
@@ -109,7 +110,7 @@
                
 			</TreeView>
 
-            <ContentControl Margin="2,0,2,0" Background="AliceBlue" Grid.Column="1"
+            <ContentControl Margin="2,0,2,0" Grid.Column="1"
                             VerticalAlignment="Stretch" 
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -121,18 +122,19 @@
 
 
         <!-- Status bar -->
-        <StackPanel Grid.Row="2" Background="LightGray" Orientation="Horizontal">
-			<TextBlock Text="Status bar" Margin="2,2" />    
+        <Border Grid.Row="2" >
+            <StackPanel Background="#00686767"   Orientation="Horizontal" >
+			    <TextBlock Text="Status bar" Margin="2,2" />    
 
-			<Rectangle Width="1" Height="32" Fill="DarkGray" Margin="2,0,2,0" />
+			    <Rectangle Width="1" Height="32"  Margin="2,0,2,0" />
 
-			<TextBlock Text="ANNdotNET v2.0" Margin="2,2" />
+			    <TextBlock Text="ANNdotNET v2.0" Margin="2,2" />
 
-            <Rectangle Width="1" Height="32" Fill="DarkGray" Margin="2,0,2,0" />
-            
-            <ProgressBar Width="100" Height="20" Margin="2,2" ShowProgressText="True" ProgressTextFormat="10%" IsIndeterminate="True" />
-		</StackPanel>
-
+                <Rectangle Width="1" Height="32" Fill="DarkGray" Margin="2,0,2,0" />
+                
+                <ProgressBar Width="100" Height="20" Margin="2,2" ShowProgressText="True" ProgressTextFormat="10%" IsIndeterminate="True" />
+		    </StackPanel>
+        </Border>
     </Grid>
 
 </Window>

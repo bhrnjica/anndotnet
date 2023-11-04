@@ -16,6 +16,7 @@ using Anndotnet.Core.Data;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.Mlconfig;
+using TorchSharp.Modules;
 
 [assembly: InternalsVisibleTo("anndotnet.test")]
 namespace Anndotnet.Core.Trainers;
@@ -23,7 +24,7 @@ namespace Anndotnet.Core.Trainers;
 
 public class TvTrainer : ITrainer
 {
-    private readonly float _minLR = 0.000001f;
+    //private readonly float _minLR = 0.000001f;
     private readonly Module<Tensor, Tensor> _model;
     private readonly Optimizer _optimizer;
 
@@ -86,8 +87,8 @@ public class TvTrainer : ITrainer
         var trainIds = _tParams.ShuffleWhenSplit ? TSRandom.Rand<long>(lst, (int)trainSize, seed).ToList() : lst.Take((int)trainSize).ToList();
         var testIds = lst.Except(trainIds).ToList();
 
-        var train = new DataLoader(data, _tParams.MiniBatchSize, trainIds);
-        var valid = new DataLoader(data, _tParams.MiniBatchSize, testIds);
+        var train = DataLoader(data, _tParams.MiniBatchSize, trainIds);
+        var valid = DataLoader(data, _tParams.MiniBatchSize, testIds);
 
         return (train, valid);
     }

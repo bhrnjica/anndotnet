@@ -113,6 +113,20 @@ public class MlFactory
         return mlConfig;
     }
 
+    public static MlConfig LoadfromFile(string filePath)
+    {
+        MlConfig mlConfig = null;
+        var options = JsonSerializerOptions();
+
+        //
+        using (FileStream fs = File.OpenRead(filePath))
+        {
+            mlConfig = JsonSerializer.Deserialize<MlConfig>(fs, options: options);
+        }
+
+        return mlConfig;
+    }
+
     public static JsonSerializerOptions JsonSerializerOptions()
     {
         var options = new JsonSerializerOptions

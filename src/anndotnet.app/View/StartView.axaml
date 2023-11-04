@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignWidth="500" 
              d:DesignHeight="350" 
-             Background="LightSteelBlue"
+            
              x:DataType="viewModel:StartViewModel"
              x:Class="Anndotnet.App.StartView">
 	<UserControl.Styles>

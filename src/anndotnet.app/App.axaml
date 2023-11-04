@@ -1,8 +1,11 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:app="clr-namespace:Anndotnet.App"
-             x:Class="Anndotnet.App.App"
-             RequestedThemeVariant="Default">
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Class="Anndotnet.App.App" 
+             RequestedThemeVariant="Dark">
+	<!-- "Default" ThemeVariant follows system theme variant. 
+	    "Dark" or "Light" are other available options. -->
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>

@@ -21,6 +21,7 @@ using Anndotnet.Core.MlMetrics;
 
 using Daany;
 using Daany.MathStuff.Stats;
+using TorchSharp.Modules;
 
 namespace Anndotnet.Core.Mlconfig
 {
@@ -172,8 +173,8 @@ namespace Anndotnet.Core.Mlconfig
             var trainIds = shuffle ? TSRandom.Rand<long>(lst, (int)trainSize, seed).ToList() : lst.Take((int)trainSize).ToList();
             var testIds = lst.Except(trainIds).ToList();
 
-            var train = new DataLoader(data, batchSize, trainIds);
-            var valid = new DataLoader(data, batchSize, testIds);
+            var train = DataLoader(data, batchSize, trainIds);
+            var valid = DataLoader(data, batchSize, testIds);
 
             return (train, valid);
         }

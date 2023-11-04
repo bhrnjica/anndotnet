@@ -18,10 +18,10 @@ namespace Anndotnet.App.ViewModel;
 
 public partial class StartViewModel : BaseViewModel
 {
-    private readonly IProjectService _projectService;
+    private readonly INavigationService _projectService;
     
     
-    public StartViewModel(IProjectService projectService)
+    public StartViewModel(INavigationService projectService)
     {
         _projectService = projectService;
 
@@ -44,6 +44,18 @@ public partial class StartViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    void NewProject()
+    {
+
+    }
+
+    [RelayCommand]
+    void OpenProject()
+    {
+
+    }
+
+    [RelayCommand]
     void OpenSlumpTest()
     {
         
@@ -51,7 +63,12 @@ public partial class StartViewModel : BaseViewModel
     [RelayCommand]
     void OpenBikeSharing()
     {
+        var navItm = new NavigationItem();
+        
+        // Send a message
+        var message = new InsertNavigationItemMessage(navItm);
 
+        SendNavigationItem(navItm);
     }
     [RelayCommand]
     void OpenBreastCancer()
@@ -62,7 +79,7 @@ public partial class StartViewModel : BaseViewModel
     [RelayCommand]
     void OpenIris()
     {
-      var navItm = _projectService.LoadIrisProject();
+      var navItm = _projectService.IrisItem();
 
       // Send a message
       var message = new InsertNavigationItemMessage(navItm);

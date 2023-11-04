@@ -8,6 +8,7 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 using Anndotnet.Core.Data;
+using TorchSharp.Modules;
 
 namespace Anndotnet.Core.Interfaces;
 

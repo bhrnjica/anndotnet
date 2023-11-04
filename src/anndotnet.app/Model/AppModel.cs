@@ -6,9 +6,8 @@
 // See license section of  https://github.com/bhrnjica/anndotnet/blob/master/LICENSE.md //
 //                                                                                      //
 // Bahrudin Hrnjica                                                                     //
-// bhrnjica@hotmail.com                                                                 //
-// Bihac, Bosnia and Herzegovina                                                        //
-// http://bhrnjica.net                                                                  //
+// bhrnjica@hotmail.com                                                                 ////
+// http://hrnjica.net                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////////
 using System;
 using System.Collections.ObjectModel;

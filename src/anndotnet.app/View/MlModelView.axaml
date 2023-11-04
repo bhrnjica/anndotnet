@@ -11,10 +11,23 @@
                     <CallMethodAction TargetObject="{Binding}"
                                       MethodName="OnLoadedAsync" />
                 </EventTriggerBehavior>
+        
                 <EventTriggerBehavior EventName="Unloaded">
                     <CallMethodAction TargetObject="{Binding}"
                                       MethodName="OnUnLoadedAsync" />
                 </EventTriggerBehavior>
+
+                <EventTriggerBehavior EventName="DetachedFromVisualTree">
+                    <CallMethodAction TargetObject="{Binding}"
+                                      MethodName="OnUnLoadedAsync" />
+                </EventTriggerBehavior>
     </Interaction.Behaviors>
-    Anndotnet.App.MlModelView!
+	<Grid RowDefinitions="50,*,50" ColumnDefinitions="150,*,150">
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+            <Button Command="{Binding NewProjectCommand}" Content="New" Width="100" Height="30" Margin="5"/>
+            <TextBlock Text="{Binding MlModel.Name}" FontSize="20" Margin="5"/>
+            <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
+        </StackPanel>
+    </Grid>
 </UserControl>

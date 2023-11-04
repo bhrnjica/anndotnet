@@ -1,5 +1,6 @@
 ﻿
 using Anndotnet.App.Model;
+using Anndotnet.Shared.Entities;
 
 namespace Anndotnet.App.Model;
 

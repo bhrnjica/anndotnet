@@ -13,8 +13,7 @@ namespace Anndotnet.App;
 
 public partial class App : Application
 {
-    public IServiceCollection? ServiceCollection { get; }      = new ServiceCollection();
-    public IServiceProvider?   ServiceProvider   { get; private set; }
+    public IServiceProvider?   Services   { get; private set; }
 
     public App()
     {
@@ -29,14 +28,14 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            ServiceProvider = ConfigureServices();
+            Services = ConfigureServices();
 
-            if (ServiceProvider == null)
+            if (Services == null)
             {
                 throw new Exception("Service provider is null");
             }
             // Get the main window
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            var mainWindow = Services.GetRequiredService<MainWindow>();
 
             // Set the MainWindow
             desktop.MainWindow = mainWindow;
@@ -48,7 +47,7 @@ public partial class App : Application
 
     private IServiceProvider? ConfigureServices()
     {
-        var serviceCollection = ServiceCollection;
+        var serviceCollection = new ServiceCollection(); ;
 
         //Add services to the service collection
         serviceCollection?.AddServices();
