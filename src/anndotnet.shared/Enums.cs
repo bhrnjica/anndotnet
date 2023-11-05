@@ -21,12 +21,14 @@ public enum Examples
 
 public enum ColValueType
 {
-    [Description("Numeric")]
-    Numeric,
-    [Description("Categoric")]
-    Categoric,
-    [Description("None")]
-    None
+    [Description("Integer")]
+    Integer,
+    [Description("Float")]
+    Float,
+    [Description("Categorical")]
+    Categorical,
+    [Description("String")]
+    String
 }
 
 public enum ColMissingValue

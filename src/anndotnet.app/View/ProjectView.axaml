@@ -14,7 +14,9 @@
 		<converters:MissingValueToSelectedIndex x:Key="MissingValueToSelectedIndex"/>
 		<converters:MlTypeToSelectedIndex x:Key="MlTypeToSelectedIndex"/>
 		<converters:TypeToSelectedIndex x:Key="TypeToSelectedIndex"/>
+        
 	</UserControl.Resources>
+
     <Interaction.Behaviors>
                 <EventTriggerBehavior EventName="Loaded">
                     <CallMethodAction TargetObject="{Binding}"
@@ -38,59 +40,114 @@
             <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
 		</StackPanel>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-			<ItemsControl Name="data" ItemsSource="{Binding Metadata}">
+        <ScrollViewer Grid.Row="1" 
+                      Grid.Column="1" 
+                      HorizontalScrollBarVisibility="Auto" 
+                      VerticalScrollBarVisibility="Auto">
+			<ScrollViewer.Styles>
+				<Style Selector="ComboBox.Styled">
+					<Styles>
+						<Style Selector="ComboBox">
+							<Setter Property="Padding" Value="5,0"/>
+							<Setter Property="Margin" Value="0,0,0,0"/>
+							<Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+							<Setter Property="BorderThickness" Value="0"/>
+							<Setter Property="BorderBrush" Value="Transparent"/>
+							<Setter Property="Background" Value="Transparent"></Setter>
+							<Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="CornerRadius" Value="0" />
+						</Style>
+                        <Style Selector="ComboBox:disabled /template/ ContentControl#ContentPresenter">
+                            <Setter Property="TextBlock.Foreground" Value="{DynamicResource ComboBoxForeground}" />
+                            
+                        </Style>
+                        <Style Selector="ComboBox:disabled /template/ Border#Background">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrush}" />
+                        </Style>
+                        <Style Selector="ComboBox:disabled /template/ TextBlock#PlaceholderTextBlock">
+                            <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}" />
+							
+                        </Style>
+                        <Style Selector="ComboBox:pointerover /template/ Border#Background">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </Style>
+                        <Style Selector="ComboBox:disabled /template/ Path#DropDownGlyph">
+                           
+                        </Style>
+					</Styles>
+				</Style>
+				<Style Selector="ListBoxItem">
+					<Setter Property="Padding" Value="2,2"/>
+					<Setter Property="Margin" Value="0,0,0,-1"/>
+					<Setter Property="BorderThickness" Value="1"/>
+					<Setter Property="BorderBrush" Value="Black"/>
+					<Setter Property="HorizontalAlignment" Value="Stretch"/>
+				</Style>
+			</ScrollViewer.Styles>
+			<ItemsControl ItemsSource="{Binding Metadata}">
+
 				<ItemsControl.ItemsPanel >
 					<ItemsPanelTemplate >
 						<StackPanel Orientation="Horizontal" Spacing="1"></StackPanel>
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
-
 				<ItemsControl.ItemTemplate>
-					<DataTemplate >
+					<DataTemplate DataType="entities:HeaderInfo">
 						<Border Margin="0,0,0,0"
 								Padding="1"
+                                
 								Background="BlueViolet">
-							<StackPanel Orientation="Vertical" Spacing="2" HorizontalAlignment="Center">
-								<Label FontWeight="Bold" 
-									   HorizontalAlignment="Center"
-									   Content="{Binding Name}"/>
-
+							<StackPanel Orientation="Vertical"
+                                        Spacing="2"
+                                        HorizontalAlignment="Center">
 								<StackPanel Orientation="Vertical">
-									<ComboBox SelectedIndex="{Binding ValueColumnType, Converter={StaticResource TypeToSelectedIndex}}">
-                                        <ComboBoxItem>Integer</ComboBoxItem>
-                                        <ComboBoxItem>Float</ComboBoxItem>
-                                        <ComboBoxItem>Categorical</ComboBoxItem>
-                                        <ComboBoxItem>String</ComboBoxItem>
-                                    </ComboBox>
-									<ComboBox SelectedIndex="{Binding MlType, Converter={StaticResource MlTypeToSelectedIndex}}">
-                                        <ComboBoxItem>Ignore</ComboBoxItem>
-                                        <ComboBoxItem>Feature</ComboBoxItem>
-                                        <ComboBoxItem>Label</ComboBoxItem>
-                                    </ComboBox>
-									<ComboBox SelectedIndex="{Binding MissingValue, Converter={StaticResource MissingValueToSelectedIndex}}">
-										<ComboBoxItem>None</ComboBoxItem>
-										<ComboBoxItem>Average</ComboBoxItem>
-										<ComboBoxItem>Random</ComboBoxItem>
-									</ComboBox>
-								</StackPanel>
+									<Border Margin="5,5"
+											Padding="1"
+											Background="Transparent">
+										<TextBlock FontWeight="Bold"
+												   TextAlignment="Left"
+												   Text="{Binding Name}"  />
+									</Border>
 
-								<ListBox ItemsSource="{Binding Data}" BorderThickness="1" BorderBrush="Black" SelectionMode="Single" Background="Transparent" HorizontalAlignment="Stretch"  >
-                                    <ListBox.Styles>
-                                        <Style Selector="ListBoxItem">
-											<Setter Property="Padding" Value="2,2"/>
-                                            <Setter Property="Margin" Value="0,0,0,-1"/>
-                                            <Setter Property="BorderThickness" Value="1"/>
-                                            <Setter Property="BorderBrush" Value="Black"/>
-                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                        </Style>
-                                    </ListBox.Styles>
-                                    <ListBox.ItemTemplate>
+									<Border Margin="0,0,0,0"
+                                            Padding="1"
+                                            Background="Transparent">
+										<StackPanel Orientation="Vertical" Spacing="2">
+											<ComboBox SelectedIndex="{Binding ValueColumnType, Converter={StaticResource TypeToSelectedIndex}}"
+                                                      ItemsSource="{Binding ColTypes}"
+                                                      IsEnabled="{Binding IsNotFrozen}"
+                                                      PlaceholderText="{Binding ValueColumnType}">
+											</ComboBox>
+											<ComboBox SelectedIndex="{Binding MlType, Converter={StaticResource MlTypeToSelectedIndex}}"
+                                                      ItemsSource="{Binding ColMlTypes}"
+                                                      IsEnabled="{Binding IsNotFrozen}"
+                                                      PlaceholderText="{Binding MlType}">
+
+											</ComboBox>
+											<ComboBox SelectedIndex="{Binding MissingValue, Converter={StaticResource MissingValueToSelectedIndex}}"
+                                                      ItemsSource="{Binding ColMissingValues}" 
+                                                      IsEnabled="{Binding IsNotFrozen}" 
+                                                      PlaceholderText="{Binding MissingValue}" >
+											</ComboBox>
+										</StackPanel>
+									</Border>
+								</StackPanel>
+								<ListBox ItemsSource="{Binding Data}"
+                                         BorderThickness="1"
+                                         BorderBrush="Black"
+                                         SelectionMode="Single"
+                                         Background="Transparent"
+                                         HorizontalAlignment="Stretch"
+                                         IsEnabled="{Binding IsNotFrozen}">
+									<ListBox.ItemTemplate>
 										<DataTemplate>
-                                            <TextBlock Text="{Binding}" TextAlignment="Center"/>
+											<TextBlock Text="{Binding}"
+                                                       TextAlignment="Center"/>
 										</DataTemplate>
 									</ListBox.ItemTemplate>
 								</ListBox>
+
 							</StackPanel>
 
 
@@ -98,7 +155,7 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-		</ScrollViewer>
+        </ScrollViewer>
 	</Grid>
     
 </UserControl>

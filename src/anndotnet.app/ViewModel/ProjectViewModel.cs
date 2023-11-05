@@ -21,8 +21,7 @@ public partial class ProjectViewModel : BaseViewModel
 
     [ObservableProperty] private ProjectModel? _project;
 
-    [ObservableProperty] private ObservableCollection<HeaderInfo>? _metadata=new ObservableCollection<HeaderInfo>();
-
+    [ObservableProperty] private ObservableCollection<HeaderInfo>? _metadata =new ObservableCollection<HeaderInfo>();
 
     public ProjectViewModel(IProjectService projectService)
     {
@@ -53,6 +52,22 @@ public partial class ProjectViewModel : BaseViewModel
 
         Metadata?.Clear();
         List<HeaderInfo>? list = Project?.Metadata;
+
+        var frozen = new HeaderInfo()
+         {
+            Name = "Column Name: ",
+            MlType = "ML Type: ",
+            ValueColumnType = "Value Type: ",
+            MissingValue = "Missing Handler: ",
+            Data = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" },
+            ColMissingValues = new List<string>{},
+            ColTypes = new List<string> { },
+            ColMlTypes = new List<string> { },
+            IsNotFrozen = false
+         };  
+
+        Metadata?.Add(frozen);
+
         for (int i = 0; i < list?.Count; i++)
         {
             HeaderInfo? col = list[i];

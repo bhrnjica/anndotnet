@@ -27,20 +27,26 @@ public record DataParser
     public string[]? Header             { get; set; }
     public string?   DateFormat         { get; set; }
 }
-public class HeaderInfo
+public class HeaderInfo 
 {
-    public int           Id              { get; set; }
-    public string?        Name            { get; set; }
+    public int     Id              { get; set; }
+    public string? Name            { get; set; }
     public string? MlType          { get; set; }
-    public string ValueColumnType { get; set; }
+    public string? ValueColumnType { get; set; }
 
     public string? ValueFormat { get; set; }
 
-    public ColMissingValue? MissingValue { get; set; }
+    public string? MissingValue { get; set; }
 
     public DataTransformer? Transformer { get; set; }
 
-    public List<string>? Data { get; set; }
+    public List<string>? Data             { get; set; }
+
+    public bool IsNotFrozen { get; set; } = true;   
+
+    public List<string>? ColTypes         { get; set; } = Enum.GetNames(typeof(ColValueType)).ToList();
+    public List<string>? ColMlTypes       { get; set; } = Enum.GetNames(typeof(ColMlDataType)).ToList();
+    public List<string>? ColMissingValues { get; set; } = Enum.GetNames(typeof(ColMissingValue)).ToList();
 
 }
 public class DataTransformer
