@@ -6,11 +6,14 @@
              xmlns:converters="clr-namespace:Anndotnet.App.Converter"
              xmlns:model="clr-namespace:Anndotnet.App.Model"
              xmlns:entities="clr-namespace:Anndotnet.Shared.Entities;assembly=anndotnet.shared"
+             xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Anndotnet.App.ProjectView"
              x:DataType="viewModel:ProjectViewModel"
+             x:Name="wndProjectView"
              >
 	<UserControl.Resources>
+        <converters:BooleanOppositeConverters x:Key="BooleanOppositeConverters"/>
 		<converters:MissingValueToSelectedIndex x:Key="MissingValueToSelectedIndex"/>
 		<converters:MlTypeToSelectedIndex x:Key="MlTypeToSelectedIndex"/>
 		<converters:TypeToSelectedIndex x:Key="TypeToSelectedIndex"/>
@@ -31,11 +34,9 @@
                                       MethodName="OnUnLoadedAsync" />
                 </EventTriggerBehavior>
     </Interaction.Behaviors>
-
-	<Grid RowDefinitions="50,*,50" ColumnDefinitions="150,*,150">
-
-		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
-            <Button Command="{Binding NewProjectCommand}" Content="New" Width="100" Height="30" Margin="5"/>	
+	    <Grid RowDefinitions="50,*,50" ColumnDefinitions="150,*,150">
+		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding LoadProjectDataCommand}" CommandParameter="{Binding ElementName=wndProjectView.Parent}" Content="New" Width="100" Height="30" Margin="5"/>	
 			<TextBlock Text="{Binding Project.Name}" FontSize="20" Margin="5"/>
             <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
 		</StackPanel>
@@ -85,8 +86,8 @@
 					<Setter Property="HorizontalAlignment" Value="Stretch"/>
 				</Style>
 			</ScrollViewer.Styles>
-			<ItemsControl ItemsSource="{Binding Metadata}">
-
+            <StackPanel Orientation="Vertical">
+			    <ItemsControl ItemsSource="{Binding Metadata}" >
 				<ItemsControl.ItemsPanel >
 					<ItemsPanelTemplate >
 						<StackPanel Orientation="Horizontal" Spacing="1"></StackPanel>
@@ -96,7 +97,6 @@
 					<DataTemplate DataType="entities:HeaderInfo">
 						<Border Margin="0,0,0,0"
 								Padding="1"
-                                
 								Background="BlueViolet">
 							<StackPanel Orientation="Vertical"
                                         Spacing="2"
@@ -137,6 +137,7 @@
                                          BorderThickness="1"
                                          BorderBrush="Black"
                                          SelectionMode="Single"
+                                         SelectedIndex="{Binding ElementName=wndProjectView, Path=DataContext.SelectedDataIndex, FallbackValue=0}"
                                          Background="Transparent"
                                          HorizontalAlignment="Stretch"
                                          IsEnabled="{Binding IsNotFrozen}">
@@ -147,15 +148,29 @@
 										</DataTemplate>
 									</ListBox.ItemTemplate>
 								</ListBox>
-
+                                <TextBlock Text="{Binding SummaryHeader}" TextAlignment="Center"/>
+                                <ListBox ItemsSource="{Binding SummaryData}"
+                                         BorderThickness="1"
+                                         SelectedIndex="{Binding ElementName=wndProjectView, Path=DataContext.SelectedSummaryIndex, FallbackValue=0}"
+                                         BorderBrush="Black"
+                                         SelectionMode="Single"
+                                         Background="Transparent"
+                                         HorizontalAlignment="Stretch">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"
+                                                       TextAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    
+                                </ListBox>
 							</StackPanel>
-
-
 						</Border>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
+			   
+            </StackPanel>
         </ScrollViewer>
 	</Grid>
-    
 </UserControl>

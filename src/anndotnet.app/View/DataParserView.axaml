@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             xmlns:viewModel="clr-namespace:Anndotnet.App.ViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Anndotnet.App.DataParserView" x:DataType="viewModel:DataParserViewModel">
+	<UserControl.Styles>
+		<Style Selector="HeaderedContentControl">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Grid Margin="5">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Border ZIndex="1" Padding="5,0,5,0" Background="Black" BorderThickness="0" Margin="20,0,0,0">
+								<TextBlock TextBlock.FontWeight="Light" Text="{TemplateBinding Header}" />
+							</Border>
+							<Border Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,10,0,0"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1">
+								<ContentPresenter Margin="10" Content="{TemplateBinding Content}" />
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
+	<Grid RowDefinitions="200,*,50">
+		<StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" >
+			<HeaderedContentControl Header="Common"  BorderBrush="DarkMagenta" >
+				<StackPanel Orientation="Vertical">
+					<RadioButton GroupName="decimal-separator" Content="point (e.g. 1.23)" IsChecked="{Binding IsDecimalPoint}"></RadioButton>
+					<RadioButton GroupName="decimal-separator" Content="comma (e.g. 1,23)" IsChecked="{Binding IsDecimalComma}"></RadioButton>
+					<CheckBox Content="First row header" IsChecked="{Binding DataParser.HasHeader}" />
+				</StackPanel>
+			</HeaderedContentControl>
+
+			<HeaderedContentControl Header="Column separator"  BorderBrush="DarkMagenta">
+				<StackPanel Orientation="Vertical"  MinWidth="200" >
+					<CheckBox Content="Semicolon"  IsChecked="{Binding IsSemicolon}" />
+					<CheckBox Content="Comma"  IsChecked="{Binding IsComma}"/>
+					<CheckBox Content="Space"  IsChecked="{Binding IsSpace}" />
+					<CheckBox Content="Tab" IsChecked="{Binding IsTab}"/>
+					<StackPanel Orientation="Horizontal">
+						<CheckBox Content="Other   " IsChecked="{Binding IsOtherSeparator}" />
+						<TextBox Width="50" Text="{Binding OtherColumnSeparator}"/>
+					</StackPanel>
+
+				</StackPanel>
+			</HeaderedContentControl>
+			<HeaderedContentControl Header="Time Series"  BorderBrush="DarkMagenta">
+				<StackPanel Orientation="Vertical"  MinWidth="200" >
+					<StackPanel Orientation="Horizontal" Margin="5" VerticalAlignment="Top">
+						<CheckBox x:Name="ChkButtonLag" Content="Time leg: " />
+						<NumericUpDown Width="150" Height="25" Minimum="0" Maximum="100" IsEnabled="{Binding ElementName=ChkButtonLag, Path=IsChecked}"   />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="5" VerticalAlignment="Top">
+						<CheckBox x:Name="ChkButtonStepAhead" Content="Steps ahead: " />
+						<NumericUpDown  Width="150" Height="25" Minimum="0" Maximum="100" IsEnabled="{Binding ElementName=ChkButtonStepAhead, Path=IsChecked}"   />
+					</StackPanel>
+				</StackPanel>
+			</HeaderedContentControl>
+		</StackPanel>
+		<Border Grid.Row="1" Background="Transparent" BorderBrush="DarkMagenta" BorderThickness="1" Margin="5">
+            <avaloniaEdit:TextEditor x:Name="TextEditor" Document="{Binding DataText}"
+                                     ShowLineNumbers="True" IsReadOnly="True" 
+                                     FontFamily="Cascadia Code,Consolas,Menlo,Monospace">
+                
+            </avaloniaEdit:TextEditor>
+		</Border>
+
+		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Content="Load" Width="100" Height="30" Margin="5" IsDefault="True" Command="{Binding LoadDataCommand}"/>
+			<Button Content="Cancel" Width="100" Height="30" Margin="5" IsCancel="True"/>
+		</StackPanel>
+	</Grid>
+</UserControl>

@@ -2,11 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:app="clr-namespace:Anndotnet.App"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              x:Class="Anndotnet.App.App" 
              RequestedThemeVariant="Dark">
 	<!-- "Default" ThemeVariant follows system theme variant. 
 	    "Dark" or "Light" are other available options. -->
     <Application.Styles>
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <FluentTheme />
+        <dialogHostAvalonia:DialogHostStyles />
     </Application.Styles>
 </Application>

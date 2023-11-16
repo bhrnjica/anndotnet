@@ -26,6 +26,16 @@ public record DataParser
     public string?   DataPath        { get; set; }
     public string[]? Header             { get; set; }
     public string?   DateFormat         { get; set; }
+    public char DecimalSeparator { get; set; }
+}
+
+public class SummaryInfo
+{
+    public int    Id { get; set; }
+    public string? Name { get; set; }
+    public string[]? Value { get; set; }
+
+
 }
 public class HeaderInfo 
 {
@@ -40,9 +50,12 @@ public class HeaderInfo
 
     public DataTransformer? Transformer { get; set; }
 
-    public List<string>? Data             { get; set; }
+    public List<string>? Data { get; set; }
 
-    public bool IsNotFrozen { get; set; } = true;   
+    public string?        SummaryHeader { get; set; }  
+    public List<string?>? SummaryData   { get; set; } 
+
+    public bool          IsNotFrozen { get; set; } = true;   
 
     public List<string>? ColTypes         { get; set; } = Enum.GetNames(typeof(ColValueType)).ToList();
     public List<string>? ColMlTypes       { get; set; } = Enum.GetNames(typeof(ColMlDataType)).ToList();

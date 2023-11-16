@@ -18,20 +18,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="TorchAudio" Version="0.100.7" />
-		<PackageReference Include="TorchSharp" Version="0.100.7" />
-		<PackageReference Include="TorchVision" Version="0.100.7" />
+		<PackageReference Include="Daany.DataFrame" Version="2.0.0" />
+		<PackageReference Include="Daany.DataFrame.Ext" Version="2.0.0" />
+		<PackageReference Include="TorchAudio" Version="0.101.2" />
+		<PackageReference Include="TorchSharp" Version="0.101.2" />
+		<PackageReference Include="TorchVision" Version="0.101.2" />
 	</ItemGroup>
 
 	<PropertyGroup>
 		<GlobalUsings>System;TorchSharp; </GlobalUsings>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\daany\src\daany.df\Daany.DataFrame.csproj" />
-		<ProjectReference Include="..\..\..\daany\src\daany.ext\Daany.DataFrame.Ext.csproj" />
-		<ProjectReference Include="..\..\..\daany\src\daany.mathstuff\Daany.MathStuff.csproj" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Evaluators\" />

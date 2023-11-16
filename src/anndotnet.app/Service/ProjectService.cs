@@ -56,10 +56,10 @@ namespace Anndotnet.App.Service
 
         public DataFrame FromDataParser(DataParser? parser)
         {
-            string fullPath = System.IO.Path.Combine(Environment.CurrentDirectory, parser?.DataPath);
+            string fullPath = System.IO.Path.Combine(Environment.CurrentDirectory, parser?.DataPath!);
 
-            return DataFrame.FromCsv(filePath: fullPath, sep: parser.ColumnSeparator, names: parser.Header,
-                dformat: parser.DateFormat, missingValues: parser.MissingValueSymbol, colTypes: null, skipLines: parser.SkipLines);
+            return DataFrame.FromCsv(filePath: fullPath, sep: parser.ColumnSeparator!, names: parser.Header!,
+                dformat: parser.DateFormat!, missingValues: parser.MissingValueSymbol!, colTypes: null!, skipLines: parser.SkipLines);
         }
     }
 }

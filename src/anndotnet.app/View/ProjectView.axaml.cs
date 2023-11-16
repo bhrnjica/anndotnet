@@ -1,4 +1,4 @@
-using Anndotnet.App.ViewModel;
+    using Anndotnet.App.ViewModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -17,6 +17,8 @@ public partial class ProjectView : UserControl
     {
         this.DataContext = viewModel;
         InitializeComponent();
+
+        
     }
     
 }

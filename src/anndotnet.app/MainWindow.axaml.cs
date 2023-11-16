@@ -15,6 +15,7 @@ namespace Anndotnet.App
 
             this.DataContext = mainViewModel;
             InitializeComponent();
+            
         }
     }
 }
