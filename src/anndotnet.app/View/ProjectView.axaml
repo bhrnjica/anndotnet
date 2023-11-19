@@ -6,7 +6,6 @@
              xmlns:converters="clr-namespace:Anndotnet.App.Converter"
              xmlns:model="clr-namespace:Anndotnet.App.Model"
              xmlns:entities="clr-namespace:Anndotnet.Shared.Entities;assembly=anndotnet.shared"
-             xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Anndotnet.App.ProjectView"
              x:DataType="viewModel:ProjectViewModel"
@@ -33,10 +32,14 @@
                     <CallMethodAction TargetObject="{Binding}"
                                       MethodName="OnUnLoadedAsync" />
                 </EventTriggerBehavior>
+
     </Interaction.Behaviors>
+
 	    <Grid RowDefinitions="50,*,50" ColumnDefinitions="150,*,150">
-		<StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Command="{Binding LoadProjectDataCommand}" CommandParameter="{Binding ElementName=wndProjectView.Parent}" Content="New" Width="100" Height="30" Margin="5"/>	
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+
+            <Button Command="{Binding LoadExperimentDataCommand}" CommandParameter="{Binding ElementName=wndProjectView.Parent}" Content="New" Width="100" Height="30" Margin="5"/>	
 			<TextBlock Text="{Binding Project.Name}" FontSize="20" Margin="5"/>
             <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
 		</StackPanel>

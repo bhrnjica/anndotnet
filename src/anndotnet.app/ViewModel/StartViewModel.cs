@@ -18,12 +18,12 @@ namespace Anndotnet.App.ViewModel;
 
 public partial class StartViewModel : BaseViewModel
 {
-    private readonly INavigationService _projectService;
+    private readonly INavigationService _navigationService;
     
     
-    public StartViewModel(INavigationService projectService)
+    public StartViewModel(INavigationService navigationService)
     {
-        _projectService = projectService;
+        _navigationService = navigationService;
 
     }
 
@@ -79,7 +79,7 @@ public partial class StartViewModel : BaseViewModel
     [RelayCommand]
     void OpenIris()
     {
-      var navItm = _projectService.IrisItem();
+      var navItm = _navigationService.IrisItem();
 
       // Send a message
       var message = new InsertNavigationItemMessage(navItm);

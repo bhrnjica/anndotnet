@@ -30,7 +30,7 @@ namespace Anndotnet.App.Extensions
         }
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddSingleton<IWindowService, WindowService>();
+            services.AddTransient<IWindowService, WindowService>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IProjectService, ProjectService>();

@@ -35,18 +35,18 @@ public enum ColMissingValue
 {
     [Description("None")]
     None,
-    [Description("Random")]
-    Random,
     [Description("Average")]
-    Average
+    Average,
+    [Description("Random")]
+    Random
 }
 
 public enum ColMlDataType
 {
+    [Description("Ignore")]
+    Ignore,
     [Description("Feature")]
     Feature,
     [Description("Label")]
     Label,
-    [Description("Ignore")]
-    Ignore
 }   

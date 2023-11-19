@@ -16,6 +16,11 @@ public partial class MlModelViewModel : BaseViewModel
         await Task.CompletedTask;
     }
 
+    partial void OnMlModelChanged(MlModel? oldValue, MlModel? newValue)
+    {
+          
+    }
+
     public async Task OnUnLoadedAsync()
     {
         await Task.CompletedTask;

@@ -14,7 +14,8 @@ namespace Anndotnet.App;
 public class CustomColorizer : DocumentColorizingTransformer
 {
     private readonly DataParserViewModel _dataParserViewModel;
-    private readonly Random random = new Random();
+    private readonly Random _random = new Random();
+
     public CustomColorizer(DataParserViewModel dataParserViewModel)
     {
         _dataParserViewModel = dataParserViewModel;
@@ -23,14 +24,14 @@ public class CustomColorizer : DocumentColorizingTransformer
     {
         int startOffset = line.Offset;
         int endOffset = line.EndOffset;
-
+        int lineCount = 0;
+        
         if (startOffset < 0 || endOffset < 0)
             return;
 
         int length = endOffset - startOffset;
         string text = CurrentContext.Document.GetText(startOffset, length);
 
-   
         // Check if it's a comment line
         if (text.StartsWith("!"))
         {
@@ -39,6 +40,8 @@ public class CustomColorizer : DocumentColorizingTransformer
             {
                 element.TextRunProperties.SetForegroundBrush(Brushes.Green);
             });
+
+            return;
         }
         else
         {
@@ -46,7 +49,7 @@ public class CustomColorizer : DocumentColorizingTransformer
             string[] columns = text.Split(new[] { _dataParserViewModel.DataParser.ColumnSeparator });
 
             // Colorize header line with different colors for each column
-            //if (_dataParserViewModel.DataParser.HasHeader)
+            if (_dataParserViewModel.DataParser.HasHeader && line.LineNumber == (_dataParserViewModel.DataParser.SkipLines +1) )
             {
                 int currentOffset = startOffset;
                 foreach (string column in columns)
@@ -55,37 +58,29 @@ public class CustomColorizer : DocumentColorizingTransformer
                     ChangeLinePart(currentOffset, currentOffset + columnLength, (VisualLineElement element) =>
                     {
                         // Use different colors for each column
-                        element.TextRunProperties.SetForegroundBrush(GetColumnColor(column));
+                        element.TextRunProperties.SetForegroundBrush(Brushes.Coral);
                     });
 
                     currentOffset += columnLength;
                 }
             }
-            //else
-            //{
-            //    // Colorize content rows with grayed column color
-            //    int currentOffset = startOffset;
-            //    foreach (string column in columns)
-            //    {
-            //        int columnLength = column.Length; // Include the separator
-            //        ChangeLinePart(currentOffset, currentOffset + columnLength, (VisualLineElement element) =>
-            //        {
-            //            // Use grayed color for content rows
-            //            element.TextRunProperties.SetForegroundBrush(Brushes.Gray);
-            //        });
+            else
+            {
+                // Colorize content rows with grayed column color
+                int currentOffset = startOffset;
+                foreach (string column in columns)
+                {
+                    int columnLength = column.Length; // Include the separator
+                    ChangeLinePart(currentOffset, currentOffset + columnLength, (VisualLineElement element) =>
+                    {
+                        // Use grayed color for content rows
+                        element.TextRunProperties.SetForegroundBrush(Brushes.Gray);
+                    });
 
-            //        currentOffset += columnLength;
-            //    }
-            //}
+                    currentOffset += columnLength;
+                }
+            }
         }
-    }
-
-    private IBrush GetColumnColor(string columnName)
-    {
-        byte[] rgb = new byte[3];
-        random.NextBytes(rgb);
-        var color = Color.FromArgb(100, rgb[0], rgb[1], rgb[2]);
-        return new SolidColorBrush(color);
     }
 
 }
@@ -97,9 +92,12 @@ public partial class DataParserView : UserControl
 
         InitializeComponent();
 
-        Loaded+= (o, e) =>
+        Loaded += (o, e) =>
         {
-            TextEditor.TextArea.TextView.LineTransformers.Add(new CustomColorizer(this.DataContext as DataParserViewModel));
+            if (DataContext is DataParserViewModel dc)
+            {
+                TextEditor.TextArea.TextView.LineTransformers.Add(new CustomColorizer(dc));
+            }
         };     
 
         

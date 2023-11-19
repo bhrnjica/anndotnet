@@ -25,13 +25,12 @@ public class WindowService : IWindowService
         _mainWindow = mainWindow;
     }
 
-    public async Task<bool?> ShowDialog<TViewModel, TView>(TView view,TViewModel viewModel) where TViewModel : DialogBaseViewModel
-                                                                                                where TView : UserControl
+    public async Task<bool?> ShowDialog<TViewModel, TView>(TViewModel viewModel, TView view) where TViewModel : DialogBaseViewModel
+                                                                                             where TView : UserControl
     {
-
         var dlg = new Window
                   {
-                    DataContext = viewModel,
+                   // DataContext = viewModel,
                     Content = view,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner,
                     SizeToContent = SizeToContent.WidthAndHeight,
@@ -45,13 +44,15 @@ public class WindowService : IWindowService
                     MinWidth = 800,
                     MinHeight = 400,
                     MaxWidth = 1200,
-                    MaxHeight = 1024,
+                    MaxHeight = 900,
+                    
                     
                 };
+
+        viewModel.DialogWnd=dlg;
         
         var retValue = await dlg.ShowDialog<bool?>(_mainWindow);
-
-        
+        dlg.Close();
         return retValue;
     }
 }

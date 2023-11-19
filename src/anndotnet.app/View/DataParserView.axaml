@@ -6,7 +6,22 @@
              xmlns:viewModel="clr-namespace:Anndotnet.App.ViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Anndotnet.App.DataParserView" x:DataType="viewModel:DataParserViewModel">
-	<UserControl.Styles>
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="Loaded">
+            <CallMethodAction TargetObject="{Binding}"
+                              MethodName="OnLoadedAsync" />
+        </EventTriggerBehavior>
+        <EventTriggerBehavior EventName="Unloaded">
+            <CallMethodAction TargetObject="{Binding}"
+                              MethodName="OnUnLoadedAsync" />
+        </EventTriggerBehavior>
+        <EventTriggerBehavior EventName="DetachedFromVisualTree">
+            <CallMethodAction TargetObject="{Binding}"
+                              MethodName="OnUnLoadedAsync" />
+        </EventTriggerBehavior>
+
+    </Interaction.Behaviors>
+    <UserControl.Styles>
 		<Style Selector="HeaderedContentControl">
 			<Setter Property="Template">
 				<Setter.Value>
@@ -40,20 +55,20 @@
 				<StackPanel Orientation="Vertical">
 					<RadioButton GroupName="decimal-separator" Content="point (e.g. 1.23)" IsChecked="{Binding IsDecimalPoint}"></RadioButton>
 					<RadioButton GroupName="decimal-separator" Content="comma (e.g. 1,23)" IsChecked="{Binding IsDecimalComma}"></RadioButton>
-					<CheckBox Content="First row header" IsChecked="{Binding DataParser.HasHeader}" />
+					<CheckBox Content="First row header" IsChecked="{Binding HasHeader}" />
 				</StackPanel>
 			</HeaderedContentControl>
 
 			<HeaderedContentControl Header="Column separator"  BorderBrush="DarkMagenta">
 				<StackPanel Orientation="Vertical"  MinWidth="200" >
-					<CheckBox Content="Semicolon"  IsChecked="{Binding IsSemicolon}" />
-					<CheckBox Content="Comma"  IsChecked="{Binding IsComma}"/>
-					<CheckBox Content="Space"  IsChecked="{Binding IsSpace}" />
-					<CheckBox Content="Tab" IsChecked="{Binding IsTab}"/>
-					<StackPanel Orientation="Horizontal">
-						<CheckBox Content="Other   " IsChecked="{Binding IsOtherSeparator}" />
-						<TextBox Width="50" Text="{Binding OtherColumnSeparator}"/>
-					</StackPanel>
+                    <RadioButton Content="Semicolon" GroupName="SeparatorGroup" IsChecked="{Binding IsSemicolon}" />
+                    <RadioButton Content="Comma" GroupName="SeparatorGroup" IsChecked="{Binding IsComma}" />
+                    <RadioButton Content="Space" GroupName="SeparatorGroup" IsChecked="{Binding IsSpace}" />
+                    <RadioButton Content="Tab" GroupName="SeparatorGroup" IsChecked="{Binding IsTab}" />
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="OtherSeparator" Content="Other" IsChecked="{Binding IsOtherSeparator}" GroupName="SeparatorGroup" />
+                        <TextBox  Width="50" Text="{Binding OtherColumnSeparator}" IsEnabled="{Binding #OtherSeparator.IsChecked}" />
+                    </StackPanel>
 
 				</StackPanel>
 			</HeaderedContentControl>
@@ -80,7 +95,7 @@
 
 		<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
 			<Button Content="Load" Width="100" Height="30" Margin="5" IsDefault="True" Command="{Binding LoadDataCommand}"/>
-			<Button Content="Cancel" Width="100" Height="30" Margin="5" IsCancel="True"/>
+			<Button Content="Cancel" Width="100" Height="30" Margin="5" IsCancel="True"  Command="{Binding CancelCommand}" />
 		</StackPanel>
 	</Grid>
 </UserControl>

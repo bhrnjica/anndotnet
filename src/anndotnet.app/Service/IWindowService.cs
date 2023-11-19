@@ -15,8 +15,8 @@ namespace Anndotnet.App.Service
 {
     public interface IWindowService
     {
-        Task<bool?> ShowDialog<TViewModel, TView>(TView view, TViewModel viewModel)
-            where TViewModel : DialogBaseViewModel
+        Task<bool?> ShowDialog<TViewModel, TView>(TViewModel viewModel, TView view )
+            where   TViewModel : DialogBaseViewModel
             where TView : UserControl;
     }
 }

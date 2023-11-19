@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
+    <PackageReference Include="Daany.DataFrame" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

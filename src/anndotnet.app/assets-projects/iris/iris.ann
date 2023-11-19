@@ -1,7 +1,6 @@
 {
   "Id": "c15b26ba-2876-4cdd-b97a-02b3fa83944b",
   "Name": "Iris",
-  "Path": "assets-projects/iris/iris.ann",
   
   "Description": "Iris flower identification",
   "Parser": {
@@ -11,7 +10,6 @@
     "SkipLines": 0,
     "MissingValueSymbol": null,
     "DescriptionSymbol": "!",
-    "DataPath": "assets-projects/iris/iris_raw.txt",
     "Header": [
       "sepal_length",
       "sepal_width",
@@ -19,6 +17,7 @@
       "petal_width",
       "species"
     ],
+    "FileName": "iris_raw.txt",
     "DateFormat": null
   },
   "Metadata": [

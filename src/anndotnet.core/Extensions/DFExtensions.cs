@@ -14,10 +14,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Anndotnet.Core.Entities;
-
+using Anndotnet.Shared.Entities;
 using TorchSharp;
 using static TorchSharp.torch;
 using Daany.MathStuff.Stats;
+using DataParser = Anndotnet.Core.Entities.DataParser;
+
 
 namespace Anndotnet.Core.Extensions;
 
@@ -213,6 +215,103 @@ public static class DfExtensions
             //
             c.Id = i;
             c.MissingValue = Aggregation.None;
+            c.Name = name;
+
+            cols.Add(c);
+        }
+
+        return cols;
+    }
+
+    public static List<HeaderInfo> MetadataFromDataFrame(this DataFrame df, string label)
+    {
+        var cols = new List<HeaderInfo>();
+        
+
+        for (int i = 0; i < df.ColCount(); i++)
+        {
+            var name = df.Columns[i];
+            var type = df.ColTypes[i];
+
+            var c = new HeaderInfo();
+            if (c.Transformer == null)
+            {
+                throw new Exception("Transformet object cannot be null");
+            }
+
+            if (name == label && type != ColType.STR)
+            {
+                c.MlType = ColMlDataType.Label.ToString();// MLColumnType.Label;
+            }
+            else if (name != label && type != ColType.STR)
+            {
+                c.MlType = ColMlDataType.Feature.ToString(); //
+            }
+            else//string columns are excluded from parsing by default
+            {
+                ColMlDataType.Ignore.ToString(); //
+            }
+
+            //categorical column
+            if (type == ColType.IN && c.MlType != ColMlDataType.Ignore.ToString())
+            {
+                c.ValueColumnType = ColValueType.Categorical.ToString();
+
+                c.Transformer.ClassValues = df[name].Distinct().Select(x => x.ToString()).ToArray();
+
+                if (c.MlType != ColMlDataType.Label.ToString())
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                }
+                else if (c.MlType == ColMlDataType.Label.ToString() && c.Transformer.ClassValues.Length == 2)//binary label
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Binary1;
+                }
+                else if (c.MlType == ColMlDataType.Label.ToString()) //multi class label
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                }
+                else
+                {
+                    new NotSupportedException("This code should neve be called.");
+                }
+
+            }
+            else if (type == ColType.I2 && c.MlType != ColMlDataType.Ignore.ToString())
+            {
+                c.ValueColumnType = ColValueType.Integer.ToString();
+
+                if (c.MlType == ColMlDataType.Label.ToString())
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Binary1;
+                }
+                else
+                {
+                    c.Transformer.DataNormalization = ColumnTransformer.Ordinal;
+                }
+
+                c.Transformer.ClassValues = df[name].Distinct().Select(x => x.ToString()).ToArray();
+            }
+            else if (c.MlType != ColMlDataType.Ignore.ToString() && (type == ColType.I32 || type== ColType.I64 || type == ColType.F32))
+            {
+                c.ValueColumnType = type == ColType.I32 ? ColValueType.Integer.ToString() : ColValueType.Float.ToString();
+
+                c.Transformer.DataNormalization = ColumnTransformer.Standardizer;
+
+                var col = df[name].Select(x => Convert.ToSingle(x)).ToList();
+
+                c.Transformer.NormalizationValues = new float[]
+                                                    {
+                                                        Metrics.Mean<float, float>( col ),
+                                                        Metrics.Stdev<float, float>( col )
+                                                    };
+            }
+
+
+
+            //
+            c.Id = i;
+            c.MissingValue = ColMissingValue.None.ToString();
             c.Name = name;
 
             cols.Add(c);

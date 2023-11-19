@@ -11,5 +11,7 @@ namespace Anndotnet.App.Service
     {
         NavigationItem StartPageItem();
         NavigationItem IrisItem();
+        NavigationItem CreateNavigationItem(Uri filePath);
+
     }
 }

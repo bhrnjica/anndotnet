@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -21,12 +22,12 @@ public record DataParser
     public char      ColumnSeparator    { get; set; } = ';';
     public bool      HasHeader          { get; set; } = false;
     public int       SkipLines          { get; set; } = 0;
-    public char[]?   MissingValueSymbol { get; set; }
+    public char[]?   MissingValueSymbol { get; set; } = new char[]{' '};
     public char      DescriptionSymbol  { get; set; } = '!';
-    public string?   DataPath        { get; set; }
+    public string?   FileName           { get; set; }
     public string[]? Header             { get; set; }
-    public string?   DateFormat         { get; set; }
-    public char DecimalSeparator { get; set; }
+    public string?   DateFormat         { get; set; } = "yyyy/MM/dd";
+    public char      DecimalSeparator   { get; set; } = '.';
 }
 
 public class SummaryInfo
@@ -48,17 +49,23 @@ public class HeaderInfo
 
     public string? MissingValue { get; set; }
 
-    public DataTransformer? Transformer { get; set; }
+    public DataTransformer? Transformer { get; set; } = new DataTransformer();
 
-    public List<string>? Data { get; set; }
+    [JsonIgnore]
+    public List<string>? Data { get; set; }= new List<string>();
+    [JsonIgnore]
+    public string?        SummaryHeader { get; set; }
+    [JsonIgnore]
+    public List<string?>? SummaryData   { get; set; }
+    [JsonIgnore]
 
-    public string?        SummaryHeader { get; set; }  
-    public List<string?>? SummaryData   { get; set; } 
-
-    public bool          IsNotFrozen { get; set; } = true;   
+    public bool          IsNotFrozen { get; set; } = true;
+    [JsonIgnore]
 
     public List<string>? ColTypes         { get; set; } = Enum.GetNames(typeof(ColValueType)).ToList();
+    [JsonIgnore]
     public List<string>? ColMlTypes       { get; set; } = Enum.GetNames(typeof(ColMlDataType)).ToList();
+    [JsonIgnore]
     public List<string>? ColMissingValues { get; set; } = Enum.GetNames(typeof(ColMissingValue)).ToList();
 
 }

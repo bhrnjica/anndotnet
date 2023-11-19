@@ -12,8 +12,9 @@ namespace Anndotnet.App.Service
     public interface IProjectService
     {
        
-        ProjectModel LoadProject(string         path);
-        MlModel      LoadMlModel(string         path);
-        DataFrame    FromDataParser(DataParser? projectParser);
+        Task<ProjectModel> LoadProjectAsync(string       path,          string currentDir = "");
+        Task<bool>         SaveProjectAsync(ProjectModel project,  NavigationItem item = null);
+        MlModel            LoadMlModel(string            path,          string currentDir = "");
+        DataFrame          FromDataParser(DataParser?    projectParser, string currentDir = "");
     }
 }

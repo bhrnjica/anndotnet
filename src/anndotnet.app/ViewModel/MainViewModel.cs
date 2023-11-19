@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,8 @@ public partial class MainViewModel : BaseViewModel
     private readonly AppModel        _appModel;
     private readonly IProjectService _projectService;
     private readonly INavigationService _navigationService;
+    private readonly IDialogService _dialogService;
+
 
     [ObservableProperty]
     private ObservableCollection<NavigationItem> _treeNavigationItems = new ();
@@ -39,11 +42,12 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     private Control? _content;
 
-    public MainViewModel(IProjectService projectService, INavigationService navigationService, AppModel appModel)
+    public MainViewModel(IProjectService projectService, INavigationService navigationService, AppModel appModel, IDialogService dialogService)
     {
         _projectService = projectService;
         _navigationService = navigationService;
         _appModel = appModel;
+        _dialogService = dialogService;
 
         WeakReferenceMessenger.Default.Register<InsertNavigationItemMessage>(this, (r, m) =>
         {
@@ -62,7 +66,7 @@ public partial class MainViewModel : BaseViewModel
 
     private void OnInsertNavigationItem(NavigationItem itm)
     {
-        var navItm = TreeNavigationItems.FirstOrDefault(x => string.Equals(x.Name, itm.Name));
+        var navItm = TreeNavigationItems.FirstOrDefault(x => string.Equals(x, itm));
 
         if (navItm == null)
         {
@@ -96,8 +100,11 @@ public partial class MainViewModel : BaseViewModel
         }
         else if (value.ItemType == ItemType.Project)
         {
-            var projectModel = _projectService.LoadProject(value.Link!);
-            
+            var task = _projectService.LoadProjectAsync(value.Link!, value.StartDir);
+            task.Wait();
+            var projectModel = task.Result;
+            projectModel.Id=value.Id;
+           
             var projectView = app.Services.GetRequiredService<ProjectView>();
             var projectViewModel = app.Services.GetRequiredService<ProjectViewModel>();
 
@@ -106,7 +113,7 @@ public partial class MainViewModel : BaseViewModel
         }
         else if (value.ItemType == ItemType.Model)
         {
-            var mlModel = _projectService.LoadMlModel(value.Link!);
+            var mlModel = _projectService.LoadMlModel(value.Link!, value.StartDir);
 
             var mlModelViewModel = app.Services.GetRequiredService<MlModelViewModel>();
             var modelView = app.Services.GetRequiredService<MlModelView>();
@@ -141,11 +148,27 @@ public partial class MainViewModel : BaseViewModel
     [RelayCommand]
     private async Task OpenExistingProjectAsync()
     {
-        var box = MessageBoxManager
-           .GetMessageBoxStandard(_appModel.AppFullName, "Open Existing project", ButtonEnum.YesNo);
 
-        var result = await box.ShowAsync();
+        var file = await _dialogService.FileOpen("Open Project file", "(.ann)");
+
+        if (file == null)
+        {
+            await Task.CompletedTask;
+            return;
+        }
+
+        if (file is null)
+        {
+            throw new Exception("File is null");
+        }
+
+        NavigationItem itm = _navigationService.CreateNavigationItem(file.Path);
+        
+        OnInsertNavigationItem(itm);
     }
+
+
+    
 
     [RelayCommand]
     private async Task SaveCurrentProjectAsync()

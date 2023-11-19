@@ -34,13 +34,11 @@ namespace Anndotnet.App.Service
             return new()
                    {
                        Name = "Iris",
-                       Link = "assets-projects/iris",
+                       Link = "assets-projects/iris/iris",
                        IsExpandedEx = true,
-                       
+                       StartDir = Environment.CurrentDirectory,
                        ItemType = ItemType.Project,
-
                        Icon = "/assets/images/experiment.png",
-
                        ModelItems = new()
                                     {
                                         new ()
@@ -60,5 +58,37 @@ namespace Anndotnet.App.Service
                                     }
                    };
         }
+
+        public NavigationItem CreateNavigationItem(Uri filePath)
+        {
+
+            var dirPath = Path.GetDirectoryName(filePath.AbsolutePath);
+            var projectFileName = Path.GetFileNameWithoutExtension(filePath.AbsolutePath);
+            var mlFiles = Directory.GetFiles(dirPath, "*.mlconfig");
+
+            var navItm = new NavigationItem();
+            navItm.Name = projectFileName;
+            navItm.Link = projectFileName;
+            navItm.StartDir = dirPath;
+            navItm.IsExpandedEx = true;
+            navItm.ItemType = ItemType.Project;
+            navItm.Icon = "/assets/images/experiment.png";
+            navItm.ModelItems = new List<NavigationItem>();
+            foreach (var mlName in mlFiles.Select(x => Path.GetFileNameWithoutExtension(x)))
+            {
+                var nav = new NavigationItem()
+                          {
+                              Name = mlName,
+                              Icon = "/assets/images/model.png",
+                              Link = mlName,
+                              ItemType = ItemType.Model,
+                              StartDir = dirPath
+                          };
+                navItm.ModelItems.Add(nav);
+            }
+
+            return navItm;
+        }
+
     }
 }

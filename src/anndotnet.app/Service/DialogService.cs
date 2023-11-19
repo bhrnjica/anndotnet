@@ -43,17 +43,17 @@ public class DialogService : IDialogService
                                                               FilePickerFileTypes.All
                                                           };
 
-    private readonly MainWindow _mainWindow;
 
-    public DialogService(MainWindow mainWindow)
+    public DialogService()
     {
-        _mainWindow = mainWindow;
     }
 
     public async Task<IStorageFile?> FileOpen(string title, string extension)
     {
+        var app = Application.Current as App;
+        var mainWnd = app.Services.GetRequiredService<MainWindow>();
         var fileType = ResolveFileType(extension);
-        var topLevel = TopLevel.GetTopLevel(_mainWindow);
+        var topLevel = TopLevel.GetTopLevel(mainWnd);
 
         if (topLevel == null)
         {
@@ -83,7 +83,10 @@ public class DialogService : IDialogService
     public async Task<IStorageFile> FileSave(string title, string extension, string suggestedFileName)
     {
         var fileType = ResolveFileType(extension);
-        var topLevel = TopLevel.GetTopLevel(_mainWindow);
+
+        var app = Application.Current as App;
+        var mainWnd = app.Services.GetRequiredService<MainWindow>();
+        var topLevel = TopLevel.GetTopLevel(mainWnd);
 
         if (topLevel == null)
         {

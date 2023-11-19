@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Anndotnet.Shared.Entities;
 
@@ -16,8 +17,10 @@ public class ProjectModel
     public DataParser?                     Parser      { get; set; }
     public List<HeaderInfo>?               Metadata    { get; set; }
     public ObservableCollection<MlConfig>? MlConfigs   { get; set; }
+
+    [JsonIgnore]
     public string?                         Path        { get; set; }
-    public string?                         DataPath   { get; set; }
+
 }
 
 public class MlConfig

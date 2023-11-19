@@ -7,6 +7,7 @@ namespace Anndotnet.App.Model;
 
 public class NavigationItem : IEquatable<NavigationItem>
 {
+    public Guid Id { get; set; }    
     public string? Name { get; set; }
     public string? Link { get; set; }
 
@@ -15,9 +16,15 @@ public class NavigationItem : IEquatable<NavigationItem>
 
     public ItemType ItemType   { get; set; }
     public bool     IsSelected { get; set; }    
+    public string   StartDir   { get; set; }
 
     public List<NavigationItem>? ModelItems { get; set; }
 
+
+    public NavigationItem()
+    {
+        Id= Guid.NewGuid();
+    }
     public bool Equals(NavigationItem? other)
     {
         if(other == null)
@@ -25,7 +32,7 @@ public class NavigationItem : IEquatable<NavigationItem>
             return false;
         } 
         
-        if (string.Equals(Name, other.Name))
+        if (string.Equals(Id, other.Id))
         {
             return true;
         }

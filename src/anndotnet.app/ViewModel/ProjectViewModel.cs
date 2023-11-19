@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Anndotnet.App.Model;
 using Anndotnet.App.Service;
@@ -23,9 +24,11 @@ namespace Anndotnet.App.ViewModel;
 
 public partial class ProjectViewModel : BaseViewModel
 {
-    private readonly             IProjectService _projectService;
-    private readonly             IDialogService  _dlgService;
-    private readonly             IWindowService  _wndService;
+    private readonly IProjectService _projectService;
+    private readonly IDialogService  _dlgService;
+    private readonly IWindowService  _wndService;
+    private readonly MainViewModel  _mainViewModel;
+
     [ObservableProperty] private ProjectModel?   _project;
     [ObservableProperty] private ObservableCollection<HeaderInfo>? _metadata = new ObservableCollection<HeaderInfo>();
     [ObservableProperty] private int? _selectedSummaryIndex;
@@ -34,11 +37,13 @@ public partial class ProjectViewModel : BaseViewModel
 
     public ProjectViewModel(IProjectService projectService, 
                             IDialogService dlgService, 
-                            IWindowService wndService)
+                            IWindowService wndService,
+                            MainViewModel mainViewMode)
     {
         _projectService = projectService;
         _dlgService = dlgService;
         _wndService = wndService;
+        _mainViewModel = mainViewMode;
     }
 
     public async Task OnLoadedAsync()
@@ -48,19 +53,32 @@ public partial class ProjectViewModel : BaseViewModel
 
     public async Task OnUnLoadedAsync()
     {
-        await Task.CompletedTask;
+        await SaveProjectAsync();
         return;
+    }
+
+    private async Task<bool> SaveProjectAsync()
+    {
+        var itm = _mainViewModel.TreeNavigationItems.First(x => x.Id == Project.Id);
+        return await _projectService.SaveProjectAsync(Project,itm );
+
     }
 
     partial void OnProjectChanged(ProjectModel? oldValue, ProjectModel? newValue)
     {
-        LoadData();
+        LoadProject();
     }
 
-    void LoadData()
+    void LoadProject()
     {
-        //unzip the file
-        var rawData = _projectService.FromDataParser(projectParser: Project?.Parser);
+
+        var rawData = _projectService.FromDataParser(projectParser: Project?.Parser, _mainViewModel?.SelectedItem?.StartDir!);
+
+        if (Project!.Metadata == null || Project.Metadata.Count == 0)
+        {
+            var labelColumn = rawData.Columns.Last();
+            Project.Metadata = rawData.MetadataFromDataFrame(labelColumn); 
+        }
 
         Metadata?.Clear();
         var list = Project?.Metadata;
@@ -115,7 +133,7 @@ public partial class ProjectViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task LoadProjectDataAsync()
+    private async Task LoadExperimentDataAsync()
     {
         
         //var file = await _dlgService.FileOpen("Load data file", "(.txt)");
@@ -137,16 +155,37 @@ public partial class ProjectViewModel : BaseViewModel
         // Write some content to the file.
         var strData = await streamReader.ReadToEndAsync();
 
-        // var project = _projectService.ParseData(file.);
+ 
 
         var app = Avalonia.Application.Current as Anndotnet.App.App;
         var dlgViewModel = app.Services.GetRequiredService<DataParserViewModel>();
         var dlgView = app.Services.GetRequiredService<DataParserView>();
 
         dlgViewModel.OriginData = strData;
-        dlgViewModel.DataText.Text = strData;
+       dlgViewModel.DataText.Text = strData;
         dlgView.DataContext = dlgViewModel;
-        var result = await _wndService.ShowDialog(dlgView,dlgViewModel);
+
+        var result = await _wndService.ShowDialog<DataParserViewModel, DataParserView>(dlgViewModel, dlgView);
+
+        if (result != null && result.Value)//load experimental data to the project
+        {
+            if (Project != null)//this should always be the true
+            {
+                var dataPath = Path.Combine(_mainViewModel.SelectedItem.StartDir, Path.GetFileName(file.Path.AbsolutePath));
+                var f1= new FileInfo(dataPath);
+                var f2 = new FileInfo(file.Path.AbsolutePath);
+                if (!string.Equals(f1.FullName, f2.FullName, StringComparison.InvariantCulture))
+                {
+                    File.Copy(file.Path.AbsolutePath, dataPath,true);
+                }
+
+                Project.Parser = dlgViewModel.DataParser;
+                Project.Parser.FileName= Path.GetFileName(file.Path.AbsolutePath);
+               //Project.DataPath = dataPath;
+                Project.Metadata = null;
+                LoadProject();
+            }
+        }
     }
 
     private string ResolveColType(ColType colType)
