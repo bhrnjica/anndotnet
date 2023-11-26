@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ using Anndotnet.Core.Extensions;
 using Anndotnet.Shared.Entities;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Daany;
@@ -25,18 +28,18 @@ namespace Anndotnet.App.ViewModel;
 public partial class ProjectViewModel : BaseViewModel
 {
     private readonly IProjectService _projectService;
-    private readonly IDialogService  _dlgService;
-    private readonly IWindowService  _wndService;
-    private readonly MainViewModel  _mainViewModel;
+    private readonly IDialogService _dlgService;
+    private readonly IWindowService _wndService;
+    private readonly MainViewModel _mainViewModel;
 
-    [ObservableProperty] private ProjectModel?   _project;
+    [ObservableProperty] private ProjectModel? _project;
     [ObservableProperty] private ObservableCollection<HeaderInfo>? _metadata = new ObservableCollection<HeaderInfo>();
     [ObservableProperty] private int? _selectedSummaryIndex;
     [ObservableProperty] private int? _selectedDataIndex;
     [ObservableProperty] private bool? _showParserDataDialog;
 
-    public ProjectViewModel(IProjectService projectService, 
-                            IDialogService dlgService, 
+    public ProjectViewModel(IProjectService projectService,
+                            IDialogService dlgService,
                             IWindowService wndService,
                             MainViewModel mainViewMode)
     {
@@ -53,40 +56,96 @@ public partial class ProjectViewModel : BaseViewModel
 
     public async Task OnUnLoadedAsync()
     {
-        await SaveProjectAsync();
-        return;
+        await Task.CompletedTask;
     }
 
-    private async Task<bool> SaveProjectAsync()
+    private async Task<bool> SaveProjectAsync(ProjectModel? oldProject)
     {
-        var itm = _mainViewModel.TreeNavigationItems.First(x => x.Id == Project.Id);
-        return await _projectService.SaveProjectAsync(Project,itm );
+        if (oldProject == null)
+        {
+            return false;
+        }
 
+
+        var itm = _mainViewModel.TreeNavigationItems?.Where(x => x.Id.Equals(oldProject?.Id)).FirstOrDefault() ?? throw new NullReferenceException("navigationItem");
+
+        var proj = oldProject ?? throw new ArgumentNullException(nameof(oldProject));
+        var itmVal = itm ?? throw new ArgumentNullException(nameof(oldProject));
+
+        return await _projectService.SaveProjectAsync(oldProject, itmVal);
     }
 
     partial void OnProjectChanged(ProjectModel? oldValue, ProjectModel? newValue)
     {
-        LoadProject();
+        var app = Avalonia.Application.Current as Anndotnet.App.App;
+        if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow.Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Wait);
+
+            try
+            {
+                if (oldValue != null)
+                {
+                    SaveProjectAsync(oldValue!).ConfigureAwait(false);
+                }
+
+                if (newValue != null)
+                {
+                    LoadProject(newValue!);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                desktop.MainWindow.Cursor = null;
+            }
+        }
+
     }
 
-    void LoadProject()
+    void LoadProject(ProjectModel? project)
     {
-
-        var rawData = _projectService.FromDataParser(projectParser: Project?.Parser, _mainViewModel?.SelectedItem?.StartDir!);
-
-        if (Project!.Metadata == null || Project.Metadata.Count == 0)
+        if (project == null)
         {
-            var labelColumn = rawData.Columns.Last();
-            Project.Metadata = rawData.MetadataFromDataFrame(labelColumn); 
+            return;
+        }
+
+        var itm = _mainViewModel.TreeNavigationItems?.Where(x => x.Id.Equals(project.Id)).FirstOrDefault();
+
+        if (itm == null)
+        {
+            throw new InvalidEnumArgumentException(nameof(itm));
         }
 
         Metadata?.Clear();
-        var list = Project?.Metadata;
+
+        if (project.Parser == null)
+        {
+            return;
+        }
+
+
+        var relativeDir = Path.GetDirectoryName(itm.Link) ?? throw new ArgumentNullException("Path.GetDirectoryName(itm.Link)");
+
+        var currentDir = Path.Combine(itm!.StartDir, relativeDir);
+
+        var rawData = _projectService.FromDataParser(projectParser: project.Parser, currentDir);
+
+        if (project.Metadata == null || project.Metadata.Count == 0)
+        {
+            var labelColumn = rawData.Columns.Last();
+            project.Metadata = rawData.MetadataFromDataFrame(labelColumn);
+        }
+        var list = project?.Metadata;
 
         //create description from rawData and add to summary
         var description = rawData.Describe(false, rawData.Columns.ToArray());
         var headerSummary = description.Index.Select(x => x.ToString()).ToList();
-        var dataSummary = description.GetEnumerator();
+        var dataSummary = description.GetEnumerator().ToList();
         if (dataSummary == null)
         {
             throw new Exception("Data summary is null");
@@ -100,7 +159,7 @@ public partial class ProjectViewModel : BaseViewModel
             MissingValue = "Missing Handler: ",
             Data = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" },
             SummaryData = headerSummary!,
-            SummaryHeader= "Summary",
+            SummaryHeader = "Summary",
             ColMissingValues = new List<string> { },
             ColTypes = new List<string> { },
             ColMlTypes = new List<string> { },
@@ -116,7 +175,7 @@ public partial class ProjectViewModel : BaseViewModel
             string? colName = col.Name;
             if (string.IsNullOrEmpty(colName))
             {
-                throw new Exception("Column name is empty");    
+                throw new Exception("Column name is empty");
             }
 
             col.Data = rawData[colName].Take(10).Select(x => x.ToString()).ToList()!;
@@ -135,18 +194,14 @@ public partial class ProjectViewModel : BaseViewModel
     [RelayCommand]
     private async Task LoadExperimentDataAsync()
     {
-        
+
         //var file = await _dlgService.FileOpen("Load data file", "(.txt)");
         var file = await _dlgService.FileOpen("Load data file", "data file");
 
         if (file == null)
         {
             await Task.CompletedTask;
-        }
-
-        if (file is null)
-        {
-            throw new Exception("File is null");    
+            return;
         }
 
         // Open writing stream from the file.
@@ -155,14 +210,14 @@ public partial class ProjectViewModel : BaseViewModel
         // Write some content to the file.
         var strData = await streamReader.ReadToEndAsync();
 
- 
+
 
         var app = Avalonia.Application.Current as Anndotnet.App.App;
         var dlgViewModel = app.Services.GetRequiredService<DataParserViewModel>();
         var dlgView = app.Services.GetRequiredService<DataParserView>();
 
         dlgViewModel.OriginData = strData;
-       dlgViewModel.DataText.Text = strData;
+        dlgViewModel.DataText.Text = strData;
         dlgView.DataContext = dlgViewModel;
 
         var result = await _wndService.ShowDialog<DataParserViewModel, DataParserView>(dlgViewModel, dlgView);
@@ -171,19 +226,20 @@ public partial class ProjectViewModel : BaseViewModel
         {
             if (Project != null)//this should always be the true
             {
-                var dataPath = Path.Combine(_mainViewModel.SelectedItem.StartDir, Path.GetFileName(file.Path.AbsolutePath));
-                var f1= new FileInfo(dataPath);
-                var f2 = new FileInfo(file.Path.AbsolutePath);
+                var dataPath = Path.Combine(_mainViewModel.SelectedItem!.StartDir, Path.GetFileName(file.Path.LocalPath));
+                var f1 = new FileInfo(dataPath);
+                var f2 = new FileInfo(file.Path.LocalPath);
                 if (!string.Equals(f1.FullName, f2.FullName, StringComparison.InvariantCulture))
                 {
-                    File.Copy(file.Path.AbsolutePath, dataPath,true);
+                    File.Copy(file.Path.LocalPath, dataPath, true);
                 }
 
                 Project.Parser = dlgViewModel.DataParser;
-                Project.Parser.FileName= Path.GetFileName(file.Path.AbsolutePath);
-               //Project.DataPath = dataPath;
+                Project.Parser.FileName = Path.GetFileName(file.Path.LocalPath);
+                //reset metadata when the experimental data is loaded
                 Project.Metadata = null;
-                LoadProject();
+
+                LoadProject(Project);
             }
         }
     }

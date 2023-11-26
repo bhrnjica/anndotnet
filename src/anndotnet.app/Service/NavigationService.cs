@@ -21,6 +21,7 @@ namespace Anndotnet.App.Service
         {
             return new()
                    {
+                       Id = new Guid(1,2,3,4,5,6,7,8,9,10,11),
                        Name = "Home", 
                        Icon = "/assets/images/start.png", 
                        Link = "Home",
@@ -62,18 +63,23 @@ namespace Anndotnet.App.Service
         public NavigationItem CreateNavigationItem(Uri filePath)
         {
 
-            var dirPath = Path.GetDirectoryName(filePath.AbsolutePath);
-            var projectFileName = Path.GetFileNameWithoutExtension(filePath.AbsolutePath);
+            var dirPath = Path.GetDirectoryName(filePath.LocalPath);
+            var projectFileName = Path.GetFileNameWithoutExtension(filePath.LocalPath);
+
             var mlFiles = Directory.GetFiles(dirPath, "*.mlconfig");
 
-            var navItm = new NavigationItem();
-            navItm.Name = projectFileName;
-            navItm.Link = projectFileName;
-            navItm.StartDir = dirPath;
-            navItm.IsExpandedEx = true;
-            navItm.ItemType = ItemType.Project;
-            navItm.Icon = "/assets/images/experiment.png";
-            navItm.ModelItems = new List<NavigationItem>();
+            var navItm = new NavigationItem
+                         {
+                             Name = projectFileName,
+                             Link = projectFileName,
+                             StartDir = dirPath,
+                             IsExpandedEx = true,
+                             ItemType = ItemType.Project,
+                             Icon = "/assets/images/experiment.png",
+                             ModelItems = new List<NavigationItem>()
+                         };
+
+
             foreach (var mlName in mlFiles.Select(x => Path.GetFileNameWithoutExtension(x)))
             {
                 var nav = new NavigationItem()

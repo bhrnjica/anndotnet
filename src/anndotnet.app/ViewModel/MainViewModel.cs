@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Anndotnet.App.Message;
 using Anndotnet.App.Model;
@@ -54,13 +55,11 @@ public partial class MainViewModel : BaseViewModel
             OnInsertNavigationItem(m.Value);
         });
 
-        LoadStartPageAsync().Wait();
-
     }
 
     public async Task OnLoadedAsync()
     {
-
+ 
         await Task.CompletedTask;
     }
 
@@ -75,6 +74,17 @@ public partial class MainViewModel : BaseViewModel
         }
 
         SelectedItem = itm;
+    }
+
+    private void OnRemoveNavigationItem(NavigationItem itm)
+    {
+        var navItm = TreeNavigationItems.FirstOrDefault(x => string.Equals(x, itm));
+
+        if (navItm != null)
+        {
+            SelectedItem = TreeNavigationItems.First();
+            TreeNavigationItems.Remove(navItm);
+        }
     }
 
     partial void OnSelectedItemChanged(NavigationItem? value)
@@ -96,6 +106,15 @@ public partial class MainViewModel : BaseViewModel
 
         if (value.ItemType == ItemType.Start)
         {
+            //force the project to be saved on disk before starView is shown
+            var projectViewModel = app.Services.GetRequiredService<ProjectViewModel>();
+            projectViewModel.Project = null;
+
+            //force the project to be saved on disk before starView is shown
+            var mlConfigViewModel = app.Services.GetRequiredService<MlModelViewModel>();
+            mlConfigViewModel.MlModel = null;
+
+                        
             Content = app.Services.GetRequiredService<StartView>();
         }
         else if (value.ItemType == ItemType.Project)
@@ -113,6 +132,10 @@ public partial class MainViewModel : BaseViewModel
         }
         else if (value.ItemType == ItemType.Model)
         {
+            //force the project to be saved on disk before starView is shown
+            var projectViewModel = app.Services.GetRequiredService<ProjectViewModel>();
+            projectViewModel.Project = null;
+
             var mlModel = _projectService.LoadMlModel(value.Link!, value.StartDir);
 
             var mlModelViewModel = app.Services.GetRequiredService<MlModelViewModel>();
@@ -140,15 +163,46 @@ public partial class MainViewModel : BaseViewModel
     [RelayCommand]
     private async Task CreateNewProjectAsync()
     {
-        var box = MessageBoxManager
-           .GetMessageBoxStandard(_appModel.AppFullName, "Create new project", ButtonEnum.YesNo);
+        try
+        {
+            var folder = await _dialogService.OpenFolder("New Project Folder");
 
-        var result = await box.ShowAsync();
+            if (folder != null)
+            {
+                var files = folder.GetItemsAsync();
+
+                //check if folder is empty
+                await foreach (var f in files)
+                {
+                    throw new Exception("Please select an empty folder.");
+                }
+                //create ann project file in the directory
+                var file = await folder.CreateFileAsync("ann_new_project.ann");
+
+               
+                var itm = _navigationService.CreateNavigationItem(file!.Path);
+                var newProject = new ProjectModel
+                                 {
+                                     Name = Path.GetFileNameWithoutExtension(file.Path.LocalPath)
+                                 };
+
+                await _projectService.SaveProjectAsync(newProject, itm);
+                OnInsertNavigationItem(itm);
+            }
+        }
+        catch (Exception e)
+        {
+            var box = MessageBoxManager
+               .GetMessageBoxStandard(_appModel.AppFullName, e.Message, ButtonEnum.Ok);
+
+            var result = await box.ShowAsync();
+        }
+       
+        
     }
     [RelayCommand]
     private async Task OpenExistingProjectAsync()
     {
-
         var file = await _dialogService.FileOpen("Open Project file", "(.ann)");
 
         if (file == null)
@@ -173,30 +227,56 @@ public partial class MainViewModel : BaseViewModel
     [RelayCommand]
     private async Task SaveCurrentProjectAsync()
     {
-        var box = MessageBoxManager
-           .GetMessageBoxStandard(_appModel.AppFullName, "Save current project", ButtonEnum.YesNo);
+        var folder = await _dialogService.OpenFolder("Save current project to different location");
 
-        var result = await box.ShowAsync();
+        if (folder != null)
+        {
+            var files = folder.GetItemsAsync();
+
+            //check if folder is empty
+            await foreach (var f in files)
+            {
+                throw new Exception("Please select an empty folder.");
+            }
+            //TO DO
+            //1.) copy all content from the current folder to the new folder
+            //2.) close current project 
+            //3) open saved project
+
+
+            ////create ann project file in the directory
+            //var file = await folder.CreateFileAsync("ann_new_project.ann");
+
+
+            //var itm = _navigationService.CreateNavigationItem(file!.Path);
+            //var newProject = new ProjectModel
+            //                 {
+            //                     Name = Path.GetFileNameWithoutExtension(file.Path.LocalPath)
+            //                 };
+
+            //await _projectService.SaveProjectAsync(newProject, itm);
+            //OnInsertNavigationItem(itm);
+        }
     }
 
     [RelayCommand]
     private async Task CloseCurrentProjectAsync()
     {
-        var mp = new MessageBoxCustomParams()
-                 {
-                     Width = 450, Height = 200,
-                     WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                     ContentTitle = _appModel.AppFullName,
-                     ContentMessage = "Close current project",
-                     ButtonDefinitions = new ButtonDefinition[1]{new ButtonDefinition(){Name = "Ok", IsDefault = true}},
-                     Icon = Icon.Info
-                 };
+        if (SelectedItem!.Id.Equals(new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)))
+        {
+            return;
+        }
 
+        if (SelectedItem!.ItemType == ItemType.Model)
+        {
+            var box = MessageBoxManager
+               .GetMessageBoxStandard(_appModel.AppFullName, "The selected mlconfig file is part of the Project. Select project to close.", ButtonEnum.Ok);
 
-        var box = MessageBoxManager.GetMessageBoxCustom(mp);
-          
+            var result = await box.ShowAsync();
+            return;
+        }
 
-        var result = await box.ShowAsync();
+        OnRemoveNavigationItem(SelectedItem);
 
     }
 }

@@ -13,10 +13,12 @@ using Avalonia.Platform.Storage;
 using Daany;
 using Avalonia.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
+using Avalonia.Controls.ApplicationLifetimes;
 namespace Anndotnet.App.Service;
 
 public class DialogService : IDialogService
 {
+    private TopLevel? _topLevel;
     private readonly List<FilePickerFileType> _fileTypes = new List<FilePickerFileType>
                                                           {
                                                               new("Project file (.ann)")
@@ -46,26 +48,21 @@ public class DialogService : IDialogService
 
     public DialogService()
     {
+        
     }
 
     public async Task<IStorageFile?> FileOpen(string title, string extension)
     {
-        var app = Application.Current as App;
-        var mainWnd = app.Services.GetRequiredService<MainWindow>();
         var fileType = ResolveFileType(extension);
-        var topLevel = TopLevel.GetTopLevel(mainWnd);
 
-        if (topLevel == null)
-        {
-            throw new InvalidOperationException("Could not find top level.");   
-        }
+        CheckTopLevelInstance();
 
-        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-                                                                       {
-                                                                           Title = title,
-                                                                           AllowMultiple = false,
+        var files = await _topLevel!.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+                                                                        {
+                                                                            Title = title,
+                                                                            AllowMultiple = false,
                                                                            
-                                                                           FileTypeFilter = fileType,
+                                                                            FileTypeFilter = fileType,
                                                                         });
 
         if (files.Count >= 1)
@@ -84,27 +81,44 @@ public class DialogService : IDialogService
     {
         var fileType = ResolveFileType(extension);
 
-        var app = Application.Current as App;
-        var mainWnd = app.Services.GetRequiredService<MainWindow>();
-        var topLevel = TopLevel.GetTopLevel(mainWnd);
-
-        if (topLevel == null)
-        {
-            throw new InvalidOperationException("Could not find top level.");
-        }
+        CheckTopLevelInstance();
 
         // Start async operation to open the dialog.
-        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-                                                                      { 
-                                                                          Title = title,
-                                                                          DefaultExtension = extension,
-                                                                          SuggestedFileName = suggestedFileName,
-                                                                          ShowOverwritePrompt = true,
+        var file = await _topLevel!.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                                                                       { 
+                                                                           Title = title,
+                                                                           DefaultExtension = extension,
+                                                                           SuggestedFileName = suggestedFileName,
+                                                                           ShowOverwritePrompt = true,
                                                                           
-                                                                          FileTypeChoices = fileType,
-                                                                      });
+                                                                           FileTypeChoices = fileType,
+                                                                       });
         return file!;
         
+    }
+
+    private void CheckTopLevelInstance()
+    {
+        if (_topLevel == null)
+        {
+            var app = Application.Current as App;
+            if (app?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lf)
+            {
+                _topLevel = TopLevel.GetTopLevel(lf.MainWindow);
+            }
+        }
+    }
+
+    public async Task<IStorageFolder> OpenFolder(string title)
+    {
+        CheckTopLevelInstance();
+
+        var folder = await _topLevel!.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+                                                                           {
+                                                                               Title = title,
+                                                                               AllowMultiple = false
+                                                                           });
+        return folder.FirstOrDefault()!;
     }
 
     private IReadOnlyList<FilePickerFileType> ResolveFileType(string extension)

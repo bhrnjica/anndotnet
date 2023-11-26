@@ -7,6 +7,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using Anndotnet.App.Extensions;
 
 namespace Anndotnet.App;
@@ -42,7 +43,12 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-        
+
+        var mvm = Services?.GetRequiredService<MainViewModel>() ?? throw new NullReferenceException(nameof(MainViewModel));
+
+        //send command to load Start Page
+        mvm.LoadStartPageCommand.ExecuteAsync(null).Wait();
+
     }
 
     private IServiceProvider? ConfigureServices()

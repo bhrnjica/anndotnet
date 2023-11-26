@@ -140,7 +140,7 @@ public partial class DataParserViewModel : DialogBaseViewModel
 
     private void CreateHeader()
     {
-        if (!HasHeader)
+        if (DataParser.Header == null)
         {
             var firstValidLine = OriginData.Split(Environment.NewLine).First(x => !x.StartsWith("!"));
 

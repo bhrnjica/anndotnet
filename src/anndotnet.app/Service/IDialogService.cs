@@ -16,5 +16,7 @@ namespace Anndotnet.App.Service
 
         Task<IStorageFile?> FileOpen(string title, string extension);
         Task<IStorageFile>  FileSave(string title, string extension, string suggestedFileName);
+
+        public Task<IStorageFolder> OpenFolder(string title);
     }
 }

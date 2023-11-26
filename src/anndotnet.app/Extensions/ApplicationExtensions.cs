@@ -23,7 +23,7 @@ namespace Anndotnet.App.Extensions
         }
         public static void AddViews(this IServiceCollection services)
         {
-            services.AddSingleton<DataParserView>();
+            services.AddTransient<DataParserView>();
             services.AddSingleton<StartView>();
             services.AddSingleton<ProjectView>();
             services.AddSingleton<MlModelView>();
@@ -39,7 +39,7 @@ namespace Anndotnet.App.Extensions
         public static void AddViewModels(this IServiceCollection services)
         {
             
-            services.AddSingleton<DataParserViewModel>();
+            services.AddTransient<DataParserViewModel>();
             services.AddSingleton<DialogBaseViewModel>();
             services.AddSingleton<MlModelViewModel>();
             services.AddSingleton<StartViewModel>();

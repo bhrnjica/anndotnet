@@ -12,7 +12,7 @@ namespace Anndotnet.App.Model;
 public class ProjectModel
 {
     public Guid                            Id          { get; set; }
-    public string                          Name        { get; set; } = string.Empty;
+    public string                          Name        { get; set; } = "New_Project";
     public string?                         Description { get; set; }
     public DataParser?                     Parser      { get; set; }
     public List<HeaderInfo>?               Metadata    { get; set; }
