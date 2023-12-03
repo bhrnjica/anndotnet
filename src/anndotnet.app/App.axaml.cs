@@ -42,6 +42,7 @@ public partial class App : Application
             desktop.MainWindow = mainWindow;
         }
 
+
         base.OnFrameworkInitializationCompleted();
 
         var mvm = Services?.GetRequiredService<MainViewModel>() ?? throw new NullReferenceException(nameof(MainViewModel));

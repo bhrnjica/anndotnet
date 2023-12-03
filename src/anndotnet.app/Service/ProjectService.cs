@@ -99,5 +99,24 @@ namespace Anndotnet.App.Service
             return DataFrame.FromCsv(filePath: fullPath, sep: parser.ColumnSeparator!, names: colNames,
                 dformat: parser.DateFormat!, missingValues: parser.MissingValueSymbol!, colTypes: null!, skipLines: parser.SkipLines);
         }
+
+        public async Task<bool> CopyProjectAsync(NavigationItem? itm, string targetPath)
+        {
+            var sourcePath = Path.GetDirectoryName(Path.Combine(itm.StartDir, itm.Link));
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
+            }
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+            }
+
+            await Task.CompletedTask;
+            return true;
+        }
     }
 }

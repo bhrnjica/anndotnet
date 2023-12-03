@@ -15,7 +15,9 @@ namespace Anndotnet.App.Extensions
 {
     public static class ApplicationExtensions
     {
-        public static (TView view, TViewModel viewModel) GetRequiredViewModelView<TView, TViewModel>(this IServiceProvider svcProvider) where TView : UserControl where TViewModel : BaseViewModel
+        public static (TView view, TViewModel viewModel) GetRequiredViewModelView<TView, TViewModel>(this IServiceProvider svcProvider)
+            where TView : UserControl 
+            where TViewModel : BaseViewModel
         {
             var view = svcProvider.GetRequiredService<TView>();
             var viewModel = svcProvider.GetRequiredService<TViewModel>();
@@ -23,7 +25,9 @@ namespace Anndotnet.App.Extensions
         }
         public static void AddViews(this IServiceCollection services)
         {
+            services.AddTransient<ProjectSettingsView>();
             services.AddTransient<DataParserView>();
+
             services.AddSingleton<StartView>();
             services.AddSingleton<ProjectView>();
             services.AddSingleton<MlModelView>();
@@ -31,6 +35,7 @@ namespace Anndotnet.App.Extensions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<IWindowService, WindowService>();
+
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IProjectService, ProjectService>();
@@ -38,8 +43,9 @@ namespace Anndotnet.App.Extensions
 
         public static void AddViewModels(this IServiceCollection services)
         {
-            
+            services.AddTransient<ProjectSettingsViewModel>();
             services.AddTransient<DataParserViewModel>();
+
             services.AddSingleton<DialogBaseViewModel>();
             services.AddSingleton<MlModelViewModel>();
             services.AddSingleton<StartViewModel>();

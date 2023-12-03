@@ -15,7 +15,7 @@
         x:DataType="viewModel:MainViewModel"
         x:CompileBindings="True"
         Margin="2,2"
-        Title="ANNdotNET v2.0">
+        Title="{Binding AppName}">
 	<Interaction.Behaviors>
         <EventTriggerBehavior EventName="Loaded">
             <CallMethodAction TargetObject="{Binding}"

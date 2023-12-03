@@ -25,11 +25,11 @@ namespace Anndotnet.App.ViewModel;
 
 public partial class MainViewModel : BaseViewModel
 {
-    private readonly AppModel        _appModel;
-    private readonly IProjectService _projectService;
+    private readonly AppModel           _appModel;
+    private readonly IProjectService    _projectService;
     private readonly INavigationService _navigationService;
-    private readonly IDialogService _dialogService;
-
+    private readonly IDialogService     _dialogService;
+    private readonly IWindowService     _wndService;
 
     [ObservableProperty]
     private ObservableCollection<NavigationItem> _treeNavigationItems = new ();
@@ -43,7 +43,10 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     private Control? _content;
 
-    public MainViewModel(IProjectService projectService, INavigationService navigationService, AppModel appModel, IDialogService dialogService)
+    [ObservableProperty] 
+    private string _appName = String.Empty;
+ 
+    public MainViewModel(IProjectService projectService, INavigationService navigationService, AppModel appModel, IDialogService dialogService, IWindowService wndService)
     {
         _projectService = projectService;
         _navigationService = navigationService;
@@ -54,12 +57,11 @@ public partial class MainViewModel : BaseViewModel
         {
             OnInsertNavigationItem(m.Value);
         });
-
+        _wndService = wndService;   
     }
 
     public async Task OnLoadedAsync()
     {
- 
         await Task.CompletedTask;
     }
 
@@ -74,6 +76,7 @@ public partial class MainViewModel : BaseViewModel
         }
 
         SelectedItem = itm;
+       
     }
 
     private void OnRemoveNavigationItem(NavigationItem itm)
@@ -148,9 +151,11 @@ public partial class MainViewModel : BaseViewModel
         {
             //here comes more views
         }
+
+        AppName = _appModel.AppFullName + $" [{SelectedItem?.StartDir ?? " - "}] ";
     }
 
-   
+
 
     [RelayCommand]
     private async Task LoadStartPageAsync()
@@ -165,30 +170,43 @@ public partial class MainViewModel : BaseViewModel
     {
         try
         {
+            // TO DO: Make new project more customizable
+            //var app = Avalonia.Application.Current as Anndotnet.App.App;
+            //var dlgViewModel = app.Services.GetRequiredService<ProjectSettingsViewModel>();
+            //var dlgView = app.Services.GetRequiredService<ProjectSettingsView>();
+
+            ////dlgViewModel.OriginData = strData;
+            ////dlgViewModel.DataText.Text = strData;
+            ////dlgView.DataContext = dlgViewModel;
+
+            //var result = await _wndService.ShowDialog<ProjectSettingsViewModel, ProjectSettingsView>(dlgViewModel, dlgView);
+           
             var folder = await _dialogService.OpenFolder("New Project Folder");
 
-            if (folder != null)
+            if (folder == null)
             {
-                var files = folder.GetItemsAsync();
-
-                //check if folder is empty
-                await foreach (var f in files)
-                {
-                    throw new Exception("Please select an empty folder.");
-                }
-                //create ann project file in the directory
-                var file = await folder.CreateFileAsync("ann_new_project.ann");
-
-               
-                var itm = _navigationService.CreateNavigationItem(file!.Path);
-                var newProject = new ProjectModel
-                                 {
-                                     Name = Path.GetFileNameWithoutExtension(file.Path.LocalPath)
-                                 };
-
-                await _projectService.SaveProjectAsync(newProject, itm);
-                OnInsertNavigationItem(itm);
+                return;
             }
+
+            var files = folder.GetItemsAsync();
+
+            //check if folder is empty
+            await foreach (var f in files)
+            {
+                throw new Exception("Please select an empty folder.");
+            }
+            //create ann project file in the directory
+            var file = await folder.CreateFileAsync("ann_new_project.ann");
+
+           
+            var itm = _navigationService.CreateNavigationItem(file!.Path);
+            var newProject = new ProjectModel
+                             {
+                                 Name = Path.GetFileNameWithoutExtension(file.Path.LocalPath)
+                             };
+
+            await _projectService.SaveProjectAsync(newProject, itm);
+            OnInsertNavigationItem(itm);
         }
         catch (Exception e)
         {
@@ -222,41 +240,51 @@ public partial class MainViewModel : BaseViewModel
     }
 
 
-    
-
     [RelayCommand]
     private async Task SaveCurrentProjectAsync()
     {
+        if (SelectedItem.ItemType == ItemType.Start)
+        {
+            var box = MessageBoxManager
+               .GetMessageBoxStandard(_appModel.AppFullName,"Start Page cannot be saved.", ButtonEnum.Ok);
+
+            var result = await box.ShowAsync();
+
+            return;
+        }
         var folder = await _dialogService.OpenFolder("Save current project to different location");
 
-        if (folder != null)
+        if (folder == null)
         {
-            var files = folder.GetItemsAsync();
-
-            //check if folder is empty
-            await foreach (var f in files)
-            {
-                throw new Exception("Please select an empty folder.");
-            }
-            //TO DO
-            //1.) copy all content from the current folder to the new folder
-            //2.) close current project 
-            //3) open saved project
-
-
-            ////create ann project file in the directory
-            //var file = await folder.CreateFileAsync("ann_new_project.ann");
-
-
-            //var itm = _navigationService.CreateNavigationItem(file!.Path);
-            //var newProject = new ProjectModel
-            //                 {
-            //                     Name = Path.GetFileNameWithoutExtension(file.Path.LocalPath)
-            //                 };
-
-            //await _projectService.SaveProjectAsync(newProject, itm);
-            //OnInsertNavigationItem(itm);
+            return;
         }
+
+        var files = folder.GetItemsAsync();
+
+        //check if folder is empty
+        await foreach (var f in files)
+        {
+            throw new Exception("Please select an empty folder.");
+        }
+
+        var navigationItem = SelectedItem ?? throw new ArgumentNullException(nameof(SelectedItem));
+
+        //1.) copy all content from the current folder to the new folder
+        _ = await _projectService.CopyProjectAsync(navigationItem, folder.Path.LocalPath);
+
+        
+        //2.) close current project 
+        await CloseCurrentProjectAsync();
+
+
+        //3) open saved project
+        var projectPath = Path.Combine(folder.Path.LocalPath, navigationItem.Link + ".ann");
+
+        NavigationItem itm = _navigationService.CreateNavigationItem(new Uri(projectPath));
+
+        OnInsertNavigationItem(itm);
+
+
     }
 
     [RelayCommand]

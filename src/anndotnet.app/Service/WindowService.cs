@@ -14,15 +14,14 @@ using Daany;
 using Avalonia.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
 using Anndotnet.App.ViewModel;
+using Avalonia.Controls.ApplicationLifetimes;
 namespace Anndotnet.App.Service;
 
 public class WindowService : IWindowService
 {
-    private readonly MainWindow _mainWindow;
-
-    public WindowService(MainWindow mainWindow)
+    public WindowService()
     {
-        _mainWindow = mainWindow;
+
     }
 
     public async Task<bool?> ShowDialog<TViewModel, TView>(TViewModel viewModel, TView view) where TViewModel : DialogBaseViewModel
@@ -45,15 +44,17 @@ public class WindowService : IWindowService
                     MinHeight = 400,
                     MaxWidth = 1200,
                     MaxHeight = 900,
-                    
-                    
-                };
+        };
 
         viewModel.DialogWnd=dlg;
-        
-        var retValue = await dlg.ShowDialog<bool?>(_mainWindow);
+
+        if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
+            throw new NullReferenceException();
+
+        var retValue = await dlg.ShowDialog<bool?>(desktop.MainWindow!);
         dlg.Close();
         return retValue;
+
     }
 }
 

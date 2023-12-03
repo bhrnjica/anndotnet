@@ -56,6 +56,12 @@
 	  <Folder Include="UserControls\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="View\ProjectSettingsView.axaml.cs">
+	    <DependentUpon>ProjectSettingsView.axaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 
 
 </Project>

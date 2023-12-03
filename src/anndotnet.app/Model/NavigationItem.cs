@@ -16,7 +16,7 @@ public class NavigationItem : IEquatable<NavigationItem>
 
     public ItemType ItemType   { get; set; }
     public bool     IsSelected { get; set; }    
-    public string   StartDir   { get; set; }
+    public string?  StartDir   { get; set; }
 
     public List<NavigationItem>? ModelItems { get; set; }
 
