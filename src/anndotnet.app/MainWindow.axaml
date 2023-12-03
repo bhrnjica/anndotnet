@@ -51,7 +51,7 @@
             <Button Width="70"  Command="{Binding SaveCurrentProjectCommand}">
                 <StackPanel Orientation="Vertical">
                     <Image Height="32" Source="{SvgImage /assets/svg/save.svg}" />
-                    <TextBlock Text="Save"></TextBlock>
+                    <TextBlock Text="Save As"></TextBlock>
                 </StackPanel>
             </Button>
             <Button Width="70"  Command="{Binding CloseCurrentProjectCommand}">
