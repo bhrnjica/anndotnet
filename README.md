@@ -19,3 +19,11 @@ The project is still in development phase.
 
 ![image](https://github.com/bhrnjica/anndotnet/assets/1240016/9f18b2ad-f36d-42b1-80f3-3d0a1c20ac59)
 
+
+
+## How to start the Application
+
+- open solution `anndotnet-v2.sln` using Visual Studio or Visual Studio Code,
+- select `xanndotnet.cmd.tool` as start-up project, and
+- press F5.
+
