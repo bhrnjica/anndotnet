@@ -12,7 +12,7 @@ ANNdotNET is an open-source project written in C# that aims to simplify deep lea
 - deployment. 
 
 Unlike version v1 that is based on Microsoft CNTK, the AnndotNET v2 implements 
-ML Engine based on TorchSharp, allowing users to perform deep learning operations 
+ML Engine based on [TorchSharp](https://github.com/dotnet/TorchSharp), allowing users to perform deep learning operations 
 with the cutting - edge DL framework. 
 
 The project is still in development phase.
