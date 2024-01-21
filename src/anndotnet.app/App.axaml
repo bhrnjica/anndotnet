@@ -4,12 +4,38 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              x:Class="Anndotnet.App.App" 
-             RequestedThemeVariant="Dark">
+             RequestedThemeVariant="Light">
 	<!-- "Default" ThemeVariant follows system theme variant. 
 	    "Dark" or "Light" are other available options. -->
     <Application.Styles>
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <FluentTheme />
         <dialogHostAvalonia:DialogHostStyles />
+		<Style Selector="HeaderedContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border ZIndex="1" Padding="5,0,5,0" Background="Black" BorderThickness="0" Margin="20,0,0,0">
+                                <TextBlock TextBlock.FontWeight="Light" Text="{TemplateBinding Header}" />
+                            </Border>
+                            <Border Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,10,0,0"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1">
+                                <ContentPresenter Margin="10" Content="{TemplateBinding Content}" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Styles>
 </Application>

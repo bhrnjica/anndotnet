@@ -35,11 +35,11 @@
 
     </Interaction.Behaviors>
 
-	    <Grid RowDefinitions="50,*,50" ColumnDefinitions="150,*,150">
+	    <Grid RowDefinitions="50,*,150" ColumnDefinitions="150,*,150">
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
 
-            <Button Command="{Binding LoadExperimentDataCommand}" CommandParameter="{Binding ElementName=wndProjectView.Parent}" Content="New" Width="100" Height="30" Margin="5"/>	
+            <Button Command="{Binding LoadExperimentDataCommand}" CommandParameter="{Binding ElementName=wndProjectView.Parent}" Content="Load Experimental data" Width="100" Height="30" Margin="5"/>	
 			<TextBlock Text="{Binding Project.Name}" FontSize="20" Margin="5"/>
             <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
 		</StackPanel>
@@ -96,6 +96,7 @@
 						<StackPanel Orientation="Horizontal" Spacing="1"></StackPanel>
 					</ItemsPanelTemplate>
 				</ItemsControl.ItemsPanel>
+
 				<ItemsControl.ItemTemplate>
 					<DataTemplate DataType="entities:HeaderInfo">
 						<Border Margin="0,0,0,0"
@@ -115,7 +116,7 @@
 
 									<Border Margin="0,0,0,0"
                                             Padding="1"
-                                            Background="Transparent">
+                                            Background="Gray">
 										<StackPanel Orientation="Vertical" Spacing="2">
 											<ComboBox SelectedIndex="{Binding ValueColumnType, Converter={StaticResource TypeToSelectedIndex}}"
                                                       ItemsSource="{Binding ColTypes}"
@@ -151,7 +152,7 @@
 										</DataTemplate>
 									</ListBox.ItemTemplate>
 								</ListBox>
-                                <TextBlock Text="{Binding SummaryHeader}" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding SummaryHeader}" TextAlignment="Center" FontWeight="Bold"/>
                                 <ListBox ItemsSource="{Binding SummaryData}"
                                          BorderThickness="1"
                                          SelectedIndex="{Binding ElementName=wndProjectView, Path=DataContext.SelectedSummaryIndex, FallbackValue=0}"
@@ -175,5 +176,8 @@
 			   
             </StackPanel>
         </ScrollViewer>
+            <HeaderedContentControl Grid.Row="0" Header="Visual Network designer"  BorderBrush="DarkMagenta" >
+
+            </HeaderedContentControl>
 	</Grid>
 </UserControl>

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\anndotnet.core\anndotnet.core.csproj" />
+    <ProjectReference Include="..\anndotnet.shared\anndotnet.shared.csproj" />
   </ItemGroup>
 
 

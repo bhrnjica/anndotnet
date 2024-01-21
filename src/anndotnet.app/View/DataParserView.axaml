@@ -21,7 +21,7 @@
         </EventTriggerBehavior>
 
     </Interaction.Behaviors>
-    <UserControl.Styles>
+    <!--<UserControl.Styles>
 		<Style Selector="HeaderedContentControl">
 			<Setter Property="Template">
 				<Setter.Value>
@@ -48,7 +48,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-	</UserControl.Styles>
+	</UserControl.Styles>-->
 	<Grid RowDefinitions="200,*,50">
 		<StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" >
 			<HeaderedContentControl Header="Common"  BorderBrush="DarkMagenta" >

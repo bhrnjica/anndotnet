@@ -28,6 +28,95 @@
             <Button Command="{Binding NewProjectCommand}" Content="New" Width="100" Height="30" Margin="5"/>
             <TextBlock Text="{Binding MlModel.Name}" FontSize="20" Margin="5"/>
             <TextBlock Text="{Binding Project.Description}" FontSize="20" Margin="5"/>
+       
+            <StackPanel Orientation="Horizontal">
+                <TabControl Margin="5" >
+                    <TabItem Header="Network">
+                        <Grid RowDefinitions="*,*,*" ColumnDefinitions="250,*">
+                            <HeaderedContentControl Grid.Row="0" Header="Data-set Property"  BorderBrush="DarkMagenta" >
+                                <TextBox Text="Number of columns:"></TextBox>
+                            </HeaderedContentControl>
+
+                            <HeaderedContentControl Grid.Row="1" Header="Input/Output Layer"  BorderBrush="DarkMagenta" >
+                                <StackPanel Orientation="Vertical">
+                                    <TextBox Text="Number of columns:"></TextBox>
+                                    <TextBox Text="Number of columns:"></TextBox>
+                                </StackPanel>
+                            </HeaderedContentControl>
+
+							<HeaderedContentControl Grid.Row="2" Header="Learning parameters"  BorderBrush="DarkMagenta" >
+                            <StackPanel Orientation="Vertical">
+								<StackPanel Orientation="Horizontal">
+                                    <Label> Learner: </Label>
+                                    <ComboBox>
+                                        <ComboBoxItem>SGD </ComboBoxItem>
+                                        <ComboBoxItem>Adam </ComboBoxItem>
+                                        <ComboBoxItem>FSA </ComboBoxItem>
+                                    </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label> Rate: </Label>
+                                        <TextBox Text="0.01"></TextBox>
+                                    </StackPanel>
+                                </StackPanel>
+                                
+								<StackPanel Orientation="Horizontal">
+                                    <Label> Loss: </Label>
+                                    <ComboBox>
+                                        <ComboBoxItem>SE </ComboBoxItem>
+                                        <ComboBoxItem>Binary Entropy </ComboBoxItem>
+                                        <ComboBoxItem>SoftMax Entropy  </ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label> Evaluation: </Label>
+                                    <ComboBox>
+                                        <ComboBoxItem>SE </ComboBoxItem>
+                                        <ComboBoxItem>MSE </ComboBoxItem>
+                                        <ComboBoxItem>RMSE </ComboBoxItem>
+                                        <ComboBoxItem>Accuracy</ComboBoxItem>
+                                        <ComboBoxItem>Error</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </HeaderedContentControl>
+
+                            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Orientation="Vertical">
+                                <HeaderedContentControl Grid.Row="0" Header="Visual Network designer"  BorderBrush="DarkMagenta" >
+                                   <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal" Spacing="2">
+                                        <ComboBox Width="150">
+									        <ComboBoxItem> Normalization </ComboBoxItem>
+									        <ComboBoxItem> Scale </ComboBoxItem>
+									        <ComboBoxItem> Dense </ComboBoxItem>
+									        <ComboBoxItem> LSTM </ComboBoxItem>
+									        <ComboBoxItem> Dropout </ComboBoxItem>
+									        <ComboBoxItem> Embedding </ComboBoxItem>
+									        <ComboBoxItem> Convolution </ComboBoxItem>
+									        <ComboBoxItem> Pooling </ComboBoxItem>
+									        <ComboBoxItem> Normalization </ComboBoxItem>
+                                        </ComboBox>
+                                        <Button Content="Add"></Button>
+                                        <Button Content="Insert"></Button>
+                                        <Button Content="Remove"></Button>
+                                        <Button Content="Graph"></Button>
+                                    </StackPanel>
+                                    <ListBox ></ListBox>
+                                   </StackPanel>
+                                </HeaderedContentControl>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Training">
+                        <TextBlock Margin="5">This is tab 2 content</TextBlock>
+                    </TabItem>
+                    <TabItem Header="Evaluation">
+                        <TextBlock Margin="5">This is tab 3 content</TextBlock>
+                    </TabItem>
+                    <TabItem Header="Test">
+                        <TextBlock Margin="5">This is tab 3 content</TextBlock>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
         </StackPanel>
-    </Grid>
+	</Grid>
 </UserControl>
