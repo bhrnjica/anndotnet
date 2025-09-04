@@ -22,6 +22,7 @@
 		<PackageReference Include="Daany.DataFrame.Ext" Version="2.0.0" />
 		<PackageReference Include="TorchAudio" Version="0.101.2" />
 		<PackageReference Include="TorchSharp" Version="0.101.2" />
+		<PackageReference Include="TorchSharp-cpu" Version="0.101.2" />
 		<PackageReference Include="TorchVision" Version="0.101.2" />
 	</ItemGroup>
 

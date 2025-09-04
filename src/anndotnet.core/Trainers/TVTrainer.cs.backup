@@ -1,0 +1,350 @@
+﻿////////////////////////////////////////////////////////////////////////////
+//           ANNdotNET - Deep Learning Tool on .NET Platform             //
+//                                                                       //
+//        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
+//                                                                       //
+//                 Licensed under the MIT License                        //
+//         See license section at https://github.com/bhrnjica/anndotnet  //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+using Anndotnet.Core.Util;
+using Daany.MathStuff.Random;
+using System.Runtime.CompilerServices;
+using System.Xml.Linq;
+using Anndotnet.Core.Data;
+using Anndotnet.Core.Entities;
+using Anndotnet.Core.Interfaces;
+using Anndotnet.Core.Mlconfig;
+using Anndotnet.Core.Extensions;
+using TorchSharp.Modules;
+
+[assembly: InternalsVisibleTo("anndotnet.test")]
+namespace Anndotnet.Core.Trainers;
+
+// Optimized result accumulator for better memory management
+internal class TensorAccumulator : IDisposable
+{
+    private List<Tensor> _predictions = new();
+    private List<Tensor> _targets = new();
+    private bool _disposed = false;
+
+    public void Add(Tensor predicted, Tensor target)
+    {
+        // Detach tensors to avoid keeping gradients in memory
+        _predictions.Add(predicted.detach().clone());
+        _targets.Add(target.detach().clone());
+    }
+
+    public (Tensor predicted, Tensor target) GetConcatenated()
+    {
+        if (_predictions.Count == 0)
+            return (null, null);
+
+        var predicted = torch.cat(_predictions, 0);
+        var target = torch.cat(_targets, 0);
+        return (predicted, target);
+    }
+
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            foreach (var tensor in _predictions)
+                tensor?.Dispose();
+            foreach (var tensor in _targets)
+                tensor?.Dispose();
+            
+            _predictions.Clear();
+            _targets.Clear();
+            _disposed = true;
+        }
+    }
+}
+
+public class TvTrainer : ITrainer
+{
+    private readonly Module<Tensor, Tensor> _model;
+    private readonly Optimizer _optimizer;
+
+    private readonly DataLoader _train;
+    private readonly DataLoader _valid;
+
+    private readonly TrainingParameters _tParams;
+    private readonly LearningParameters _lParams;
+
+    private readonly IProgressTraining _progress;
+    private readonly Loss<Tensor, Tensor, Tensor> _loss;
+    private readonly PerformanceConfig _perfConfig;
+    private readonly Device _device;
+
+    public TvTrainer(Module<Tensor, Tensor> model, Optimizer optimizer, DataLoader train, DataLoader valid, 
+                     TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, 
+                     int seed = 1234, PerformanceConfig perfConfig = null)
+    {
+        _model = model;
+        _optimizer = optimizer;
+        _tParams = tParams;
+        _lParams = lParams;
+        _progress = progress;
+        _train = train;
+        _valid = valid;
+        _loss = MlFactory.CreateLoss(_lParams.LossFunction);
+        _perfConfig = perfConfig ?? PerformanceConfig.Default;
+        _device = _perfConfig.PreferredDevice ?? PerformanceExtensions.GetOptimalDevice();
+
+        InitializePerformanceOptimizations();
+    }
+
+    }
+
+    public TvTrainer(Module<Tensor, Tensor> model, DataLoader train, DataLoader valid, 
+                     TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, 
+                     int seed = 1234, PerformanceConfig perfConfig = null)
+    {
+        _model = model;
+        _optimizer = MlFactory.CreateOptimizer(_model, lParams);
+        _tParams = tParams;
+        _lParams = lParams;
+        _progress = progress;
+        _train = train;
+        _valid = valid;
+        _loss = MlFactory.CreateLoss(_lParams.LossFunction);
+        _perfConfig = perfConfig ?? PerformanceConfig.Default;
+        _device = _perfConfig.PreferredDevice ?? PerformanceExtensions.GetOptimalDevice();
+
+        InitializePerformanceOptimizations();
+    }
+
+    public TvTrainer(Module<Tensor, Tensor> model, DataFeed trainData, TrainingParameters tParams, 
+                     LearningParameters lParams, IProgressTraining progress, int seed = 1234, 
+                     PerformanceConfig perfConfig = null)
+    {
+        _model = model;
+        _optimizer = model != null ? MlFactory.CreateOptimizer(model, lParams) : null;
+        _tParams = tParams;
+        _lParams = lParams;
+        _progress = progress;
+
+        (_train, _valid) = Split(trainData, seed);
+
+        _loss = MlFactory.CreateLoss(_lParams.LossFunction);
+        _perfConfig = perfConfig ?? PerformanceConfig.Default;
+        _device = _perfConfig.PreferredDevice ?? PerformanceExtensions.GetOptimalDevice();
+        
+        InitializePerformanceOptimizations();
+    }
+
+    private void InitializePerformanceOptimizations()
+    {
+        if (_perfConfig.EnableMemoryOptimization)
+        {
+            PerformanceExtensions.OptimizeMemorySettings();
+        }
+
+        if (_perfConfig.EnableGpuWarmup && _device.type == DeviceType.CUDA)
+        {
+            PerformanceExtensions.WarmupGpu(_device);
+        }
+
+        // Move model to optimal device
+        _model?.to(_device);
+    }
+
+    internal (DataLoader train, DataLoader validation) Split(DataFeed data, int seed = 1234)
+    {
+        var trainSize = (long)(data.Count * _tParams.SplitPercentage / 100.0);
+        var evalSize = data.Count - trainSize;
+
+        var lst = LongEnumerable.Range(0, trainSize + evalSize).ToArray();
+
+        var trainIds = _tParams.ShuffleWhenSplit ? TSRandom.Rand<long>(lst, (int)trainSize, seed).ToList() : lst.Take((int)trainSize).ToList();
+        var testIds = lst.Except(trainIds).ToList();
+
+        var train = DataLoader(data, _tParams.MiniBatchSize, trainIds);
+        var valid = DataLoader(data, _tParams.MiniBatchSize, testIds);
+
+        return (train, valid);
+    }
+
+    public async Task<bool> RunAsync()
+    {
+        for (var epoch = 1; epoch <= _tParams.Epochs; epoch++)
+        {
+            using var d = torch.NewDisposeScope();
+
+            var (trainLoss, trainMetrics) = TrainMiniBatch(_train, epoch);
+            var (evalLoss, validMetrics) = EvaluateEpoch(_valid);
+
+            ProgressReport report = new ProgressReport
+            {
+                Epochs = _tParams.Epochs,
+                Epoch = epoch,
+                ProgressType = ProgressType.Training,
+                TrainLoss = trainLoss,
+                ValidLoss = evalLoss,
+                TrainEval = trainMetrics, 
+                ValidEval = validMetrics
+            };
+
+            if (epoch % _tParams.ProgressStep == 0)
+            {
+                _progress.Run(report);
+            }
+
+            // Perform memory cleanup if configured
+            if (_perfConfig.EnableMemoryOptimization && 
+                epoch % _perfConfig.MemoryCleanupFrequency == 0)
+            {
+                PerformanceExtensions.ClearGpuMemory();
+            }
+        }
+
+        await Task.CompletedTask;
+        return true;
+    }
+
+    private (float loss, Dictionary<string, float> metrics) TrainMiniBatch(DataLoader trainData, int epoch)
+    {
+        _model.train();
+        
+        float trainingLoss = 0;
+
+        using var accumulator = new TensorAccumulator();
+        
+        foreach (var data in trainData)
+        {
+            using var batchScope = torch.NewDisposeScope();
+            
+            _optimizer.zero_grad();
+
+            // Move data to device if configured for async transfer
+            var inputData = _perfConfig.UseAsyncDataTransfer ? 
+                data["X"].ToDeviceOptimized(_device) : data["X"].to(_device);
+            var targetData = _perfConfig.UseAsyncDataTransfer ? 
+                data["y"].ToDeviceOptimized(_device) : data["y"].to(_device);
+
+            var predicted = _model.forward(inputData);
+            var target = TargetTransform(targetData, _lParams.LossFunction);
+            var loss = CalculateLoss(predicted, target);
+
+            loss.backward();
+
+            // Apply gradient clipping if enabled
+            if (_perfConfig.EnableGradientClipping)
+            {
+                torch.nn.utils.clip_grad_norm_(_model.parameters(), _perfConfig.GradientClippingThreshold);
+            }
+
+            _optimizer.step();
+
+            trainingLoss += loss.ToSingle();
+            accumulator.Add(predicted, target);
+        }
+
+        var (totPredicted, totTarget) = accumulator.GetConcatenated();
+        var result = CalculateMetrics(_lParams.EvaluationFunctions, totPredicted, totTarget);
+        
+        // Dispose accumulated tensors
+        totPredicted?.Dispose();
+        totTarget?.Dispose();
+        
+        return (trainingLoss, result);
+    }
+
+    private (float eval_loss, Dictionary<string, float> metrics) EvaluateEpoch(DataLoader evalData) 
+    {
+        _model.eval();
+        
+        using var accumulator = new TensorAccumulator();
+        float validLoss = 0;
+
+        using (torch.no_grad())
+        {
+            foreach (var data in evalData)
+            {
+                using var batchScope = torch.NewDisposeScope();
+                
+                // Move data to device with optimized transfer
+                var inputData = _perfConfig.UseAsyncDataTransfer ? 
+                    data["X"].ToDeviceOptimized(_device) : data["X"].to(_device);
+                var targetData = _perfConfig.UseAsyncDataTransfer ? 
+                    data["y"].ToDeviceOptimized(_device) : data["y"].to(_device);
+
+                var predicted = _model.forward(inputData);
+                var target = TargetTransform(targetData, _lParams.LossFunction);
+                var loss = CalculateLoss(predicted, target);
+
+                validLoss += loss.ToSingle();
+                accumulator.Add(predicted, target);
+            }
+        }
+
+        var (totPredicted, totTarget) = accumulator.GetConcatenated();
+        var metrics = CalculateMetrics(_lParams.EvaluationFunctions, totPredicted, totTarget);
+        
+        // Dispose accumulated tensors
+        totPredicted?.Dispose();
+        totTarget?.Dispose();
+        
+        return (validLoss, metrics);
+    }
+
+    internal static Tensor TargetTransform(Tensor targetData, LossFunction loss)
+    {
+        //this is MCC problem with SoftMax or LogSoftMax
+        if (loss == LossFunction.NLLLoss)
+        {
+            //target data is multidimensional one hot encoding tensor
+            return targetData.flatten().to_type(ScalarType.Int64); //.argmax(dim: 1);
+        }
+        else if (loss == LossFunction.BCE)
+        {
+            return targetData.to_type(ScalarType.Float32);
+        }
+
+        return targetData;
+    }
+
+    internal static void AccumulateResults(Tensor predicted, ref Tensor totPredicted, Tensor target, ref Tensor totTarget)
+    {
+        if (ReferenceEquals(totPredicted, null))
+        {
+            totPredicted = predicted.detach().clone();
+            totTarget = target.detach().clone(); 
+        }
+        else
+        {
+            // Use in-place operations to avoid memory allocations
+            var newPredicted = torch.cat(new List<Tensor> { totPredicted, predicted.detach() }, 0);
+            var newTarget = torch.cat(new List<Tensor> { totTarget, target.detach() }, 0);
+            
+            // Dispose old tensors
+            totPredicted.Dispose();
+            totTarget.Dispose();
+            
+            totPredicted = newPredicted;
+            totTarget = newTarget;
+        }
+    }
+
+    private Dictionary<string, float> CalculateMetrics(List<EvalFunction> evalFunctions, Tensor predicted, Tensor target)
+    {
+        var metrics = new Dictionary<string, float>();
+
+        foreach (var eval in evalFunctions)
+        {
+           var keyValue = TorchMetrics.Evaluate(eval, predicted, target);
+           metrics.Add(keyValue.Key, keyValue.Value);
+        }
+
+        return metrics;
+    }
+    private Tensor CalculateLoss(Tensor predicted, Tensor actual)
+    {
+        Tensor retVal = _loss.forward(predicted, actual);
+
+        return retVal;
+
+    }
+}
