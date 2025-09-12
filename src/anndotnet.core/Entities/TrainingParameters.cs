@@ -34,6 +34,14 @@ public class TrainingParameters
     public string LastBestModel { get; set; }
     public bool ShuffleWhenSplit { get; set; }
     public bool ShuffleWhenTraining{ get; set; }
+    
+    // Early Stopping Settings
+    public int EarlyStoppingPatience { get; set; } = 10;
+    public float EarlyStoppingMinDelta { get; set; } = 0.001f;
+    
+    // Checkpointing Settings
+    public string CheckpointPath { get; set; }
+    public int CheckpointFrequency { get; set; } = 0; // 0 = disabled, N = save every N epochs
 
 public TrainingParameters()
     {

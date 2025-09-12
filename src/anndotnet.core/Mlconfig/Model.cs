@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.Layers;
+using Anndotnet.Core.Util;
 using static TorchSharp.torch.nn;
 using static TorchSharp.torch;
 using TorchSharp;
@@ -32,7 +33,7 @@ namespace Anndotnet.Core.Mlconfig
         private readonly int _outputDim;
 
 
-        public AnnModel(string name, List<ILayer> layers, int inputDim, int outputDim, Device device = null) : base(name)
+        public AnnModel(string name, List<ILayer> layers, int inputDim, int outputDim, Device device = null, Anndotnet.Core.Entities.WeightInitMethod initMethod = Anndotnet.Core.Entities.WeightInitMethod.XavierUniform) : base(name)
         {
             
             _inputDim = inputDim;
@@ -45,6 +46,9 @@ namespace Anndotnet.Core.Mlconfig
             network = Sequential(_layers.ToArray());
 
             RegisterComponents();
+            
+            // Apply weight initialization
+            ModelUtils.InitializeWeights(this, initMethod);
 
             if (device is { type: DeviceType.CUDA })
             {

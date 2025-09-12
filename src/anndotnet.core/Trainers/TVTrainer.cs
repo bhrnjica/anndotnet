@@ -36,6 +36,20 @@ public class TvTrainer : ITrainer
 
     private readonly IProgressTraining _progress;
     private readonly Loss<Tensor, Tensor, Tensor> _loss;
+    
+    // Learning rate scheduler settings
+    private readonly bool _useScheduler;
+    private readonly SchedulerType _schedulerType;
+    private readonly int _stepSize;
+    private readonly double _gamma;
+    private readonly double _minLR;
+    private readonly int _patience;
+    private double _bestMetric = double.MaxValue;
+    private readonly double _initialLR;
+    
+    // Gradient clipping settings
+    private readonly double? _gradClipNorm;
+    private readonly double? _gradClipValue;
 
     public TvTrainer(Module<Tensor, Tensor> model, Optimizer optimizer, DataLoader train, DataLoader valid, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed = 1234)
     {
@@ -47,7 +61,19 @@ public class TvTrainer : ITrainer
         _train = train;
         _valid = valid;
         _loss = MlFactory.CreateLoss(_lParams.LossFunction);
-
+        
+        // Initialize gradient clipping if specified
+        _gradClipNorm = lParams.GradientClipNorm;
+        _gradClipValue = lParams.GradientClipValue;
+        
+        // Initialize learning rate scheduler settings
+        _useScheduler = lParams.UseScheduler;
+        _schedulerType = lParams.SchedulerType;
+        _stepSize = lParams.StepSize;
+        _gamma = lParams.Gamma;
+        _minLR = lParams.MinLR;
+        _patience = lParams.Patience;
+        _initialLR = lParams.LearningRate;
     }
 
     public TvTrainer(Module<Tensor, Tensor> model, DataLoader train, DataLoader valid, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed = 1234)
@@ -60,7 +86,19 @@ public class TvTrainer : ITrainer
         _train = train;
         _valid = valid;
         _loss = MlFactory.CreateLoss(_lParams.LossFunction);
-
+        
+        // Initialize gradient clipping if specified
+        _gradClipNorm = lParams.GradientClipNorm;
+        _gradClipValue = lParams.GradientClipValue;
+        
+        // Initialize learning rate scheduler settings
+        _useScheduler = lParams.UseScheduler;
+        _schedulerType = lParams.SchedulerType;
+        _stepSize = lParams.StepSize;
+        _gamma = lParams.Gamma;
+        _minLR = lParams.MinLR;
+        _patience = lParams.Patience;
+        _initialLR = lParams.LearningRate;
     }
 
     public TvTrainer(Module<Tensor, Tensor> model, DataFeed trainData, TrainingParameters tParams, LearningParameters lParams, IProgressTraining progress, int seed= 1234 )
@@ -74,8 +112,21 @@ public class TvTrainer : ITrainer
         (_train, _valid) = Split(trainData, seed);
 
         _loss = MlFactory.CreateLoss(_lParams.LossFunction);
-       
+        
+        // Initialize gradient clipping if specified
+        _gradClipNorm = lParams.GradientClipNorm;
+        _gradClipValue = lParams.GradientClipValue;
+        
+        // Initialize learning rate scheduler settings
+        _useScheduler = lParams.UseScheduler;
+        _schedulerType = lParams.SchedulerType;
+        _stepSize = lParams.StepSize;
+        _gamma = lParams.Gamma;
+        _minLR = lParams.MinLR;
+        _patience = lParams.Patience;
+        _initialLR = lParams.LearningRate;
     }
+
 
     internal (DataLoader train, DataLoader validation) Split(DataFeed data, int seed = 1234)
     {
@@ -95,9 +146,9 @@ public class TvTrainer : ITrainer
 
     public async Task<bool> RunAsync()
     {
-        //early stopping
-        //var scheduler = torch.optim.lr_scheduler.LinearLR(optimizer,last_epoch:_tParams.Epochs, verbose:true);
-
+        float bestValidLoss = float.MaxValue;
+        int epochsWithoutImprovement = 0;
+        
         for (var epoch = 1; epoch <= _tParams.Epochs; epoch++)
         {
             using var d = torch.NewDisposeScope();
@@ -106,7 +157,61 @@ public class TvTrainer : ITrainer
 
             var (evalLoss, validMetrics) = EvaluateEpoch(_valid);
 
-            //scheduler.step(trainLoss);
+            // Update learning rate scheduler
+            if (_useScheduler && _optimizer != null)
+            {
+                switch (_schedulerType)
+                {
+                    case SchedulerType.StepLR:
+                        LearningRateSchedulers.StepLR(_optimizer, epoch, _stepSize, _gamma);
+                        break;
+                    case SchedulerType.ExponentialLR:
+                        LearningRateSchedulers.ExponentialLR(_optimizer, epoch, _gamma);
+                        break;
+                    case SchedulerType.CosineAnnealingLR:
+                        LearningRateSchedulers.CosineAnnealingLR(_optimizer, epoch, _tParams.Epochs, _minLR, _initialLR);
+                        break;
+                    case SchedulerType.ReduceLROnPlateau:
+                        var (newBest, lrReduced) = LearningRateSchedulers.ReduceLROnPlateau(_optimizer, evalLoss, _bestMetric, _patience, _gamma, 1e-4, _minLR);
+                        _bestMetric = newBest;
+                        if (lrReduced)
+                        {
+                            Console.WriteLine($"Learning rate reduced at epoch {epoch}");
+                        }
+                        break;
+                    case SchedulerType.LinearLR:
+                        LearningRateSchedulers.LinearLR(_optimizer, epoch, _tParams.Epochs, 1.0/3, 1.0, _initialLR);
+                        break;
+                }
+            }
+            
+            // Early stopping logic
+            if (_tParams.EarlyStopping == EarlyStopping.ValidationLoss)
+            {
+                if (evalLoss < bestValidLoss)
+                {
+                    bestValidLoss = evalLoss;
+                    epochsWithoutImprovement = 0;
+                    
+                    // Save best model checkpoint
+                    if (!string.IsNullOrEmpty(_tParams.CheckpointPath))
+                    {
+                        var checkpointPath = Path.Combine(_tParams.CheckpointPath, "best_model");
+                        ModelUtils.SaveCheckpoint(_model, _optimizer, epoch, evalLoss, validMetrics, checkpointPath);
+                    }
+                }
+                else
+                {
+                    epochsWithoutImprovement++;
+                    if (epochsWithoutImprovement >= _tParams.EarlyStoppingPatience)
+                    {
+                        Console.WriteLine($"Early stopping triggered after {epoch} epochs");
+                        break;
+                    }
+                }
+            }
+            
+            var currentLR = _optimizer != null ? LearningRateSchedulers.GetCurrentLearningRate(_optimizer) : 0;
             
             ProgressReport report = new ProgressReport
             {
@@ -116,7 +221,8 @@ public class TvTrainer : ITrainer
                 TrainLoss = trainLoss,
                 ValidLoss = evalLoss,
                 TrainEval = trainMetrics, 
-                ValidEval = validMetrics
+                ValidEval = validMetrics,
+                LearningRate = (float)currentLR
             };
 
             if (epoch % _tParams.ProgressStep == 0)
@@ -124,6 +230,13 @@ public class TvTrainer : ITrainer
                 _progress.Run(report);
             }
             
+            // Save periodic checkpoint
+            if (_tParams.CheckpointFrequency > 0 && epoch % _tParams.CheckpointFrequency == 0 
+                && !string.IsNullOrEmpty(_tParams.CheckpointPath))
+            {
+                var checkpointPath = Path.Combine(_tParams.CheckpointPath, $"epoch_{epoch}");
+                ModelUtils.SaveCheckpoint(_model, _optimizer, epoch, evalLoss, validMetrics, checkpointPath);
+            }
         }
 
         await Task.CompletedTask;
@@ -154,6 +267,16 @@ public class TvTrainer : ITrainer
 
                 loss.backward();
 
+                // Apply gradient clipping if specified
+                if (_gradClipNorm.HasValue)
+                {
+                    ModelUtils.ClipGradientNorm(_model, _gradClipNorm.Value);
+                }
+                else if (_gradClipValue.HasValue)
+                {
+                    ModelUtils.ClipGradientValue(_model, _gradClipValue.Value);
+                }
+
                 _optimizer.step();
 
                 trainingLoss += loss.ToSingle();
@@ -162,9 +285,13 @@ public class TvTrainer : ITrainer
             }
 
             var result = CalculateMetrics(_lParams.EvaluationFunctions, totPredicted, totTarget);
+            
+            // Clean up accumulated tensors
+            totPredicted?.Dispose();
+            totTarget?.Dispose();
+            
             return (trainingLoss, result);
         }
-
     }
 
     private (float eval_loss, Dictionary<string, float> metrics) EvaluateEpoch(DataLoader evalData) 
@@ -173,25 +300,33 @@ public class TvTrainer : ITrainer
         
         using (var d = torch.NewDisposeScope())
         {
-            Tensor totPredicted =null;
+            Tensor totPredicted = null;
             Tensor totTarget = null;
             float validLoss = 0;
 
-            foreach (var data in evalData)
+            using (torch.no_grad())  // Disable gradients for evaluation
             {
-                var predicted = _model.forward(data["X"]);
+                foreach (var data in evalData)
+                {
+                    var predicted = _model.forward(data["X"]);
  
-                var target = TargetTransform(data["y"], _lParams.LossFunction);
+                    var target = TargetTransform(data["y"], _lParams.LossFunction);
                  
-                var loss = CalculateLoss(predicted, target);
+                    var loss = CalculateLoss(predicted, target);
 
-                validLoss += loss.ToSingle();
+                    validLoss += loss.ToSingle();
 
-                AccumulateResults(predicted, ref totPredicted, target, ref totTarget);
+                    AccumulateResults(predicted, ref totPredicted, target, ref totTarget);
+                }
             }
 
             var metrics = CalculateMetrics(_lParams.EvaluationFunctions, totPredicted, totTarget);
-            return ( validLoss, metrics);
+            
+            // Clean up accumulated tensors
+            totPredicted?.Dispose();
+            totTarget?.Dispose();
+            
+            return (validLoss, metrics);
         }
     }
 
@@ -211,40 +346,36 @@ public class TvTrainer : ITrainer
         return targetData;
     }
 
-    internal static void AccumulateResults(Tensor predicted,ref Tensor totPredicted, Tensor target, ref Tensor totTarget)
+    internal static void AccumulateResults(Tensor predicted, ref Tensor totPredicted, Tensor target, ref Tensor totTarget)
     {
-        //if (predicted.shape.Length == 2 && predicted.shape[1] == 1)
-        //{
-        //    predicted = predicted.flatten();
-        //}
-
-        //if (target.shape.Length == 2 && target.shape[1] == 1)
-        //{
-        //    target = target.flatten();
-        //}
-
-        if (ReferenceEquals(totPredicted, null))
+        if (totPredicted is null)
         {
-            totPredicted = torch.clone(predicted);
-            totTarget = torch.clone(target); 
+            totPredicted = torch.clone(predicted).detach();
+            totTarget = torch.clone(target).detach(); 
         }
         else
         {
-            totPredicted = torch.cat(new List<Tensor> { totPredicted, predicted }, 0);
-            totTarget = torch.cat(new List<Tensor> { totTarget, target },          0);
+            var newPredicted = torch.cat(new List<Tensor> { totPredicted, predicted.detach() }, 0);
+            var newTarget = torch.cat(new List<Tensor> { totTarget!, target.detach() }, 0);
+            
+            // Dispose old tensors to free memory
+            totPredicted.Dispose();
+            totTarget.Dispose();
+            
+            totPredicted = newPredicted;
+            totTarget = newTarget;
         }
-
-        return;
     }
 
     private Dictionary<string, float> CalculateMetrics(List<EvalFunction> evalFunctions, Tensor predicted, Tensor target)
     {
+        // Use the improved batch calculation to reduce GPU-CPU transfers
+        var batchMetrics = TorchMetrics.CalculateMetricsBatch(evalFunctions, predicted, target);
+        
         var metrics = new Dictionary<string, float>();
-
-        foreach (var eval in evalFunctions)
+        foreach (var kvp in batchMetrics)
         {
-           var keyValue = TorchMetrics.Evaluate(eval, predicted, target);
-           metrics.Add(keyValue.Key, keyValue.Value);
+            metrics.Add(kvp.Key.ToString(), kvp.Value);
         }
 
         return metrics;

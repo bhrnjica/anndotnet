@@ -36,10 +36,10 @@ public class MlFactory
         return df.TransformData(mlConfig.Metadata);
     }
 
-    public static AnnModel CreateNetwork(string name, List<ILayer> layers, int inputDim, int outputDim, Device device, int seed = 1234)
+    public static AnnModel CreateNetwork(string name, List<ILayer> layers, int inputDim, int outputDim, Device device, Anndotnet.Core.Entities.WeightInitMethod initMethod = Anndotnet.Core.Entities.WeightInitMethod.XavierUniform, int seed = 1234)
     {
         torch.random.manual_seed(seed);
-        return new AnnModel(name, layers, inputDim, outputDim, device);
+        return new AnnModel(name, layers, inputDim, outputDim, device, initMethod);
     }
 
     
