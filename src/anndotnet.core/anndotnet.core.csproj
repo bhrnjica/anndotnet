@@ -18,11 +18,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Daany.DataFrame" Version="2.0.0" />
-		<PackageReference Include="Daany.DataFrame.Ext" Version="2.0.0" />
-		<PackageReference Include="TorchAudio" Version="0.101.2" />
-		<PackageReference Include="TorchSharp" Version="0.101.2" />
-		<PackageReference Include="TorchVision" Version="0.101.2" />
+		<PackageReference Include="TorchAudio" Version="0.105.1" />
+		<PackageReference Include="TorchSharp" Version="0.105.1" />
+		<PackageReference Include="TorchVision" Version="0.105.1" />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -35,6 +33,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\daany\src\daany.df\Daany.DataFrame.csproj" />
+	  <ProjectReference Include="..\..\..\daany\src\daany.ext\Daany.DataFrame.Ext.csproj" />
+	  <ProjectReference Include="..\..\..\daany\src\daany.mathstuff\Daany.MathStuff.csproj" />
 	  <ProjectReference Include="..\anndotnet.shared\anndotnet.shared.csproj" />
 	</ItemGroup>
 

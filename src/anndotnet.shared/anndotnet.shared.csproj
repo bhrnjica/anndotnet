@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Daany.DataFrame" Version="2.0.0" />
+    <ProjectReference Include="..\..\..\daany\src\daany.df\Daany.DataFrame.csproj" />
   </ItemGroup>
 
 </Project>

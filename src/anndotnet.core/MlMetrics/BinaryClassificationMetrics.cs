@@ -31,13 +31,14 @@ public class BinaryClassificationMetrics
         FN = ConfusionMatrix.Matrix[1][0];
         TN = ConfusionMatrix.Matrix[0][0];
 
-        Acc = (float)Math.Round(ConfusionMatrix.OAC(ConfusionMatrix.Matrix),                3);
-        Precision = (float)Math.Round(ConfusionMatrix.Precision(ConfusionMatrix.Matrix, 1), 3);
-        Recall = (float)Math.Round(ConfusionMatrix.Recall(ConfusionMatrix.Matrix, 1),       3);
-        F1Score = (float)Math.Round(ConfusionMatrix.Fscore(ConfusionMatrix.Matrix, 1),      3);
+        Acc = (float)Math.Round(ConfusionMatrix.OverallAccuracy, 3);
+        Precision = (float)Math.Round(ConfusionMatrix.Precision(1), 3);
+        Recall = (float)Math.Round(ConfusionMatrix.Recall(1), 3);
+        F1Score = (float)Math.Round(ConfusionMatrix.F1Score(1), 3);
 
-        HSS = (float)Math.Round(ConfusionMatrix.HSS(ConfusionMatrix.Matrix, target.Count), 3);
-        PSS = (float)Math.Round(ConfusionMatrix.PSS(ConfusionMatrix.Matrix, target.Count), 3);
+        // HSS and PSS are not available in the new Daany package, so set to 0 or remove if not needed
+        HSS = 0f;
+        PSS = 0f;
         Auc = (float)Math.Round(CalculateAuc(predicted, target.Select(x=>(int)x).ToArray()), 3);
     }
 

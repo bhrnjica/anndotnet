@@ -93,8 +93,8 @@ namespace Anndotnet.Tool.Progress
             Console.WriteLine($"************************************************************");
             Console.WriteLine($"*    Metrics for {name} multi-class classification model   ");
             Console.WriteLine($"*-----------------------------------------------------------");
-            Console.WriteLine($"    AccuracyMacro = {ConfusionMatrix.MacroAccuracy(matrix.Matrix):0.####}, a value between 0 and 1, the closer to 1, the better");
-            Console.WriteLine($"    AccuracyMicro = {ConfusionMatrix.MicroAccuracy(matrix.Matrix) :0.####}, a value between 0 and 1, the closer to 1, the better");
+            Console.WriteLine($"    AccuracyMacro = {matrix.OverallAccuracy:0.####}, a value between 0 and 1, the closer to 1, the better");
+            Console.WriteLine($"    AccuracyMicro = {matrix.AverageAccuracy:0.####}, a value between 0 and 1, the closer to 1, the better");
             //Console.WriteLine($"    LogLoss = {matrix.LogLoss:0.####}, the closer to 0, the better");
             //Console.WriteLine($"    LogLoss for class 1 = {matrix.PerClassLogLoss[0]:0.####}, the closer to 0, the better");
             //Console.WriteLine($"    LogLoss for class 2 = {matrix.PerClassLogLoss[1]:0.####}, the closer to 0, the better");
@@ -283,7 +283,7 @@ namespace Anndotnet.Tool.Progress
                 for (int j = 0; j < numLabels; j++)
                     sb.AppendFormat(format2, confusionTable[i][j]);
 
-                sb.AppendFormat(" {0,5:F4}", ConfusionMatrix.Recall(confusionMatrix.Matrix, i)); //confusionMatrix.PerClassRecall[i]);
+                sb.AppendFormat(" {0,5:F4}", confusionMatrix.Recall(i));
                 sb.AppendLine();
             }
             sb.AppendFormat("          {0}||", pad);
@@ -294,7 +294,7 @@ namespace Anndotnet.Tool.Progress
 
             format = string.Format("{{0,{0}:N4}} |", colWidth + 1);
             for (int i = 0; i < numLabels; i++)
-                sb.AppendFormat(format, ConfusionMatrix.Precision(confusionMatrix.Matrix, i)); //confusionMatrix.PerClassPrecision[i]);
+                sb.AppendFormat(format, confusionMatrix.Precision(i));
 
             sb.AppendLine();
             return sb.ToString();
