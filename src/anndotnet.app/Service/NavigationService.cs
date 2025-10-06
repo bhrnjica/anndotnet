@@ -10,7 +10,6 @@ using Anndotnet.App.Model;
 using Avalonia;
 using Avalonia.Platform;
 using ExCSS;
-using Newtonsoft.Json;
 using XPlot.Plotly;
 
 namespace Anndotnet.App.Service

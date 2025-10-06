@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 //           ANNdotNET - Deep Learning Tool on .NET Platform             //
 //                                                                       //
 //        Copyright 2017-2023 Bahrudin Hrnjica, bhrnjica@hotmail.com     //
@@ -8,11 +8,18 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
-namespace Anndotnet.Core.Entities;
-
-public enum EarlyStopping
+namespace Anndotnet.Core.Entities
 {
-    None,
-    ValidationLoss,
-    ValidationAccuracy
+    /// <summary>
+    /// Learning rate scheduler types
+    /// </summary>
+    public enum SchedulerType
+    {
+        StepLR,
+        ExponentialLR,
+        CosineAnnealingLR,
+        ReduceLROnPlateau,
+        MultiStepLR,
+        LinearLR
+    }
 }

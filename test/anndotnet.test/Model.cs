@@ -30,9 +30,7 @@ namespace Anndotnet.Core.Model
         private Module<Tensor, Tensor> fc1 = Linear(9216, 128);
         private Module<Tensor, Tensor> fc2 = Linear(128, 10);
 
-        // These don't have any parameters, so the only reason to instantiate
-        // them is performance, since they will be used over and over.
-        private Module<Tensor, Tensor> pool1 = MaxPool2d(kernelSize: new long[] { 2, 2 });
+		private Module<Tensor, Tensor> pool1 = MaxPool2d(new long[] { 2, 2 });
 
         private Module<Tensor, Tensor> relu1 = ReLU();
         private Module<Tensor, Tensor> relu2 = ReLU();

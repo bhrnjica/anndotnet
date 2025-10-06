@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Anndotnet.Core.Entities;
 using Anndotnet.Core.Interfaces;
 using Anndotnet.Core.Layers;
+using Anndotnet.Core.Util;
 using static TorchSharp.torch.nn;
 using static TorchSharp.torch;
 using TorchSharp;
@@ -32,7 +33,7 @@ namespace Anndotnet.Core.Mlconfig
         private readonly int _outputDim;
 
 
-        public AnnModel(string name, List<ILayer> layers, int inputDim, int outputDim, Device device = null) : base(name)
+        public AnnModel(string name, List<ILayer> layers, int inputDim, int outputDim, Device device = null, Anndotnet.Core.Entities.WeightInitMethod initMethod = Anndotnet.Core.Entities.WeightInitMethod.XavierUniform) : base(name)
         {
             
             _inputDim = inputDim;
@@ -45,6 +46,9 @@ namespace Anndotnet.Core.Mlconfig
             network = Sequential(_layers.ToArray());
 
             RegisterComponents();
+            
+            // Apply weight initialization
+            ModelUtils.InitializeWeights(this, initMethod);
 
             if (device is { type: DeviceType.CUDA })
             {
@@ -85,26 +89,89 @@ namespace Anndotnet.Core.Mlconfig
                 else if (layer is Embedding)
                 {
                     var l = (Embedding)layer;
-                    var linear = Embedding(l.OutputDim,inputDim, padding_idx:l.PaddingIdX, max_norm:l.MaxNorm,norm_type:l.NormType);
-                    _layers.Add(linear);
+                    var embedding = Embedding(l.OutputDim, inputDim, padding_idx: l.PaddingIdX, max_norm: l.MaxNorm, norm_type: l.NormType);
+                    _layers.Add(embedding);
 
                     inputDim = l.OutputDim;
+                }
+                else if (layer is BatchNormalization)
+                {
+                    var l = (BatchNormalization)layer;
+                    var batchNorm = BatchNorm1d(l.NumFeatures, l.Eps, l.Momentum, l.Affine, l.TrackRunningStats);
+                    _layers.Add(batchNorm);
+                }
+                else if (layer is LayerNormalization)
+                {
+                    var l = (LayerNormalization)layer;
+                    var layerNorm = LayerNorm(l.NormalizedShape.Select(x => (long)x).ToArray(), l.Eps, l.ElementwiseAffine);
+                    _layers.Add(layerNorm);
+                }
+                else if (layer is Conv1D)
+                {
+                    var l = (Conv1D)layer;
+                    var conv = Conv1d(l.InChannels, l.OutChannels, l.KernelSize, l.Stride, l.Padding, l.Dilation, bias: l.HasBias);
+                    _layers.Add(conv);
+                    
+                    var activation = ToTorchLayer(l.Activation);
+                    _layers.Add(activation);
+                    
+                    inputDim = l.OutChannels;
+                }
+                else if (layer is Conv2D)
+                {
+                    var l = (Conv2D)layer;
+                    var conv = Conv2d(l.InChannels, l.OutChannels, l.KernelSize, l.Stride, l.Padding, l.Dilation, bias: l.HasBias);
+                    _layers.Add(conv);
+                    
+                    var activation = ToTorchLayer(l.Activation);
+                    _layers.Add(activation);
+                    
+                    inputDim = l.OutChannels;
+                }
+                else if (layer is MaxPool1D)
+                {
+                    var l = (MaxPool1D)layer;
+                    var pool = MaxPool1d(l.KernelSize, l.Stride, l.Padding, l.Dilation);
+                    _layers.Add(pool);
+                }
+                else if (layer is MaxPool2D)
+                {
+                    var l = (MaxPool2D)layer;
+                    var pool = MaxPool2d(l.KernelSize, l.Stride, l.Padding, l.Dilation);
+                    _layers.Add(pool);
+                }
+                else if (layer is AvgPool2D)
+                {
+                    var l = (AvgPool2D)layer;
+                    var pool = AvgPool2d(l.KernelSize, l.Stride, l.Padding);
+                    _layers.Add(pool);
+                }
+                else if (layer is GlobalAvgPool)
+                {
+                    var adaptivePool = AdaptiveAvgPool2d(new long[] { 1, 1 });
+                    _layers.Add(adaptivePool);
+                }
+                else if (layer is Flatten)
+                {
+                    var l = (Flatten)layer;
+                    var flatten = torch.nn.Flatten(l.StartDim, l.EndDim);
+                    _layers.Add(flatten);
                 }
                 else if (layer is Lstm)
                 {
                     var l = (Lstm)layer;
-                    var drop = LSTM(l.InputSize, l.HiddenSize,l.Layers, l.HasBias,l.BatchFirst, l.DropRate, l.Bidirectional);
-                   
+                    var lstm = LSTM(l.InputSize, l.HiddenSize, l.Layers, l.HasBias, l.BatchFirst, l.DropRate, l.Bidirectional);
+                    // Note: LSTM returns tuple, would need special handling
                 }
                 else if (layer is Dropout)
                 {
                     var l = (Dropout)layer;
-                    var drop= Dropout(l.Rate);
+                    var drop = Dropout(l.Rate);
                     _layers.Add(drop);
                 }
                 else
                 {
-                    throw new NotSupportedException("The layer is not supported.");
+                    throw new NotSupportedException($"The layer type {layer.GetType().Name} is not supported.");
                 }
             }
         }

@@ -29,5 +29,16 @@ public enum LayerType
     CudaStackedLSTM=12,
     CudaStackedGRU=13,
     Custom=14,
-    Activation=15
+    Activation=15,
+    
+    // New layer types for improved TorchSharp support
+    BatchNormalization=16,
+    LayerNormalization=17,
+    MaxPool1D=18,
+    MaxPool2D=19,
+    AvgPool2D=20,
+    GlobalAvgPool=21,
+    Flatten=22,
+    Reshape=23,
+    Attention=24
 }

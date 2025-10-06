@@ -368,7 +368,5 @@ public class SerializationTests
         {
             Assert.Equal(str1[i].Trim(), str2[i].Trim());
         }
-        
-
     }
 }

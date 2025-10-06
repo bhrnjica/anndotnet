@@ -31,4 +31,22 @@ public class LearningParameters
     public double Beta2 { get; set; }
     public double WeightDecay { get; set; }
     public double Rho { get; set; }
+    
+    // Learning Rate Scheduler Settings
+    public bool UseScheduler { get; set; } = false;
+    public SchedulerType SchedulerType { get; set; } = SchedulerType.StepLR;
+    public int StepSize { get; set; } = 30;
+    public double Gamma { get; set; } = 0.1;
+    public double MinLR { get; set; } = 0.0;
+    public int Patience { get; set; } = 10;
+    
+    // Gradient Clipping Settings
+    public double? GradientClipNorm { get; set; }
+    public double? GradientClipValue { get; set; }
+    
+    // Mixed Precision Training
+    public bool UseMixedPrecision { get; set; } = false;
+    
+    // Weight Initialization
+    public WeightInitMethod WeightInitMethod { get; set; } = WeightInitMethod.XavierUniform;
 }

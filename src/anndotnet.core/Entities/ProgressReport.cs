@@ -27,4 +27,9 @@ public class ProgressReport
 
     public Dictionary<string, float> TrainEval { get; set; }
     public Dictionary<string, float> ValidEval { get; set; }
+    
+    // Additional monitoring fields
+    public float LearningRate { get; set; }
+    public long MemoryUsage { get; set; }
+    public TimeSpan ElapsedTime { get; set; }
 }
